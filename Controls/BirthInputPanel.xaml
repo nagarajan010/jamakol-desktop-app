@@ -5,7 +5,7 @@
     <Border Style="{StaticResource InputPanelStyle}">
         <WrapPanel VerticalAlignment="Center">
             <TextBlock Text="Name:" Style="{StaticResource TopLabelStyle}"/>
-            <TextBox x:Name="NameInput" Style="{StaticResource TopInputStyle}" Width="120" Text="Sample Person"/>
+            <TextBox x:Name="NameInput" Style="{StaticResource TopInputStyle}" Width="120" Text="Person"/>
 
             <TextBlock Text="Date:" Style="{StaticResource TopLabelStyle}"/>
             <DatePicker x:Name="DateInput" Style="{StaticResource DatePickerStyle}" Width="120"
