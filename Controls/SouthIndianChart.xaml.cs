@@ -38,7 +38,7 @@ public partial class SouthIndianChart : UserControl
     /// <summary>
     /// Update chart display with calculated chart data
     /// </summary>
-    public void UpdateChart(ChartData chartData)
+    public void UpdateChart(ChartData chartData, double fontSize = 12)
     {
         // Clear all cells
         foreach (var tb in _signTextBlocks.Values)
@@ -97,6 +97,7 @@ public partial class SouthIndianChart : UserControl
             if (_signTextBlocks.TryGetValue(sign, out var textBlock) && items.Count > 0)
             {
                 textBlock.Inlines.Clear();
+                textBlock.FontSize = fontSize;
                 
                 for (int i = 0; i < items.Count; i++)
                 {
@@ -106,7 +107,7 @@ public partial class SouthIndianChart : UserControl
                     run.Foreground = type switch
                     {
                         "planet" => new SolidColorBrush(Color.FromRgb(204, 0, 0)),     // Red #cc0000
-                        "rahuKetu" => new SolidColorBrush(Color.FromRgb(204, 0, 0)),   // Red #cc0000 (Matches standard planets in Jamakol)
+                        "rahuKetu" => new SolidColorBrush(Color.FromRgb(204, 0, 0)),   // Red #cc0000 
                         "lagna" => new SolidColorBrush(Color.FromRgb(0, 153, 0)),      // Green #009900
                         _ => new SolidColorBrush(Colors.Black)
                     };

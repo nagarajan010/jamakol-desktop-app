@@ -92,7 +92,7 @@ public partial class MainWindow : Window
             _currentChartData = result.ChartData;
 
             // Update UI Components
-            ChartControl.UpdateChart(result.ChartData);
+            ChartControl.UpdateChart(result.ChartData, _appSettings.ChartFontSize);
             BirthPlanetaryDetailsControl.UpdateDetails(result.ChartData);
             
             // Update Jamakol & Associated Grids (Even on Birth Tab, we calc everything)
