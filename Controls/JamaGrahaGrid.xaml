@@ -1,0 +1,38 @@
+<UserControl x:Class="JamakolAstrology.Controls.JamaGrahaGrid"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <DataGrid x:Name="DataGridControl" 
+              Style="{StaticResource DataGridStyle}"
+              AutoGenerateColumns="False"
+              HeadersVisibility="Column"
+              IsReadOnly="True"
+              CanUserAddRows="False"
+              CanUserDeleteRows="False"
+              FontSize="11"
+              Background="White"
+              BorderThickness="0"
+              GridLinesVisibility="Horizontal"
+              HorizontalGridLinesBrush="#eee"
+              IsSynchronizedWithCurrentItem="False"
+              SelectionMode="Single"
+              PreviewMouseWheel="DataGrid_PreviewMouseWheel"
+              Loaded="DataGrid_Loaded">
+        <DataGrid.ColumnHeaderStyle>
+            <Style TargetType="DataGridColumnHeader">
+                <Setter Property="Background" Value="#cc0000"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Padding" Value="6,4"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="FontSize" Value="10"/>
+            </Style>
+        </DataGrid.ColumnHeaderStyle>
+        <DataGrid.Columns>
+            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="Auto"/>
+            <DataGridTextColumn Header="Degree" Binding="{Binding DegreeDisplay}" Width="Auto"/>
+            <DataGridTextColumn Header="Nakshatra" Binding="{Binding NakshatraName}" Width="Auto"/>
+            <DataGridTextColumn Header="Pada" Binding="{Binding Pada}" Width="Auto"/>
+            <DataGridTextColumn Header="Sign" Binding="{Binding SignName}" Width="Auto"/>
+        </DataGrid.Columns>
+    </DataGrid>
+</UserControl>

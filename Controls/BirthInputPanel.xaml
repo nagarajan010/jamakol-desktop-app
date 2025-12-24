@@ -58,7 +58,7 @@
                     Background="#28A745" Foreground="White" 
                     FontWeight="SemiBold" BorderThickness="0" Cursor="Hand" FontSize="13"/>
             
-            <Button Content="📋 Saved" Click="LoadButton_Click"
+            <Button Content="📋 Saved Charts" Click="LoadButton_Click"
                     Margin="5,0,0,0" Padding="10,8"
                     Background="#4A90D9" Foreground="White" 
                     FontWeight="SemiBold" BorderThickness="0" Cursor="Hand" FontSize="13"/>

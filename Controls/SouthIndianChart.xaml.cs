@@ -154,14 +154,6 @@ public partial class SouthIndianChart : UserControl
         ChartTitle.Text = string.IsNullOrEmpty(personName) ? "Rasi (D-1)" : $"{personName}\nRasi (D-1)";
         AscendantLabel.Text = $"Asc: {chartData.AscendantSignName}\n{ZodiacUtils.FormatDegreeInSign(chartData.AscendantDegree)}";
 
-        // Highlight ascendant cell
-        if (_signBorders.TryGetValue(chartData.AscendantSign, out var ascBorder))
-        {
-            // Use a slightly different background for ascendant (e.g. Cornsilk #fff8dc)
-            ascBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#fff8dc"));
-            ascBorder.BorderThickness = new Thickness(2);
-        }
-
         // Prepare content for each sign
         var displayBySign = new Dictionary<int, List<(string text, string type)>>();
         for (int i = 1; i <= 12; i++) displayBySign[i] = new List<(string text, string type)>();
@@ -271,16 +263,10 @@ public partial class SouthIndianChart : UserControl
             border.BorderThickness = new Thickness(1);
         }
 
-        // Update chart title - show division name with optional person name
-        ChartTitle.Text = string.IsNullOrEmpty(personName) ? divisionalData.Name : $"{personName}\n{divisionalData.Name}";
-        AscendantLabel.Text = $"Asc: {divisionalData.AscendantSignName}\n{ZodiacUtils.FormatDegreeInSign(divisionalData.AscendantDegree)}";
-
-        // Highlight ascendant cell
-        if (_signBorders.TryGetValue(divisionalData.AscendantSign, out var ascBorder))
-        {
-            ascBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#fff8dc"));
-            ascBorder.BorderThickness = new Thickness(2);
-        }
+        // Update chart title - show division name only
+        ChartTitle.Text = divisionalData.Name;
+        AscendantLabel.Text = "";
+        // AscendantLabel.Text = $"Asc: {divisionalData.AscendantSignName}\n{ZodiacUtils.FormatDegreeInSign(divisionalData.AscendantDegree)}";
 
         // Prepare content for each sign
         var displayBySign = new Dictionary<int, List<(string text, string type)>>();

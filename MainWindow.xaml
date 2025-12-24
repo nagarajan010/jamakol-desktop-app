@@ -120,7 +120,11 @@
 
                             <!-- Planetary Positions -->
                             <Border Grid.Row="0" Background="#fffff8" CornerRadius="5" Padding="5" Margin="0,0,0,5" BorderBrush="#ddd" BorderThickness="1">
-                                <controls:BirthPlanetaryDetails x:Name="BirthPlanetaryDetailsControl"/>
+                                <StackPanel>
+                                    <TextBlock Text="Planetary Positions" FontSize="14" FontWeight="Bold" 
+                                               Foreground="#cc0000" Margin="0,0,0,5"/>
+                                    <controls:JamakolPlanetGrid x:Name="BirthPlanetGridControl"/>
+                                </StackPanel>
                             </Border>
                             
                             <!-- Bottom Details Area -->

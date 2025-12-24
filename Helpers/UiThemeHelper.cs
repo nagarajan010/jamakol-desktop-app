@@ -25,6 +25,17 @@ public static class UiThemeHelper
                     SetFontSizeRecursive(fe, size);
             }
         }
+        else if (element is ItemsControl itemsControl)
+        {
+            // Handle TabControl, ListBox, etc.
+            foreach (var item in itemsControl.Items)
+            {
+                if (item is FrameworkElement fe)
+                    SetFontSizeRecursive(fe, size);
+                else if (item is ContentControl cc && cc.Content is FrameworkElement contentFe)
+                    SetFontSizeRecursive(contentFe, size);
+            }
+        }
         else if (element is ContentControl cc && cc.Content is FrameworkElement contentParams)
         {
              SetFontSizeRecursive(contentParams, size);

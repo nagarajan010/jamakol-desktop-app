@@ -117,7 +117,7 @@ public partial class MainWindow : Window
                 NavamsaChartControl.UpdateDivisionalChart(navamsaChart, result.ChartData, result.ChartData.BirthData.Name, _appSettings.ChartFontSize);
             }
             
-            BirthPlanetaryDetailsControl.UpdateDetails(result.ChartData);
+            BirthPlanetGridControl.UpdateGrid(result.ChartData);
             
             // Update Jamakol & Associated Grids (Even on Birth Tab, we calc everything)
             JamakolChartControl.UpdateChart(
@@ -360,6 +360,7 @@ public partial class MainWindow : Window
         if (PrasannaPanelControl != null) UiThemeHelper.SetFontSizeRecursive(PrasannaPanelControl, _appSettings.TableFontSize);
         if (PanchangaPanelControl != null) UiThemeHelper.SetFontSizeRecursive(PanchangaPanelControl, _appSettings.TableFontSize);
         if (SavedChartInfoPanelControl != null) UiThemeHelper.SetFontSizeRecursive(SavedChartInfoPanelControl, _appSettings.InputFontSize);
+        if (BirthPlanetGridControl != null) UiThemeHelper.SetFontSizeRecursive(BirthPlanetGridControl, _appSettings.TableFontSize);
         // Note: Chart controls (ChartControl, NavamsaChartControl) handle their own font sizing via UpdateChart parameters
     }
 
