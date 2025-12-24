@@ -43,57 +43,83 @@ public partial class SouthIndianChart : UserControl
         // Clear all cells
         foreach (var tb in _signTextBlocks.Values)
         {
+            tb.Inlines.Clear();
             tb.Text = string.Empty;
         }
 
         // Reset all borders to default style
         foreach (var border in _signBorders.Values)
         {
-            border.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#16213e"));
+            border.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#fffff8"));
             border.BorderThickness = new Thickness(1);
         }
 
         // Update chart title
-        if (!string.IsNullOrEmpty(chartData.BirthData.Name))
-        {
-            ChartTitle.Text = chartData.BirthData.Name;
-        }
-        else
-        {
-            ChartTitle.Text = "Birth Chart";
-        }
-
-        // Update ascendant label
+        ChartTitle.Text = !string.IsNullOrEmpty(chartData.BirthData.Name) ? chartData.BirthData.Name : "Birth Chart";
         AscendantLabel.Text = $"Asc: {chartData.AscendantSignName}\n{ZodiacUtils.FormatDegreeInSign(chartData.AscendantDegree)}";
 
         // Highlight ascendant cell
         if (_signBorders.TryGetValue(chartData.AscendantSign, out var ascBorder))
         {
-            ascBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1f4068"));
+            // Use a slightly different background for ascendant (e.g. Cornsilk #fff8dc)
+            ascBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#fff8dc"));
             ascBorder.BorderThickness = new Thickness(2);
         }
 
-        // Group planets by sign
-        var planetsBySign = chartData.Planets
-            .GroupBy(p => p.Sign)
-            .ToDictionary(g => g.Key, g => g.ToList());
+        // Prepare content for each sign
+        var displayBySign = new Dictionary<int, List<(string text, string type)>>();
+        for (int i = 1; i <= 12; i++) displayBySign[i] = new List<(string text, string type)>();
 
-        // Display planets in their respective signs
-        foreach (var kvp in planetsBySign)
+        // Add "Lagna" to ascendant sign
+        displayBySign[chartData.AscendantSign].Add(("Lagna", "lagna"));
+
+        // Add planets
+        foreach (var p in chartData.Planets)
+        {
+             // Format: "12° Su"
+             string retro = p.IsRetrograde ? " R" : "";
+             string deg = $"{(int)p.DegreeInSign}°";
+             string abbr = ZodiacUtils.PlanetAbbreviations[p.Planet];
+             string text = $"{deg} {abbr}{retro}";
+             
+             string type = (p.Planet == Models.Planet.Rahu || p.Planet == Models.Planet.Ketu) 
+                ? "rahuKetu" : "planet";
+
+             displayBySign[p.Sign].Add((text, type));
+        }
+
+        // Render to TextBlocks
+        foreach (var kvp in displayBySign)
         {
             int sign = kvp.Key;
-            var planets = kvp.Value;
+            var items = kvp.Value;
 
-            if (_signTextBlocks.TryGetValue(sign, out var textBlock))
+            if (_signTextBlocks.TryGetValue(sign, out var textBlock) && items.Count > 0)
             {
-                var planetTexts = planets.Select(p =>
+                textBlock.Inlines.Clear();
+                
+                for (int i = 0; i < items.Count; i++)
                 {
-                    string retro = p.IsRetrograde ? "(R)" : "";
-                    string deg = $"{(int)p.DegreeInSign}°";
-                    return $"{ZodiacUtils.PlanetAbbreviations[p.Planet]}{retro}\n{deg}";
-                });
+                    var (text, type) = items[i];
+                    
+                    var run = new System.Windows.Documents.Run(text);
+                    run.Foreground = type switch
+                    {
+                        "planet" => new SolidColorBrush(Color.FromRgb(204, 0, 0)),     // Red #cc0000
+                        "rahuKetu" => new SolidColorBrush(Color.FromRgb(204, 0, 0)),   // Red #cc0000 (Matches standard planets in Jamakol)
+                        "lagna" => new SolidColorBrush(Color.FromRgb(0, 153, 0)),      // Green #009900
+                        _ => new SolidColorBrush(Colors.Black)
+                    };
 
-                textBlock.Text = string.Join("\n", planetTexts);
+                    if (type == "lagna") run.FontWeight = FontWeights.Bold;
+
+                    textBlock.Inlines.Add(run);
+                    
+                    if (i < items.Count - 1)
+                    {
+                        textBlock.Inlines.Add(new System.Windows.Documents.LineBreak());
+                    }
+                }
             }
         }
     }
@@ -113,7 +139,7 @@ public partial class SouthIndianChart : UserControl
 
         foreach (var border in _signBorders.Values)
         {
-            border.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#16213e"));
+            border.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#fffff8"));
             border.BorderThickness = new Thickness(1);
         }
     }

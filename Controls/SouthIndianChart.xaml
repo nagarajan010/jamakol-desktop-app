@@ -5,15 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="400"
-             Background="#1a1a2e">
+             Background="#fffff0">
     <UserControl.Resources>
         <Style x:Key="ChartCellStyle" TargetType="Border">
-            <Setter Property="BorderBrush" Value="#e94560"/>
+            <Setter Property="BorderBrush" Value="#cc0000"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Background" Value="#16213e"/>
+            <Setter Property="Background" Value="#fffff8"/>
         </Style>
         <Style x:Key="SignLabelStyle" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="#0f3460"/>
+            <Setter Property="Foreground" Value="#cc0000"/>
             <Setter Property="FontSize" Value="10"/>
             <Setter Property="FontWeight" Value="Light"/>
             <Setter Property="HorizontalAlignment" Value="Right"/>
@@ -21,7 +21,7 @@
             <Setter Property="Margin" Value="0,2,4,0"/>
         </Style>
         <Style x:Key="PlanetTextStyle" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="#eee"/>
+            <Setter Property="Foreground" Value="#000"/>
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="FontFamily" Value="Segoe UI"/>
             <Setter Property="TextAlignment" Value="Center"/>
@@ -29,9 +29,9 @@
             <Setter Property="VerticalAlignment" Value="Top"/>
         </Style>
         <Style x:Key="AscendantStyle" TargetType="Border">
-            <Setter Property="BorderBrush" Value="#e94560"/>
+            <Setter Property="BorderBrush" Value="#cc0000"/>
             <Setter Property="BorderThickness" Value="2"/>
-            <Setter Property="Background" Value="#1f4068"/>
+            <Setter Property="Background" Value="#fff8dc"/>
         </Style>
     </UserControl.Resources>
 
@@ -93,13 +93,13 @@
             </Grid>
         </Border>
         <Border Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="2" 
-                Background="#0f3460" BorderBrush="#e94560" BorderThickness="1">
+                Background="#fff8dc" BorderBrush="#cc0000" BorderThickness="1">
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                 <TextBlock x:Name="ChartTitle" Text="Birth Chart" 
-                           Foreground="#e94560" FontSize="14" FontWeight="Bold" 
+                           Foreground="#cc0000" FontSize="14" FontWeight="Bold" 
                            HorizontalAlignment="Center" Margin="0,0,0,5"/>
                 <TextBlock x:Name="AscendantLabel" Text="Asc: " 
-                           Foreground="#aaa" FontSize="12" HorizontalAlignment="Center"/>
+                           Foreground="#333" FontSize="12" HorizontalAlignment="Center"/>
             </StackPanel>
         </Border>
         <Border x:Name="Cell4" Grid.Row="1" Grid.Column="3" Style="{StaticResource ChartCellStyle}">

@@ -69,10 +69,8 @@ public partial class JamakolChart : UserControl
             string type = (planet.Planet == Models.Planet.Rahu || planet.Planet == Models.Planet.Ketu) 
                 ? "rahuKetu" : "planet";
             
-            // Format: "12° Su" or "(Ra) 12°"
-            string displayText = type == "rahuKetu" 
-                ? $"({abbr})\n{degree}°{retro}"
-                : $"{degree}° {abbr}{retro}";
+            // Format: "12° Su" for all planets
+            string displayText = $"{degree}° {abbr}{retro}";
             
             displayBySign[planet.Sign].Add((displayText, type));
         }
