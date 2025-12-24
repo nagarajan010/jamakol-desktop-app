@@ -30,11 +30,11 @@
                     </Style>
                 </DataGrid.ColumnHeaderStyle>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Planet" Binding="{Binding Name}" Width="60"/>
-                    <DataGridTextColumn Header="Sign" Binding="{Binding SignName}" Width="60"/>
+                    <DataGridTextColumn Header="Planet" Binding="{Binding Name}" Width="55"/>
+                    <DataGridTextColumn Header="Sign" Binding="{Binding SignName}" Width="40"/>
                     <DataGridTextColumn Header="Deg" Binding="{Binding DegreeDisplay}" Width="55"/>
-                    <DataGridTextColumn Header="Nak" Binding="{Binding NakshatraShort}" Width="60"/>
-                    <DataGridTextColumn Header="Pd" Binding="{Binding PadaDisplay}" Width="25"/>
+                    <DataGridTextColumn Header="Nakshatra" Binding="{Binding NakshatraShort}" Width="110"/>
+                    <DataGridTextColumn Header="Pada" Binding="{Binding PadaDisplay}" Width="60"/>
                     <DataGridTextColumn Header="R" Binding="{Binding RetroDisplay}" Width="25"/>
                 </DataGrid.Columns>
             </DataGrid>

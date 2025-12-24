@@ -130,6 +130,17 @@ public static class ZodiacUtils
         double degreeInNakshatra = degree % nakshatraSpan;
         return (int)(degreeInNakshatra / padaSpan) + 1;
     }
+    
+    /// <summary>
+    /// Get nakshatra info (name and pada) for a given degree
+    /// </summary>
+    public static (string name, int pada) GetNakshatraInfo(double degree)
+    {
+        int nakshatraNum = DegreeToNakshatra(degree);
+        int pada = GetNakshatraPada(degree);
+        string name = nakshatraNum >= 1 && nakshatraNum <= 27 ? NakshatraNames[nakshatraNum] : "";
+        return (name, pada);
+    }
 
     /// <summary>
     /// Calculate house number based on planet position and ascendant

@@ -16,7 +16,21 @@ public partial class BirthPlanetaryDetails : UserControl
 
     public void UpdateDetails(ChartData chartData)
     {
-        var displayData = chartData.Planets.Select(p => new PlanetDisplayItem
+        var displayData = new System.Collections.Generic.List<PlanetDisplayItem>();
+        
+        // Add Lagna first
+        displayData.Add(new PlanetDisplayItem
+        {
+            Name = "Lagna",
+            SignName = chartData.AscendantSignName.Length > 2 ? chartData.AscendantSignName.Substring(0, 2) : chartData.AscendantSignName,
+            DegreeDisplay = $"{(int)chartData.AscendantDegree}°{(int)((chartData.AscendantDegree % 1) * 60)}'",
+            NakshatraShort = chartData.AscendantNakshatraName ?? "",
+            PadaDisplay = chartData.AscendantNakshatraPada.ToString(),
+            RetroDisplay = ""
+        });
+        
+        // Add planets
+        displayData.AddRange(chartData.Planets.Select(p => new PlanetDisplayItem
         {
             Name = p.Name,
             SignName = p.SignName.Length > 2 ? p.SignName.Substring(0, 2) : p.SignName,
@@ -24,7 +38,7 @@ public partial class BirthPlanetaryDetails : UserControl
             NakshatraShort = p.NakshatraName,
             PadaDisplay = p.NakshatraPada.ToString(),
             RetroDisplay = p.IsRetrograde ? "R" : ""
-        }).ToList();
+        }));
 
         PlanetGrid.ItemsSource = displayData;
     }

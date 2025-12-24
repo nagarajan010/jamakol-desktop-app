@@ -39,8 +39,8 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="60"/>
                     <DataGridTextColumn Header="Degree" Binding="{Binding DegreeDisplay}" Width="75"/>
-                    <DataGridTextColumn Header="Nak" Binding="{Binding NakshatraName}" Width="70"/>
-                    <DataGridTextColumn Header="Pd" Binding="{Binding Pada}" Width="25"/>
+                    <DataGridTextColumn Header="Nak" Binding="{Binding NakshatraName}" Width="110"/>
+                    <DataGridTextColumn Header="Pada" Binding="{Binding Pada}" Width="40"/>
                     <DataGridTextColumn Header="Sign" Binding="{Binding SignName}" Width="35"/>
                 </DataGrid.Columns>
             </DataGrid>
@@ -76,8 +76,8 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Planet" Binding="{Binding EnglishName}" Width="50"/>
                     <DataGridTextColumn Header="Deg" Binding="{Binding DegreeDisplay}" Width="50"/>
-                    <DataGridTextColumn Header="Nak" Binding="{Binding NakshatraEnglish}" Width="65"/>
-                    <DataGridTextColumn Header="Pd" Binding="{Binding Pada}" Width="25"/>
+                    <DataGridTextColumn Header="Nak" Binding="{Binding NakshatraEnglish}" Width="110"/>
+                    <DataGridTextColumn Header="Pd" Binding="{Binding Pada}" Width="40"/>
                     <DataGridTextColumn Header="Sign" Binding="{Binding SignEnglish}" Width="30"/>
                 </DataGrid.Columns>
             </DataGrid>

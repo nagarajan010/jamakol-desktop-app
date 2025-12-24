@@ -41,6 +41,11 @@ public class ChartCalculator
         );
         chartData.AscendantSign = ZodiacUtils.DegreeToSign(chartData.AscendantDegree);
         chartData.AscendantSignName = ZodiacUtils.SignNames[chartData.AscendantSign];
+        
+        // Calculate Ascendant nakshatra info
+        var ascNakshatra = ZodiacUtils.GetNakshatraInfo(chartData.AscendantDegree);
+        chartData.AscendantNakshatraName = ascNakshatra.name;
+        chartData.AscendantNakshatraPada = ascNakshatra.pada;
 
         // Calculate positions for all planets
         chartData.Planets = new List<PlanetPosition>();

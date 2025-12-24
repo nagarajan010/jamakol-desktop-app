@@ -10,6 +10,8 @@ public class ChartData
     public double AscendantDegree { get; set; }
     public int AscendantSign { get; set; }      // 1-12
     public string AscendantSignName { get; set; } = string.Empty;
+    public string AscendantNakshatraName { get; set; } = string.Empty;
+    public int AscendantNakshatraPada { get; set; }
     public List<PlanetPosition> Planets { get; set; } = new();
     
     /// <summary>
