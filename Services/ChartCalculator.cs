@@ -8,10 +8,12 @@ namespace JamakolAstrology.Services;
 public class ChartCalculator
 {
     private readonly EphemerisService _ephemeris;
+    private readonly DivisionalChartService _divisionalChartService;
 
     public ChartCalculator()
     {
         _ephemeris = new EphemerisService();
+        _divisionalChartService = new DivisionalChartService();
     }
 
     /// <summary>
@@ -72,6 +74,10 @@ public class ChartCalculator
         ketuPosition.NakshatraPada = ZodiacUtils.GetNakshatraPada(ketuPosition.Longitude);
         
         chartData.Planets.Add(ketuPosition);
+
+        // Calculate divisional charts (commonly used ones)
+        // D-9 Navamsa is the most important divisional chart
+        chartData.DivisionalCharts[9] = _divisionalChartService.CalculateDivisionalChart(chartData, 9);
 
         return chartData;
     }

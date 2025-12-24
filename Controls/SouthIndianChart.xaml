@@ -18,7 +18,7 @@
             <Setter Property="FontWeight" Value="Light"/>
             <Setter Property="HorizontalAlignment" Value="Right"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="Margin" Value="0,2,4,0"/>
+            <Setter Property="Margin" Value="0,1,2,0"/>
         </Style>
         <Style x:Key="PlanetTextStyle" TargetType="TextBlock">
             <Setter Property="Foreground" Value="#000"/>
@@ -35,7 +35,7 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid x:Name="ChartGrid" Margin="10">
+    <Grid x:Name="ChartGrid" Margin="2">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
@@ -97,9 +97,33 @@
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                 <TextBlock x:Name="ChartTitle" Text="Birth Chart" 
                            Foreground="#cc0000" FontSize="14" FontWeight="Bold" 
-                           HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                           HorizontalAlignment="Center" Margin="0,0,0,3"/>
+                <ComboBox x:Name="DivisionSelector" Width="120" FontSize="11"
+                          HorizontalAlignment="Center" Margin="0,0,0,5"
+                          SelectionChanged="DivisionSelector_SelectionChanged">
+                    <ComboBoxItem Content="Rasi (D-1)" Tag="1" IsSelected="True"/>
+                    <ComboBoxItem Content="Hora (D-2)" Tag="2"/>
+                    <ComboBoxItem Content="Drekkana (D-3)" Tag="3"/>
+                    <ComboBoxItem Content="Chaturthamsa (D-4)" Tag="4"/>
+                    <ComboBoxItem Content="Panchamsa (D-5)" Tag="5"/>
+                    <ComboBoxItem Content="Shashthamsa (D-6)" Tag="6"/>
+                    <ComboBoxItem Content="Saptamsa (D-7)" Tag="7"/>
+                    <ComboBoxItem Content="Ashtamsa (D-8)" Tag="8"/>
+                    <ComboBoxItem Content="Navamsa (D-9)" Tag="9"/>
+                    <ComboBoxItem Content="Dasamsa (D-10)" Tag="10"/>
+                    <ComboBoxItem Content="Rudramsa (D-11)" Tag="11"/>
+                    <ComboBoxItem Content="Dwadasamsa (D-12)" Tag="12"/>
+                    <ComboBoxItem Content="Shodasamsa (D-16)" Tag="16"/>
+                    <ComboBoxItem Content="Vimsamsa (D-20)" Tag="20"/>
+                    <ComboBoxItem Content="Siddhamsa (D-24)" Tag="24"/>
+                    <ComboBoxItem Content="Nakshatramsa (D-27)" Tag="27"/>
+                    <ComboBoxItem Content="Trimsamsa (D-30)" Tag="30"/>
+                    <ComboBoxItem Content="Khavedamsa (D-40)" Tag="40"/>
+                    <ComboBoxItem Content="Akshavedamsa (D-45)" Tag="45"/>
+                    <ComboBoxItem Content="Shashtiamsa (D-60)" Tag="60"/>
+                </ComboBox>
                 <TextBlock x:Name="AscendantLabel" Text="Asc: " 
-                           Foreground="#333" FontSize="12" HorizontalAlignment="Center"/>
+                           Foreground="#333" FontSize="11" HorizontalAlignment="Center"/>
             </StackPanel>
         </Border>
         <Border x:Name="Cell4" Grid.Row="1" Grid.Column="3" Style="{StaticResource ChartCellStyle}">

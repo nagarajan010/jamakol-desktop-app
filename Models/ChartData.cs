@@ -18,6 +18,19 @@ public class ChartData
     public double AyanamsaValue { get; set; }
     
     /// <summary>
+    /// Divisional charts (Varga charts) - keyed by division number
+    /// </summary>
+    public Dictionary<int, Services.DivisionalChartData> DivisionalCharts { get; set; } = new();
+    
+    /// <summary>
+    /// Get a specific divisional chart by division number
+    /// </summary>
+    public Services.DivisionalChartData? GetDivisionalChart(int division)
+    {
+        return DivisionalCharts.TryGetValue(division, out var chart) ? chart : null;
+    }
+    
+    /// <summary>
     /// Gets planets in a specific sign (1-12)
     /// </summary>
     public IEnumerable<PlanetPosition> GetPlanetsInSign(int sign)

@@ -106,7 +106,14 @@ public partial class MainWindow : Window
 
             // Update UI Components
             ChartControl.UpdateChart(result.ChartData, _appSettings.ChartFontSize);
-            if (NavamsaChartControl != null) NavamsaChartControl.ClearChart(); // Ensure plain/empty for now
+            
+            // Display Navamsa (D-9) chart and pass chart data for division switching
+            var navamsaChart = result.ChartData.GetDivisionalChart(9);
+            if (navamsaChart != null && NavamsaChartControl != null)
+            {
+                NavamsaChartControl.UpdateDivisionalChart(navamsaChart, result.ChartData, result.ChartData.BirthData.Name, _appSettings.ChartFontSize);
+            }
+            
             BirthPlanetaryDetailsControl.UpdateDetails(result.ChartData);
             
             // Update Jamakol & Associated Grids (Even on Birth Tab, we calc everything)

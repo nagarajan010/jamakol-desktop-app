@@ -13,6 +13,12 @@ public partial class SouthIndianChart : UserControl
 {
     private readonly Dictionary<int, TextBlock> _signTextBlocks;
     private readonly Dictionary<int, Border> _signBorders;
+    private readonly DivisionalChartService _divisionalChartService;
+    
+    // Store chart data for division switching
+    private ChartData? _currentChartData;
+    private double _currentFontSize = 12;
+    private bool _isUpdating = false;
 
     public SouthIndianChart()
     {
@@ -33,12 +39,81 @@ public partial class SouthIndianChart : UserControl
             { 5, Cell5 }, { 6, Cell6 }, { 7, Cell7 }, { 8, Cell8 },
             { 9, Cell9 }, { 10, Cell10 }, { 11, Cell11 }, { 12, Cell12 }
         };
+        
+        _divisionalChartService = new DivisionalChartService();
+    }
+    
+    /// <summary>
+    /// Handle division dropdown selection change
+    /// </summary>
+    private void DivisionSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (_isUpdating || _currentChartData == null) return;
+        
+        if (DivisionSelector.SelectedItem is ComboBoxItem selectedItem && selectedItem.Tag != null)
+        {
+            int division = int.Parse(selectedItem.Tag.ToString()!);
+            DisplayDivision(division);
+        }
+    }
+    
+    /// <summary>
+    /// Display a specific division of the current chart
+    /// </summary>
+    private void DisplayDivision(int division)
+    {
+        if (_currentChartData == null) return;
+        
+        if (division == 1)
+        {
+            // D-1 is the natal chart
+            DisplayNatalChart(_currentChartData, _currentFontSize);
+        }
+        else
+        {
+            // Calculate and display divisional chart
+            var divisionalData = _divisionalChartService.CalculateDivisionalChart(_currentChartData, division);
+            DisplayDivisionalChartInternal(divisionalData, _currentChartData.BirthData.Name, _currentFontSize);
+        }
+    }
+    
+    /// <summary>
+    /// Set division selector to a specific value without triggering recalculation
+    /// </summary>
+    public void SetDivision(int division)
+    {
+        _isUpdating = true;
+        foreach (ComboBoxItem item in DivisionSelector.Items)
+        {
+            if (item.Tag != null && int.Parse(item.Tag.ToString()!) == division)
+            {
+                DivisionSelector.SelectedItem = item;
+                break;
+            }
+        }
+        _isUpdating = false;
     }
 
     /// <summary>
     /// Update chart display with calculated chart data
     /// </summary>
     public void UpdateChart(ChartData chartData, double fontSize = 12)
+    {
+        // Store for division switching
+        _currentChartData = chartData;
+        _currentFontSize = fontSize;
+        
+        // Reset dropdown to D-1
+        SetDivision(1);
+        
+        // Display the natal chart
+        DisplayNatalChart(chartData, fontSize);
+    }
+    
+    /// <summary>
+    /// Internal method to display the natal (D-1) chart
+    /// </summary>
+    private void DisplayNatalChart(ChartData chartData, double fontSize)
     {
         // Clear all cells
         foreach (var tb in _signTextBlocks.Values)
@@ -54,8 +129,9 @@ public partial class SouthIndianChart : UserControl
             border.BorderThickness = new Thickness(1);
         }
 
-        // Update chart title
-        ChartTitle.Text = !string.IsNullOrEmpty(chartData.BirthData.Name) ? chartData.BirthData.Name : "Birth Chart";
+        // Update chart title - show chart type with person name
+        string personName = !string.IsNullOrEmpty(chartData.BirthData.Name) ? chartData.BirthData.Name : "";
+        ChartTitle.Text = string.IsNullOrEmpty(personName) ? "Rasi (D-1)" : $"{personName}\nRasi (D-1)";
         AscendantLabel.Text = $"Asc: {chartData.AscendantSignName}\n{ZodiacUtils.FormatDegreeInSign(chartData.AscendantDegree)}";
 
         // Highlight ascendant cell
@@ -109,6 +185,113 @@ public partial class SouthIndianChart : UserControl
                         "planet" => new SolidColorBrush(Color.FromRgb(204, 0, 0)),     // Red #cc0000
                         "rahuKetu" => new SolidColorBrush(Color.FromRgb(204, 0, 0)),   // Red #cc0000 
                         "lagna" => new SolidColorBrush(Color.FromRgb(0, 153, 0)),      // Green #009900
+                        _ => new SolidColorBrush(Colors.Black)
+                    };
+
+                    if (type == "lagna") run.FontWeight = FontWeights.Bold;
+
+                    textBlock.Inlines.Add(run);
+                    
+                    if (i < items.Count - 1)
+                    {
+                        textBlock.Inlines.Add(new System.Windows.Documents.LineBreak());
+                    }
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Update chart display with divisional chart data
+    /// </summary>
+    public void UpdateDivisionalChart(DivisionalChartData divisionalData, ChartData? chartData = null, string personName = "", double fontSize = 12)
+    {
+        // Store chart data for division switching
+        if (chartData != null)
+        {
+            _currentChartData = chartData;
+        }
+        _currentFontSize = fontSize;
+        
+        // Set dropdown to the correct division
+        SetDivision(divisionalData.Division);
+        
+        // Display the divisional chart
+        DisplayDivisionalChartInternal(divisionalData, personName, fontSize);
+    }
+    
+    /// <summary>
+    /// Internal method to display a divisional chart
+    /// </summary>
+    private void DisplayDivisionalChartInternal(DivisionalChartData divisionalData, string personName, double fontSize)
+    {
+        // Clear all cells
+        foreach (var tb in _signTextBlocks.Values)
+        {
+            tb.Inlines.Clear();
+            tb.Text = string.Empty;
+        }
+
+        // Reset all borders to default style
+        foreach (var border in _signBorders.Values)
+        {
+            border.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#fffff8"));
+            border.BorderThickness = new Thickness(1);
+        }
+
+        // Update chart title - show division name with optional person name
+        ChartTitle.Text = string.IsNullOrEmpty(personName) ? divisionalData.Name : $"{personName}\n{divisionalData.Name}";
+        AscendantLabel.Text = $"Asc: {divisionalData.AscendantSignName}\n{ZodiacUtils.FormatDegreeInSign(divisionalData.AscendantDegree)}";
+
+        // Highlight ascendant cell
+        if (_signBorders.TryGetValue(divisionalData.AscendantSign, out var ascBorder))
+        {
+            ascBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#fff8dc"));
+            ascBorder.BorderThickness = new Thickness(2);
+        }
+
+        // Prepare content for each sign
+        var displayBySign = new Dictionary<int, List<(string text, string type)>>();
+        for (int i = 1; i <= 12; i++) displayBySign[i] = new List<(string text, string type)>();
+
+        // Add "Lagna" to ascendant sign
+        displayBySign[divisionalData.AscendantSign].Add(("Lagna", "lagna"));
+
+        // Add planets at their divisional positions
+        foreach (var p in divisionalData.Planets)
+        {
+            string retro = p.IsRetrograde ? " R" : "";
+            string deg = $"{(int)p.DivisionalDegree}°";
+            string abbr = ZodiacUtils.PlanetAbbreviations[p.Planet];
+            string text = $"{deg} {abbr}{retro}";
+            
+            string type = (p.Planet == Models.Planet.Rahu || p.Planet == Models.Planet.Ketu) 
+                ? "rahuKetu" : "planet";
+
+            displayBySign[p.DivisionalSign].Add((text, type));
+        }
+
+        // Render to TextBlocks
+        foreach (var kvp in displayBySign)
+        {
+            int sign = kvp.Key;
+            var items = kvp.Value;
+
+            if (_signTextBlocks.TryGetValue(sign, out var textBlock) && items.Count > 0)
+            {
+                textBlock.Inlines.Clear();
+                textBlock.FontSize = fontSize;
+                
+                for (int i = 0; i < items.Count; i++)
+                {
+                    var (text, type) = items[i];
+                    
+                    var run = new System.Windows.Documents.Run(text);
+                    run.Foreground = type switch
+                    {
+                        "planet" => new SolidColorBrush(Color.FromRgb(204, 0, 0)),
+                        "rahuKetu" => new SolidColorBrush(Color.FromRgb(204, 0, 0)),
+                        "lagna" => new SolidColorBrush(Color.FromRgb(0, 153, 0)),
                         _ => new SolidColorBrush(Colors.Black)
                     };
 

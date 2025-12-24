@@ -94,26 +94,20 @@
                         </Grid.ColumnDefinitions>
 
                         <!-- Left Column: Charts -->
-                        <Grid Grid.Column="0" Margin="0,0,10,0">
+                        <Grid Grid.Column="0" Margin="0,0,5,0">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"/> <!-- Rasi -->
                                 <RowDefinition Height="*"/> <!-- Navamsa -->
                             </Grid.RowDefinitions>
                             
                             <!-- Rasi Chart -->
-                            <Border Grid.Row="0" Background="#fffff8" CornerRadius="5" Padding="10" Margin="0,0,0,5" BorderBrush="#ddd" BorderThickness="1">
-                                <DockPanel>
-                                    <TextBlock Text="Rasi Chart" DockPanel.Dock="Top" Foreground="#990000" FontWeight="Bold" Margin="0,0,0,5" HorizontalAlignment="Center"/>
-                                    <controls:SouthIndianChart x:Name="ChartControl"/>
-                                </DockPanel>
+                            <Border Grid.Row="0" Background="#fffff8" CornerRadius="3" Padding="2" Margin="0,0,0,2" BorderBrush="#ddd" BorderThickness="1">
+                                <controls:SouthIndianChart x:Name="ChartControl"/>
                             </Border>
 
-                            <!-- Navamsa Chart (Placeholder) -->
-                            <Border Grid.Row="1" Background="#fffff8" CornerRadius="5" Padding="10" Margin="0,5,0,0" BorderBrush="#ddd" BorderThickness="1">
-                                <DockPanel>
-                                    <TextBlock Text="Navamsa Chart (D-9)" DockPanel.Dock="Top" Foreground="#990000" FontWeight="Bold" Margin="0,0,0,5" HorizontalAlignment="Center"/>
-                                    <controls:SouthIndianChart x:Name="NavamsaChartControl"/>
-                                </DockPanel>
+                            <!-- Navamsa Chart -->
+                            <Border Grid.Row="1" Background="#fffff8" CornerRadius="3" Padding="2" Margin="0,2,0,0" BorderBrush="#ddd" BorderThickness="1">
+                                <controls:SouthIndianChart x:Name="NavamsaChartControl"/>
                             </Border>
                         </Grid>
 
