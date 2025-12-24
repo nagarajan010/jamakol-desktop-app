@@ -1,0 +1,19 @@
+MSBuild version 17.8.3+195e7f5a3 for .NET
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\SettingsWindow.xaml.cs(37,17): warning CS8605: Unboxing a possibly null value. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\JamakolAstrology_wxb5qfhm_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\SettingsWindow.xaml.cs(57,38): warning CS8605: Unboxing a possibly null value. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\JamakolAstrology_wxb5qfhm_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\SettingsWindow.xaml.cs(37,17): warning CS8605: Unboxing a possibly null value. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\JamakolAstrology.csproj]
+C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\SettingsWindow.xaml.cs(57,38): warning CS8605: Unboxing a possibly null value. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\JamakolAstrology.csproj]
+  JamakolAstrology -> C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\bin\Debug\net8.0-windows\JamakolAstrology.dll
+
+Build succeeded.
+
+C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\SettingsWindow.xaml.cs(37,17): warning CS8605: Unboxing a possibly null value. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\JamakolAstrology_wxb5qfhm_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\SettingsWindow.xaml.cs(57,38): warning CS8605: Unboxing a possibly null value. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\JamakolAstrology_wxb5qfhm_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\SettingsWindow.xaml.cs(37,17): warning CS8605: Unboxing a possibly null value. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\JamakolAstrology.csproj]
+C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\SettingsWindow.xaml.cs(57,38): warning CS8605: Unboxing a possibly null value. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\JamakolAstrology.csproj]
+    4 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:02.69

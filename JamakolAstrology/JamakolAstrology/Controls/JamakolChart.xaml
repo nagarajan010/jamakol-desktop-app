@@ -1,0 +1,221 @@
+<UserControl x:Class="JamakolAstrology.Controls.JamakolChart"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="700"
+             Background="#fffff0">
+    <UserControl.Resources>
+        <Style x:Key="ChartCellStyle" TargetType="Border">
+            <Setter Property="BorderBrush" Value="#cc0000"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="#fffff8"/>
+        </Style>
+        <Style x:Key="NumberStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#000"/>
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="PlanetInfoStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#000"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="2"/>
+        </Style>
+        <Style x:Key="JamaGrahaStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#cc0000"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="2"/>
+        </Style>
+        <Style x:Key="CornerBoxStyle" TargetType="Border">
+            <Setter Property="BorderBrush" Value="#cc0000"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="#fffff8"/>
+            <Setter Property="Padding" Value="4,2"/>
+        </Style>
+        <Style x:Key="CenterStyle" TargetType="Border">
+            <Setter Property="BorderBrush" Value="#cc0000"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="#fff8dc"/>
+        </Style>
+    </UserControl.Resources>
+
+    <!-- Outer grid with margin areas for corner boxes -->
+    <Grid x:Name="OuterGrid" Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>  <!-- Top corner boxes row -->
+            <RowDefinition Height="*"/>     <!-- Chart row 1 -->
+            <RowDefinition Height="*"/>     <!-- Chart row 2 -->
+            <RowDefinition Height="*"/>     <!-- Chart row 3 -->
+            <RowDefinition Height="*"/>     <!-- Chart row 4 -->
+            <RowDefinition Height="Auto"/>  <!-- Bottom corner boxes row -->
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>  <!-- Left corner boxes -->
+            <ColumnDefinition Width="*"/>     <!-- Chart col 1 -->
+            <ColumnDefinition Width="*"/>     <!-- Chart col 2 -->
+            <ColumnDefinition Width="*"/>     <!-- Chart col 3 -->
+            <ColumnDefinition Width="*"/>     <!-- Chart col 4 -->
+            <ColumnDefinition Width="Auto"/>  <!-- Right corner boxes -->
+        </Grid.ColumnDefinitions>
+
+        <!-- TOP ROW - Corner boxes OUTSIDE the chart -->
+        <Border Grid.Row="0" Grid.Column="1" Style="{StaticResource CornerBoxStyle}" HorizontalAlignment="Left" Margin="0,0,0,2">
+            <StackPanel>
+                <TextBlock x:Name="VeLabel" Text="Ve" Foreground="#000" FontSize="9" FontWeight="Bold"/>
+                <TextBlock x:Name="VeValue" Text="" Foreground="#cc0000" FontSize="9"/>
+            </StackPanel>
+        </Border>
+        <!-- Me box above Aries (column 2) -->
+        <Border Grid.Row="0" Grid.Column="2" Style="{StaticResource CornerBoxStyle}" HorizontalAlignment="Left" Margin="0,0,0,2">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock x:Name="MeLabel" Text="Me" Foreground="#000" FontSize="9" FontWeight="Bold"/>
+                <TextBlock x:Name="MeValue" Text="" Foreground="#cc0000" FontSize="9" Margin="3,0,0,0"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="0" Grid.Column="4" Style="{StaticResource CornerBoxStyle}" HorizontalAlignment="Right" Margin="0,0,0,2">
+            <StackPanel>
+                <TextBlock x:Name="JuLabel" Text="Ju" Foreground="#000" FontSize="9" FontWeight="Bold"/>
+                <TextBlock x:Name="JuValue" Text="" Foreground="#cc0000" FontSize="9"/>
+            </StackPanel>
+        </Border>
+
+        <!-- LEFT SIDE - Corner box OUTSIDE the chart -->
+        <Border Grid.Row="3" Grid.Column="0" Style="{StaticResource CornerBoxStyle}" VerticalAlignment="Bottom" Margin="0,0,2,0">
+            <StackPanel>
+                <TextBlock x:Name="SaLabel" Text="Sa" Foreground="#000" FontSize="9" FontWeight="Bold"/>
+                <TextBlock x:Name="SaValue" Text="" Foreground="#cc0000" FontSize="9"/>
+            </StackPanel>
+        </Border>
+
+        <!-- RIGHT SIDE - Corner box OUTSIDE the chart -->
+        <Border Grid.Row="2" Grid.Column="5" Style="{StaticResource CornerBoxStyle}" VerticalAlignment="Center" Margin="2,0,0,0">
+            <StackPanel>
+                <TextBlock x:Name="MaLabel" Text="Ma" Foreground="#000" FontSize="9" FontWeight="Bold"/>
+                <TextBlock x:Name="MaValue" Text="" Foreground="#cc0000" FontSize="9"/>
+            </StackPanel>
+        </Border>
+
+        <!-- BOTTOM ROW - Corner boxes OUTSIDE the chart -->
+        <Border Grid.Row="5" Grid.Column="1" Style="{StaticResource CornerBoxStyle}" HorizontalAlignment="Left" Margin="0,2,0,0">
+            <StackPanel>
+                <TextBlock x:Name="MoLabel" Text="Mo" Foreground="#000" FontSize="9" FontWeight="Bold"/>
+                <TextBlock x:Name="MoValue" Text="" Foreground="#cc0000" FontSize="9"/>
+            </StackPanel>
+        </Border>
+        <!-- Sn box below Libra (column 3) -->
+        <Border Grid.Row="5" Grid.Column="3" Style="{StaticResource CornerBoxStyle}" HorizontalAlignment="Center" Margin="0,2,0,0">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock x:Name="SnLabel" Text="Sn" Foreground="#000" FontSize="9" FontWeight="Bold"/>
+                <TextBlock x:Name="SnValue" Text="" Foreground="#cc0000" FontSize="9" Margin="3,0,0,0"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="5" Grid.Column="4" Style="{StaticResource CornerBoxStyle}" HorizontalAlignment="Right" Margin="0,2,0,0">
+            <StackPanel>
+                <TextBlock x:Name="SuLabel" Text="Su" Foreground="#000" FontSize="9" FontWeight="Bold"/>
+                <TextBlock x:Name="SuValue" Text="" Foreground="#cc0000" FontSize="9"/>
+            </StackPanel>
+        </Border>
+
+        <!-- CHART CELLS -->
+        <!-- Row 1: Pisces(12), Aries(1), Taurus(2), Gemini(3) -->
+        <Border x:Name="Cell12" Grid.Row="1" Grid.Column="1" Style="{StaticResource ChartCellStyle}">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <TextBlock x:Name="Planets12" Style="{StaticResource PlanetInfoStyle}" 
+                           VerticalAlignment="Top" HorizontalAlignment="Center"
+                           TextAlignment="Center"/>
+            </ScrollViewer>
+        </Border>
+        <Border x:Name="Cell1" Grid.Row="1" Grid.Column="2" Style="{StaticResource ChartCellStyle}">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <TextBlock x:Name="Planets1" Style="{StaticResource PlanetInfoStyle}" 
+                           VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
+            </ScrollViewer>
+        </Border>
+        <Border x:Name="Cell2" Grid.Row="1" Grid.Column="3" Style="{StaticResource ChartCellStyle}">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <TextBlock x:Name="Planets2" Style="{StaticResource PlanetInfoStyle}" 
+                           VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
+            </ScrollViewer>
+        </Border>
+        <Border x:Name="Cell3" Grid.Row="1" Grid.Column="4" Style="{StaticResource ChartCellStyle}">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <TextBlock x:Name="Planets3" Style="{StaticResource PlanetInfoStyle}" 
+                           VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
+            </ScrollViewer>
+        </Border>
+
+        <!-- Row 2: Aquarius(11), Center, Center, Cancer(4) -->
+        <Border x:Name="Cell11" Grid.Row="2" Grid.Column="1" Style="{StaticResource ChartCellStyle}">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <TextBlock x:Name="Planets11" Style="{StaticResource PlanetInfoStyle}" 
+                           VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
+            </ScrollViewer>
+        </Border>
+        <Border Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="2" 
+                Style="{StaticResource CenterStyle}">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="280" Margin="5">
+                <TextBlock x:Name="ChartTitle" Text="Jamakol Chart" 
+                           Foreground="#cc0000" FontSize="16" FontWeight="Bold" 
+                           HorizontalAlignment="Center" Margin="0,0,0,5"
+                           TextWrapping="Wrap" TextAlignment="Center"/>
+                <TextBlock x:Name="DateTimeLabel" Text="" 
+                           Foreground="#333" FontSize="11" HorizontalAlignment="Center"/>
+                <TextBlock x:Name="AscendantLabel" Text="Ascendant:" 
+                           Foreground="#333" FontSize="11" HorizontalAlignment="Center" Margin="0,3,0,0"/>
+                <TextBlock x:Name="DayLordLabel" Text="Day Lord:" 
+                           Foreground="#cc0000" FontSize="11" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,3,0,0"/>
+            </StackPanel>
+        </Border>
+        <Border x:Name="Cell4" Grid.Row="2" Grid.Column="4" Style="{StaticResource ChartCellStyle}">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <TextBlock x:Name="Planets4" Style="{StaticResource PlanetInfoStyle}" 
+                           VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
+            </ScrollViewer>
+        </Border>
+
+        <!-- Row 3: Capricorn(10), Center (spanned), Leo(5) -->
+        <Border x:Name="Cell10" Grid.Row="3" Grid.Column="1" Style="{StaticResource ChartCellStyle}">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <TextBlock x:Name="Planets10" Style="{StaticResource PlanetInfoStyle}" 
+                           VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
+            </ScrollViewer>
+        </Border>
+        <Border x:Name="Cell5" Grid.Row="3" Grid.Column="4" Style="{StaticResource ChartCellStyle}">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <TextBlock x:Name="Planets5" Style="{StaticResource PlanetInfoStyle}" 
+                           VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
+            </ScrollViewer>
+        </Border>
+
+        <!-- Row 4: Sagittarius(9), Scorpio(8), Libra(7), Virgo(6) -->
+        <Border x:Name="Cell9" Grid.Row="4" Grid.Column="1" Style="{StaticResource ChartCellStyle}">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <TextBlock x:Name="Planets9" Style="{StaticResource PlanetInfoStyle}" 
+                           VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
+            </ScrollViewer>
+        </Border>
+        <Border x:Name="Cell8" Grid.Row="4" Grid.Column="2" Style="{StaticResource ChartCellStyle}">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <TextBlock x:Name="Planets8" Style="{StaticResource PlanetInfoStyle}" 
+                           VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
+            </ScrollViewer>
+        </Border>
+        <Border x:Name="Cell7" Grid.Row="4" Grid.Column="3" Style="{StaticResource ChartCellStyle}">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <TextBlock x:Name="Planets7" Style="{StaticResource PlanetInfoStyle}" 
+                           VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
+            </ScrollViewer>
+        </Border>
+        <Border x:Name="Cell6" Grid.Row="4" Grid.Column="4" Style="{StaticResource ChartCellStyle}">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <TextBlock x:Name="Planets6" Style="{StaticResource PlanetInfoStyle}" 
+                           VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</UserControl>

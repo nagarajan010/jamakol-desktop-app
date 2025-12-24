@@ -1,0 +1,215 @@
+<Window x:Class="JamakolAstrology.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:models="clr-namespace:JamakolAstrology.Models"
+        Title="Settings" 
+        Height="720" Width="500"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResize"
+        Background="#fffff0">
+    <Window.Resources>
+        <!-- Light Theme Styles -->
+        <Style x:Key="LabelStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#555"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Margin" Value="0,0,10,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="ComboStyle" TargetType="ComboBox">
+            <Setter Property="Background" Value="#fff"/>
+            <Setter Property="Foreground" Value="#333"/>
+            <Setter Property="BorderBrush" Value="#ccc"/>
+            <Setter Property="Padding" Value="8,5"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+        <Style x:Key="InputStyle" TargetType="TextBox">
+            <Setter Property="Background" Value="#fff"/>
+            <Setter Property="Foreground" Value="#333"/>
+            <Setter Property="BorderBrush" Value="#ccc"/>
+            <Setter Property="Padding" Value="8,5"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#cc0000"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="5,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="4" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="CancelButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#999"/>
+            <Setter Property="Foreground" Value="#fff"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="5,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="4" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="15"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title -->
+        <TextBlock Grid.Row="0" Text="Settings" 
+                   Foreground="#cc0000" FontSize="20" FontWeight="Bold"/>
+
+        <!-- Ayanamsha -->
+        <Grid Grid.Row="2" Margin="0,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Ayanamsha:" Style="{StaticResource LabelStyle}"/>
+            <ComboBox x:Name="AyanamshaCombo" Grid.Column="1" Style="{StaticResource ComboStyle}"/>
+        </Grid>
+
+        <!-- Sunrise Mode -->
+        <Grid Grid.Row="3" Margin="0,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Sunrise Mode:" Style="{StaticResource LabelStyle}"/>
+            <ComboBox x:Name="SunriseModeCombo" Grid.Column="1" Style="{StaticResource ComboStyle}">
+                <ComboBoxItem Content="Center True" Tag="{x:Static models:SunriseCalculationMode.CenterTrue}"/>
+                <ComboBoxItem Content="Tip True" Tag="{x:Static models:SunriseCalculationMode.TipTrue}"/>
+                <ComboBoxItem Content="Tip Apparent (Default)" Tag="{x:Static models:SunriseCalculationMode.TipApparent}"/>
+                <ComboBoxItem Content="Center Apparent" Tag="{x:Static models:SunriseCalculationMode.CenterApparent}"/>
+            </ComboBox>
+        </Grid>
+
+        <!-- Default Latitude -->
+        <Grid Grid.Row="4" Margin="0,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Def. Latitude:" Style="{StaticResource LabelStyle}"/>
+            <TextBox x:Name="LatitudeInput" Grid.Column="1" Style="{StaticResource InputStyle}" Text="13.0827"/>
+        </Grid>
+
+        <!-- Default Longitude -->
+        <Grid Grid.Row="5" Margin="0,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Def. Longitude:" Style="{StaticResource LabelStyle}"/>
+            <TextBox x:Name="LongitudeInput" Grid.Column="1" Style="{StaticResource InputStyle}" Text="80.2707"/>
+        </Grid>
+
+        <!-- Default Timezone -->
+        <Grid Grid.Row="6" Margin="0,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Def. Timezone:" Style="{StaticResource LabelStyle}"/>
+            <TextBox x:Name="TimezoneInput" Grid.Column="1" Style="{StaticResource InputStyle}" Text="5.5"/>
+        </Grid>
+
+        <!-- Chart Font Size -->
+        <Grid Grid.Row="7" Margin="0,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Chart Font Size:" Style="{StaticResource LabelStyle}"/>
+            <TextBox x:Name="ChartFontSizeInput" Grid.Column="1" Style="{StaticResource InputStyle}" Text="14"/>
+        </Grid>
+
+        <!-- Jama Graha Font Size -->
+        <Grid Grid.Row="8" Margin="0,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Jama Graha Font:" Style="{StaticResource LabelStyle}"/>
+            <TextBox x:Name="JamaGrahaFontSizeInput" Grid.Column="1" Style="{StaticResource InputStyle}" Text="10"/>
+        </Grid>
+
+        <!-- Table Font Size -->
+        <Grid Grid.Row="9" Margin="0,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Table Font Size:" Style="{StaticResource LabelStyle}"/>
+            <TextBox x:Name="TableFontSizeInput" Grid.Column="1" Style="{StaticResource InputStyle}" Text="11"/>
+        </Grid>
+
+        <!-- Input Font Size -->
+        <Grid Grid.Row="10" Margin="0,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Input Font Size:" Style="{StaticResource LabelStyle}"/>
+            <TextBox x:Name="InputFontSizeInput" Grid.Column="1" Style="{StaticResource InputStyle}" Text="12"/>
+        </Grid>
+
+        <!-- Prasanna Calculation Mode -->
+        <Grid Grid.Row="11" Margin="0,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Prasanna Mode:" Style="{StaticResource LabelStyle}"/>
+            <ComboBox x:Name="PrasannaModeCombo" Grid.Column="1" Style="{StaticResource ComboStyle}">
+                <ComboBoxItem Content="Jama Graha Box Sign" Tag="{x:Static models:PrasannaCalcMode.JamaGrahaBoxSign}"/>
+                <ComboBoxItem Content="Jama Graha Real Degree" Tag="{x:Static models:PrasannaCalcMode.JamaGrahaRealDegree}"/>
+            </ComboBox>
+        </Grid>
+
+        <!-- Info Text -->
+        <TextBlock Grid.Row="12" Margin="0,15,0,0" TextWrapping="Wrap"
+                   Foreground="#888" FontSize="11" VerticalAlignment="Top">
+            Sunrise/sunset times are calculated automatically based on location and date.
+        </TextBlock>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="13" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
+            <Button x:Name="CancelButton" Content="Cancel" Style="{StaticResource CancelButtonStyle}" Click="CancelButton_Click"/>
+            <Button x:Name="SaveButton" Content="Save" Style="{StaticResource ButtonStyle}" Click="SaveButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

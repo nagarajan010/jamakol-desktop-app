@@ -1,0 +1,18 @@
+MSBuild version 17.8.3+195e7f5a3 for .NET
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\MainWindow.xaml.cs(596,29): error CS0246: The type or namespace name 'Control' could not be found (are you missing a using directive or an assembly reference?) [C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\JamakolAstrology_hfx0wiv3_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\MainWindow.xaml.cs(597,29): error CS0246: The type or namespace name 'TextBlock' could not be found (are you missing a using directive or an assembly reference?) [C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\JamakolAstrology_hfx0wiv3_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\MainWindow.xaml.cs(607,29): error CS0246: The type or namespace name 'Control' could not be found (are you missing a using directive or an assembly reference?) [C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\JamakolAstrology_hfx0wiv3_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\MainWindow.xaml.cs(608,29): error CS0246: The type or namespace name 'TextBlock' could not be found (are you missing a using directive or an assembly reference?) [C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\JamakolAstrology_hfx0wiv3_wpftmp.csproj]
+
+Build FAILED.
+
+C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\MainWindow.xaml.cs(596,29): error CS0246: The type or namespace name 'Control' could not be found (are you missing a using directive or an assembly reference?) [C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\JamakolAstrology_hfx0wiv3_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\MainWindow.xaml.cs(597,29): error CS0246: The type or namespace name 'TextBlock' could not be found (are you missing a using directive or an assembly reference?) [C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\JamakolAstrology_hfx0wiv3_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\MainWindow.xaml.cs(607,29): error CS0246: The type or namespace name 'Control' could not be found (are you missing a using directive or an assembly reference?) [C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\JamakolAstrology_hfx0wiv3_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\MainWindow.xaml.cs(608,29): error CS0246: The type or namespace name 'TextBlock' could not be found (are you missing a using directive or an assembly reference?) [C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\JamakolAstrology_hfx0wiv3_wpftmp.csproj]
+    0 Warning(s)
+    4 Error(s)
+
+Time Elapsed 00:00:01.00

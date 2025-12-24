@@ -1,0 +1,77 @@
+using System.Windows.Controls;
+using JamakolAstrology.Models;
+
+namespace JamakolAstrology.Controls;
+
+/// <summary>
+/// Panchanga Panel UserControl - displays Tamil almanac details
+/// </summary>
+public partial class PanchangaPanel : UserControl
+{
+    public PanchangaPanel()
+    {
+        InitializeComponent();
+    }
+
+    /// <summary>
+    /// Update the panel with Panchanga details
+    /// </summary>
+    public void UpdateDetails(PanchangaDetails details)
+    {
+        // Nakshatra (English with pada)
+        NakshatraText.Text = !string.IsNullOrEmpty(details.NakshatraName) 
+            ? $"{details.NakshatraName} ({details.NakshatraPada})" 
+            : "-";
+        
+        // Tithi (English with Paksha)
+        TithiText.Text = !string.IsNullOrEmpty(details.TithiName) 
+            ? $"{details.Paksha} / {details.TithiName}" 
+            : "-";
+        
+        // Yoga (English)
+        YogaText.Text = !string.IsNullOrEmpty(details.YogaName) 
+            ? details.YogaName 
+            : "-";
+        
+        // Karana (English)
+        KaranaText.Text = !string.IsNullOrEmpty(details.KaranaName) 
+            ? details.KaranaName 
+            : "-";
+        
+        // Day (English)
+        DayText.Text = !string.IsNullOrEmpty(details.DayName) 
+            ? details.DayName 
+            : "-";
+        
+        // Sunrise/Sunset
+        SunriseText.Text = !string.IsNullOrEmpty(details.Sunrise) 
+            ? details.Sunrise 
+            : "-";
+        SunsetText.Text = !string.IsNullOrEmpty(details.Sunset) 
+            ? details.Sunset 
+            : "-";
+        
+        // Ayanamsa
+        AyanamsaText.Text = details.AyanamsaDisplay;
+        
+        // Nazhikai
+        NazhikaiText.Text = !string.IsNullOrEmpty(details.UdayadiNazhikai) 
+            ? details.UdayadiNazhikai 
+            : "-";
+        
+        // Hora (English)
+        HoraText.Text = !string.IsNullOrEmpty(details.HoraLord) 
+            ? details.HoraLord 
+            : "-";
+        
+        // Rasi (English - Moon, Sun)
+        RasiText.Text = !string.IsNullOrEmpty(details.MoonRasi) 
+            ? $"{details.MoonRasi}, {details.SunRasi}" 
+            : "-";
+        
+        // Year/Month (Tamil names since these are traditional)
+        YearMonthText.Text = !string.IsNullOrEmpty(details.TamilYear) 
+            ? $"{details.TamilYear} / {details.TamilMonth}" 
+            : "-";
+    }
+}

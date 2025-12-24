@@ -1,0 +1,58 @@
+<Window x:Class="JamakolAstrology.ManageTagsDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Manage Tags"
+        Height="400" Width="350"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="#fffff0">
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Tags List -->
+        <ListBox x:Name="TagsList" Grid.Row="0" SelectionChanged="TagsList_SelectionChanged">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="16" Height="16" CornerRadius="3" Margin="0,0,8,0"
+                                Background="{Binding Color}"/>
+                        <TextBlock Text="{Binding Name}" FontSize="13"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        
+        <!-- Add/Edit Form -->
+        <Border Grid.Row="1" BorderBrush="#ddd" BorderThickness="0,1,0,0" Margin="0,10,0,0" Padding="0,10,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="TagNameInput" Grid.Column="0" FontSize="13" Padding="8,6" 
+                         Margin="0,0,10,0"/>
+                <ComboBox x:Name="ColorPicker" Grid.Column="1" Width="60">
+                    <ComboBoxItem Content="Green" Tag="#28A745" IsSelected="True"/>
+                    <ComboBoxItem Content="Blue" Tag="#4A90D9"/>
+                    <ComboBoxItem Content="Red" Tag="#D94A4A"/>
+                    <ComboBoxItem Content="Orange" Tag="#FFA500"/>
+                    <ComboBoxItem Content="Purple" Tag="#9B59B6"/>
+                    <ComboBoxItem Content="Yellow" Tag="#FFC107"/>
+                </ComboBox>
+            </Grid>
+        </Border>
+        
+        <!-- Buttons -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+            <Button x:Name="DeleteBtn" Content="Delete" Padding="12,6" Margin="0,0,5,0" 
+                    Click="Delete_Click" Background="#dc3545" Foreground="White" IsEnabled="False"/>
+            <Button x:Name="AddUpdateBtn" Content="Add" Padding="12,6" Margin="0,0,5,0" 
+                    Click="AddUpdate_Click" Background="#28a745" Foreground="White"/>
+            <Button Content="Close" Padding="12,6" Click="Close_Click" Background="#ddd"/>
+        </StackPanel>
+    </Grid>
+</Window>
