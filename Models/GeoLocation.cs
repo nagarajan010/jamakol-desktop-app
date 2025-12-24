@@ -6,6 +6,8 @@ namespace JamakolAstrology.Models;
 public class GeoLocation
 {
     public string Name { get; set; } = "";
+    public string AsciiName { get; set; } = "";
+    public string AlternateNames { get; set; } = "";
     public string CountryName { get; set; } = "";
     public string AdminName1 { get; set; } = ""; // State/Region
     public string Lat { get; set; } = "0";

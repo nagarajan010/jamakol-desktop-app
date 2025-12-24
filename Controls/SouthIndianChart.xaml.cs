@@ -20,6 +20,7 @@ public partial class SouthIndianChart : UserControl
     private double _currentFontSize = 12;
     private bool _isUpdating = false;
     private bool _hideDegrees = false;
+    private int _currentDivision = 1;
     
     /// <summary>
     /// Gets or sets whether to hide degrees in planet display
@@ -31,10 +32,9 @@ public partial class SouthIndianChart : UserControl
         { 
             _hideDegrees = value;
             // Refresh display if chart data exists
-            if (_currentChartData != null && DivisionSelector.SelectedItem is ComboBoxItem item && item.Tag != null)
+            if (_currentChartData != null)
             {
-                int division = int.Parse(item.Tag.ToString()!);
-                DisplayDivision(division);
+                DisplayDivision(_currentDivision);
             }
         }
     }
@@ -63,15 +63,16 @@ public partial class SouthIndianChart : UserControl
     }
     
     /// <summary>
-    /// Handle division dropdown selection change
+    /// Handle division context menu item click
     /// </summary>
-    private void DivisionSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void DivisionMenuItem_Click(object sender, RoutedEventArgs e)
     {
-        if (_isUpdating || _currentChartData == null) return;
+        if (_currentChartData == null) return;
         
-        if (DivisionSelector.SelectedItem is ComboBoxItem selectedItem && selectedItem.Tag != null)
+        if (sender is MenuItem menuItem && menuItem.Tag != null)
         {
-            int division = int.Parse(selectedItem.Tag.ToString()!);
+            int division = int.Parse(menuItem.Tag.ToString()!);
+            _currentDivision = division;
             DisplayDivision(division);
         }
     }
@@ -82,6 +83,8 @@ public partial class SouthIndianChart : UserControl
     private void DisplayDivision(int division)
     {
         if (_currentChartData == null) return;
+        
+        _currentDivision = division;
         
         if (division == 1)
         {
@@ -97,20 +100,11 @@ public partial class SouthIndianChart : UserControl
     }
     
     /// <summary>
-    /// Set division selector to a specific value without triggering recalculation
+    /// Set division to a specific value
     /// </summary>
     public void SetDivision(int division)
     {
-        _isUpdating = true;
-        foreach (ComboBoxItem item in DivisionSelector.Items)
-        {
-            if (item.Tag != null && int.Parse(item.Tag.ToString()!) == division)
-            {
-                DivisionSelector.SelectedItem = item;
-                break;
-            }
-        }
-        _isUpdating = false;
+        _currentDivision = division;
     }
 
     /// <summary>

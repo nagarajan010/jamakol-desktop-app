@@ -48,6 +48,32 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+        
+        <!-- Context Menu for Division Selection (right-click on chart) -->
+        <Grid.ContextMenu>
+            <ContextMenu x:Name="DivisionContextMenu">
+                <MenuItem Header="Rasi (D-1)" Tag="1" Click="DivisionMenuItem_Click"/>
+                <MenuItem Header="Hora (D-2)" Tag="2" Click="DivisionMenuItem_Click"/>
+                <MenuItem Header="Drekkana (D-3)" Tag="3" Click="DivisionMenuItem_Click"/>
+                <MenuItem Header="Chaturthamsa (D-4)" Tag="4" Click="DivisionMenuItem_Click"/>
+                <MenuItem Header="Panchamsa (D-5)" Tag="5" Click="DivisionMenuItem_Click"/>
+                <MenuItem Header="Shashthamsa (D-6)" Tag="6" Click="DivisionMenuItem_Click"/>
+                <MenuItem Header="Saptamsa (D-7)" Tag="7" Click="DivisionMenuItem_Click"/>
+                <MenuItem Header="Ashtamsa (D-8)" Tag="8" Click="DivisionMenuItem_Click"/>
+                <MenuItem Header="Navamsa (D-9)" Tag="9" Click="DivisionMenuItem_Click"/>
+                <MenuItem Header="Dasamsa (D-10)" Tag="10" Click="DivisionMenuItem_Click"/>
+                <MenuItem Header="Rudramsa (D-11)" Tag="11" Click="DivisionMenuItem_Click"/>
+                <MenuItem Header="Dwadasamsa (D-12)" Tag="12" Click="DivisionMenuItem_Click"/>
+                <MenuItem Header="Shodasamsa (D-16)" Tag="16" Click="DivisionMenuItem_Click"/>
+                <MenuItem Header="Vimsamsa (D-20)" Tag="20" Click="DivisionMenuItem_Click"/>
+                <MenuItem Header="Siddhamsa (D-24)" Tag="24" Click="DivisionMenuItem_Click"/>
+                <MenuItem Header="Nakshatramsa (D-27)" Tag="27" Click="DivisionMenuItem_Click"/>
+                <MenuItem Header="Trimsamsa (D-30)" Tag="30" Click="DivisionMenuItem_Click"/>
+                <MenuItem Header="Khavedamsa (D-40)" Tag="40" Click="DivisionMenuItem_Click"/>
+                <MenuItem Header="Akshavedamsa (D-45)" Tag="45" Click="DivisionMenuItem_Click"/>
+                <MenuItem Header="Shashtiamsa (D-60)" Tag="60" Click="DivisionMenuItem_Click"/>
+            </ContextMenu>
+        </Grid.ContextMenu>
 
         <!-- Row 0: Pisces(12), Aries(1), Taurus(2), Gemini(3) -->
         <Border x:Name="Cell12" Grid.Row="0" Grid.Column="0" Style="{StaticResource ChartCellStyle}">
@@ -97,31 +123,8 @@
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                 <TextBlock x:Name="ChartTitle" Text="Birth Chart" 
                            Foreground="#cc0000" FontSize="14" FontWeight="Bold" 
-                           HorizontalAlignment="Center" Margin="0,0,0,3"/>
-                <ComboBox x:Name="DivisionSelector" Width="120" FontSize="11"
-                          HorizontalAlignment="Center" Margin="0,0,0,5"
-                          SelectionChanged="DivisionSelector_SelectionChanged">
-                    <ComboBoxItem Content="Rasi (D-1)" Tag="1" IsSelected="True"/>
-                    <ComboBoxItem Content="Hora (D-2)" Tag="2"/>
-                    <ComboBoxItem Content="Drekkana (D-3)" Tag="3"/>
-                    <ComboBoxItem Content="Chaturthamsa (D-4)" Tag="4"/>
-                    <ComboBoxItem Content="Panchamsa (D-5)" Tag="5"/>
-                    <ComboBoxItem Content="Shashthamsa (D-6)" Tag="6"/>
-                    <ComboBoxItem Content="Saptamsa (D-7)" Tag="7"/>
-                    <ComboBoxItem Content="Ashtamsa (D-8)" Tag="8"/>
-                    <ComboBoxItem Content="Navamsa (D-9)" Tag="9"/>
-                    <ComboBoxItem Content="Dasamsa (D-10)" Tag="10"/>
-                    <ComboBoxItem Content="Rudramsa (D-11)" Tag="11"/>
-                    <ComboBoxItem Content="Dwadasamsa (D-12)" Tag="12"/>
-                    <ComboBoxItem Content="Shodasamsa (D-16)" Tag="16"/>
-                    <ComboBoxItem Content="Vimsamsa (D-20)" Tag="20"/>
-                    <ComboBoxItem Content="Siddhamsa (D-24)" Tag="24"/>
-                    <ComboBoxItem Content="Nakshatramsa (D-27)" Tag="27"/>
-                    <ComboBoxItem Content="Trimsamsa (D-30)" Tag="30"/>
-                    <ComboBoxItem Content="Khavedamsa (D-40)" Tag="40"/>
-                    <ComboBoxItem Content="Akshavedamsa (D-45)" Tag="45"/>
-                    <ComboBoxItem Content="Shashtiamsa (D-60)" Tag="60"/>
-                </ComboBox>
+                           HorizontalAlignment="Center" Margin="0,0,0,3"
+                           ToolTip="Right-click chart to change division"/>
                 <TextBlock x:Name="AscendantLabel" Text="Asc: " 
                            Foreground="#333" FontSize="11" HorizontalAlignment="Center"/>
             </StackPanel>

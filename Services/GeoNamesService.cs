@@ -40,10 +40,11 @@ public class GeoNamesService
 
         if (_cachedLocations == null || _cachedLocations.Count == 0) return new List<GeoLocation>();
 
-        // Perform search (simple case-insensitive contains)
-        // In a real app with large data, use better indexing
+        // Perform search (case-insensitive, checks name, ascii name, and alternates)
         return _cachedLocations
             .Where(l => l.Name.StartsWith(query, StringComparison.OrdinalIgnoreCase) || 
+                        l.AsciiName.StartsWith(query, StringComparison.OrdinalIgnoreCase) ||
+                        l.AlternateNames.Contains(query, StringComparison.OrdinalIgnoreCase) ||
                         l.DisplayName.Contains(query, StringComparison.OrdinalIgnoreCase))
             .Take(20)
             .ToList();
@@ -81,6 +82,8 @@ public class GeoNamesService
             var loc = new GeoLocation
             {
                 Name = parts[1],
+                AsciiName = parts.Length > 2 ? parts[2] : parts[1],
+                AlternateNames = parts.Length > 3 ? parts[3] : "",
                 Lat = parts[4],
                 Lng = parts[5],
                 CountryName = parts[8]                    
