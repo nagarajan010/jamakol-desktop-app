@@ -22,6 +22,8 @@ public partial class JamakolInputBar : UserControl
     public event EventHandler? SaveRequested;
     public event EventHandler? LoadRequested;
     public event EventHandler? LiveTimerTick;
+    public event EventHandler? ExportRequested;
+    public event EventHandler? ImportRequested;
 
     // Public access to input values
     public string ChartName => NameInput.Text;
@@ -263,5 +265,15 @@ public partial class JamakolInputBar : UserControl
                 TzInput.Text = offset.ToString("0.##");
             }
         }
+    }
+
+    private void ExportButton_Click(object sender, RoutedEventArgs e)
+    {
+        ExportRequested?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void ImportButton_Click(object sender, RoutedEventArgs e)
+    {
+        ImportRequested?.Invoke(this, EventArgs.Empty);
     }
 }

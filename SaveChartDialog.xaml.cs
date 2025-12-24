@@ -25,6 +25,17 @@ public partial class SaveChartDialog : Window
         _storageService = storageService;
         _chart = chart;
 
+        // Set title and hide Result based on chart type
+        if (chart.ChartType == "BirthChart")
+        {
+            this.Title = "Save Birth Chart";
+            ResultPanel.Visibility = Visibility.Collapsed;
+        }
+        else
+        {
+            this.Title = "Save Jamakol Chart";
+        }
+
         LoadCategories();
         LoadTags();
         LoadChartData();

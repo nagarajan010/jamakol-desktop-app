@@ -32,6 +32,12 @@ public class SavedJamakolChart
     /// <summary>Timezone offset in hours</summary>
     public double Timezone { get; set; }
     
+    /// <summary>Location name</summary>
+    public string Location { get; set; } = "";
+    
+    /// <summary>Chart type: "Jamakol" or "BirthChart"</summary>
+    public string ChartType { get; set; } = "Jamakol";
+    
     /// <summary>Result status: Pending, Success, or Failure</summary>
     public ChartResult Result { get; set; } = ChartResult.Pending;
     

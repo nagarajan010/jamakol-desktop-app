@@ -14,6 +14,8 @@ namespace JamakolAstrology.Controls;
 public partial class BirthInputPanel : UserControl
 {
     public event EventHandler? CalculateRequested;
+    public event EventHandler? SaveRequested;
+    public event EventHandler? LoadRequested;
     private readonly GeoNamesService _geoService;
     private bool _isUpdatingText = false; // Prevent circular events
 
@@ -50,6 +52,16 @@ public partial class BirthInputPanel : UserControl
     private void CalculateButton_Click(object sender, RoutedEventArgs e)
     {
         CalculateRequested?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void SaveButton_Click(object sender, RoutedEventArgs e)
+    {
+        SaveRequested?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void LoadButton_Click(object sender, RoutedEventArgs e)
+    {
+        LoadRequested?.Invoke(this, EventArgs.Empty);
     }
 
     private void SearchButton_Click(object sender, RoutedEventArgs e)
@@ -179,5 +191,18 @@ public partial class BirthInputPanel : UserControl
     {
         DateInput.SelectedDate = dt;
         TimeInput.Text = dt.ToString("HH:mm:ss");
+    }
+
+    public void SetInputs(string name, DateTime date, string time, double lat, double lng, double tz, string location)
+    {
+        NameInput.Text = name;
+        DateInput.SelectedDate = date;
+        TimeInput.Text = time;
+        LatitudeInput.Text = lat.ToString("F4");
+        LongitudeInput.Text = lng.ToString("F4");
+        TimezoneInput.Text = tz.ToString("F1");
+        _isUpdatingText = true;
+        LocationInput.Text = location;
+        _isUpdatingText = false;
     }
 }

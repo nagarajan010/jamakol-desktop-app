@@ -52,6 +52,16 @@
                     Style="{StaticResource ButtonStyle}" 
                     Click="CalculateButton_Click"
                     Margin="15,0,0,0"/>
+            
+            <Button Content="💾 Save" Click="SaveButton_Click"
+                    Margin="5,0,0,0" Padding="10,8"
+                    Background="#28A745" Foreground="White" 
+                    FontWeight="SemiBold" BorderThickness="0" Cursor="Hand" FontSize="13"/>
+            
+            <Button Content="📋 Saved" Click="LoadButton_Click"
+                    Margin="5,0,0,0" Padding="10,8"
+                    Background="#4A90D9" Foreground="White" 
+                    FontWeight="SemiBold" BorderThickness="0" Cursor="Hand" FontSize="13"/>
 
             <TextBlock x:Name="StatusText" Text="" Foreground="#888" 
                        FontSize="11" Margin="15,0,0,0" VerticalAlignment="Center"/>

@@ -170,5 +170,59 @@ public class ChartStorageService
         }
     }
 
+    /// <summary>
+    /// Export all charts to a JSON file
+    /// </summary>
+    public void ExportToFile(string filePath)
+    {
+        var options = new JsonSerializerOptions { WriteIndented = true };
+        var json = JsonSerializer.Serialize(_data, options);
+        File.WriteAllText(filePath, json);
+    }
+
+    /// <summary>
+    /// Import charts from a JSON file (merges with existing)
+    /// </summary>
+    public int ImportFromFile(string filePath)
+    {
+        var json = File.ReadAllText(filePath);
+        var importedData = JsonSerializer.Deserialize<ChartStorageData>(json);
+        
+        if (importedData == null) return 0;
+        
+        int importedCount = 0;
+        
+        // Import charts (skip duplicates by ID)
+        foreach (var chart in importedData.Charts)
+        {
+            if (!_data.Charts.Any(c => c.Id == chart.Id))
+            {
+                _data.Charts.Add(chart);
+                importedCount++;
+            }
+        }
+        
+        // Import categories
+        foreach (var category in importedData.Categories)
+        {
+            if (!_data.Categories.Any(c => c.Id == category.Id))
+            {
+                _data.Categories.Add(category);
+            }
+        }
+        
+        // Import tags
+        foreach (var tag in importedData.Tags)
+        {
+            if (!_data.Tags.Any(t => t.Id == tag.Id))
+            {
+                _data.Tags.Add(tag);
+            }
+        }
+        
+        Save();
+        return importedCount;
+    }
+
     #endregion
 }

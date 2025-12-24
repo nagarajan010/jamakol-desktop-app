@@ -36,6 +36,14 @@ public partial class MainWindow : Window
         
         // Auto-calculate on window load
         Loaded += MainWindow_Loaded;
+        
+        // Subscribe to Jamakol input events
+        JamakolInputControl.ExportRequested += JamakolInputControl_ExportRequested;
+        JamakolInputControl.ImportRequested += JamakolInputControl_ImportRequested;
+        
+        // Subscribe to Birth Chart input events
+        BirthInputControl.SaveRequested += BirthInputControl_SaveRequested;
+        BirthInputControl.LoadRequested += BirthInputControl_LoadRequested;
     }
 
     private void UpdateToCurrentTime()
@@ -279,7 +287,7 @@ public partial class MainWindow : Window
     {
         try
         {
-            var dialog = new SavedChartsDialog(_chartStorageService);
+            var dialog = new SavedChartsDialog(_chartStorageService, "Jamakol");
             dialog.Owner = this;
             if (dialog.ShowDialog() == true && dialog.ShouldLoadChart && dialog.ChartToLoad != null)
             {
@@ -333,6 +341,143 @@ public partial class MainWindow : Window
         if (PanchangaPanelControl != null) UiThemeHelper.SetFontSizeRecursive(PanchangaPanelControl, _appSettings.TableFontSize);
         if (SavedChartInfoPanelControl != null) UiThemeHelper.SetFontSizeRecursive(SavedChartInfoPanelControl, _appSettings.InputFontSize);
         if (NavamsaChartControl != null) UiThemeHelper.SetFontSizeRecursive(NavamsaChartControl, _appSettings.ChartFontSize);
+    }
+
+    #endregion
+
+    #region Import/Export
+
+    private void ExportButton_Click(object sender, RoutedEventArgs e)
+    {
+        JamakolInputControl_ExportRequested(sender, e);
+    }
+
+    private void ImportButton_Click(object sender, RoutedEventArgs e)
+    {
+        JamakolInputControl_ImportRequested(sender, e);
+    }
+
+    private void JamakolInputControl_ExportRequested(object? sender, EventArgs e)
+    {
+        var charts = _chartStorageService.GetAllCharts();
+        if (charts.Count == 0)
+        {
+            MessageBox.Show("No charts to export.", "Export", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
+
+        var dialog = new Microsoft.Win32.SaveFileDialog
+        {
+            Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*",
+            DefaultExt = ".json",
+            FileName = $"JamakolCharts_{DateTime.Now:yyyyMMdd}"
+        };
+
+        if (dialog.ShowDialog() == true)
+        {
+            try
+            {
+                _chartStorageService.ExportToFile(dialog.FileName);
+                MessageBox.Show($"Exported {charts.Count} charts successfully!", "Export", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Export failed: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+    }
+
+    private void JamakolInputControl_ImportRequested(object? sender, EventArgs e)
+    {
+        var dialog = new Microsoft.Win32.OpenFileDialog
+        {
+            Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*",
+            DefaultExt = ".json"
+        };
+
+        if (dialog.ShowDialog() == true)
+        {
+            try
+            {
+                int count = _chartStorageService.ImportFromFile(dialog.FileName);
+                MessageBox.Show($"Imported {count} new charts successfully!", "Import", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Import failed: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+    }
+
+    #endregion
+
+    #region Birth Chart Save/Load
+
+    private void BirthInputControl_SaveRequested(object? sender, EventArgs e)
+    {
+        if (_currentChartData == null)
+        {
+            MessageBox.Show("Please calculate a chart first.", "Save", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
+
+        try
+        {
+            // Create a SavedJamakolChart from current birth chart data
+            var savedChart = new SavedJamakolChart
+            {
+                Name = BirthInputControl.PersonName,
+                QueryDateTime = _currentChartData.BirthData.BirthDateTime,
+                Latitude = _currentChartData.BirthData.Latitude,
+                Longitude = _currentChartData.BirthData.Longitude,
+                Location = _currentChartData.BirthData.Location,
+                Timezone = _currentChartData.BirthData.TimeZoneOffset,
+                ChartType = "BirthChart",
+                ChartDataJson = System.Text.Json.JsonSerializer.Serialize(_currentChartData)
+            };
+
+            // Use the save dialog for category, tags, notes
+            var saveDialog = new SaveChartDialog(_chartStorageService, savedChart);
+            saveDialog.Owner = this;
+            if (saveDialog.ShowDialog() == true && saveDialog.IsSaved)
+            {
+                BirthInputControl.SetStatus("Chart saved successfully!");
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error saving chart: {ex.Message}", "Save Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    private void BirthInputControl_LoadRequested(object? sender, EventArgs e)
+    {
+        var charts = _chartStorageService.GetAllCharts()
+            .Where(c => c.ChartType == "BirthChart")
+            .ToList();
+
+        if (charts.Count == 0)
+        {
+            MessageBox.Show("No saved birth charts found.", "Load", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
+
+        var dialog = new SavedChartsDialog(_chartStorageService, "BirthChart");
+        dialog.Owner = this;
+        if (dialog.ShowDialog() == true && dialog.ChartToLoad != null)
+        {
+            var chart = dialog.ChartToLoad;
+            BirthInputControl.SetInputs(
+                chart.Name,
+                chart.QueryDateTime,
+                chart.QueryDateTime.ToString("HH:mm:ss"),
+                chart.Latitude,
+                chart.Longitude,
+                chart.Timezone,
+                chart.Location
+            );
+            CalculateChart();
+        }
     }
 
     #endregion

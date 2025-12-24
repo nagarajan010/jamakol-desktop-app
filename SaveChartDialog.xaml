@@ -48,7 +48,7 @@
         </StackPanel>
         
         <!-- Result -->
-        <StackPanel Grid.Row="1">
+        <StackPanel x:Name="ResultPanel" Grid.Row="1">
             <TextBlock Text="Result" Style="{StaticResource LabelStyle}"/>
             <ComboBox x:Name="ResultCombo" Style="{StaticResource ComboStyle}">
                 <ComboBoxItem Content="Pending" IsSelected="True"/>

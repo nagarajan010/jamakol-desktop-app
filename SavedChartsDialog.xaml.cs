@@ -32,16 +32,38 @@ public partial class SavedChartsDialog : Window
     public SavedJamakolChart? ChartToLoad { get; private set; }
     public bool ShouldLoadChart { get; private set; }
 
-    public SavedChartsDialog(ChartStorageService storageService)
+    private string? _chartTypeFilter;
+
+    public SavedChartsDialog(ChartStorageService storageService, string? chartTypeFilter = null)
     {
         InitializeComponent();
         _storageService = storageService;
+        _chartTypeFilter = chartTypeFilter;
+        
+        // Set title based on chart type
+        if (chartTypeFilter == "BirthChart")
+        {
+            this.Title = "Saved Birth Charts";
+            ResultColumn.Visibility = Visibility.Collapsed;
+        }
+        else if (chartTypeFilter == "Jamakol")
+        {
+            this.Title = "Saved Jamakol Charts";
+        }
+        
         LoadCharts();
     }
 
     private void LoadCharts()
     {
         var charts = _storageService.GetAllCharts();
+        
+        // Filter by chart type if specified
+        if (!string.IsNullOrEmpty(_chartTypeFilter))
+        {
+            charts = charts.Where(c => c.ChartType == _chartTypeFilter).ToList();
+        }
+        
         var categories = _storageService.GetAllCategories();
 
         var viewModels = charts.OrderByDescending(c => c.CreatedAt).Select(c => new SavedChartViewModel

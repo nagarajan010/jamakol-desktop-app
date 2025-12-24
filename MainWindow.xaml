@@ -47,6 +47,16 @@
                 </StackPanel>
 
                 <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <Button Content="📤 Export" Click="ExportButton_Click"
+                            Background="#FF9800" Foreground="White" 
+                            Padding="8,6" Margin="0,0,5,0" FontSize="12"
+                            FontWeight="SemiBold" BorderThickness="0" Cursor="Hand"
+                            ToolTip="Export saved charts to file"/>
+                    <Button Content="📥 Import" Click="ImportButton_Click"
+                            Background="#9C27B0" Foreground="White" 
+                            Padding="8,6" Margin="0,0,10,0" FontSize="12"
+                            FontWeight="SemiBold" BorderThickness="0" Cursor="Hand"
+                            ToolTip="Import charts from file"/>
                     <Button x:Name="SettingsButton" Content="⚙ Settings" 
                             Style="{StaticResource ButtonStyle}" 
                             Click="SettingsButton_Click"
