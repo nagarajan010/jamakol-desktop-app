@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("JamakolAstrology")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e1b56c38d7841b27c2a4769fa6701a935a62ef45")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2a94da0971de2bb3d1f5db9d5c2d891863fe2cbb")]
 [assembly: System.Reflection.AssemblyProductAttribute("JamakolAstrology")]
 [assembly: System.Reflection.AssemblyTitleAttribute("JamakolAstrology")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

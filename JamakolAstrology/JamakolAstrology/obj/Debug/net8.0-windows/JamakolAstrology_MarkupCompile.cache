@@ -12,7 +12,7 @@ TRACE;DEBUG;NET;NET8_0;NETCOREAPP
 C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\App.xaml
 16-538045208
 
-40-1468607232
+45-1019853224
 199-1144056021
 ChartDetailsDialog.xaml;Controls\BirthInputPanel.xaml;Controls\BirthPlanetaryDetails.xaml;Controls\JamakolChart.xaml;Controls\JamakolDataGridsPanel.xaml;Controls\JamakolInputBar.xaml;Controls\PanchangaPanel.xaml;Controls\PrasannaPanel.xaml;Controls\SavedChartInfoPanel.xaml;Controls\SouthIndianChart.xaml;MainWindow.xaml;ManageCategoriesDialog.xaml;ManageTagsDialog.xaml;SaveChartDialog.xaml;SavedChartsDialog.xaml;SettingsWindow.xaml;
 
