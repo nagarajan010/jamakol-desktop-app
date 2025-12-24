@@ -15,7 +15,29 @@
             <TextBox x:Name="TimeInput" Style="{StaticResource TopInputStyle}" Width="70" Text="12:00:00"/>
 
             <TextBlock Text="Location:" Style="{StaticResource TopLabelStyle}"/>
-            <TextBox x:Name="LocationInput" Style="{StaticResource TopInputStyle}" Width="100" Text="Chennai"/>
+            <Grid>
+                <TextBox x:Name="LocationInput" Style="{StaticResource TopInputStyle}" Width="110" Text="Chennai"
+                         TextChanged="LocationInput_TextChanged" PreviewKeyDown="LocationInput_PreviewKeyDown"/>
+                <Popup x:Name="SuggestionsPopup" PlacementTarget="{Binding ElementName=LocationInput}" 
+                       StaysOpen="False" IsOpen="False" AllowsTransparency="True" PopupAnimation="Slide">
+                    <Border Background="White" BorderBrush="#ccc" BorderThickness="1" CornerRadius="3" MaxHeight="200" MinWidth="200">
+                        <ListBox x:Name="SuggestionsList" BorderThickness="0" Background="Transparent"
+                                 PreviewKeyDown="SuggestionsList_PreviewKeyDown"
+                                 MouseDoubleClick="SuggestionsList_MouseDoubleClick">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Vertical" Margin="2">
+                                        <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding DisplayName}" FontSize="10" Foreground="#666"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Border>
+                </Popup>
+            </Grid>
+            <Button Content="🔍" Width="25" Height="25" Click="SearchButton_Click" ToolTip="Search City" 
+                    Background="Transparent" Foreground="#555" BorderBrush="#ccc" BorderThickness="1" Margin="2,0,5,0"/>
 
             <TextBlock Text="Lat:" Style="{StaticResource TopLabelStyle}"/>
             <TextBox x:Name="LatitudeInput" Style="{StaticResource TopInputStyle}" Width="65" Text="13.0827"/>

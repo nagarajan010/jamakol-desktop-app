@@ -1,6 +1,8 @@
 using System.Windows;
 using System.Windows.Controls;
+using JamakolAstrology.Controls;
 using JamakolAstrology.Models;
+using JamakolAstrology.Services;
 
 namespace JamakolAstrology;
 
@@ -11,12 +13,17 @@ public partial class SettingsWindow : Window
 {
     public AppSettings Settings { get; private set; }
     public bool IsSaved { get; private set; }
+    private readonly GeoNamesService _geoService;
+    private bool _isUpdatingText = false;
 
     public SettingsWindow(AppSettings currentSettings)
     {
+        _geoService = new GeoNamesService();
+        _isUpdatingText = true; // Prevent TextChanged during init
         InitializeComponent();
         Settings = currentSettings ?? new AppSettings();
         LoadSettings();
+        _isUpdatingText = false;
     }
 
     private void LoadSettings()
@@ -53,6 +60,7 @@ public partial class SettingsWindow : Window
         }
 
         // Load location defaults
+        DefaultLocationInput.Text = Settings.DefaultLocationName;
         LatitudeInput.Text = Settings.DefaultLatitude.ToString("F4");
         LongitudeInput.Text = Settings.DefaultLongitude.ToString("F4");
         TimezoneInput.Text = Settings.DefaultTimezone.ToString("F1");
@@ -92,6 +100,7 @@ public partial class SettingsWindow : Window
             }
 
             // Save location defaults
+            Settings.DefaultLocationName = DefaultLocationInput.Text;
             Settings.DefaultLatitude = double.Parse(LatitudeInput.Text);
             Settings.DefaultLongitude = double.Parse(LongitudeInput.Text);
             Settings.DefaultTimezone = double.Parse(TimezoneInput.Text);
@@ -119,11 +128,126 @@ public partial class SettingsWindow : Window
         }
     }
 
+    private void SearchButton_Click(object sender, RoutedEventArgs e)
+    {
+        var dialog = new PlaceSearchDialog();
+        dialog.Owner = this;
+        if (dialog.ShowDialog() == true && dialog.SelectedLocation != null)
+        {
+            ApplyLocation(dialog.SelectedLocation);
+        }
+    }
+
     private void CancelButton_Click(object sender, RoutedEventArgs e)
     {
         IsSaved = false;
         DialogResult = false;
         Close();
+    }
+
+    private async void DefaultLocationInput_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+    {
+        if (_isUpdatingText) return;
+
+        string query = DefaultLocationInput.Text;
+        if (query.Length < 3)
+        {
+            SuggestionsPopup.IsOpen = false;
+            return;
+        }
+
+        try
+        {
+            var results = await _geoService.SearchPlaceAsync(query);
+            if (results.Count > 0)
+            {
+                SuggestionsList.ItemsSource = results;
+                SuggestionsPopup.IsOpen = true;
+            }
+            else
+            {
+                SuggestionsPopup.IsOpen = false;
+            }
+        }
+        catch
+        {
+            SuggestionsPopup.IsOpen = false;
+        }
+    }
+
+    private void DefaultLocationInput_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+    {
+        if (SuggestionsPopup.IsOpen)
+        {
+            if (e.Key == System.Windows.Input.Key.Down)
+            {
+                SuggestionsList.SelectedIndex = (SuggestionsList.SelectedIndex + 1) % SuggestionsList.Items.Count;
+                SuggestionsList.ScrollIntoView(SuggestionsList.SelectedItem);
+                e.Handled = true;
+            }
+            else if (e.Key == System.Windows.Input.Key.Up)
+            {
+                if (SuggestionsList.SelectedIndex > 0)
+                    SuggestionsList.SelectedIndex--;
+                else
+                    SuggestionsList.SelectedIndex = SuggestionsList.Items.Count - 1;
+                
+                SuggestionsList.ScrollIntoView(SuggestionsList.SelectedItem);
+                e.Handled = true;
+            }
+            else if (e.Key == System.Windows.Input.Key.Enter || e.Key == System.Windows.Input.Key.Tab)
+            {
+                if (SuggestionsList.SelectedItem is GeoLocation loc)
+                {
+                    ApplyLocation(loc);
+                    SuggestionsPopup.IsOpen = false;
+                    e.Handled = true;
+                }
+            }
+            else if (e.Key == System.Windows.Input.Key.Escape)
+            {
+                SuggestionsPopup.IsOpen = false;
+            }
+        }
+    }
+
+    private void SuggestionsList_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+    {
+        if (e.Key == System.Windows.Input.Key.Enter)
+        {
+            if (SuggestionsList.SelectedItem is GeoLocation loc)
+            {
+                ApplyLocation(loc);
+                SuggestionsPopup.IsOpen = false;
+                e.Handled = true;
+            }
+        }
+    }
+
+    private void SuggestionsList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        if (SuggestionsList.SelectedItem is GeoLocation loc)
+        {
+            ApplyLocation(loc);
+            SuggestionsPopup.IsOpen = false;
+        }
+    }
+
+    private void ApplyLocation(GeoLocation loc)
+    {
+        _isUpdatingText = true;
+        DefaultLocationInput.Text = loc.Name;
+        DefaultLocationInput.Select(DefaultLocationInput.Text.Length, 0);
+        _isUpdatingText = false;
+
+        LatitudeInput.Text = loc.Lat;
+        LongitudeInput.Text = loc.Lng;
+        
+        if (loc.Timezone != null && !string.IsNullOrEmpty(loc.Timezone.TimeZoneId))
+        {
+            var offset = _geoService.GetTimezoneOffset(loc.Timezone.TimeZoneId);
+            TimezoneInput.Text = offset.ToString("0.##");
+        }
     }
 }
 

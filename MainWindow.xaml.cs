@@ -47,6 +47,10 @@ public partial class MainWindow : Window
 
     private void MainWindow_Loaded(object sender, RoutedEventArgs e)
     {
+        // Apply settings defaults to input panels
+        BirthInputControl.ApplySettings(_appSettings);
+        JamakolInputControl.ApplySettings(_appSettings);
+        
         // Auto-calculate charts on startup with current time
         try
         {

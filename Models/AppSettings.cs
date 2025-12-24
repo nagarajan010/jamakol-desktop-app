@@ -13,6 +13,9 @@ public class AppSettings
     /// <summary>Selected ayanamsha type</summary>
     public AyanamshaType Ayanamsha { get; set; } = AyanamshaType.Lahiri;
 
+    /// <summary>Default location name</summary>
+    public string DefaultLocationName { get; set; } = "Chennai";
+
     /// <summary>Default location latitude</summary>
     public double DefaultLatitude { get; set; } = 13.0827; // Chennai
 

@@ -2,6 +2,8 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using JamakolAstrology.Models;
+using JamakolAstrology.Services;
 
 namespace JamakolAstrology.Controls;
 
@@ -12,6 +14,8 @@ public partial class JamakolInputBar : UserControl
 {
     private readonly DispatcherTimer _liveTimer;
     private bool _isLiveUpdateRunning;
+    private readonly GeoNamesService _geoService;
+    private bool _isUpdatingText = false;
 
     // Events for MainWindow to subscribe to
     public event EventHandler? CalculateRequested;
@@ -26,14 +30,136 @@ public partial class JamakolInputBar : UserControl
     public string LatitudeText => LatInput.Text;
     public string LongitudeText => LongInput.Text;
     public string TimezoneText => TzInput.Text;
+    public string LocationText => LocationInput.Text;
 
     public JamakolInputBar()
     {
+        _geoService = new GeoNamesService();
+        _isUpdatingText = true;
         InitializeComponent();
+        _isUpdatingText = false;
 
         // Setup live timer
         _liveTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
         _liveTimer.Tick += LiveTimer_Tick_Internal;
+    }
+
+    /// <summary>
+    /// Apply settings defaults to input fields
+    /// </summary>
+    public void ApplySettings(AppSettings settings)
+    {
+        _isUpdatingText = true;
+        LocationInput.Text = settings.DefaultLocationName;
+        _isUpdatingText = false;
+        LatInput.Text = settings.DefaultLatitude.ToString("F4");
+        LongInput.Text = settings.DefaultLongitude.ToString("F4");
+        TzInput.Text = settings.DefaultTimezone.ToString("F1");
+    }
+
+    private async void LocationInput_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+    {
+        if (_isUpdatingText) return;
+
+        string query = LocationInput.Text;
+        if (query.Length < 3)
+        {
+            SuggestionsPopup.IsOpen = false;
+            return;
+        }
+
+        try
+        {
+            var results = await _geoService.SearchPlaceAsync(query);
+            if (results.Count > 0)
+            {
+                SuggestionsList.ItemsSource = results;
+                SuggestionsPopup.IsOpen = true;
+            }
+            else
+            {
+                SuggestionsPopup.IsOpen = false;
+            }
+        }
+        catch
+        {
+            SuggestionsPopup.IsOpen = false;
+        }
+    }
+
+    private void LocationInput_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+    {
+        if (SuggestionsPopup.IsOpen)
+        {
+            if (e.Key == System.Windows.Input.Key.Down)
+            {
+                SuggestionsList.SelectedIndex = (SuggestionsList.SelectedIndex + 1) % SuggestionsList.Items.Count;
+                SuggestionsList.ScrollIntoView(SuggestionsList.SelectedItem);
+                e.Handled = true;
+            }
+            else if (e.Key == System.Windows.Input.Key.Up)
+            {
+                if (SuggestionsList.SelectedIndex > 0)
+                    SuggestionsList.SelectedIndex--;
+                else
+                    SuggestionsList.SelectedIndex = SuggestionsList.Items.Count - 1;
+                
+                SuggestionsList.ScrollIntoView(SuggestionsList.SelectedItem);
+                e.Handled = true;
+            }
+            else if (e.Key == System.Windows.Input.Key.Enter || e.Key == System.Windows.Input.Key.Tab)
+            {
+                if (SuggestionsList.SelectedItem is GeoLocation loc)
+                {
+                    ApplyLocation(loc);
+                    SuggestionsPopup.IsOpen = false;
+                    e.Handled = true;
+                }
+            }
+            else if (e.Key == System.Windows.Input.Key.Escape)
+            {
+                SuggestionsPopup.IsOpen = false;
+            }
+        }
+    }
+
+    private void SuggestionsList_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+    {
+        if (e.Key == System.Windows.Input.Key.Enter)
+        {
+            if (SuggestionsList.SelectedItem is GeoLocation loc)
+            {
+                ApplyLocation(loc);
+                SuggestionsPopup.IsOpen = false;
+                e.Handled = true;
+            }
+        }
+    }
+
+    private void SuggestionsList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        if (SuggestionsList.SelectedItem is GeoLocation loc)
+        {
+            ApplyLocation(loc);
+            SuggestionsPopup.IsOpen = false;
+        }
+    }
+
+    private void ApplyLocation(GeoLocation loc)
+    {
+        _isUpdatingText = true;
+        LocationInput.Text = loc.Name;
+        LocationInput.Select(LocationInput.Text.Length, 0);
+        _isUpdatingText = false;
+
+        LatInput.Text = loc.Lat;
+        LongInput.Text = loc.Lng;
+        
+        if (loc.Timezone != null && !string.IsNullOrEmpty(loc.Timezone.TimeZoneId))
+        {
+            var offset = _geoService.GetTimezoneOffset(loc.Timezone.TimeZoneId);
+            TzInput.Text = offset.ToString("0.##");
+        }
     }
 
     private void LiveTimer_Tick_Internal(object? sender, EventArgs e)
@@ -118,5 +244,24 @@ public partial class JamakolInputBar : UserControl
     private void LoadButton_Click(object sender, RoutedEventArgs e)
     {
         LoadRequested?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void SearchButton_Click(object sender, RoutedEventArgs e)
+    {
+        var dialog = new PlaceSearchDialog();
+        dialog.Owner = Window.GetWindow(this);
+        if (dialog.ShowDialog() == true && dialog.SelectedLocation != null)
+        {
+            var loc = dialog.SelectedLocation;
+            LocationInput.Text = loc.Name;
+            LatInput.Text = loc.Lat;
+            LongInput.Text = loc.Lng;
+            
+            if (loc.Timezone != null && !string.IsNullOrEmpty(loc.Timezone.TimeZoneId))
+            {
+                var offset = _geoService.GetTimezoneOffset(loc.Timezone.TimeZoneId);
+                TzInput.Text = offset.ToString("0.##");
+            }
+        }
     }
 }
