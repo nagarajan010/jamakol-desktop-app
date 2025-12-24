@@ -21,11 +21,18 @@ public class EphemerisService : IDisposable
         // Search for ephemeris files in common locations
         string[] searchPaths = new[]
         {
-            // User's known location first
-            @"C:\laragon\www\jamakol-desktop-app\JamakolAstrology\ephe",
+            // Executable directory (production/build output)
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ephe"),
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "ephe"),
+            
+            // Current working directory
             Path.Combine(Environment.CurrentDirectory, "ephe"),
+            
+            // Resource folder in base directory
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "ephe"),
+            
+            // Development project root (look up from bin\Debug\netX.X)
+            Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "ephe")),
+            
             "ephe"
         };
 
