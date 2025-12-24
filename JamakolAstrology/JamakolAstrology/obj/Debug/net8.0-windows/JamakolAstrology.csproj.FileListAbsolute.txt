@@ -42,3 +42,15 @@ C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\obj\Debug\n
 C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\obj\Debug\net8.0-windows\Controls\PanchangaPanel.g.cs
 C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\obj\Debug\net8.0-windows\Controls\JamakolInputBar.baml
 C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\obj\Debug\net8.0-windows\Controls\JamakolInputBar.g.cs
+C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\obj\Debug\net8.0-windows\Controls\PrasannaPanel.baml
+C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\obj\Debug\net8.0-windows\Controls\PrasannaPanel.g.cs
+C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\obj\Debug\net8.0-windows\JamakolAstrology.sourcelink.json
+C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\obj\Debug\net8.0-windows\Controls\JamakolDataGridsPanel.baml
+C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\obj\Debug\net8.0-windows\Controls\JamakolDataGridsPanel.g.cs
+C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\obj\Debug\net8.0-windows\Controls\BirthInputPanel.baml
+C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\obj\Debug\net8.0-windows\Controls\BirthInputPanel.g.cs
+C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\obj\Debug\net8.0-windows\Controls\BirthPlanetaryDetails.baml
+C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\obj\Debug\net8.0-windows\Controls\BirthPlanetaryDetails.g.cs
+C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\obj\Debug\net8.0-windows\App.baml
+C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\obj\Debug\net8.0-windows\Controls\SavedChartInfoPanel.baml
+C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\obj\Debug\net8.0-windows\Controls\SavedChartInfoPanel.g.cs

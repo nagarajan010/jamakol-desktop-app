@@ -12,108 +12,6 @@
         WindowState="Maximized"
         Background="#fffff0">
     <Window.Resources>
-        <!-- Light Theme Styles -->
-        <Style x:Key="TopInputStyle" TargetType="TextBox">
-            <Setter Property="Background" Value="#fff"/>
-            <Setter Property="Foreground" Value="#333"/>
-            <Setter Property="BorderBrush" Value="#ccc"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="6,4"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-        </Style>
-        <Style x:Key="TopLabelStyle" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="#666"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Margin" Value="8,0,5,0"/>
-        </Style>
-        <Style x:Key="DatePickerStyle" TargetType="DatePicker">
-            <Setter Property="Background" Value="#fff"/>
-            <Setter Property="Foreground" Value="#333"/>
-            <Setter Property="BorderBrush" Value="#ccc"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="3"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-        </Style>
-        <Style x:Key="ButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#cc0000"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="15,8"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" 
-                                CornerRadius="4" 
-                                Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#ff3333"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="DataGridStyle" TargetType="DataGrid">
-            <Setter Property="Background" Value="#fffff8"/>
-            <Setter Property="Foreground" Value="#333"/>
-            <Setter Property="BorderBrush" Value="#ddd"/>
-            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
-            <Setter Property="HorizontalGridLinesBrush" Value="#eee"/>
-            <Setter Property="RowBackground" Value="#fffff8"/>
-            <Setter Property="AlternatingRowBackground" Value="#fff8dc"/>
-        </Style>
-        <Style x:Key="TabItemStyle" TargetType="TabItem">
-            <Setter Property="Background" Value="#fff8dc"/>
-            <Setter Property="Foreground" Value="#666"/>
-            <Setter Property="Padding" Value="25,12"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="TabItem">
-                        <Border x:Name="TabBorder" Background="{TemplateBinding Background}" 
-                                CornerRadius="5,5,0,0" Margin="2,0,2,0"
-                                Padding="{TemplateBinding Padding}" BorderBrush="#ddd" BorderThickness="1,1,1,0">
-                            <ContentPresenter x:Name="ContentSite" ContentSource="Header"
-                                              HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="TabBorder" Property="Background" Value="#cc0000"/>
-                                <Setter Property="Foreground" Value="White"/>
-                            </Trigger>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="TabBorder" Property="Background" Value="#ffe4b5"/>
-                            </Trigger>
-                            <MultiTrigger>
-                                <MultiTrigger.Conditions>
-                                    <Condition Property="IsSelected" Value="True"/>
-                                    <Condition Property="IsMouseOver" Value="True"/>
-                                </MultiTrigger.Conditions>
-                                <Setter TargetName="TabBorder" Property="Background" Value="#ff3333"/>
-                            </MultiTrigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="InputPanelStyle" TargetType="Border">
-            <Setter Property="Background" Value="#fff8dc"/>
-            <Setter Property="BorderBrush" Value="#ddd"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CornerRadius" Value="5"/>
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="Margin" Value="0,0,0,10"/>
-        </Style>
     </Window.Resources>
 
     <Grid>
@@ -177,40 +75,7 @@
                     </Grid.RowDefinitions>
                     
                     <!-- Input Panel Inside Tab -->
-                    <Border Grid.Row="0" Style="{StaticResource InputPanelStyle}">
-                        <WrapPanel x:Name="BirthInputPanel" VerticalAlignment="Center">
-                            <TextBlock Text="Name:" Style="{StaticResource TopLabelStyle}"/>
-                            <TextBox x:Name="NameInput" Style="{StaticResource TopInputStyle}" Width="120" Text="Sample Person"/>
-
-                            <TextBlock Text="Date:" Style="{StaticResource TopLabelStyle}"/>
-                            <DatePicker x:Name="DateInput" Style="{StaticResource DatePickerStyle}" Width="120"
-                                        SelectedDate="{x:Static sys:DateTime.Now}"
-                                        xmlns:sys="clr-namespace:System;assembly=mscorlib"/>
-
-                            <TextBlock Text="Time:" Style="{StaticResource TopLabelStyle}"/>
-                            <TextBox x:Name="TimeInput" Style="{StaticResource TopInputStyle}" Width="70" Text="12:00:00"/>
-
-                            <TextBlock Text="Location:" Style="{StaticResource TopLabelStyle}"/>
-                            <TextBox x:Name="LocationInput" Style="{StaticResource TopInputStyle}" Width="100" Text="Chennai"/>
-
-                            <TextBlock Text="Lat:" Style="{StaticResource TopLabelStyle}"/>
-                            <TextBox x:Name="LatitudeInput" Style="{StaticResource TopInputStyle}" Width="65" Text="13.0827"/>
-
-                            <TextBlock Text="Long:" Style="{StaticResource TopLabelStyle}"/>
-                            <TextBox x:Name="LongitudeInput" Style="{StaticResource TopInputStyle}" Width="65" Text="80.2707"/>
-
-                            <TextBlock Text="TZ:" Style="{StaticResource TopLabelStyle}"/>
-                            <TextBox x:Name="TimezoneInput" Style="{StaticResource TopInputStyle}" Width="45" Text="5.5"/>
-
-                            <Button x:Name="CalculateButton" Content="Calculate" 
-                                    Style="{StaticResource ButtonStyle}" 
-                                    Click="CalculateButton_Click"
-                                    Margin="15,0,0,0"/>
-
-                            <TextBlock x:Name="StatusText" Text="" Foreground="#888" 
-                                       FontSize="11" Margin="15,0,0,0" VerticalAlignment="Center"/>
-                        </WrapPanel>
-                    </Border>
+                    <controls:BirthInputPanel x:Name="BirthInputControl" Grid.Row="0" CalculateRequested="OnBirthCalculateRequested"/>
 
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
@@ -222,42 +87,7 @@
                             <controls:SouthIndianChart x:Name="ChartControl"/>
                         </Border>
 
-                        <Border Grid.Column="1" Background="#fffff8" CornerRadius="5" Padding="15" BorderBrush="#ddd" BorderThickness="1">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-
-                                <TextBlock Grid.Row="0" Text="Planetary Positions" FontSize="16" FontWeight="Bold" 
-                                           Foreground="#cc0000" Margin="0,0,0,10"/>
-
-                                <DataGrid x:Name="PlanetGrid" Grid.Row="1" 
-                                          Style="{StaticResource DataGridStyle}"
-                                          AutoGenerateColumns="False"
-                                          HeadersVisibility="Column"
-                                          IsReadOnly="True"
-                                          CanUserAddRows="False"
-                                          CanUserDeleteRows="False"
-                                          FontSize="12">
-                                    <DataGrid.ColumnHeaderStyle>
-                                        <Style TargetType="DataGridColumnHeader">
-                                            <Setter Property="Background" Value="#cc0000"/>
-                                            <Setter Property="Foreground" Value="White"/>
-                                            <Setter Property="Padding" Value="8,5"/>
-                                            <Setter Property="FontWeight" Value="SemiBold"/>
-                                        </Style>
-                                    </DataGrid.ColumnHeaderStyle>
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Planet" Binding="{Binding Name}" Width="65"/>
-                                        <DataGridTextColumn Header="Sign" Binding="{Binding SignName}" Width="75"/>
-                                        <DataGridTextColumn Header="Deg" Binding="{Binding DegreeDisplay}" Width="55"/>
-                                        <DataGridTextColumn Header="Nak" Binding="{Binding NakshatraShort}" Width="60"/>
-                                        <DataGridTextColumn Header="R" Binding="{Binding RetroDisplay}" Width="25"/>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                            </Grid>
-                        </Border>
+                        <controls:BirthPlanetaryDetails x:Name="BirthPlanetaryDetailsControl" Grid.Column="1"/>
                     </Grid>
                 </Grid>
             </TabItem>
@@ -271,61 +101,11 @@
                     </Grid.RowDefinitions>
                     
                     <!-- Input Panel Inside Jamakol Tab -->
-                    <Border Grid.Row="0" Style="{StaticResource InputPanelStyle}">
-                        <WrapPanel x:Name="JamakolInputPanel" VerticalAlignment="Center">
-                            <TextBlock Text="Name:" Style="{StaticResource TopLabelStyle}"/>
-                            <TextBox x:Name="JamakolNameInput" Style="{StaticResource TopInputStyle}" Width="120" Text="Query"/>
-
-                            <TextBlock Text="Date:" Style="{StaticResource TopLabelStyle}"/>
-                            <DatePicker x:Name="JamakolDateInput" Style="{StaticResource DatePickerStyle}" Width="120"
-                                        SelectedDate="{x:Static sys:DateTime.Now}"
-                                        xmlns:sys="clr-namespace:System;assembly=mscorlib"/>
-
-                            <TextBlock Text="Time:" Style="{StaticResource TopLabelStyle}"/>
-                            <TextBox x:Name="JamakolTimeInput" Style="{StaticResource TopInputStyle}" Width="70" Text="12:00:00"/>
-                            <Button Content="Now" 
-                                    Click="JamakolNowButton_Click"
-                                    Margin="5,0,0,0" Padding="8,4"
-                                    Background="#4CAF50" Foreground="White" 
-                                    FontWeight="Bold" BorderThickness="0" Cursor="Hand"/>
-                            <Button x:Name="JamakolStartStopButton" Content="Start" 
-                                    Click="JamakolStartStopButton_Click"
-                                    Margin="5,0,0,0" Padding="8,4"
-                                    Background="#2196F3" Foreground="White" 
-                                    FontWeight="Bold" BorderThickness="0" Cursor="Hand"/>
-
-                            <TextBlock Text="Lat:" Style="{StaticResource TopLabelStyle}"/>
-                            <TextBox x:Name="JamakolLatInput" Style="{StaticResource TopInputStyle}" Width="65" Text="13.0827"/>
-
-                            <TextBlock Text="Long:" Style="{StaticResource TopLabelStyle}"/>
-                            <TextBox x:Name="JamakolLongInput" Style="{StaticResource TopInputStyle}" Width="65" Text="80.2707"/>
-
-                            <TextBlock Text="TZ:" Style="{StaticResource TopLabelStyle}"/>
-                            <TextBox x:Name="JamakolTzInput" Style="{StaticResource TopInputStyle}" Width="45" Text="5.5"/>
-
-                            <Button Content="Calculate" 
-                                    Style="{StaticResource ButtonStyle}" 
-                                    Click="JamakolCalculateButton_Click"
-                                    Margin="15,0,0,0"/>
-                            
-                            <Button x:Name="SaveJamakolChartButton" Content="💾 Save" 
-                                    Click="SaveJamakolChart_Click"
-                                    Margin="5,0,0,0" Padding="10,8"
-                                    Background="#28A745" Foreground="White" 
-                                    FontWeight="SemiBold" BorderThickness="0" Cursor="Hand"
-                                    FontSize="13"/>
-                            
-                            <Button x:Name="ViewSavedChartsButton" Content="📋 Saved" 
-                                    Click="ViewSavedCharts_Click"
-                                    Margin="5,0,0,0" Padding="10,8"
-                                    Background="#4A90D9" Foreground="White" 
-                                    FontWeight="SemiBold" BorderThickness="0" Cursor="Hand"
-                                    FontSize="13"/>
-                                    
-                            <TextBlock x:Name="JamakolStatusText" Text="" Foreground="#888" 
-                                       FontSize="11" Margin="15,0,0,0" VerticalAlignment="Center"/>
-                        </WrapPanel>
-                    </Border>
+                    <controls:JamakolInputBar x:Name="JamakolInputControl" Grid.Row="0"
+                                            CalculateRequested="OnJamakolCalculateRequested"
+                                            SaveRequested="OnJamakolSaveRequested"
+                                            LoadRequested="OnJamakolLoadRequested"
+                                            LiveTimerTick="OnJamakolLiveTimerTick"/>
 
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
@@ -350,238 +130,17 @@
                                         </Grid.ColumnDefinitions>
                                         
                                         <!-- Left: Prasanna Details Special -->
-                                        <Border Grid.Column="0" Background="#ffebe0" BorderBrush="#ff9966" BorderThickness="1" CornerRadius="5" Padding="10">
-                                            <StackPanel x:Name="PrasannaDetailsPanel">
-                                                <TextBlock Text="✧ Prasanna Details Special" FontSize="14" FontWeight="Bold" 
-                                                           Foreground="#ff6600" Margin="0,0,0,10"/>
-                                                
-                                                <!-- Detail Rows -->
-                                                <Grid Margin="0,2">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Text="Planet Towards Udhayam" Foreground="#555" FontSize="11"/>
-                                                    <TextBlock x:Name="PrasannaPlanetTowardsUdhayam" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
-                                                </Grid>
-                                                
-                                                <Grid Margin="0,2">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Text="Udhayam Lord &amp; Bhava" Foreground="#555" FontSize="11"/>
-                                                    <TextBlock x:Name="PrasannaUdhayamLordBhava" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
-                                                </Grid>
-                                                
-                                                <Grid Margin="0,2">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Text="Arudam Bhava" Foreground="#555" FontSize="11"/>
-                                                    <TextBlock x:Name="PrasannaArudamBhava" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
-                                                </Grid>
-                                                
-                                                <Grid Margin="0,2">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Text="Planet towards Arudam" Foreground="#555" FontSize="11"/>
-                                                    <TextBlock x:Name="PrasannaPlanetTowardsArudam" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
-                                                </Grid>
-                                                
-                                                <Grid Margin="0,2">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Text="Planet towards Kavippu" Foreground="#555" FontSize="11"/>
-                                                    <TextBlock x:Name="PrasannaPlanetTowardsKavippu" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
-                                                </Grid>
-                                                
-                                                <Grid Margin="0,2">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Text="Bhava in Kavippu" Foreground="#555" FontSize="11"/>
-                                                    <TextBlock x:Name="PrasannaBhavaInKavippu" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
-                                                </Grid>
-                                                
-                                                <Grid Margin="0,2">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Text="Exalted Planets" Foreground="#555" FontSize="11"/>
-                                                    <TextBlock x:Name="PrasannaExaltedPlanets" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
-                                                </Grid>
-                                                
-                                                <Grid Margin="0,2">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Text="Debilitated Planets" Foreground="#555" FontSize="11"/>
-                                                    <TextBlock x:Name="PrasannaDebilitatedPlanets" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
-                                                </Grid>
-                                                
-                                                <Grid Margin="0,2">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Text="Parivarthana Planets" Foreground="#555" FontSize="11"/>
-                                                    <TextBlock x:Name="PrasannaParivarthanaPlanets" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
-                                                </Grid>
-                                                
-                                                <Grid Margin="0,2">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Text="Planet → Emakandam (ħ)" Foreground="#555" FontSize="11"/>
-                                                    <TextBlock x:Name="PrasannaEmakandam" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
-                                                </Grid>
-                                                
-                                                <Grid Margin="0,2">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Text="Planet → Rahu Time" Foreground="#555" FontSize="11"/>
-                                                    <TextBlock x:Name="PrasannaRahuTime" Grid.Column="1" Text="-" Foreground="#888" FontSize="11"/>
-                                                </Grid>
-                                                
-                                                <Grid Margin="0,2">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Text="Planet → Mrithyu (8th)" Foreground="#555" FontSize="11"/>
-                                                    <TextBlock x:Name="PrasannaMrithyu" Grid.Column="1" Text="-" Foreground="#888" FontSize="11"/>
-                                                </Grid>
-                                            </StackPanel>
-                                        </Border>
+                                        <controls:PrasannaPanel x:Name="PrasannaPanelControl" Grid.Column="0"/>
 
                                         <!-- Right: Panchanga Details -->
                                         <controls:PanchangaPanel x:Name="PanchangaPanelControl" Grid.Column="2"/>
                                     </Grid>
                                     
-                                    <!-- Side-by-Side Jama Graha and Planetary Positions -->
-                                    <Grid Margin="0,5,0,5">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="10"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-
-                                        <!-- Left: Jama Graha Positions -->
-                                        <StackPanel Grid.Column="0">
-                                            <TextBlock Text="◇ Jama Graha Positions" FontSize="14" FontWeight="Bold" 
-                                                       Foreground="#cc0000" Margin="0,0,0,5"/>
-                                            <DataGrid x:Name="JamaGrahaGrid" 
-                                                      Style="{StaticResource DataGridStyle}"
-                                                      AutoGenerateColumns="False"
-                                                      HeadersVisibility="Column"
-                                                      IsReadOnly="True"
-                                                      CanUserAddRows="False"
-                                                      CanUserDeleteRows="False"
-                                                      FontSize="11">
-                                                <DataGrid.ColumnHeaderStyle>
-                                                    <Style TargetType="DataGridColumnHeader">
-                                                        <Setter Property="Background" Value="#cc0000"/>
-                                                        <Setter Property="Foreground" Value="White"/>
-                                                        <Setter Property="Padding" Value="6,4"/>
-                                                        <Setter Property="FontWeight" Value="SemiBold"/>
-                                                        <Setter Property="FontSize" Value="10"/>
-                                                    </Style>
-                                                </DataGrid.ColumnHeaderStyle>
-                                                <DataGrid.Columns>
-                                                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="60"/>
-                                                    <DataGridTextColumn Header="Degree" Binding="{Binding DegreeDisplay}" Width="85"/>
-                                                    <DataGridTextColumn Header="Nak" Binding="{Binding NakshatraName}" Width="80"/>
-                                                    <DataGridTextColumn Header="Sign" Binding="{Binding SignName}" Width="70"/>
-                                                </DataGrid.Columns>
-                                            </DataGrid>
-                                        </StackPanel>
-
-                                        <!-- Right: Planetary Positions -->
-                                        <StackPanel Grid.Column="2">
-                                            <TextBlock Text="◇ Planetary Positions" FontSize="14" FontWeight="Bold" 
-                                                       Foreground="#cc0000" Margin="0,0,0,5"/>
-                                            <DataGrid x:Name="JamakolPlanetGrid" 
-                                                      Style="{StaticResource DataGridStyle}"
-                                                      AutoGenerateColumns="False"
-                                                      HeadersVisibility="Column"
-                                                      IsReadOnly="True"
-                                                      CanUserAddRows="False"
-                                                      CanUserDeleteRows="False"
-                                                      FontSize="11">
-                                                <DataGrid.ColumnHeaderStyle>
-                                                    <Style TargetType="DataGridColumnHeader">
-                                                        <Setter Property="Background" Value="#cc0000"/>
-                                                        <Setter Property="Foreground" Value="White"/>
-                                                        <Setter Property="Padding" Value="6,4"/>
-                                                        <Setter Property="FontWeight" Value="SemiBold"/>
-                                                        <Setter Property="FontSize" Value="10"/>
-                                                    </Style>
-                                                </DataGrid.ColumnHeaderStyle>
-                                                <DataGrid.Columns>
-                                                    <DataGridTextColumn Header="Planet" Binding="{Binding EnglishName}" Width="55"/>
-                                                    <DataGridTextColumn Header="Deg" Binding="{Binding DegreeDisplay}" Width="50"/>
-                                                    <DataGridTextColumn Header="Nak" Binding="{Binding NakshatraEnglish}" Width="65"/>
-                                                    <DataGridTextColumn Header="Sign" Binding="{Binding SignEnglish}" Width="55"/>
-                                                </DataGrid.Columns>
-                                            </DataGrid>
-                                        </StackPanel>
-                                    </Grid>
+                                    <!-- Jama Graha and Planetary Positions Grids -->
+                                    <controls:JamakolDataGridsPanel x:Name="DataGridsPanelControl"/>
                                     
                                     <!-- Saved Chart Info Panel (shown when loading saved chart) -->
-                                    <Border x:Name="SavedChartInfoBorder" Background="#e8f5e9" BorderBrush="#4CAF50" BorderThickness="1" 
-                                            CornerRadius="5" Padding="10" Margin="0,10,0,0" Visibility="Collapsed">
-                                        <StackPanel>
-                                            <TextBlock Text="📋 Loaded Chart Info" FontSize="13" FontWeight="Bold" Foreground="#2E7D32" Margin="0,0,0,8"/>
-                                            
-                                            <Grid Margin="0,3,0,0">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="80"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="Result:" Foreground="#555" FontSize="11" FontWeight="SemiBold"/>
-                                                <Border Grid.Column="1" x:Name="SavedChartResultBorder" Padding="8,2" CornerRadius="3" HorizontalAlignment="Left">
-                                                    <TextBlock x:Name="SavedChartResult" Text="" FontSize="11" FontWeight="SemiBold" Foreground="White"/>
-                                                </Border>
-                                            </Grid>
-                                            
-                                            <Grid Margin="0,6,0,0">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="80"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="Category:" Foreground="#555" FontSize="11" FontWeight="SemiBold"/>
-                                                <TextBlock Grid.Column="1" x:Name="SavedChartCategory" Text="" FontSize="11" Foreground="#333"/>
-                                            </Grid>
-                                            
-                                            <Grid Margin="0,6,0,0">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="80"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="Tags:" Foreground="#555" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Top"/>
-                                                <WrapPanel Grid.Column="1" x:Name="SavedChartTags"/>
-                                            </Grid>
-                                            
-                                            <StackPanel Margin="0,6,0,0">
-                                                <TextBlock Text="Prediction / Notes:" Foreground="#555" FontSize="11" FontWeight="SemiBold"/>
-                                                <Border Background="White" BorderBrush="#ccc" BorderThickness="1" Padding="8" CornerRadius="3" Margin="0,3,0,0">
-                                                    <TextBlock x:Name="SavedChartPrediction" Text="" FontSize="11" Foreground="#333" TextWrapping="Wrap"/>
-                                                </Border>
-                                            </StackPanel>
-                                        </StackPanel>
-                                    </Border>
+                                    <controls:SavedChartInfoPanel x:Name="SavedChartInfoPanelControl"/>
                                 </StackPanel>
                             </ScrollViewer>
                         </Border>

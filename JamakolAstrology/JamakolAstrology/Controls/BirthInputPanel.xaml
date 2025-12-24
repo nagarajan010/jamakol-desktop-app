@@ -1,0 +1,38 @@
+<UserControl x:Class="JamakolAstrology.Controls.BirthInputPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <Border Style="{StaticResource InputPanelStyle}">
+        <WrapPanel VerticalAlignment="Center">
+            <TextBlock Text="Name:" Style="{StaticResource TopLabelStyle}"/>
+            <TextBox x:Name="NameInput" Style="{StaticResource TopInputStyle}" Width="120" Text="Sample Person"/>
+
+            <TextBlock Text="Date:" Style="{StaticResource TopLabelStyle}"/>
+            <DatePicker x:Name="DateInput" Style="{StaticResource DatePickerStyle}" Width="120"
+                        SelectedDate="{x:Static sys:DateTime.Now}"/>
+
+            <TextBlock Text="Time:" Style="{StaticResource TopLabelStyle}"/>
+            <TextBox x:Name="TimeInput" Style="{StaticResource TopInputStyle}" Width="70" Text="12:00:00"/>
+
+            <TextBlock Text="Location:" Style="{StaticResource TopLabelStyle}"/>
+            <TextBox x:Name="LocationInput" Style="{StaticResource TopInputStyle}" Width="100" Text="Chennai"/>
+
+            <TextBlock Text="Lat:" Style="{StaticResource TopLabelStyle}"/>
+            <TextBox x:Name="LatitudeInput" Style="{StaticResource TopInputStyle}" Width="65" Text="13.0827"/>
+
+            <TextBlock Text="Long:" Style="{StaticResource TopLabelStyle}"/>
+            <TextBox x:Name="LongitudeInput" Style="{StaticResource TopInputStyle}" Width="65" Text="80.2707"/>
+
+            <TextBlock Text="TZ:" Style="{StaticResource TopLabelStyle}"/>
+            <TextBox x:Name="TimezoneInput" Style="{StaticResource TopInputStyle}" Width="45" Text="5.5"/>
+
+            <Button x:Name="CalculateButton" Content="Calculate" 
+                    Style="{StaticResource ButtonStyle}" 
+                    Click="CalculateButton_Click"
+                    Margin="15,0,0,0"/>
+
+            <TextBlock x:Name="StatusText" Text="" Foreground="#888" 
+                       FontSize="11" Margin="15,0,0,0" VerticalAlignment="Center"/>
+        </WrapPanel>
+    </Border>
+</UserControl>

@@ -2,53 +2,19 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:sys="clr-namespace:System;assembly=mscorlib">
-    <UserControl.Resources>
-        <Style x:Key="InputStyle" TargetType="TextBox">
-            <Setter Property="Background" Value="#fff"/>
-            <Setter Property="Foreground" Value="#333"/>
-            <Setter Property="BorderBrush" Value="#ccc"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="6,4"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-        </Style>
-        <Style x:Key="LabelStyle" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="#666"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Margin" Value="8,0,5,0"/>
-        </Style>
-        <Style x:Key="DatePickerStyle" TargetType="DatePicker">
-            <Setter Property="Background" Value="#fff"/>
-            <Setter Property="Foreground" Value="#333"/>
-            <Setter Property="BorderBrush" Value="#ccc"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="3"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-        </Style>
-        <Style x:Key="ButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#cc0000"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="15,8"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Cursor" Value="Hand"/>
-        </Style>
-    </UserControl.Resources>
+
     
     <Border Background="#fff8dc" Padding="10,8" BorderBrush="#ddd" BorderThickness="1" CornerRadius="5" Margin="0,0,0,10">
         <WrapPanel VerticalAlignment="Center">
-            <TextBlock Text="Name:" Style="{StaticResource LabelStyle}"/>
-            <TextBox x:Name="NameInput" Style="{StaticResource InputStyle}" Width="120" Text="Query"/>
+            <TextBlock Text="Name:" Style="{StaticResource TopLabelStyle}"/>
+            <TextBox x:Name="NameInput" Style="{StaticResource TopInputStyle}" Width="120" Text="Query"/>
 
-            <TextBlock Text="Date:" Style="{StaticResource LabelStyle}"/>
+            <TextBlock Text="Date:" Style="{StaticResource TopLabelStyle}"/>
             <DatePicker x:Name="DateInput" Style="{StaticResource DatePickerStyle}" Width="120"
                         SelectedDate="{x:Static sys:DateTime.Now}"/>
 
-            <TextBlock Text="Time:" Style="{StaticResource LabelStyle}"/>
-            <TextBox x:Name="TimeInput" Style="{StaticResource InputStyle}" Width="70" Text="12:00:00"/>
+            <TextBlock Text="Time:" Style="{StaticResource TopLabelStyle}"/>
+            <TextBox x:Name="TimeInput" Style="{StaticResource TopInputStyle}" Width="70" Text="12:00:00"/>
             <Button Content="Now" Click="NowButton_Click"
                     Margin="5,0,0,0" Padding="8,4"
                     Background="#4CAF50" Foreground="White" 
@@ -58,14 +24,14 @@
                     Background="#2196F3" Foreground="White" 
                     FontWeight="Bold" BorderThickness="0" Cursor="Hand"/>
 
-            <TextBlock Text="Lat:" Style="{StaticResource LabelStyle}"/>
-            <TextBox x:Name="LatInput" Style="{StaticResource InputStyle}" Width="65" Text="13.0827"/>
+            <TextBlock Text="Lat:" Style="{StaticResource TopLabelStyle}"/>
+            <TextBox x:Name="LatInput" Style="{StaticResource TopInputStyle}" Width="65" Text="13.0827"/>
 
-            <TextBlock Text="Long:" Style="{StaticResource LabelStyle}"/>
-            <TextBox x:Name="LongInput" Style="{StaticResource InputStyle}" Width="65" Text="80.2707"/>
+            <TextBlock Text="Long:" Style="{StaticResource TopLabelStyle}"/>
+            <TextBox x:Name="LongInput" Style="{StaticResource TopInputStyle}" Width="65" Text="80.2707"/>
 
-            <TextBlock Text="TZ:" Style="{StaticResource LabelStyle}"/>
-            <TextBox x:Name="TzInput" Style="{StaticResource InputStyle}" Width="45" Text="5.5"/>
+            <TextBlock Text="TZ:" Style="{StaticResource TopLabelStyle}"/>
+            <TextBox x:Name="TzInput" Style="{StaticResource TopInputStyle}" Width="45" Text="5.5"/>
 
             <Button Content="Calculate" Style="{StaticResource ButtonStyle}" 
                     Click="CalculateButton_Click" Margin="15,0,0,0"/>

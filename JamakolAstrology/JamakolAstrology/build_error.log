@@ -1,12 +1,12 @@
 MSBuild version 17.8.3+195e7f5a3 for .NET
   Determining projects to restore...
   All projects are up-to-date for restore.
-C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\MainWindow.xaml.cs(327,42): error CS7036: There is no argument given that corresponds to the required parameter 'ayanamsha' of 'ChartCalculator.CalculateChart(BirthData, AyanamshaType)' [C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\JamakolAstrology_jqgbuuyu_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\MainWindow.xaml(15,6): error MC3074: The tag 'Window.Resources' does not exist in XML namespace 'http://schemas.microsoft.com/winfx/2006/xaml/presentation'. Line 15 Position 6. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\JamakolAstrology.csproj]
 
 Build FAILED.
 
-C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\MainWindow.xaml.cs(327,42): error CS7036: There is no argument given that corresponds to the required parameter 'ayanamsha' of 'ChartCalculator.CalculateChart(BirthData, AyanamshaType)' [C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\JamakolAstrology_jqgbuuyu_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\MainWindow.xaml(15,6): error MC3074: The tag 'Window.Resources' does not exist in XML namespace 'http://schemas.microsoft.com/winfx/2006/xaml/presentation'. Line 15 Position 6. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology\JamakolAstrology\JamakolAstrology.csproj]
     0 Warning(s)
     1 Error(s)
 
-Time Elapsed 00:00:00.96
+Time Elapsed 00:00:01.02

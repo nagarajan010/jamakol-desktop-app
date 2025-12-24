@@ -49,12 +49,10 @@ public partial class MainWindow : Window
         var now = DateTime.Now;
         
         // Birth Chart tab
-        DateInput.SelectedDate = now;
-        TimeInput.Text = now.ToString("HH:mm:ss");
+        BirthInputControl.SetDateTime(now);
         
         // Jamakol tab - also set to current time
-        JamakolDateInput.SelectedDate = now;
-        JamakolTimeInput.Text = now.ToString("HH:mm:ss");
+        JamakolInputControl.UpdateToCurrentTime();
     }
 
     private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -89,17 +87,18 @@ public partial class MainWindow : Window
 
     private void CalculateChart()
     {
-        StatusText.Text = "Calculating...";
+
+        BirthInputControl.SetStatus("Calculating...");
 
         // Parse input data
         var birthData = new BirthData
         {
-            Name = NameInput.Text.Trim(),
+            Name = BirthInputControl.PersonName.Trim(),
             BirthDateTime = ParseDateTime(),
-            Latitude = double.Parse(LatitudeInput.Text),
-            Longitude = double.Parse(LongitudeInput.Text),
-            Location = LocationInput.Text.Trim(),
-            TimeZoneOffset = double.Parse(TimezoneInput.Text)
+            Latitude = double.Parse(BirthInputControl.Latitude),
+            Longitude = double.Parse(BirthInputControl.Longitude),
+            Location = BirthInputControl.Location.Trim(),
+            TimeZoneOffset = double.Parse(BirthInputControl.Timezone)
         };
 
         // Calculate chart
@@ -182,7 +181,8 @@ public partial class MainWindow : Window
         JamakolChartControl.UpdateChart(jamakolData, jamaGrahas, specialPoints, _appSettings.ChartFontSize, _appSettings.JamaGrahaFontSize, dayLord);
         UpdateJamakolPlanetGrid(jamakolData);
 
-        StatusText.Text = $"Calculated. Day: {dayLord} (Vedic Date: {vedicDate:dd-MMM})";
+
+        BirthInputControl.SetStatus($"Calculated. Day: {dayLord} (Vedic Date: {vedicDate:dd-MMM})");
     }
 
     private List<SpecialPoint> CalculateSpecialPoints(
@@ -224,7 +224,7 @@ public partial class MainWindow : Window
         return specialPoints;
     }
 
-    private void CalculateButton_Click(object sender, RoutedEventArgs e)
+    private void OnBirthCalculateRequested(object sender, EventArgs e)
     {
         try
         {
@@ -232,11 +232,14 @@ public partial class MainWindow : Window
         }
         catch (Exception ex)
         {
-            StatusText.Text = $"Error: {ex.Message}";
+
+            BirthInputControl.SetStatus($"Error: {ex.Message}");
             MessageBox.Show($"Error calculating chart:\n{ex.Message}", "Calculation Error", 
                           MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
+
+
 
     private void JamakolCalculateButton_Click(object sender, RoutedEventArgs e)
     {
@@ -246,67 +249,24 @@ public partial class MainWindow : Window
         }
         catch (Exception ex)
         {
-            JamakolStatusText.Text = $"Error: {ex.Message}";
+            JamakolInputControl.SetStatus($"Error: {ex.Message}");
             MessageBox.Show($"Error calculating Jamakol chart:\n{ex.Message}", "Calculation Error", 
                           MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
-    private void JamakolNowButton_Click(object sender, RoutedEventArgs e)
+    private void OnJamakolCalculateRequested(object sender, EventArgs e)
+    {
+        CalculateJamakolChart();
+    }
+
+
+
+    private void OnJamakolLiveTimerTick(object sender, EventArgs e)
     {
         try
         {
-            // Set current date and time
-            var now = DateTime.Now;
-            JamakolDateInput.SelectedDate = now.Date;
-            JamakolTimeInput.Text = now.ToString("HH:mm:ss");
-            
-            // Auto-calculate
-            CalculateJamakolChart();
-        }
-        catch (Exception ex)
-        {
-            JamakolStatusText.Text = $"Error: {ex.Message}";
-            MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-    }
-
-    private void JamakolStartStopButton_Click(object sender, RoutedEventArgs e)
-    {
-        if (_liveTimer == null || !_liveTimer.IsEnabled)
-        {
-            // Start the timer
-            _liveTimer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromSeconds(1)
-            };
-            _liveTimer.Tick += LiveTimer_Tick;
-            _liveTimer.Start();
-            
-            JamakolStartStopButton.Content = "Stop";
-            JamakolStartStopButton.Background = new System.Windows.Media.SolidColorBrush(
-                System.Windows.Media.Color.FromRgb(244, 67, 54)); // Red
-        }
-        else
-        {
-            // Stop the timer
-            _liveTimer.Stop();
-            _liveTimer.Tick -= LiveTimer_Tick;
-            _liveTimer = null;
-            
-            JamakolStartStopButton.Content = "Start";
-            JamakolStartStopButton.Background = new System.Windows.Media.SolidColorBrush(
-                System.Windows.Media.Color.FromRgb(33, 150, 243)); // Blue
-        }
-    }
-
-    private void LiveTimer_Tick(object? sender, EventArgs e)
-    {
-        try
-        {
-            var now = DateTime.Now;
-            JamakolDateInput.SelectedDate = now.Date;
-            JamakolTimeInput.Text = now.ToString("HH:mm:ss");
+            // Control has already updated the time display internally
             CalculateJamakolChart();
         }
         catch
@@ -315,11 +275,12 @@ public partial class MainWindow : Window
         }
     }
 
+
     private void CalculateJamakolChart()
     {
         // Parse Jamakol-specific input data
-        var jamakolDate = JamakolDateInput.SelectedDate ?? DateTime.Now;
-        var jamakolTimeParts = JamakolTimeInput.Text.Split(':');
+        var jamakolDate = JamakolInputControl.SelectedDate ?? DateTime.Now;
+        var jamakolTimeParts = JamakolInputControl.TimeText.Split(':');
         int hour = jamakolTimeParts.Length > 0 ? int.Parse(jamakolTimeParts[0]) : 12;
         int minute = jamakolTimeParts.Length > 1 ? int.Parse(jamakolTimeParts[1]) : 0;
         int second = jamakolTimeParts.Length > 2 ? int.Parse(jamakolTimeParts[2]) : 0;
@@ -327,12 +288,12 @@ public partial class MainWindow : Window
 
         var birthData = new BirthData
         {
-            Name = JamakolNameInput.Text.Trim(),
+            Name = JamakolInputControl.ChartName.Trim(),
             BirthDateTime = jamakolDateTime,
-            Latitude = double.Parse(JamakolLatInput.Text),
-            Longitude = double.Parse(JamakolLongInput.Text),
+            Latitude = double.Parse(JamakolInputControl.LatitudeText),
+            Longitude = double.Parse(JamakolInputControl.LongitudeText),
             Location = "Query",
-            TimeZoneOffset = double.Parse(JamakolTzInput.Text)
+            TimeZoneOffset = double.Parse(JamakolInputControl.TimezoneText)
         };
 
         // Calculate chart for Jamakol
@@ -395,7 +356,18 @@ public partial class MainWindow : Window
         var panchangaDetails = _panchangaCalculator.Calculate(chartData, todaySunrise, todaySunset, chartData.AyanamsaValue);
         UpdatePanchangaDetailsUI(panchangaDetails);
 
-        JamakolStatusText.Text = $"Calculated. Day: {dayLord} (Vedic Date: {vedicDate:dd-MMM})";
+        JamakolInputControl.SetStatus($"Calculated. Day: {dayLord} (Vedic Date: {vedicDate:dd-MMM})");
+        
+        // Hide saved chart info when manually calculating (since it's a new or modified chart)
+        // Only keep it if we just loaded it, but usually a manual Calculate implies a change.
+        // Determining if this calculation was triggered by Load or Manual is tricky,
+        // but typically if we just Loaded, we populated the fields. 
+        // However, if the user hits Calculate AGAIN, it's a fresh calculation.
+        // So hiding it is safer to avoid misleading data.
+        if (SavedChartInfoPanelControl != null)
+        {
+            SavedChartInfoPanelControl.Hide();
+        }
     }
 
     private void SettingsButton_Click(object sender, RoutedEventArgs e)
@@ -430,7 +402,8 @@ public partial class MainWindow : Window
                     CalculateJamakolChart();
                 }
                 
-                StatusText.Text = "Settings saved and applied";
+                if (BirthInputControl != null)
+                    BirthInputControl.SetStatus("Settings saved and applied");
             }
         }
         catch (Exception ex)
@@ -468,13 +441,13 @@ public partial class MainWindow : Window
         }
     }
 
-    private void SaveJamakolChart_Click(object sender, RoutedEventArgs e)
+    private void OnJamakolSaveRequested(object sender, EventArgs e)
     {
         try
         {
             // Parse current Jamakol inputs
-            var jamakolDate = JamakolDateInput.SelectedDate ?? DateTime.Now;
-            var jamakolTimeParts = JamakolTimeInput.Text.Split(':');
+            var jamakolDate = JamakolInputControl.SelectedDate ?? DateTime.Now;
+            var jamakolTimeParts = JamakolInputControl.TimeText.Split(':');
             int hour = jamakolTimeParts.Length > 0 ? int.Parse(jamakolTimeParts[0]) : 12;
             int minute = jamakolTimeParts.Length > 1 ? int.Parse(jamakolTimeParts[1]) : 0;
             int second = jamakolTimeParts.Length > 2 ? int.Parse(jamakolTimeParts[2]) : 0;
@@ -483,11 +456,11 @@ public partial class MainWindow : Window
             // Create saved chart model
             var savedChart = new SavedJamakolChart
             {
-                Name = JamakolNameInput.Text.Trim(),
+                Name = JamakolInputControl.ChartName.Trim(),
                 QueryDateTime = jamakolDateTime,
-                Latitude = double.Parse(JamakolLatInput.Text),
-                Longitude = double.Parse(JamakolLongInput.Text),
-                Timezone = double.Parse(JamakolTzInput.Text)
+                Latitude = double.Parse(JamakolInputControl.LatitudeText),
+                Longitude = double.Parse(JamakolInputControl.LongitudeText),
+                Timezone = double.Parse(JamakolInputControl.TimezoneText)
             };
 
             // Serialize current chart data if available
@@ -501,7 +474,7 @@ public partial class MainWindow : Window
             saveDialog.Owner = this;
             if (saveDialog.ShowDialog() == true && saveDialog.IsSaved)
             {
-                JamakolStatusText.Text = "Chart saved successfully!";
+                JamakolInputControl.SetStatus("Chart saved successfully!");
             }
         }
         catch (Exception ex)
@@ -510,7 +483,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private void ViewSavedCharts_Click(object sender, RoutedEventArgs e)
+    private void OnJamakolLoadRequested(object sender, EventArgs e)
     {
         try
         {
@@ -521,21 +494,31 @@ public partial class MainWindow : Window
                 var chart = dialog.ChartToLoad;
                 
                 // Load the chart data into Jamakol inputs
-                JamakolNameInput.Text = chart.Name;
-                JamakolDateInput.SelectedDate = chart.QueryDateTime.Date;
-                JamakolTimeInput.Text = chart.QueryDateTime.ToString("HH:mm:ss");
-                JamakolLatInput.Text = chart.Latitude.ToString();
-                JamakolLongInput.Text = chart.Longitude.ToString();
-                JamakolTzInput.Text = chart.Timezone.ToString();
+                JamakolInputControl.SetInputs(
+                    chart.Name,
+                    chart.QueryDateTime.Date,
+                    chart.QueryDateTime.ToString("HH:mm:ss"),
+                    chart.Latitude,
+                    chart.Longitude,
+                    chart.Timezone
+                );
                 
                 // Recalculate the chart
-                JamakolCalculateButton_Click(sender, e);
-                JamakolStatusText.Text = $"Loaded: {chart.Name}";
+                CalculateJamakolChart();
+                JamakolInputControl.SetStatus($"Loaded: {chart.Name}");
                 
                 // Show chart details dialog with category, tags, result, prediction
-                var detailsDialog = new ChartDetailsDialog(chart, _chartStorageService);
-                detailsDialog.Owner = this;
-                detailsDialog.ShowDialog();
+                // Resolve category and tags
+                var categoryName = chart.CategoryId.HasValue ? _chartStorageService.GetCategory(chart.CategoryId.Value)?.Name : "";
+                var tagNames = chart.TagIds.Select(id => _chartStorageService.GetTag(id)?.Name).Where(n => !string.IsNullOrEmpty(n)).Cast<string>().ToList();
+
+                // Show chart details in the new modular panel
+                SavedChartInfoPanelControl.SetChartInfo(
+                    chart.Result.ToString(),
+                    categoryName ?? "",
+                    tagNames,
+                    chart.Prediction
+                );
             }
         }
         catch (Exception ex)
@@ -546,8 +529,8 @@ public partial class MainWindow : Window
 
     private DateTime ParseDateTime()
     {
-        var date = DateInput.SelectedDate ?? DateTime.Now;
-        var timeParts = TimeInput.Text.Split(':');
+        var date = BirthInputControl.SelectedDate ?? DateTime.Now;
+        var timeParts = BirthInputControl.TimeText.Split(':');
         
         int hour = timeParts.Length > 0 ? int.Parse(timeParts[0]) : 12;
         int minute = timeParts.Length > 1 ? int.Parse(timeParts[1]) : 0;
@@ -558,116 +541,25 @@ public partial class MainWindow : Window
 
     private void UpdatePlanetGrid(ChartData chartData)
     {
-        var displayData = chartData.Planets.Select(p => new PlanetDisplayItem
-        {
-            Name = p.Name,
-            SignName = p.SignName.Length > 2 ? p.SignName.Substring(0, 2) : p.SignName,
-            DegreeDisplay = $"{(int)p.DegreeInSign}°{(int)((p.DegreeInSign % 1) * 60)}'",
-            NakshatraShort = $"{p.NakshatraName} ({p.NakshatraPada})",
-            RetroDisplay = p.IsRetrograde ? "R" : ""
-        }).ToList();
-
-        PlanetGrid.ItemsSource = displayData;
+        BirthPlanetaryDetailsControl.UpdateDetails(chartData);
     }
 
     private void UpdateJamakolPlanetGrid(JamakolData jamakolData)
     {
-        var displayData = jamakolData.PlanetPositions.Select(p => new JamakolPlanetGridItem
-        {
-            EnglishName = p.EnglishName,
-            SignEnglish = p.SignEnglish.Length > 2 ? p.SignEnglish.Substring(0, 2) : p.SignEnglish,
-            DegreeDisplay = p.DegreeDisplay, 
-            NakshatraEnglish = $"{p.NakshatraEnglish} ({p.NakshatraPada})"
-        }).ToList();
-
-        JamakolPlanetGrid.ItemsSource = displayData;
+        // Delegate to the modular DataGridsPanel control
+        DataGridsPanelControl.UpdatePlanetGrid(jamakolData);
     }
 
     private void UpdateJamaGrahaGrid(List<JamaGrahaPosition> jamaGrahas, List<SpecialPoint> specialPoints)
     {
-        // Create a list of all items first
-        var allItems = new List<JamaGrahaGridItem>();
-        
-        // 1. Add Special Points
-        foreach (var point in specialPoints)
-        {
-            double deg = point.DegreeInSign;
-            string dms = $"{(int)deg}°{(int)((deg % 1) * 60)}'{(int)(((deg % 1) * 60 % 1) * 60)}\"";
-            string signShort = point.Sign.Length > 2 ? point.Sign.Substring(0, 2) : point.Sign;
-            string nakWithType = $"{point.NakshatraName} ({point.Pada})";
-            allItems.Add(new JamaGrahaGridItem { Name = point.Name, DegreeDisplay = dms, NakshatraName = nakWithType, SignName = signShort });
-        }
-        
-        // 2. Add Planets
-        foreach (var graha in jamaGrahas)
-        {
-            string signShort = graha.SignName.Length > 2 ? graha.SignName.Substring(0, 2) : graha.SignName;
-            string nakWithType = $"{graha.NakshatraName} ({graha.Pada})";
-            allItems.Add(new JamaGrahaGridItem { Name = graha.Name, DegreeDisplay = graha.DegreeDisplay, NakshatraName = nakWithType, SignName = signShort });
-        }
-
-        // 3. Define priority order
-        var priorityNames = new[] { "Udayam", "Aarudam", "Kavippu" };
-        var orderedItems = new List<JamaGrahaGridItem>();
-        
-        // 4. Extract priority items in order
-        foreach (var name in priorityNames)
-        {
-             var item = allItems.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-             if (item != null)
-             {
-                 orderedItems.Add(item);
-                 allItems.Remove(item);
-             }
-        }
-        
-        // 5. Append remaining items
-        orderedItems.AddRange(allItems);
-
-        JamaGrahaGrid.ItemsSource = orderedItems;
+        // Delegate to the modular DataGridsPanel control
+        DataGridsPanelControl.UpdateJamaGrahaGrid(jamaGrahas, specialPoints);
     }
 
     private void UpdatePrasannaDetailsUI(PrasannaDetails details)
     {
-        // Planet towards Udhayam
-        PrasannaPlanetTowardsUdhayam.Text = !string.IsNullOrEmpty(details.PlanetTowardsUdhayam) 
-            ? $"{details.PlanetTowardsUdhayam.ToUpper()} {details.PlanetTowardsUdhayamPercent:F2}%" 
-            : "-";
-        
-        // Udhayam Lord & Bhava
-        PrasannaUdhayamLordBhava.Text = !string.IsNullOrEmpty(details.UdhayamLord) 
-            ? $"{details.UdhayamLord.ToUpper()} - {details.UdhayamBhava}" 
-            : "-";
-        
-        // Arudam Bhava
-        PrasannaArudamBhava.Text = details.ArudamBhava > 0 ? details.ArudamBhava.ToString() : "-";
-        
-        // Planet towards Arudam
-        PrasannaPlanetTowardsArudam.Text = !string.IsNullOrEmpty(details.PlanetTowardsArudam) 
-            ? $"{details.PlanetTowardsArudam.ToUpper()} {details.PlanetTowardsArudamPercent:F2}%" 
-            : "-";
-        
-        // Planet towards Kavippu
-        PrasannaPlanetTowardsKavippu.Text = !string.IsNullOrEmpty(details.PlanetTowardsKavippu) 
-            ? $"{details.PlanetTowardsKavippu.ToUpper()} {details.PlanetTowardsKavippuPercent:F2}%" 
-            : "-";
-        
-        // Bhava in Kavippu
-        PrasannaBhavaInKavippu.Text = details.BhavaInKavippu > 0 ? details.BhavaInKavippu.ToString() : "-";
-        
-        // Exalted, Debilitated, Parivarthana
-        PrasannaExaltedPlanets.Text = details.ExaltedPlanets ?? "-";
-        PrasannaDebilitatedPlanets.Text = details.DebilitatedPlanets ?? "-";
-        PrasannaParivarthanaPlanets.Text = details.ParivarthanaPlanets ?? "-";
-        
-        // Emakandam
-        PrasannaEmakandam.Text = !string.IsNullOrEmpty(details.PlanetTowardsEmakandam) 
-            ? $"{details.PlanetTowardsEmakandam.ToUpper()} {details.PlanetTowardsEmakandamPercent:F2}%" 
-            : "-";
-        
-        // Rahu Time and Mrithyu (placeholder)
-        PrasannaRahuTime.Text = details.PlanetInRahuTime ?? "-";
-        PrasannaMrithyu.Text = details.PlanetTowardsMrithyu ?? "-";
+        // Delegate to the modular PrasannaPanel control
+        PrasannaPanelControl.UpdateDetails(details);
     }
 
     private void UpdatePanchangaDetailsUI(PanchangaDetails details)
@@ -678,38 +570,31 @@ public partial class MainWindow : Window
 
     private void ApplyFontSizes()
     {
-        // Apply Table Font Size
-        if (JamaGrahaGrid != null) JamaGrahaGrid.FontSize = _appSettings.TableFontSize;
-        if (PlanetGrid != null) PlanetGrid.FontSize = _appSettings.TableFontSize;
-        if (JamakolPlanetGrid != null) JamakolPlanetGrid.FontSize = _appSettings.TableFontSize;
+        // Apply Table Font Size to DataGrids
+        if (DataGridsPanelControl != null)
+            SetFontSizeRecursive(DataGridsPanelControl, _appSettings.TableFontSize);
         
         // Apply Input Font Size for Birth Chart Input Panel
-        if (BirthInputPanel != null)
+        if (BirthInputControl != null)
         {
-            foreach (var child in BirthInputPanel.Children)
-            {
-               if (child is System.Windows.Controls.Control c) c.FontSize = _appSettings.InputFontSize;
-               if (child is System.Windows.Controls.TextBlock t) t.FontSize = _appSettings.InputFontSize;
-               // DatePicker is a Control, so it's covered
-            }
+             SetFontSizeRecursive(BirthInputControl, _appSettings.InputFontSize);
         }
 
         // Apply Input Font Size for Jamakol Input Panel
-        if (JamakolInputPanel != null)
+        if (JamakolInputControl != null)
         {
-             foreach (var child in JamakolInputPanel.Children)
-            {
-               if (child is System.Windows.Controls.Control c) c.FontSize = _appSettings.InputFontSize;
-               if (child is System.Windows.Controls.TextBlock t) t.FontSize = _appSettings.InputFontSize;
-            }
+             SetFontSizeRecursive(JamakolInputControl, _appSettings.InputFontSize);
         }
 
         // Apply Table Font Size to Prasanna and Panchanga Details
-        if (PrasannaDetailsPanel != null)
-             SetFontSizeRecursive(PrasannaDetailsPanel, _appSettings.TableFontSize);
+        if (PrasannaPanelControl != null)
+             SetFontSizeRecursive(PrasannaPanelControl, _appSettings.TableFontSize);
 
         if (PanchangaPanelControl != null)
              SetFontSizeRecursive(PanchangaPanelControl, _appSettings.TableFontSize);
+
+        if (SavedChartInfoPanelControl != null)
+             SetFontSizeRecursive(SavedChartInfoPanelControl, _appSettings.InputFontSize);
     }
     
     private void SetFontSizeRecursive(System.Windows.FrameworkElement element, double size)
@@ -736,30 +621,4 @@ public partial class MainWindow : Window
     }
 }
 
-/// <summary>
-/// Display model for the planet grid
-/// </summary>
-public class PlanetDisplayItem
-{
-    public string Name { get; set; } = "";
-    public string SignName { get; set; } = "";
-    public string DegreeDisplay { get; set; } = "";
-    public string NakshatraShort { get; set; } = "";
-    public string RetroDisplay { get; set; } = "";
-}
 
-public class JamaGrahaGridItem
-{
-    public string Name { get; set; } = "";
-    public string DegreeDisplay { get; set; } = "";
-    public string NakshatraName { get; set; } = "";
-    public string SignName { get; set; } = "";
-}
-
-public class JamakolPlanetGridItem
-{
-    public string EnglishName { get; set; } = "";
-    public string SignEnglish { get; set; } = "";
-    public string DegreeDisplay { get; set; } = "";
-    public string NakshatraEnglish { get; set; } = "";
-}

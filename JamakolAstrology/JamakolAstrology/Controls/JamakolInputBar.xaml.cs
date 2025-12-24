@@ -33,7 +33,18 @@ public partial class JamakolInputBar : UserControl
 
         // Setup live timer
         _liveTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-        _liveTimer.Tick += (s, e) => LiveTimerTick?.Invoke(this, EventArgs.Empty);
+        _liveTimer.Tick += LiveTimer_Tick_Internal;
+    }
+
+    private void LiveTimer_Tick_Internal(object? sender, EventArgs e)
+    {
+        var now = DateTime.Now;
+        // Update the UI fields
+        DateInput.SelectedDate = now;
+        TimeInput.Text = now.ToString("HH:mm:ss");
+        
+        // Notify parent to calculate
+        LiveTimerTick?.Invoke(this, EventArgs.Empty);
     }
 
     // Allow external setting of input values (for loading saved charts)
@@ -56,6 +67,9 @@ public partial class JamakolInputBar : UserControl
         var now = DateTime.Now;
         DateInput.SelectedDate = now;
         TimeInput.Text = now.ToString("HH:mm:ss");
+        
+        // Trigger calculation
+        CalculateRequested?.Invoke(this, EventArgs.Empty);
     }
 
     private void StartStopButton_Click(object sender, RoutedEventArgs e)
@@ -65,14 +79,21 @@ public partial class JamakolInputBar : UserControl
             _liveTimer.Stop();
             _isLiveUpdateRunning = false;
             StartStopButton.Content = "Start";
+            // Revert to Blue
+            StartStopButton.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(33, 150, 243)); 
             StatusText.Text = "Live update stopped";
         }
         else
         {
             _isLiveUpdateRunning = true;
             StartStopButton.Content = "Stop";
+            // Change to Red
+            StartStopButton.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(244, 67, 54));
             StatusText.Text = "Live update running...";
             _liveTimer.Start();
+            
+            // Trigger immediate update
+            LiveTimer_Tick_Internal(this, EventArgs.Empty);
         }
     }
 
