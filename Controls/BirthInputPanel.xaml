@@ -62,6 +62,10 @@
                     Margin="5,0,0,0" Padding="10,8"
                     Background="#4A90D9" Foreground="White" 
                     FontWeight="SemiBold" BorderThickness="0" Cursor="Hand" FontSize="13"/>
+            
+            <CheckBox x:Name="HideDegreesCheckBox" Content="Hide Degrees" 
+                      VerticalAlignment="Center" Margin="15,0,0,0" IsChecked="True"
+                      Checked="HideDegreesCheckBox_Changed" Unchecked="HideDegreesCheckBox_Changed"/>
 
             <TextBlock x:Name="StatusText" Text="" Foreground="#888" 
                        FontSize="11" Margin="15,0,0,0" VerticalAlignment="Center"/>

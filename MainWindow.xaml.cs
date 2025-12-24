@@ -44,6 +44,7 @@ public partial class MainWindow : Window
         // Subscribe to Birth Chart input events
         BirthInputControl.SaveRequested += BirthInputControl_SaveRequested;
         BirthInputControl.LoadRequested += BirthInputControl_LoadRequested;
+        BirthInputControl.HideDegreesChanged += BirthInputControl_HideDegreesChanged;
     }
 
     private void UpdateToCurrentTime()
@@ -104,13 +105,15 @@ public partial class MainWindow : Window
             // Store current data for saving later
             _currentChartData = result.ChartData;
 
-            // Update UI Components
-            ChartControl.UpdateChart(result.ChartData, _appSettings.ChartFontSize);
+            // Update UI Components - pass current hide degrees setting
+            bool hideDegrees = BirthInputControl.HideDegrees;
+            ChartControl.UpdateChart(result.ChartData, _appSettings.ChartFontSize, hideDegrees);
             
             // Display Navamsa (D-9) chart and pass chart data for division switching
             var navamsaChart = result.ChartData.GetDivisionalChart(9);
             if (navamsaChart != null && NavamsaChartControl != null)
             {
+                NavamsaChartControl.HideDegrees = hideDegrees;
                 NavamsaChartControl.UpdateDivisionalChart(navamsaChart, result.ChartData, result.ChartData.BirthData.Name, _appSettings.ChartFontSize);
             }
             
@@ -215,6 +218,16 @@ public partial class MainWindow : Window
     private void OnJamakolCalculateRequested(object sender, EventArgs e) => CalculateJamakolChart();
 
     private void OnJamakolLiveTimerTick(object sender, EventArgs e) => CalculateJamakolChart(); // Live update
+    
+    private void BirthInputControl_HideDegreesChanged(object? sender, bool hideDegrees)
+    {
+        // Update both charts with the new hide degrees setting
+        ChartControl.HideDegrees = hideDegrees;
+        if (NavamsaChartControl != null)
+        {
+            NavamsaChartControl.HideDegrees = hideDegrees;
+        }
+    }
 
     private void BtnBirthChart_Click(object sender, RoutedEventArgs e)
     {
@@ -347,7 +360,7 @@ public partial class MainWindow : Window
         if (PrasannaPanelControl != null) UiThemeHelper.SetFontSizeRecursive(PrasannaPanelControl, _appSettings.TableFontSize);
         if (PanchangaPanelControl != null) UiThemeHelper.SetFontSizeRecursive(PanchangaPanelControl, _appSettings.TableFontSize);
         if (SavedChartInfoPanelControl != null) UiThemeHelper.SetFontSizeRecursive(SavedChartInfoPanelControl, _appSettings.InputFontSize);
-        if (NavamsaChartControl != null) UiThemeHelper.SetFontSizeRecursive(NavamsaChartControl, _appSettings.ChartFontSize);
+        // Note: Chart controls (ChartControl, NavamsaChartControl) handle their own font sizing via UpdateChart parameters
     }
 
     #endregion

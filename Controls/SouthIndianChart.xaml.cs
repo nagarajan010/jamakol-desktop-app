@@ -19,6 +19,25 @@ public partial class SouthIndianChart : UserControl
     private ChartData? _currentChartData;
     private double _currentFontSize = 12;
     private bool _isUpdating = false;
+    private bool _hideDegrees = false;
+    
+    /// <summary>
+    /// Gets or sets whether to hide degrees in planet display
+    /// </summary>
+    public bool HideDegrees 
+    { 
+        get => _hideDegrees; 
+        set 
+        { 
+            _hideDegrees = value;
+            // Refresh display if chart data exists
+            if (_currentChartData != null && DivisionSelector.SelectedItem is ComboBoxItem item && item.Tag != null)
+            {
+                int division = int.Parse(item.Tag.ToString()!);
+                DisplayDivision(division);
+            }
+        }
+    }
 
     public SouthIndianChart()
     {
@@ -97,11 +116,12 @@ public partial class SouthIndianChart : UserControl
     /// <summary>
     /// Update chart display with calculated chart data
     /// </summary>
-    public void UpdateChart(ChartData chartData, double fontSize = 12)
+    public void UpdateChart(ChartData chartData, double fontSize = 12, bool hideDegrees = false)
     {
         // Store for division switching
         _currentChartData = chartData;
         _currentFontSize = fontSize;
+        _hideDegrees = hideDegrees;
         
         // Reset dropdown to D-1
         SetDivision(1);
@@ -152,11 +172,10 @@ public partial class SouthIndianChart : UserControl
         // Add planets
         foreach (var p in chartData.Planets)
         {
-             // Format: "12° Su"
-             string retro = p.IsRetrograde ? " R" : "";
-             string deg = $"{(int)p.DegreeInSign}°";
+             // Format: "12° Su" or "12° (Su)" for retrograde, just "Su" or "(Su)" if hiding degrees
              string abbr = ZodiacUtils.PlanetAbbreviations[p.Planet];
-             string text = $"{deg} {abbr}{retro}";
+             string planetDisplay = p.IsRetrograde ? $"({abbr})" : abbr;
+             string text = _hideDegrees ? planetDisplay : $"{(int)p.DegreeInSign}° {planetDisplay}";
              
              string type = (p.Planet == Models.Planet.Rahu || p.Planet == Models.Planet.Ketu) 
                 ? "rahuKetu" : "planet";
@@ -164,7 +183,7 @@ public partial class SouthIndianChart : UserControl
              displayBySign[p.Sign].Add((text, type));
         }
 
-        // Render to TextBlocks
+        // Render to TextBlocks - use dynamic column layout for better space usage
         foreach (var kvp in displayBySign)
         {
             int sign = kvp.Key;
@@ -174,6 +193,11 @@ public partial class SouthIndianChart : UserControl
             {
                 textBlock.Inlines.Clear();
                 textBlock.FontSize = fontSize;
+                textBlock.TextWrapping = TextWrapping.Wrap;
+                
+                // Use more columns when hiding degrees (items are shorter)
+                // 3-4 columns when hiding degrees, 2-3 columns when showing degrees
+                int columns = _hideDegrees ? 4 : 3;
                 
                 for (int i = 0; i < items.Count; i++)
                 {
@@ -192,9 +216,17 @@ public partial class SouthIndianChart : UserControl
 
                     textBlock.Inlines.Add(run);
                     
+                    // Add separator: line break every N items (columns), space otherwise
                     if (i < items.Count - 1)
                     {
-                        textBlock.Inlines.Add(new System.Windows.Documents.LineBreak());
+                        if ((i + 1) % columns == 0)
+                        {
+                            textBlock.Inlines.Add(new System.Windows.Documents.LineBreak());
+                        }
+                        else
+                        {
+                            textBlock.Inlines.Add(new System.Windows.Documents.Run(" "));
+                        }
                     }
                 }
             }
@@ -260,10 +292,10 @@ public partial class SouthIndianChart : UserControl
         // Add planets at their divisional positions
         foreach (var p in divisionalData.Planets)
         {
-            string retro = p.IsRetrograde ? " R" : "";
-            string deg = $"{(int)p.DivisionalDegree}°";
+            // Format: "12° Su" or "12° (Su)" for retrograde, just "Su" or "(Su)" if hiding degrees
             string abbr = ZodiacUtils.PlanetAbbreviations[p.Planet];
-            string text = $"{deg} {abbr}{retro}";
+            string planetDisplay = p.IsRetrograde ? $"({abbr})" : abbr;
+            string text = _hideDegrees ? planetDisplay : $"{(int)p.DivisionalDegree}° {planetDisplay}";
             
             string type = (p.Planet == Models.Planet.Rahu || p.Planet == Models.Planet.Ketu) 
                 ? "rahuKetu" : "planet";
@@ -271,7 +303,7 @@ public partial class SouthIndianChart : UserControl
             displayBySign[p.DivisionalSign].Add((text, type));
         }
 
-        // Render to TextBlocks
+        // Render to TextBlocks - use dynamic column layout for better space usage
         foreach (var kvp in displayBySign)
         {
             int sign = kvp.Key;
@@ -281,6 +313,10 @@ public partial class SouthIndianChart : UserControl
             {
                 textBlock.Inlines.Clear();
                 textBlock.FontSize = fontSize;
+                textBlock.TextWrapping = TextWrapping.Wrap;
+                
+                // Use more columns when hiding degrees (items are shorter)
+                int columns = _hideDegrees ? 4 : 3;
                 
                 for (int i = 0; i < items.Count; i++)
                 {
@@ -299,9 +335,17 @@ public partial class SouthIndianChart : UserControl
 
                     textBlock.Inlines.Add(run);
                     
+                    // Add separator: line break every N items (columns), space otherwise
                     if (i < items.Count - 1)
                     {
-                        textBlock.Inlines.Add(new System.Windows.Documents.LineBreak());
+                        if ((i + 1) % columns == 0)
+                        {
+                            textBlock.Inlines.Add(new System.Windows.Documents.LineBreak());
+                        }
+                        else
+                        {
+                            textBlock.Inlines.Add(new System.Windows.Documents.Run(" "));
+                        }
                     }
                 }
             }

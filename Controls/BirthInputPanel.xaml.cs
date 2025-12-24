@@ -16,6 +16,7 @@ public partial class BirthInputPanel : UserControl
     public event EventHandler? CalculateRequested;
     public event EventHandler? SaveRequested;
     public event EventHandler? LoadRequested;
+    public event EventHandler<bool>? HideDegreesChanged;
     private readonly GeoNamesService _geoService;
     private bool _isUpdatingText = false; // Prevent circular events
 
@@ -35,6 +36,7 @@ public partial class BirthInputPanel : UserControl
     public string Latitude => LatitudeInput.Text;
     public string Longitude => LongitudeInput.Text;
     public string Timezone => TimezoneInput.Text;
+    public bool HideDegrees => HideDegreesCheckBox.IsChecked == true;
 
     /// <summary>
     /// Apply settings defaults to input fields
@@ -62,6 +64,11 @@ public partial class BirthInputPanel : UserControl
     private void LoadButton_Click(object sender, RoutedEventArgs e)
     {
         LoadRequested?.Invoke(this, EventArgs.Empty);
+    }
+    
+    private void HideDegreesCheckBox_Changed(object sender, RoutedEventArgs e)
+    {
+        HideDegreesChanged?.Invoke(this, HideDegreesCheckBox.IsChecked == true);
     }
 
     private void SearchButton_Click(object sender, RoutedEventArgs e)
