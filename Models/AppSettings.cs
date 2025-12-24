@@ -46,9 +46,18 @@ public class AppSettings
     /// <summary>Default Tab Selection (0=Birth, 1=Jamakol)</summary>
     public int DefaultTabIndex { get; set; } = 0;
 
-    // --- Persistence Logic ---
-
-    private static string SettingsFilePath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings.json");
+    // Settings saved to user's AppData folder (writable even with Program Files install)
+    private static string SettingsFolder
+    {
+        get
+        {
+            string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "JamakolAstrology");
+            if (!Directory.Exists(folder))
+                Directory.CreateDirectory(folder);
+            return folder;
+        }
+    }
+    private static string SettingsFilePath => Path.Combine(SettingsFolder, "settings.json");
 
     /// <summary>
     /// Save settings to JSON file
