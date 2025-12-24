@@ -200,14 +200,27 @@
             </ComboBox>
         </Grid>
 
+        <!-- Default Tab Mode -->
+        <Grid Grid.Row="12" Margin="0,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Default Tab:" Style="{StaticResource LabelStyle}"/>
+            <ComboBox x:Name="DefaultTabCombo" Grid.Column="1" Style="{StaticResource ComboStyle}">
+                <ComboBoxItem Content="Birth Chart" Tag="0"/>
+                <ComboBoxItem Content="Jamakol" Tag="1"/>
+            </ComboBox>
+        </Grid>
+
         <!-- Info Text -->
-        <TextBlock Grid.Row="12" Margin="0,15,0,0" TextWrapping="Wrap"
+        <TextBlock Grid.Row="13" Margin="0,15,0,0" TextWrapping="Wrap"
                    Foreground="#888" FontSize="11" VerticalAlignment="Top">
             Sunrise/sunset times are calculated automatically based on location and date.
         </TextBlock>
 
         <!-- Buttons -->
-        <StackPanel Grid.Row="13" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
+        <StackPanel Grid.Row="14" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
             <Button x:Name="CancelButton" Content="Cancel" Style="{StaticResource CancelButtonStyle}" Click="CancelButton_Click"/>
             <Button x:Name="SaveButton" Content="Save" Style="{StaticResource ButtonStyle}" Click="SaveButton_Click"/>
         </StackPanel>

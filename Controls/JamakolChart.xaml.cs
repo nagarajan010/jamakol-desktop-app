@@ -140,70 +140,62 @@ public partial class JamakolChart : UserControl
 
     private void UpdateCornerBoxes(List<JamaGrahaPosition> jamaGrahas, double jamaGrahaFontSize)
     {
-        // Corner boxes show the Jama Graha planet that is IN that position/house
-        // Each corner box is positioned near a specific house:
-        // - Ve box (top-left) → Pisces (12) position
-        // - Me box (top-2) → Aries (1) position  
-        // - Ju box (top-right) → Gemini (3) position
-        // - Sa box (left) → Capricorn (10) position
-        // - Ma box (right) → Cancer (4) position
-        // - Mo box (bottom-left) → Sagittarius (9) position
-        // - Sn box (bottom-center) → Libra (7) position
-        // - Su box (bottom-right) → Virgo (6) position
+        // Define the mapping: Label (e.g. "Ve") -> (House Index, Default Symbol, TextBlock Control)
+        // Ve box -> Pisces (12)
+        // Me box -> Aries (1)
+        // Ju box -> Gemini (3)
+        // Sa box -> Capricorn (10)
+        // Ma box -> Cancer (4)
+        // Mo box -> Sagittarius (9)
+        // Sn box -> Libra (7)
+        // Su box -> Virgo (6)
+        
+        var boxMap = new List<(int House, string DefaultSymbol, TextBlock TextBlock)>
+        {
+            (12, "Ve", VeText),
+            (1, "Me", MeText),
+            (3, "Ju", JuText),
+            (10, "Sa", SaText),
+            (4, "Ma", MaText),
+            (9, "Mo", MoText),
+            (7, "Sn", SnText),
+            (6, "Su", SuText)
+        };
 
-        // Find planet for each house and display in corresponding corner box
-        var piscesGraha = jamaGrahas.FirstOrDefault(g => g.House == 12);   // Pisces
-        var ariesGraha = jamaGrahas.FirstOrDefault(g => g.House == 1);     // Aries
-        var geminiGraha = jamaGrahas.FirstOrDefault(g => g.House == 3);    // Gemini
-        var capGraha = jamaGrahas.FirstOrDefault(g => g.House == 10);      // Capricorn
-        var cancerGraha = jamaGrahas.FirstOrDefault(g => g.House == 4);    // Cancer
-        var sagGraha = jamaGrahas.FirstOrDefault(g => g.House == 9);       // Sagittarius
-        var libraGraha = jamaGrahas.FirstOrDefault(g => g.House == 7);     // Libra
-        var virgoGraha = jamaGrahas.FirstOrDefault(g => g.House == 6);     // Virgo
+        foreach (var (house, defaultSymbol, tb) in boxMap)
+        {
+            tb.Inlines.Clear();
+            tb.FontSize = jamaGrahaFontSize;
 
-        // Apply font size to all corner box elements
-        VeLabel.FontSize = jamaGrahaFontSize; VeValue.FontSize = jamaGrahaFontSize;
-        MeLabel.FontSize = jamaGrahaFontSize; MeValue.FontSize = jamaGrahaFontSize;
-        JuLabel.FontSize = jamaGrahaFontSize; JuValue.FontSize = jamaGrahaFontSize;
-        SaLabel.FontSize = jamaGrahaFontSize; SaValue.FontSize = jamaGrahaFontSize;
-        MaLabel.FontSize = jamaGrahaFontSize; MaValue.FontSize = jamaGrahaFontSize;
-        MoLabel.FontSize = jamaGrahaFontSize; MoValue.FontSize = jamaGrahaFontSize;
-        SnLabel.FontSize = jamaGrahaFontSize; SnValue.FontSize = jamaGrahaFontSize;
-        SuLabel.FontSize = jamaGrahaFontSize; SuValue.FontSize = jamaGrahaFontSize;
+            var graha = jamaGrahas.FirstOrDefault(g => g.House == house);
+            
+            // 1. Symbol (Bold, Black)
+            var symbolRun = new System.Windows.Documents.Run(graha?.Symbol ?? defaultSymbol);
+            symbolRun.Foreground = new SolidColorBrush(Colors.Black);
+            symbolRun.FontWeight = System.Windows.FontWeights.Bold;
+            tb.Inlines.Add(symbolRun);
 
-        // Update corner box labels and values based on which planet is there
-        // Pisces corner (Ve box position)
-        VeLabel.Text = piscesGraha?.Symbol ?? "Ve";
-        VeValue.Text = piscesGraha != null ? $"{(int)piscesGraha.Degree}°{(int)piscesGraha.DegreeInSign:D2}'\n({piscesGraha.SignName}°)" : "";
+            if (graha != null)
+            {
+                tb.Inlines.Add(new System.Windows.Documents.LineBreak());
 
+                // 2. Degree (Normal, Red)
+                // Format: 16°16'
+                string degreeText = $"{(int)graha.Degree}°{(int)graha.DegreeInSign:D2}'";
+                var degreeRun = new System.Windows.Documents.Run(degreeText);
+                degreeRun.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(204, 0, 0)); // Red
+                tb.Inlines.Add(degreeRun);
 
-        // Aries corner (Me box position)
-        MeLabel.Text = ariesGraha?.Symbol ?? "Me";
-        MeValue.Text = ariesGraha != null ? $"{(int)ariesGraha.Degree}°{(int)ariesGraha.DegreeInSign:D2}'\n({ariesGraha.SignName}°)" : "";
+                tb.Inlines.Add(new System.Windows.Documents.LineBreak());
 
-        // Gemini corner (Ju box position)
-        JuLabel.Text = geminiGraha?.Symbol ?? "Ju";
-        JuValue.Text = geminiGraha != null ? $"{(int)geminiGraha.Degree}°{(int)geminiGraha.DegreeInSign:D2}'\n({geminiGraha.SignName}°)" : "";
-
-        // Capricorn side (Sa box position)
-        SaLabel.Text = capGraha?.Symbol ?? "Sa";
-        SaValue.Text = capGraha != null ? $"{(int)capGraha.Degree}°{(int)capGraha.DegreeInSign:D2}'\n({capGraha.SignName}°)" : "";
-
-        // Cancer side (Ma box position)
-        MaLabel.Text = cancerGraha?.Symbol ?? "Ma";
-        MaValue.Text = cancerGraha != null ? $"{(int)cancerGraha.Degree}°{(int)cancerGraha.DegreeInSign:D2}'\n({cancerGraha.SignName}°)" : "";
-
-        // Sagittarius corner (Mo box position)
-        MoLabel.Text = sagGraha?.Symbol ?? "Mo";
-        MoValue.Text = sagGraha != null ? $"{(int)sagGraha.Degree}°{(int)sagGraha.DegreeInSign:D2}'\n({sagGraha.SignName}°)" : "";
-
-        // Libra corner (Sn box position)
-        SnLabel.Text = libraGraha?.Symbol ?? "Sn";
-        SnValue.Text = libraGraha != null ? $"{(int)libraGraha.Degree}°{(int)libraGraha.DegreeInSign:D2}'\n({libraGraha.SignName}°)" : "";
-
-        // Virgo corner (Su box position)
-        SuLabel.Text = virgoGraha?.Symbol ?? "Su";
-        SuValue.Text = virgoGraha != null ? $"{(int)virgoGraha.Degree}°{(int)virgoGraha.DegreeInSign:D2}'\n({virgoGraha.SignName}°)" : "";    }
+                // 3. Sign Name in Parentheses (Normal, Red)
+                // Format: (Aries)
+                var signRun = new System.Windows.Documents.Run($"({graha.SignName})");
+                signRun.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(204, 0, 0)); // Red
+                tb.Inlines.Add(signRun);
+            }
+        }
+    }
 
     private void ClearAllCells()
     {
@@ -213,15 +205,17 @@ public partial class JamakolChart : UserControl
             tb.Text = string.Empty;
         }
         
-        // Clear corner values and reset labels
-        VeLabel.Text = "Ve"; VeValue.Text = "";
-        MeLabel.Text = "Me"; MeValue.Text = "";
-        JuLabel.Text = "Ju"; JuValue.Text = "";
-        SaLabel.Text = "Sa"; SaValue.Text = "";
-        MaLabel.Text = "Ma"; MaValue.Text = "";
-        MoLabel.Text = "Mo"; MoValue.Text = "";
-        SnLabel.Text = "Sn"; SnValue.Text = "";
-        SuLabel.Text = "Su"; SuValue.Text = "";
+        // Clear corner boxes
+        var cornerBoxes = new[] { VeText, MeText, JuText, SaText, MaText, MoText, SnText, SuText };
+        var defaults = new[] { "Ve", "Me", "Ju", "Sa", "Ma", "Mo", "Sn", "Su" };
+        
+        for (int i = 0; i < cornerBoxes.Length; i++)
+        {
+            cornerBoxes[i].Inlines.Clear();
+            var run = new System.Windows.Documents.Run(defaults[i]);
+            run.FontWeight = System.Windows.FontWeights.Bold;
+            cornerBoxes[i].Inlines.Add(run);
+        }
     }
 
     private string GetPlanetAbbreviation(Models.Planet planet)

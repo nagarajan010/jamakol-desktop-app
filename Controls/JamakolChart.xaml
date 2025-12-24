@@ -65,60 +65,36 @@
 
         <!-- TOP ROW - Corner boxes OUTSIDE the chart -->
         <Border Grid.Row="0" Grid.Column="1" Style="{StaticResource CornerBoxStyle}" HorizontalAlignment="Left" Margin="0,0,0,2">
-            <StackPanel>
-                <TextBlock x:Name="VeLabel" Text="Ve" Foreground="#000" FontSize="9" FontWeight="Bold"/>
-                <TextBlock x:Name="VeValue" Text="" Foreground="#cc0000" FontSize="9"/>
-            </StackPanel>
+            <TextBlock x:Name="VeText" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
         </Border>
         <!-- Me box above Aries (column 2) -->
         <Border Grid.Row="0" Grid.Column="2" Style="{StaticResource CornerBoxStyle}" HorizontalAlignment="Left" Margin="0,0,0,2">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock x:Name="MeLabel" Text="Me" Foreground="#000" FontSize="9" FontWeight="Bold"/>
-                <TextBlock x:Name="MeValue" Text="" Foreground="#cc0000" FontSize="9" Margin="3,0,0,0"/>
-            </StackPanel>
+            <TextBlock x:Name="MeText" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
         </Border>
         <Border Grid.Row="0" Grid.Column="4" Style="{StaticResource CornerBoxStyle}" HorizontalAlignment="Right" Margin="0,0,0,2">
-            <StackPanel>
-                <TextBlock x:Name="JuLabel" Text="Ju" Foreground="#000" FontSize="9" FontWeight="Bold"/>
-                <TextBlock x:Name="JuValue" Text="" Foreground="#cc0000" FontSize="9"/>
-            </StackPanel>
+            <TextBlock x:Name="JuText" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
         </Border>
 
         <!-- LEFT SIDE - Corner box OUTSIDE the chart -->
         <Border Grid.Row="3" Grid.Column="0" Style="{StaticResource CornerBoxStyle}" VerticalAlignment="Bottom" Margin="0,0,2,0">
-            <StackPanel>
-                <TextBlock x:Name="SaLabel" Text="Sa" Foreground="#000" FontSize="9" FontWeight="Bold"/>
-                <TextBlock x:Name="SaValue" Text="" Foreground="#cc0000" FontSize="9"/>
-            </StackPanel>
+            <TextBlock x:Name="SaText" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
         </Border>
 
         <!-- RIGHT SIDE - Corner box OUTSIDE the chart -->
         <Border Grid.Row="2" Grid.Column="5" Style="{StaticResource CornerBoxStyle}" VerticalAlignment="Center" Margin="2,0,0,0">
-            <StackPanel>
-                <TextBlock x:Name="MaLabel" Text="Ma" Foreground="#000" FontSize="9" FontWeight="Bold"/>
-                <TextBlock x:Name="MaValue" Text="" Foreground="#cc0000" FontSize="9"/>
-            </StackPanel>
+            <TextBlock x:Name="MaText" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
         </Border>
 
         <!-- BOTTOM ROW - Corner boxes OUTSIDE the chart -->
         <Border Grid.Row="5" Grid.Column="1" Style="{StaticResource CornerBoxStyle}" HorizontalAlignment="Left" Margin="0,2,0,0">
-            <StackPanel>
-                <TextBlock x:Name="MoLabel" Text="Mo" Foreground="#000" FontSize="9" FontWeight="Bold"/>
-                <TextBlock x:Name="MoValue" Text="" Foreground="#cc0000" FontSize="9"/>
-            </StackPanel>
+            <TextBlock x:Name="MoText" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
         </Border>
         <!-- Sn box below Libra (column 3) -->
         <Border Grid.Row="5" Grid.Column="3" Style="{StaticResource CornerBoxStyle}" HorizontalAlignment="Center" Margin="0,2,0,0">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock x:Name="SnLabel" Text="Sn" Foreground="#000" FontSize="9" FontWeight="Bold"/>
-                <TextBlock x:Name="SnValue" Text="" Foreground="#cc0000" FontSize="9" Margin="3,0,0,0"/>
-            </StackPanel>
+            <TextBlock x:Name="SnText" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
         </Border>
         <Border Grid.Row="5" Grid.Column="4" Style="{StaticResource CornerBoxStyle}" HorizontalAlignment="Right" Margin="0,2,0,0">
-            <StackPanel>
-                <TextBlock x:Name="SuLabel" Text="Su" Foreground="#000" FontSize="9" FontWeight="Bold"/>
-                <TextBlock x:Name="SuValue" Text="" Foreground="#cc0000" FontSize="9"/>
-            </StackPanel>
+            <TextBlock x:Name="SuText" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
         </Border>
 
         <!-- CHART CELLS -->

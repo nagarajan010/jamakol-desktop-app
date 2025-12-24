@@ -58,9 +58,10 @@ public partial class MainWindow : Window
             // Ignore errors on startup
         }
         
-        // Force initial state
-        MainTabControl.SelectedIndex = 0;
-        UpdateTabButtons(0);
+        // Apply initial state based on settings
+        int defaultTab = _appSettings.DefaultTabIndex;
+        MainTabControl.SelectedIndex = defaultTab;
+        UpdateTabButtons(defaultTab);
         
         // Apply initial font settings
         ApplyFontSizes();
@@ -93,6 +94,7 @@ public partial class MainWindow : Window
 
             // Update UI Components
             ChartControl.UpdateChart(result.ChartData, _appSettings.ChartFontSize);
+            if (NavamsaChartControl != null) NavamsaChartControl.ClearChart(); // Ensure plain/empty for now
             BirthPlanetaryDetailsControl.UpdateDetails(result.ChartData);
             
             // Update Jamakol & Associated Grids (Even on Birth Tab, we calc everything)
@@ -326,6 +328,7 @@ public partial class MainWindow : Window
         if (PrasannaPanelControl != null) UiThemeHelper.SetFontSizeRecursive(PrasannaPanelControl, _appSettings.TableFontSize);
         if (PanchangaPanelControl != null) UiThemeHelper.SetFontSizeRecursive(PanchangaPanelControl, _appSettings.TableFontSize);
         if (SavedChartInfoPanelControl != null) UiThemeHelper.SetFontSizeRecursive(SavedChartInfoPanelControl, _appSettings.InputFontSize);
+        if (NavamsaChartControl != null) UiThemeHelper.SetFontSizeRecursive(NavamsaChartControl, _appSettings.ChartFontSize);
     }
 
     #endregion

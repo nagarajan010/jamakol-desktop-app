@@ -65,6 +65,7 @@ public partial class JamakolInputBar : UserControl
     private void NowButton_Click(object sender, RoutedEventArgs e)
     {
         var now = DateTime.Now;
+        NameInput.Text = "Query";
         DateInput.SelectedDate = now;
         TimeInput.Text = now.ToString("HH:mm:ss");
         

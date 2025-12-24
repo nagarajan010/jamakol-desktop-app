@@ -70,6 +70,9 @@ public partial class SettingsWindow : Window
                 break;
             }
         }
+
+        // Select Default Tab
+        DefaultTabCombo.SelectedIndex = Settings.DefaultTabIndex;
     }
 
     private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -102,6 +105,9 @@ public partial class SettingsWindow : Window
             {
                 Settings.PrasannaMode = prasannaMode;
             }
+
+            // Save Default Tab
+            Settings.DefaultTabIndex = DefaultTabCombo.SelectedIndex;
 
             IsSaved = true;
             DialogResult = true;

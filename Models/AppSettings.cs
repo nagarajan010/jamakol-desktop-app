@@ -40,6 +40,9 @@ public class AppSettings
     /// <summary>Calculation mode for Prasanna section</summary>
     public PrasannaCalcMode PrasannaMode { get; set; } = PrasannaCalcMode.JamaGrahaBoxSign;
 
+    /// <summary>Default Tab Selection (0=Birth, 1=Jamakol)</summary>
+    public int DefaultTabIndex { get; set; } = 0;
+
     // --- Persistence Logic ---
 
     private static string SettingsFilePath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings.json");
