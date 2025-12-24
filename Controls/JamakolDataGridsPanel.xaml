@@ -25,7 +25,8 @@
                       BorderBrush="#ddd"
                       BorderThickness="1"
                       GridLinesVisibility="Horizontal"
-                      HorizontalGridLinesBrush="#eee">
+                      HorizontalGridLinesBrush="#eee"
+                      PreviewMouseWheel="DataGrid_PreviewMouseWheel">
                 <DataGrid.ColumnHeaderStyle>
                     <Style TargetType="DataGridColumnHeader">
                         <Setter Property="Background" Value="#cc0000"/>
@@ -37,9 +38,10 @@
                 </DataGrid.ColumnHeaderStyle>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="60"/>
-                    <DataGridTextColumn Header="Degree" Binding="{Binding DegreeDisplay}" Width="85"/>
-                    <DataGridTextColumn Header="Nak" Binding="{Binding NakshatraName}" Width="80"/>
-                    <DataGridTextColumn Header="Sign" Binding="{Binding SignName}" Width="70"/>
+                    <DataGridTextColumn Header="Degree" Binding="{Binding DegreeDisplay}" Width="75"/>
+                    <DataGridTextColumn Header="Nak" Binding="{Binding NakshatraName}" Width="70"/>
+                    <DataGridTextColumn Header="Pd" Binding="{Binding Pada}" Width="25"/>
+                    <DataGridTextColumn Header="Sign" Binding="{Binding SignName}" Width="35"/>
                 </DataGrid.Columns>
             </DataGrid>
         </StackPanel>
@@ -60,7 +62,8 @@
                       BorderBrush="#ddd"
                       BorderThickness="1"
                       GridLinesVisibility="Horizontal"
-                      HorizontalGridLinesBrush="#eee">
+                      HorizontalGridLinesBrush="#eee"
+                      PreviewMouseWheel="DataGrid_PreviewMouseWheel">
                 <DataGrid.ColumnHeaderStyle>
                     <Style TargetType="DataGridColumnHeader">
                         <Setter Property="Background" Value="#cc0000"/>
@@ -71,10 +74,11 @@
                     </Style>
                 </DataGrid.ColumnHeaderStyle>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Planet" Binding="{Binding EnglishName}" Width="55"/>
+                    <DataGridTextColumn Header="Planet" Binding="{Binding EnglishName}" Width="50"/>
                     <DataGridTextColumn Header="Deg" Binding="{Binding DegreeDisplay}" Width="50"/>
                     <DataGridTextColumn Header="Nak" Binding="{Binding NakshatraEnglish}" Width="65"/>
-                    <DataGridTextColumn Header="Sign" Binding="{Binding SignEnglish}" Width="55"/>
+                    <DataGridTextColumn Header="Pd" Binding="{Binding Pada}" Width="25"/>
+                    <DataGridTextColumn Header="Sign" Binding="{Binding SignEnglish}" Width="30"/>
                 </DataGrid.Columns>
             </DataGrid>
         </StackPanel>

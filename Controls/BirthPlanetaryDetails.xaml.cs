@@ -21,7 +21,8 @@ public partial class BirthPlanetaryDetails : UserControl
             Name = p.Name,
             SignName = p.SignName.Length > 2 ? p.SignName.Substring(0, 2) : p.SignName,
             DegreeDisplay = $"{(int)p.DegreeInSign}°{(int)((p.DegreeInSign % 1) * 60)}'",
-            NakshatraShort = $"{p.NakshatraName} ({p.NakshatraPada})",
+            NakshatraShort = p.NakshatraName,
+            PadaDisplay = p.NakshatraPada.ToString(),
             RetroDisplay = p.IsRetrograde ? "R" : ""
         }).ToList();
 
@@ -35,5 +36,6 @@ public class PlanetDisplayItem
     public string SignName { get; set; } = "";
     public string DegreeDisplay { get; set; } = "";
     public string NakshatraShort { get; set; } = "";
+    public string PadaDisplay { get; set; } = "";
     public string RetroDisplay { get; set; } = "";
 }
