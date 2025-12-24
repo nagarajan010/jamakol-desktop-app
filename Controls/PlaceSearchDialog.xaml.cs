@@ -20,7 +20,7 @@ public partial class PlaceSearchDialog : Window
         SearchInput.Focus();
     }
 
-    private async void SearchButton_Click(object sender, RoutedEventArgs e)
+    private void SearchButton_Click(object sender, RoutedEventArgs e)
     {
         PerformSearch();
     }
