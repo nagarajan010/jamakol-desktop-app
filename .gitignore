@@ -45,3 +45,6 @@ mono_crash.*
 
 # Log files
 *.log
+
+# Installer output
+installer/
