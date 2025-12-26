@@ -16,6 +16,7 @@ public class CompositeChartResult
     public List<InauspiciousPeriod> InauspiciousPeriods { get; set; } = new();
     public PrasannaDetails PrasannaDetails { get; set; } = new();
     public PanchangaDetails PanchangaDetails { get; set; } = new();
+    public DashaResult? DashaResult { get; set; }
     
     // Metadata for display
     public string DayLord { get; set; } = "";

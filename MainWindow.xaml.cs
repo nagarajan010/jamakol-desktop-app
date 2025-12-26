@@ -118,21 +118,10 @@ public partial class MainWindow : Window
             }
             
             BirthDetailsPanel.UpdatePlanetaryPositions(result.ChartData);
+            BirthDetailsPanel.UpdateDashas(result.DashaResult);
             
-            // Update Jamakol & Associated Grids (Even on Birth Tab, we calc everything)
-            JamakolChartControl.UpdateChart(
-                result.JamakolData, 
-                result.JamaGrahas, 
-                result.SpecialPoints, 
-                _appSettings.ChartFontSize, 
-                _appSettings.JamaGrahaFontSize, 
-                result.DayLord,
-                _appSettings.UseFixedSignBoxes);
-            
-            DataGridsPanelControl.UpdatePlanetGrid(result.JamakolData);
-            DataGridsPanelControl.UpdateJamaGrahaGrid(result.JamaGrahas, result.SpecialPoints);
-            PrasannaPanelControl.UpdateDetails(result.PrasannaDetails);
-            PanchangaPanelControl.UpdateDetails(result.PanchangaDetails);
+            // Note: We DO NOT update Jamakol controls here anymore, to keep tabs independent.
+            // If user wants Jamakol, they switch to Jamakol tab which has its own calculation.
 
             BirthInputControl.SetStatus($"Calculated. Day: {result.DayLord} (Vedic Date: {result.VedicDate:dd-MMM})");
         }

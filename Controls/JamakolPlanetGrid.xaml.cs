@@ -112,25 +112,39 @@ public partial class JamakolPlanetGrid : UserControl
         var displayData = new List<JamakolPlanetGridItem>();
         
         // Add Lagna first
+        double ascDeg = chartData.AscendantDegree;
+        int ascD = (int)ascDeg;
+        double ascMFull = (ascDeg - ascD) * 60;
+        int ascM = (int)ascMFull;
+        double ascS = (ascMFull - ascM) * 60;
+        
         displayData.Add(new JamakolPlanetGridItem
         {
             EnglishName = "Lagna",
             SignEnglish = chartData.AscendantSignName.Length > 2 ? chartData.AscendantSignName.Substring(0, 2) : chartData.AscendantSignName,
-            DegreeDisplay = $"{(int)chartData.AscendantDegree}°{(int)((chartData.AscendantDegree % 1) * 60)}'",
+            DegreeDisplay = $"{ascD}°{ascM:00}'{ascS:00.00}\"",
             NakshatraEnglish = chartData.AscendantNakshatraName ?? "",
             Pada = chartData.AscendantNakshatraPada.ToString(),
             RetroDisplay = ""
         });
         
         // Add planets
-        displayData.AddRange(chartData.Planets.Select(p => new JamakolPlanetGridItem
-        {
-            EnglishName = p.Name,
-            SignEnglish = p.SignName.Length > 2 ? p.SignName.Substring(0, 2) : p.SignName,
-            DegreeDisplay = $"{(int)p.DegreeInSign}°{(int)((p.DegreeInSign % 1) * 60)}'",
-            NakshatraEnglish = p.NakshatraName,
-            Pada = p.NakshatraPada.ToString(),
-            RetroDisplay = p.IsRetrograde ? "R" : ""
+        displayData.AddRange(chartData.Planets.Select(p => {
+             double pDeg = p.DegreeInSign;
+             int pD = (int)pDeg;
+             double pMFull = (pDeg - pD) * 60;
+             int pM = (int)pMFull;
+             double pS = (pMFull - pM) * 60;
+
+             return new JamakolPlanetGridItem
+             {
+                 EnglishName = p.Name,
+                 SignEnglish = p.SignName.Length > 2 ? p.SignName.Substring(0, 2) : p.SignName,
+                 DegreeDisplay = $"{pD}°{pM:00}'{pS:00.00}\"",
+                 NakshatraEnglish = p.NakshatraName,
+                 Pada = p.NakshatraPada.ToString(),
+                 RetroDisplay = p.IsRetrograde ? "R" : ""
+             };
         }));
 
         DataGridControl.ItemsSource = displayData;

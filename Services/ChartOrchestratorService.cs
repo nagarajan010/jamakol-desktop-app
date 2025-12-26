@@ -20,6 +20,7 @@ public class ChartOrchestratorService
     private readonly InauspiciousPeriodsCalculator _inauspiciousPeriodsCalculator;
     private readonly PrasannaCalculator _prasannaCalculator;
     private readonly PanchangaCalculator _panchangaCalculator;
+    private readonly VimshottariDashaCalculator _vimshottariDashaCalculator;
     private SunriseCalculator _sunriseCalculator;
 
     public ChartOrchestratorService()
@@ -32,6 +33,7 @@ public class ChartOrchestratorService
         _inauspiciousPeriodsCalculator = new InauspiciousPeriodsCalculator();
         _prasannaCalculator = new PrasannaCalculator();
         _panchangaCalculator = new PanchangaCalculator();
+        _vimshottariDashaCalculator = new VimshottariDashaCalculator();
         _sunriseCalculator = new SunriseCalculator();
     }
 
@@ -122,6 +124,19 @@ public class ChartOrchestratorService
         // 9. Calculate Inauspicious Periods (Rahu Kalam, Yamagandam, Gulikai Kalam)
         result.InauspiciousPeriods = _inauspiciousPeriodsCalculator.Calculate(
             todaySunrise, todaySunset, birthData.BirthDateTime, vedicDate.DayOfWeek);
+
+        // 10. Calculate Vimshottari Dasha (sub-levels based on Moon's nakshatra)
+        var moon = result.ChartData.Planets.FirstOrDefault(p => p.Name == "Moon");
+        if (moon != null)
+        {
+            // Calculate starting from birth, find current running dasa for "Now" (or query date)
+            DateTime calculationTargetDate = DateTime.Now; 
+            // If it's Jamakol (query chart), we might care about the query time
+            if (birthData.Location == "Query") calculationTargetDate = birthData.BirthDateTime;
+            
+            result.DashaResult = _vimshottariDashaCalculator.Calculate(
+                moon.Longitude, birthData.BirthDateTime, calculationTargetDate, 6); // 6 levels
+        }
 
         return result;
     }

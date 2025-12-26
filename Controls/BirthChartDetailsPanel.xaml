@@ -25,6 +25,7 @@
                 <Setter Property="FontWeight" Value="SemiBold"/>
                 <Setter Property="FontSize" Value="12"/>
             </Style>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         </TabControl.Resources>
         
         <!-- Basic Tab -->
@@ -69,14 +70,49 @@
         
         <!-- Dashas Tab -->
         <TabItem Header="Dashas">
-            <Border Background="#fffff8" CornerRadius="5" Padding="20" Margin="0,10,0,0" BorderBrush="#ddd" BorderThickness="1">
-                <StackPanel x:Name="DashaContent" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <TextBlock Text="🌟 Dasha System" FontSize="20" FontWeight="Bold" Foreground="#990000" 
-                               HorizontalAlignment="Center" Margin="0,0,0,10"/>
-                    <TextBlock Text="Vimshottari Dasha calculations will be available here" 
-                               Foreground="#666" FontSize="14" HorizontalAlignment="Center" FontStyle="Italic"/>
-                </StackPanel>
-            </Border>
+            <Grid Margin="0,10,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/> <!-- Current Dasha Highlight -->
+                    <RowDefinition Height="*"/>    <!-- Dasha Tree -->
+                </Grid.RowDefinitions>
+
+                <!-- Current Dasha Highlights -->
+                <Border Grid.Row="0" Background="#fff0f0" CornerRadius="5" Padding="10" Margin="0,0,0,10" BorderBrush="#ffcccc" BorderThickness="1">
+                    <StackPanel>
+                        <TextBlock Text="Currently Running" FontSize="12" FontWeight="Bold" Foreground="#990000" Margin="0,0,0,5"/>
+                        <TextBlock x:Name="CurrentDashaText" Text="-" FontSize="16" FontWeight="SemiBold" Foreground="#cc0000"/>
+                        <TextBlock x:Name="CurrentDashaDates" Text="-" FontSize="12" Foreground="#666" Margin="0,2,0,0"/>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                            <TextBlock Text="Levels: " Foreground="#666" FontSize="11"/>
+                            <TextBlock x:Name="CurrentDashaLevels" Text="-" Foreground="#333" FontSize="11" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Dasha Tree View -->
+                <Border Grid.Row="1" Background="#fffff8" CornerRadius="5" Padding="5" BorderBrush="#ddd" BorderThickness="1">
+                    <TreeView x:Name="DashaTreeView" BorderThickness="0" Background="Transparent">
+                        <TreeView.ItemTemplate>
+                            <HierarchicalDataTemplate ItemsSource="{Binding SubPeriods}">
+                                <StackPanel Orientation="Horizontal" Margin="0,2">
+                                    <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold" Foreground="#333"/>
+                                    <TextBlock Text=" (" Foreground="#888"/>
+                                    <TextBlock Text="{Binding ShortDateRange}" Foreground="#666" FontSize="11"/>
+                                    <TextBlock Text=")" Foreground="#888"/>
+                                    <TextBlock Text=" ▶ Current" Foreground="#cc0000" FontWeight="Bold" FontSize="11" Margin="5,0,0,0"
+                                               Visibility="{Binding IsActive, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                </StackPanel>
+                            </HierarchicalDataTemplate>
+                        </TreeView.ItemTemplate>
+                        <TreeView.ItemContainerStyle>
+                            <Style TargetType="TreeViewItem">
+                                <Setter Property="IsExpanded" Value="{Binding IsActive}"/>
+                            </Style>
+                        </TreeView.ItemContainerStyle>
+                    </TreeView>
+                </Border>
+            </Grid>
         </TabItem>
     </TabControl>
 </UserControl>
