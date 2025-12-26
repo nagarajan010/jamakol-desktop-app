@@ -33,7 +33,9 @@
             <DataGridTextColumn Header="Nakshatra" Binding="{Binding NakshatraEnglish}" Width="Auto"/>
             <DataGridTextColumn Header="Pada" Binding="{Binding Pada}" Width="Auto"/>
             <DataGridTextColumn Header="Sign" Binding="{Binding SignEnglish}" Width="Auto"/>
+            <DataGridTextColumn Header="Gati" Binding="{Binding Gati}" Width="Auto"/>
             <DataGridTextColumn Header="R" Binding="{Binding RetroDisplay}" Width="Auto"/>
+            <DataGridTextColumn Header="C" Binding="{Binding CombustionFlag}" Width="Auto" FontWeight="Bold" Foreground="#cc0000"/>
         </DataGrid.Columns>
     </DataGrid>
 </UserControl>

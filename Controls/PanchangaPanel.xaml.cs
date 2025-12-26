@@ -63,6 +63,11 @@ public partial class PanchangaPanel : UserControl
         HoraText.Text = !string.IsNullOrEmpty(details.HoraLord) 
             ? details.HoraLord 
             : "-";
+            
+        // Kala Hora
+        KalaHoraText.Text = !string.IsNullOrEmpty(details.KalaHoraLord) 
+            ? details.KalaHoraLord 
+            : "-";
         
         // Rasi (English - Moon, Sun)
         RasiText.Text = !string.IsNullOrEmpty(details.MoonRasi) 

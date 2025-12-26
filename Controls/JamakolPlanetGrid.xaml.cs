@@ -86,6 +86,8 @@ public partial class JamakolPlanetGrid : UserControl
                 DegreeDisplay = degDisplay,
                 NakshatraEnglish = nakName,
                 Pada = pada.ToString(),
+
+                Gati = "",
                 RetroDisplay = ""
             });
         }
@@ -98,7 +100,10 @@ public partial class JamakolPlanetGrid : UserControl
             DegreeDisplay = p.DegreeDisplay, 
             NakshatraEnglish = p.NakshatraEnglish,
             Pada = p.NakshatraPada.ToString(),
-            RetroDisplay = p.IsRetrograde ? "R" : ""
+
+            Gati = p.Gati, // Now populated from JamakolPlanetPosition
+            RetroDisplay = p.IsRetrograde ? "R" : "",
+            CombustionFlag = p.CombustionFlag
         }));
 
         DataGridControl.ItemsSource = displayData;
@@ -125,6 +130,8 @@ public partial class JamakolPlanetGrid : UserControl
             DegreeDisplay = $"{ascD}°{ascM:00}'{ascS:00.00}\"",
             NakshatraEnglish = chartData.AscendantNakshatraName ?? "",
             Pada = chartData.AscendantNakshatraPada.ToString(),
+
+            Gati = "",
             RetroDisplay = ""
         });
         
@@ -143,7 +150,9 @@ public partial class JamakolPlanetGrid : UserControl
                  DegreeDisplay = $"{pD}°{pM:00}'{pS:00.00}\"",
                  NakshatraEnglish = p.NakshatraName,
                  Pada = p.NakshatraPada.ToString(),
-                 RetroDisplay = p.IsRetrograde ? "R" : ""
+                 Gati = p.Gati,
+                 RetroDisplay = p.IsRetrograde ? "R" : "",
+                 CombustionFlag = p.CombustionFlag
              };
         }));
 
@@ -161,5 +170,7 @@ public class JamakolPlanetGridItem
     public string DegreeDisplay { get; set; } = "";
     public string NakshatraEnglish { get; set; } = "";
     public string Pada { get; set; } = "";
+    public string Gati { get; set; } = "";
     public string RetroDisplay { get; set; } = "";
+    public string CombustionFlag { get; set; } = "";
 }

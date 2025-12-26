@@ -104,8 +104,12 @@ public class ChartCalculator
         
         // Calculate KP Lords for Ketu
         ketuPosition.KpDetails = _kpCalculator.Calculate(ketuPosition.Longitude);
+        ketuPosition.Gati = CalculateGati(Planet.Ketu, rahu.Speed); // Use Rahu's speed for Ketu Gati
         
         chartData.Planets.Add(ketuPosition);
+
+        // Calculate Combustion Status
+        CalculateCombustion(chartData.Planets);
 
         // Calculate divisional charts (commonly used ones)
         // D-9 Navamsa is the most important divisional chart
@@ -145,8 +149,101 @@ public class ChartCalculator
         position.SignName = ZodiacUtils.SignNames[position.Sign];
         position.NakshatraName = ZodiacUtils.NakshatraNames[position.Nakshatra];
         position.House = ZodiacUtils.CalculateHouse(position.Sign, ascendantSign);
+        position.Gati = CalculateGati(planet, speed);
 
         return position;
+    }
+
+    /// <summary>
+    /// Calculate Gati (motion state) based on speed and average daily motion
+    /// </summary>
+    private string CalculateGati(Planet planet, double speed)
+    {
+        // 1. Vakra (Retrograde)
+        if (speed < 0) return "Vakra (Retrograde)";
+
+        // 2. Vikala (Stationary/Zero Speed)
+        if (Math.Abs(speed) < 0.002) return "Vikala (Stationary)";
+
+        // Mean daily motions in degrees (approximate)
+        double meanSpeed = 0;
+        switch (planet)
+        {
+            case Planet.Sun: meanSpeed = 0.985608235827358; break;
+            case Planet.Moon: meanSpeed = 13.176404401210586; break;
+            case Planet.Mars: meanSpeed = 0.5237984622356734; break;
+            case Planet.Mercury: meanSpeed = 0.9860065818020693; break; 
+            case Planet.Jupiter: meanSpeed = 0.08319592078852339; break;
+            case Planet.Venus: meanSpeed = 0.9857931126635223; break; 
+            case Planet.Saturn: meanSpeed = 0.03360972270041907; break;
+            case Planet.Rahu: 
+            case Planet.Ketu:
+                // User provided -0.05299198558774121 for Nodes.
+                // Standard logic returns Vakra for speed < 0 anyway.
+                // If we ever need mean speed for nodes (unlikely for standard Gati logic which defaults to Vakra), it would be approx 0.053.
+                return "Vakra (Retrograde)"; 
+        }
+
+        if (meanSpeed == 0) return ""; 
+
+        // 3. Atichara (Accelerated/Fast) - significantly faster than mean
+        // Threshold: > 125% of mean speed is a good approximation for Atichara entering next sign quickly
+        if (speed > meanSpeed * 1.25) return "Atichara (Accelerated)";
+
+        // 4. Chara (Moving/Fast) - faster than mean but not excessive
+        if (speed > meanSpeed) return "Chara (Fast)";
+
+        // 5. Mandatara (Very Slow) - significantly slower than mean
+        if (speed < meanSpeed * 0.5) return "Mandatara (Very Slow)";
+
+        // 6. Manda (Slow) - slower than mean
+        if (speed < meanSpeed) return "Manda (Slow)";
+
+        // 7. Sama (Even/Mean) - roughly equal to mean
+        return "Sama (Even)"; 
+    }
+
+    /// <summary>
+    /// Calculates combustion status for planets based on their distance from Sun
+    /// </summary>
+    private void CalculateCombustion(List<PlanetPosition> planets)
+    {
+        var sun = planets.FirstOrDefault(p => p.Planet == Planet.Sun);
+        if (sun == null) return;
+
+        foreach (var planet in planets)
+        {
+            if (planet.Planet == Planet.Sun || planet.Planet == Planet.Rahu || planet.Planet == Planet.Ketu || planet.Planet == Planet.Moon)
+                continue;
+
+            double diff = Math.Abs(sun.Longitude - planet.Longitude);
+            if (diff > 180) diff = 360 - diff;
+
+            double orb = 0;
+            switch (planet.Planet)
+            {
+                case Planet.Mars:
+                    orb = 17;
+                    break;
+                case Planet.Mercury:
+                    orb = planet.IsRetrograde ? 12 : 14;
+                    break;
+                case Planet.Jupiter:
+                    orb = 11;
+                    break;
+                case Planet.Venus:
+                    orb = planet.IsRetrograde ? 8 : 10;
+                    break;
+                case Planet.Saturn:
+                    orb = 15;
+                    break;
+            }
+
+            if (diff <= orb)
+            {
+                planet.IsCombust = true;
+            }
+        }
     }
 
     public void Dispose()

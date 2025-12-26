@@ -130,7 +130,20 @@ public class ChartOrchestratorService
             siderealTime = eph.GetSiderealTime(result.ChartData.JulianDay, birthData.Longitude);
         }
 
-        result.PanchangaDetails = _panchangaCalculator.Calculate(result.ChartData, todaySunrise, todaySunset, result.ChartData.AyanamsaValue, siderealTime);
+        // Calculate Local Noon for the *Vedic Date* to ensure consistency for Kala Hora
+        // Kala Hora depends on "Local Noon" of the current Vedic Day.
+        // If it's night (before sunrise), vedicDate is yesterday. We want noon of THAT day.
+        DateTime localNoon = _sunriseCalculator.CalculateNoon(
+            vedicDate, birthData.Latitude, birthData.Longitude, birthData.TimeZoneOffset);
+
+        result.PanchangaDetails = _panchangaCalculator.Calculate(
+            result.ChartData, 
+            todaySunrise, 
+            todaySunset, 
+            localNoon,
+            tomorrowSunrise,
+            result.ChartData.AyanamsaValue, 
+            siderealTime);
 
         // 9. Calculate Inauspicious Periods (Rahu Kalam, Yamagandam, Gulikai Kalam)
         result.InauspiciousPeriods = _inauspiciousPeriodsCalculator.Calculate(

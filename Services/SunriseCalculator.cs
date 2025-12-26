@@ -43,9 +43,19 @@ public class SunriseCalculator : IDisposable
     }
 
     /// <summary>
-    /// Calculate sunrise or sunset time using Swiss Ephemeris
+    /// Calculate local noon (Meridian Transit) for a given date and location
     /// </summary>
-    private DateTime CalculateSunTime(DateTime date, double latitude, double longitude, double timezone, bool isSunrise)
+    public DateTime CalculateNoon(DateTime date, double latitude, double longitude, double timezone)
+    {
+        // Use custom logic calling underlying method with specific flag
+        // SE_CALC_MTRANSIT for meridian transit (noon)
+        return CalculateSunTime(date, latitude, longitude, timezone, true, true);
+    }
+
+    /// <summary>
+    /// Calculate sunrise, sunset, or noon (transit) using Swiss Ephemeris
+    /// </summary>
+    private DateTime CalculateSunTime(DateTime date, double latitude, double longitude, double timezone, bool isSunrise, bool isTransit = false)
     {
         // Set sidereal mode (Lahiri) just in case, though sunrise usually uses tropical/geocentric positions
         // But for consistency with the rest of the app:
@@ -75,7 +85,11 @@ public class SunriseCalculator : IDisposable
         double tjd_ut = ToJulianDay(utcMidnight);
 
         // Define Flags
-        int rsmi = isSunrise ? SwissEph.SE_CALC_RISE : SwissEph.SE_CALC_SET;
+        int rsmi;
+        if (isTransit)
+            rsmi = SwissEph.SE_CALC_MTRANSIT;
+        else
+            rsmi = isSunrise ? SwissEph.SE_CALC_RISE : SwissEph.SE_CALC_SET;
         
         // Add mode flags
         switch (_mode)

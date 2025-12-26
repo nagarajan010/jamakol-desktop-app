@@ -128,6 +128,8 @@ public class PanchangaCalculator
         ChartData chartData,
         DateTime sunrise,
         DateTime sunset,
+        DateTime localNoon,
+        DateTime nextSunrise,
         double ayanamsa,
         double siderealTime)
     {
@@ -198,8 +200,11 @@ public class PanchangaCalculator
         // Karana calculation
         CalculateKarana(sunLong, moonLong, details);
 
-        // Hora calculation
-        CalculateHora(chartData.BirthData.BirthDateTime, sunrise, dayOfWeek, details);
+        // Hora calculation (Method 2: Sunrise/Sunset based)
+        CalculateHora(chartData.BirthData.BirthDateTime, sunrise, sunset, nextSunrise, dayOfWeek, details);
+
+        // Kala Hora calculation (Method 3: Local Noon based)
+        CalculateKalaHora(chartData.BirthData.BirthDateTime, localNoon, dayOfWeek, details);
 
         // Sunrise/Sunset
         details.Sunrise = sunrise.ToString("h:mm:ss tt").ToLower();
@@ -350,23 +355,156 @@ public class PanchangaCalculator
         }
     }
 
-    private void CalculateHora(DateTime currentTime, DateTime sunrise, int dayOfWeek, PanchangaDetails details)
+    private void CalculateHora(DateTime currentTime, DateTime sunrise, DateTime sunset, DateTime nextSunrise, int dayOfWeek, PanchangaDetails details)
     {
-        // Hours from sunrise
-        double hoursFromSunrise = (currentTime - sunrise).TotalHours;
-        if (hoursFromSunrise < 0) hoursFromSunrise += 24;
+        // Method 2: Depends on Sunrise and Sunset (Variable length)
+        // Day hours: Sunrise to Sunset (12 parts)
+        // Night hours: Sunset to Next Sunrise (12 parts)
 
-        int horaNumber = (int)hoursFromSunrise;
+        bool isDay = currentTime >= sunrise && currentTime < sunset;
+        int horaIndex;
+        
+        // Base sequence for the day (starts at Sunrise)
+        // Order: Sun(0), Moon(3), Mars(6), Mercury(2), Jupiter(5), Venus(1), Saturn(4)
+        // The day starts with the day lord.
+        
+        // Sequence of planetary lords is always fixed: Sun -> Venus -> Mercury -> Moon -> Saturn -> Jupiter -> Mars
+        // This is the sequence of SLOWEST to FASTEST relative speed order (descending orbital period approx? No, it's specific order)
+        // Wait, Hora Order: Saturn, Jupiter, Mars, Sun, Venus, Mercury, Moon (Slowest to Fastest)
+        // Reversed: Moon, Mercury, Venus, Sun, Mars, Jupiter, Saturn.
+        // Let's use the standard HoraLords array which is correct: Sun, Venus, Mercury, Moon, Saturn, Jupiter, Mars.
+        // This array [0..6] maps to the sequence.
+        
+        // Finding the starting Hora Lord for the day:
+        // Sunday: Sun (0)
+        // Monday: Moon (3)
+        // Tuesday: Mars (6) 
+        // ...
+        
+        // Calculate which Hora number (1-12 for day, 13-24 for night) we are in.
+        
+        int horaNumber; // 0-based index from sunrise of the *current* day
+        
+        if (isDay)
+        {
+            TimeSpan dayDuration = sunset - sunrise;
+            double horaLengthSeconds = dayDuration.TotalSeconds / 12.0;
+            double secondsFromSunrise = (currentTime - sunrise).TotalSeconds;
+            
+            horaNumber = (int)(secondsFromSunrise / horaLengthSeconds);
+            if (horaNumber >= 12) horaNumber = 11; // Cap at last hora of day if close to sunset
+        }
+        else
+        {
+            // Night time
+            // If currentTime is after sunset but before midnight, it's "today" night.
+            // If currentTime is after midnight but before sunrise, it's "today" night (vedic day prev day).
+            
+            // Safe calculation for duration:
+            // Since we passed 'nextSunrise' which should be the sunrise following this sunset.
+            
+            TimeSpan nightDuration = nextSunrise - sunset;
+            double horaLengthSeconds = nightDuration.TotalSeconds / 12.0;
+            
+            // Calculate seconds from sunset
+            double secondsFromSunset = (currentTime - sunset).TotalSeconds;
+            if (secondsFromSunset < 0) 
+            {
+                // This happens if currentTime is post-midnight (e.g. 2 AM) and sunset was yesterday 6 PM.
+                // We need to ensure logic handles the "Vedic Day" concept correctly.
+                // If the calling code passed the correct sunset (of the Vedic day), then currentTime should be > sunset?
+                // Not necessarily if using DateTime objects.
+                // If 2 AM on Jan 2nd. Vedic Day is Jan 1st.
+                // Sunrise Jan 1 6AM, Sunset Jan 1 6PM. Next Sunrise Jan 2 6AM.
+                // Current Time Jan 2 2AM.
+                // Difference (Jan 2 2AM - Jan 1 6PM) = 8 hours. Positive.
+                
+                // If we are strictly using the "Vedic Day" objects passed from Orchestrator:
+                // Orchestrator logic: if before sunrise, vedic date = yesterday.
+                // Sunrise/Sunset passed are for that Vedic Date.
+                // So strict comparison should hold.
+            }
 
-        // Day lord index (Sun=0, Moon=1, Mars=2, etc)
-        // Hora sequence starts with day lord and follows planetary hours
-        int[] dayLordSequence = { 0, 3, 6, 2, 5, 1, 4 }; // Sun, Moon, Mars, Mercury, Jupiter, Venus, Saturn
-        int startIndex = dayLordSequence[dayOfWeek];
+            // Just in case of minor discrepancies or date boundaries, handle wrap around if needed, 
+            // but assuming valid input:
+            horaNumber = 12 + (int)(secondsFromSunset / horaLengthSeconds);
+            if (horaNumber >= 24) horaNumber = 23;
+        }
 
-        int horaIndex = (startIndex + horaNumber) % 7;
+        // Determine the Lord
+        // The first Hora of the day is ruled by the Day Lord.
+        // Subsequent Horas follow the fixed cycle: Sun(0), Venus(1), Mercury(2), Moon(3), Saturn(4), Jupiter(5), Mars(6)
+        
+        // We need the index of the Day Lord in the HoraLords array.
+        // DayOfWeek: 0=Sun .. 6=Sat
+        // Map DayOfWeek to HoraLords index:
+        // Sun(0) -> Sun(0)
+        // Mon(1) -> Moon(3)
+        // Tue(2) -> Mars(6)
+        // Wed(3) -> Mercury(2)
+        // Thu(4) -> Jupiter(5)
+        // Fri(5) -> Venus(1)
+        // Sat(6) -> Saturn(4)
+        
+        int[] dayOfWeekToHoraLordIndex = { 0, 3, 6, 2, 5, 1, 4 };
+        int startingHoraIndex = dayOfWeekToHoraLordIndex[dayOfWeek];
+        
+        // Calculate current hora index wrapping around 7
+        horaIndex = (startingHoraIndex + horaNumber) % 7;
         
         details.HoraLord = HoraLords[horaIndex];
         details.HoraLordTamil = HoraLordsTamil[horaIndex];
+    }
+    
+    private void CalculateKalaHora(DateTime currentTime, DateTime localNoon, int dayOfWeek, PanchangaDetails details)
+    {
+        // Method 3: Kala Hora (Local Noon Based)
+        // Starts fixed 60-minute duration at "6 AM" derived from Local Noon.
+        // "6 AM" = Local Noon - 6 hours.
+        // However, we must ensure we align with the correct "Vedic Day" noon.
+        // If it is 2 AM on Jan 2nd (Vedic Day Jan 1st), the relevant Local Noon is Jan 1st Noon.
+        
+        // The `localNoon` passed should be for the Vedic Day.
+        DateTime derivedSixAm = localNoon.AddHours(-6);
+        
+        // Check if we are before the derived 6am (e.g. early morning before "Kala Hora start"?
+        // But Kala Hora usually runs 24x7 cycle? 
+        // Or is it day-bound? 
+        // User says: "This starts at 6am and increments every 60 minutes."
+        // Usually implies 24 hour cycle resetting at next 6am? Or continuous?
+        // Standard Hora resets at Sunrise. Kala Hora resets at "6 AM (LST/LN)".
+        // So we calculate hours passed since derived 6 AM.
+        
+        double hoursPassed = (currentTime - derivedSixAm).TotalHours;
+        
+        // If negative (e.g. 4 AM vs 6 AM start), we interpret this as previous day's cycle?
+        // But we are already operating in "Vedic Day" context from the Orchestrator.
+        // If currentTime is 2 AM Jan 2. Vedic Day is Jan 1. Local Noon is Jan 1 12:00.
+        // Derived 6 AM is Jan 1 06:00.
+        // Hours passed = 2 AM (Jan 2) - 6 AM (Jan 1) = 20 hours. Positive.
+        
+        // If currentTime was 5 AM Jan 1 (Before sunrise). Vedic Day might be Dec 31.
+        // Orchestrator handles this by passing Dec 31 Noon.
+        // Derived 6 AM is Dec 31 06:00.
+        // Hours passed = 23 hours. Positive.
+        
+        // So with correct Vedic Date inputs, hoursPassed should be 0..24.
+        // If > 24, wrap? 
+        if (hoursPassed < 0) hoursPassed += 24; 
+        
+        int horaNumber = (int)hoursPassed;
+        
+        // Like standard Hora, it starts with the Day Lord and proceeds in the same order.
+        // "The hora lord is based on the number of hours passed from sunrise starting from the vara lord..."
+        // For Kala Hora, start reference is 6 AM.
+        
+        int[] dayOfWeekToHoraLordIndex = { 0, 3, 6, 2, 5, 1, 4 };
+        int startingHoraIndex = dayOfWeekToHoraLordIndex[dayOfWeek];
+        
+        int horaIndex = (startingHoraIndex + horaNumber) % 7;
+        
+        details.KalaHoraLord = HoraLords[horaIndex];
+        details.KalaHoraLordTamil = HoraLordsTamil[horaIndex];
     }
 
     private void CalculateNazhikai(DateTime currentTime, DateTime sunrise, PanchangaDetails details)

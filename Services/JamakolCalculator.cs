@@ -80,7 +80,9 @@ public class JamakolCalculator
                 NakshatraTamilName = ZodiacUtils.NakshatraNamesTamil[planet.Nakshatra],
                 NakshatraPada = planet.NakshatraPada,
                 IsRetrograde = planet.IsRetrograde,
-                JamakolValue = CalculatePlanetJamakolValue(planet)
+                IsCombust = planet.IsCombust,
+                JamakolValue = CalculatePlanetJamakolValue(planet),
+                Gati = planet.Gati
             };
             jamakolData.PlanetPositions.Add(jamakolPlanet);
         }

@@ -51,6 +51,10 @@ public class PanchangaDetails
     // Hora (current hora lord)
     public string HoraLord { get; set; } = "";
     public string HoraLordTamil { get; set; } = "";
+        
+    // Kala Hora (based on local noon)
+    public string KalaHoraLord { get; set; } = "";
+    public string KalaHoraLordTamil { get; set; } = "";
 
     // Year (Tamil year)
     public string TamilYear { get; set; } = "";

@@ -37,4 +37,12 @@ public class PlanetPosition
     public int NakshatraPada { get; set; }  // 1-4
     
     public KPLords KpDetails { get; set; } = new();
+    
+    /// <summary>
+    /// Motion state (Gati) based on speed
+    /// </summary>
+    public string Gati { get; set; } = string.Empty;
+
+    public bool IsCombust { get; set; }
+    public string CombustionFlag => IsCombust ? "C" : "";
 }

@@ -36,6 +36,7 @@ public class JamakolPlanetPosition
     public int NakshatraPada { get; set; }
     public bool IsRetrograde { get; set; }
     public int JamakolValue { get; set; }
+    public string Gati { get; set; } = string.Empty;
 
     // English name properties for display
     public string EnglishName => JamakolAstrology.Services.ZodiacUtils.PlanetNames[Planet];
@@ -46,4 +47,7 @@ public class JamakolPlanetPosition
     public string DegreeDisplay => $"{(int)DegreeInSign}°{(int)((DegreeInSign % 1) * 60)}'{(int)(((DegreeInSign % 1) * 60 % 1) * 60)}\"";
     public string PadaDisplay => NakshatraPada.ToString();
     public string RetroDisplay => IsRetrograde ? "(R)" : "";
+    
+    public bool IsCombust { get; set; }
+    public string CombustionFlag => IsCombust ? "C" : "";
 }
