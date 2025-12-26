@@ -68,10 +68,16 @@ public class JamakolCalculator
         // Calculate planetary Jamakol positions
         foreach (var planet in chartData.Planets)
         {
+            // Check if this is a standard planet (has entries in dictionaries) or an Aprakash graha
+            bool isStandardPlanet = PlanetTamilNames.ContainsKey(planet.Planet) && 
+                                   planet.Name == ZodiacUtils.PlanetNames[planet.Planet];
+            
             var jamakolPlanet = new JamakolPlanetPosition
             {
                 Planet = planet.Planet,
-                TamilName = PlanetTamilNames[planet.Planet],
+                EnglishName = planet.Name, // Use the actual name from PlanetPosition
+                Symbol = planet.Symbol, // Short abbreviation (Su, Mo, Dh, Vy, etc.)
+                TamilName = isStandardPlanet ? PlanetTamilNames[planet.Planet] : planet.Name, // Aprakash graha use English name
                 Sign = planet.Sign,
                 SignTamilName = SignTamilNames[planet.Sign],
                 Degree = planet.Longitude,
@@ -81,7 +87,7 @@ public class JamakolCalculator
                 NakshatraPada = planet.NakshatraPada,
                 IsRetrograde = planet.IsRetrograde,
                 IsCombust = planet.IsCombust,
-                JamakolValue = CalculatePlanetJamakolValue(planet),
+                JamakolValue = isStandardPlanet ? CalculatePlanetJamakolValue(planet) : 0, // Aprakash graha don't have Jamakol values
                 Gati = planet.Gati
             };
             jamakolData.PlanetPositions.Add(jamakolPlanet);

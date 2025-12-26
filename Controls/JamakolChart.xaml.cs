@@ -80,7 +80,14 @@ public partial class JamakolChart : UserControl
         foreach (var planet in jamakolData.PlanetPositions)
         {
             int degree = (int)Math.Floor(planet.DegreeInSign);
-            string abbr = GetPlanetAbbreviation(planet.Planet);
+            
+            // Check if this is a standard planet (Name matches expected) or Aprakash graha
+            bool isStandardPlanet = ZodiacUtils.PlanetNames.ContainsKey(planet.Planet) && 
+                                   planet.EnglishName == ZodiacUtils.PlanetNames[planet.Planet];
+            string abbr = isStandardPlanet 
+                ? GetPlanetAbbreviation(planet.Planet) 
+                : planet.Symbol; // Use Symbol for Aprakash graha (Dh, Vy, Pa, In, Uk)
+            
             string retro = planet.IsRetrograde ? " R" : "";
             
             // Rahu and Ketu get special orange color with parentheses

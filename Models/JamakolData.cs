@@ -39,7 +39,8 @@ public class JamakolPlanetPosition
     public string Gati { get; set; } = string.Empty;
 
     // English name properties for display
-    public string EnglishName => JamakolAstrology.Services.ZodiacUtils.PlanetNames[Planet];
+    public string EnglishName { get; set; } = "";
+    public string Symbol { get; set; } = ""; // Short abbreviation (Su, Mo, Dh, Vy, etc.)
     public string SignEnglish => JamakolAstrology.Services.ZodiacUtils.SignNames[Sign];
     public string NakshatraEnglish => JamakolAstrology.Services.ZodiacUtils.NakshatraNames[Nakshatra];
 

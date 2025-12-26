@@ -108,6 +108,11 @@ public class ChartCalculator
         
         chartData.Planets.Add(ketuPosition);
 
+        // Calculate Aprakash Graha (Shadow Planets) based on Sun's longitude
+        var sun = chartData.Planets.First(p => p.Planet == Planet.Sun);
+        var aprakashGraha = CalculateAprakashGraha(sun.Longitude, chartData.AscendantSign);
+        chartData.Planets.AddRange(aprakashGraha);
+
         // Calculate Combustion Status
         CalculateCombustion(chartData.Planets);
 
@@ -244,6 +249,69 @@ public class ChartCalculator
                 planet.IsCombust = true;
             }
         }
+    }
+
+    /// <summary>
+    /// Calculate Aprakash Graha (Shadow Planets) based on Sun's longitude
+    /// Dhooma (Dh) - Sun's longitude + 133°20' 
+    /// Vyatipata (Vy) - 360° - Dhooma longitude 
+    /// Parivesha (Pa) - Vyatipata longitude + 180° 
+    /// Indrachapa (In) - 360° - Parivesha longitude 
+    /// Upaketu (Uk) - Indrachapa longitude + 16°40' 
+    /// </summary>
+    private List<PlanetPosition> CalculateAprakashGraha(double sunLongitude, int ascendantSign)
+    {
+        var result = new List<PlanetPosition>();
+
+        // Dhooma = Sun + 133°20' (133.333...°)
+        double dhoomaLong = ZodiacUtils.NormalizeDegree(sunLongitude + 133.0 + (20.0 / 60.0));
+        result.Add(CreateAprakashPosition("Dhooma", "Dh", dhoomaLong, ascendantSign));
+
+        // Vyatipata = 360° - Dhooma
+        double vyatipataLong = ZodiacUtils.NormalizeDegree(360.0 - dhoomaLong);
+        result.Add(CreateAprakashPosition("Vyatipata", "Vy", vyatipataLong, ascendantSign));
+
+        // Parivesha = Vyatipata + 180°
+        double pariveshaLong = ZodiacUtils.NormalizeDegree(vyatipataLong + 180.0);
+        result.Add(CreateAprakashPosition("Parivesha", "Pa", pariveshaLong, ascendantSign));
+
+        // Indrachapa = 360° - Parivesha
+        double indrachapaLong = ZodiacUtils.NormalizeDegree(360.0 - pariveshaLong);
+        result.Add(CreateAprakashPosition("Indrachapa", "In", indrachapaLong, ascendantSign));
+
+        // Upaketu = Indrachapa + 16°40' (16.666...°)
+        double upaketuLong = ZodiacUtils.NormalizeDegree(indrachapaLong + 16.0 + (40.0 / 60.0));
+        result.Add(CreateAprakashPosition("Upaketu", "Uk", upaketuLong, ascendantSign));
+
+        return result;
+    }
+
+    /// <summary>
+    /// Create a PlanetPosition for an Aprakash Graha (shadow planet)
+    /// </summary>
+    private PlanetPosition CreateAprakashPosition(string name, string symbol, double longitude, int ascendantSign)
+    {
+        var position = new PlanetPosition
+        {
+            Planet = Planet.Sun, // Placeholder - these are mathematical points, not real planets
+            Name = name,
+            Symbol = symbol,
+            Longitude = longitude,
+            Latitude = 0,
+            Speed = 0,
+            Sign = ZodiacUtils.DegreeToSign(longitude),
+            DegreeInSign = ZodiacUtils.DegreeInSign(longitude),
+            Nakshatra = ZodiacUtils.DegreeToNakshatra(longitude),
+            NakshatraPada = ZodiacUtils.GetNakshatraPada(longitude)
+        };
+
+        position.SignName = ZodiacUtils.SignNames[position.Sign];
+        position.NakshatraName = ZodiacUtils.NakshatraNames[position.Nakshatra];
+        position.House = ZodiacUtils.CalculateHouse(position.Sign, ascendantSign);
+        position.Gati = ""; // Shadow planets don't have motion
+        position.KpDetails = _kpCalculator.Calculate(longitude);
+
+        return position;
     }
 
     public void Dispose()
