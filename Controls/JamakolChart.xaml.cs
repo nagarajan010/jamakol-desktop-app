@@ -11,6 +11,7 @@ namespace JamakolAstrology.Controls;
 public partial class JamakolChart : UserControl
 {
     private readonly Dictionary<int, TextBlock> _planetTextBlocks;
+    private readonly Dictionary<int, TextBlock> _aprakashTextBlocks;
     private readonly Dictionary<int, TextBlock> _cornerBoxTextBlocks;
     private readonly Dictionary<int, System.Windows.Controls.Border> _cornerBoxBorders;
 
@@ -24,6 +25,14 @@ public partial class JamakolChart : UserControl
             { 1, Planets1 }, { 2, Planets2 }, { 3, Planets3 }, { 4, Planets4 },
             { 5, Planets5 }, { 6, Planets6 }, { 7, Planets7 }, { 8, Planets8 },
             { 9, Planets9 }, { 10, Planets10 }, { 11, Planets11 }, { 12, Planets12 }
+        };
+
+        // Map sign numbers to Aprakash TextBlock controls (bottom-left)
+        _aprakashTextBlocks = new Dictionary<int, TextBlock>
+        {
+            { 1, Aprakash1 }, { 2, Aprakash2 }, { 3, Aprakash3 }, { 4, Aprakash4 },
+            { 5, Aprakash5 }, { 6, Aprakash6 }, { 7, Aprakash7 }, { 8, Aprakash8 },
+            { 9, Aprakash9 }, { 10, Aprakash10 }, { 11, Aprakash11 }, { 12, Aprakash12 }
         };
 
         // Map sign numbers to corner box TextBlocks
@@ -76,7 +85,14 @@ public partial class JamakolChart : UserControl
         // Show "Lagna" marker at the real ascendant sign
         displayBySign[ascSign].Insert(0, ("Lagna", "lagna"));
 
-        // Add regular planets (type = "planet" or "rahuKetu")
+        // Prepare for aprakash grahas
+        var aprakashBySign = new Dictionary<int, List<string>>();
+        for (int i = 1; i <= 12; i++)
+        {
+            aprakashBySign[i] = new List<string>();
+        }
+
+        // Add regular planets (type = "planet" or "rahuKetu") - separate aprakash
         foreach (var planet in jamakolData.PlanetPositions)
         {
             int degree = (int)Math.Floor(planet.DegreeInSign);
@@ -84,20 +100,28 @@ public partial class JamakolChart : UserControl
             // Check if this is a standard planet (Name matches expected) or Aprakash graha
             bool isStandardPlanet = ZodiacUtils.PlanetNames.ContainsKey(planet.Planet) && 
                                    planet.EnglishName == ZodiacUtils.PlanetNames[planet.Planet];
-            string abbr = isStandardPlanet 
-                ? GetPlanetAbbreviation(planet.Planet) 
-                : planet.Symbol; // Use Symbol for Aprakash graha (Dh, Vy, Pa, In, Uk)
             
-            string retro = planet.IsRetrograde ? " R" : "";
-            
-            // Rahu and Ketu get special orange color with parentheses
-            string type = (planet.Planet == Models.Planet.Rahu || planet.Planet == Models.Planet.Ketu) 
-                ? "rahuKetu" : "planet";
-            
-            // Format: "12° Su" for all planets
-            string displayText = $"{degree}° {abbr}{retro}";
-            
-            displayBySign[planet.Sign].Add((displayText, type));
+            if (isStandardPlanet)
+            {
+                string abbr = GetPlanetAbbreviation(planet.Planet);
+                string retro = planet.IsRetrograde ? " R" : "";
+                
+                // Rahu and Ketu get special orange color with parentheses
+                string type = (planet.Planet == Models.Planet.Rahu || planet.Planet == Models.Planet.Ketu) 
+                    ? "rahuKetu" : "planet";
+                
+                // Format: "12° Su" for all planets
+                string displayText = $"{degree}° {abbr}{retro}";
+                
+                displayBySign[planet.Sign].Add((displayText, type));
+            }
+            else
+            {
+                // Aprakash graha - collect for bottom-left display
+                string abbr = planet.Symbol; // Dh, Vy, Pa, In, Uk
+                string text = $"{abbr}";
+                aprakashBySign[planet.Sign].Add(text);
+            }
         }
 
         // Add special points (AR, UD, KV) - type = "special"
@@ -151,6 +175,13 @@ public partial class JamakolChart : UserControl
                         textBlock.Inlines.Add(new System.Windows.Documents.LineBreak());
                     }
                 }
+            }
+
+            // Populate Aprakash graha in dedicated bottom-left TextBlock
+            var aprakashItems = aprakashBySign[sign];
+            if (_aprakashTextBlocks.TryGetValue(sign, out var aprakashBlock))
+            {
+                aprakashBlock.Text = aprakashItems.Count > 0 ? string.Join(" ", aprakashItems) : "";
             }
         }
 
@@ -268,6 +299,12 @@ public partial class JamakolChart : UserControl
     {
         // Clear planet textblocks
         foreach (var tb in _planetTextBlocks.Values)
+        {
+            tb.Text = string.Empty;
+        }
+        
+        // Clear aprakash textblocks
+        foreach (var tb in _aprakashTextBlocks.Values)
         {
             tb.Text = string.Empty;
         }

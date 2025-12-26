@@ -37,6 +37,15 @@
             <Setter Property="Background" Value="#fffff8"/>
             <Setter Property="Padding" Value="4,2"/>
         </Style>
+        <Style x:Key="AprakashLabelStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#666666"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="Margin" Value="2,0,0,1"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
         <Style x:Key="CenterStyle" TargetType="Border">
             <Setter Property="BorderBrush" Value="#cc0000"/>
             <Setter Property="BorderThickness" Value="1"/>
@@ -124,37 +133,52 @@
         <!-- CHART CELLS -->
         <!-- Row 1: Pisces(12), Aries(1), Taurus(2), Gemini(3) -->
         <Border x:Name="Cell12" Grid.Row="1" Grid.Column="1" Style="{StaticResource ChartCellStyle}">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <TextBlock x:Name="Planets12" Style="{StaticResource PlanetInfoStyle}" 
-                           VerticalAlignment="Top" HorizontalAlignment="Center"
-                           TextAlignment="Center"/>
-            </ScrollViewer>
+            <Grid>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,15">
+                    <TextBlock x:Name="Planets12" Style="{StaticResource PlanetInfoStyle}" 
+                               VerticalAlignment="Top" HorizontalAlignment="Center"
+                               TextAlignment="Center"/>
+                </ScrollViewer>
+                <TextBlock x:Name="Aprakash12" Style="{StaticResource AprakashLabelStyle}"/>
+            </Grid>
         </Border>
         <Border x:Name="Cell1" Grid.Row="1" Grid.Column="2" Style="{StaticResource ChartCellStyle}">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <TextBlock x:Name="Planets1" Style="{StaticResource PlanetInfoStyle}" 
-                           VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
-            </ScrollViewer>
+            <Grid>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,15">
+                    <TextBlock x:Name="Planets1" Style="{StaticResource PlanetInfoStyle}" 
+                               VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
+                </ScrollViewer>
+                <TextBlock x:Name="Aprakash1" Style="{StaticResource AprakashLabelStyle}"/>
+            </Grid>
         </Border>
         <Border x:Name="Cell2" Grid.Row="1" Grid.Column="3" Style="{StaticResource ChartCellStyle}">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <TextBlock x:Name="Planets2" Style="{StaticResource PlanetInfoStyle}" 
-                           VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
-            </ScrollViewer>
+            <Grid>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,15">
+                    <TextBlock x:Name="Planets2" Style="{StaticResource PlanetInfoStyle}" 
+                               VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
+                </ScrollViewer>
+                <TextBlock x:Name="Aprakash2" Style="{StaticResource AprakashLabelStyle}"/>
+            </Grid>
         </Border>
         <Border x:Name="Cell3" Grid.Row="1" Grid.Column="4" Style="{StaticResource ChartCellStyle}">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <TextBlock x:Name="Planets3" Style="{StaticResource PlanetInfoStyle}" 
-                           VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
-            </ScrollViewer>
+            <Grid>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,15">
+                    <TextBlock x:Name="Planets3" Style="{StaticResource PlanetInfoStyle}" 
+                               VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
+                </ScrollViewer>
+                <TextBlock x:Name="Aprakash3" Style="{StaticResource AprakashLabelStyle}"/>
+            </Grid>
         </Border>
 
         <!-- Row 2: Aquarius(11), Center, Center, Cancer(4) -->
         <Border x:Name="Cell11" Grid.Row="2" Grid.Column="1" Style="{StaticResource ChartCellStyle}">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <TextBlock x:Name="Planets11" Style="{StaticResource PlanetInfoStyle}" 
-                           VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
-            </ScrollViewer>
+            <Grid>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,15">
+                    <TextBlock x:Name="Planets11" Style="{StaticResource PlanetInfoStyle}" 
+                               VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
+                </ScrollViewer>
+                <TextBlock x:Name="Aprakash11" Style="{StaticResource AprakashLabelStyle}"/>
+            </Grid>
         </Border>
         <Border Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="2" 
                 Style="{StaticResource CenterStyle}">
@@ -172,50 +196,71 @@
             </StackPanel>
         </Border>
         <Border x:Name="Cell4" Grid.Row="2" Grid.Column="4" Style="{StaticResource ChartCellStyle}">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <TextBlock x:Name="Planets4" Style="{StaticResource PlanetInfoStyle}" 
-                           VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
-            </ScrollViewer>
+            <Grid>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,15">
+                    <TextBlock x:Name="Planets4" Style="{StaticResource PlanetInfoStyle}" 
+                               VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
+                </ScrollViewer>
+                <TextBlock x:Name="Aprakash4" Style="{StaticResource AprakashLabelStyle}"/>
+            </Grid>
         </Border>
 
         <!-- Row 3: Capricorn(10), Center (spanned), Leo(5) -->
         <Border x:Name="Cell10" Grid.Row="3" Grid.Column="1" Style="{StaticResource ChartCellStyle}">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <TextBlock x:Name="Planets10" Style="{StaticResource PlanetInfoStyle}" 
-                           VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
-            </ScrollViewer>
+            <Grid>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,15">
+                    <TextBlock x:Name="Planets10" Style="{StaticResource PlanetInfoStyle}" 
+                               VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
+                </ScrollViewer>
+                <TextBlock x:Name="Aprakash10" Style="{StaticResource AprakashLabelStyle}"/>
+            </Grid>
         </Border>
         <Border x:Name="Cell5" Grid.Row="3" Grid.Column="4" Style="{StaticResource ChartCellStyle}">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <TextBlock x:Name="Planets5" Style="{StaticResource PlanetInfoStyle}" 
-                           VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
-            </ScrollViewer>
+            <Grid>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,15">
+                    <TextBlock x:Name="Planets5" Style="{StaticResource PlanetInfoStyle}" 
+                               VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
+                </ScrollViewer>
+                <TextBlock x:Name="Aprakash5" Style="{StaticResource AprakashLabelStyle}"/>
+            </Grid>
         </Border>
 
         <!-- Row 4: Sagittarius(9), Scorpio(8), Libra(7), Virgo(6) -->
         <Border x:Name="Cell9" Grid.Row="4" Grid.Column="1" Style="{StaticResource ChartCellStyle}">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <TextBlock x:Name="Planets9" Style="{StaticResource PlanetInfoStyle}" 
-                           VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
-            </ScrollViewer>
+            <Grid>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,15">
+                    <TextBlock x:Name="Planets9" Style="{StaticResource PlanetInfoStyle}" 
+                               VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
+                </ScrollViewer>
+                <TextBlock x:Name="Aprakash9" Style="{StaticResource AprakashLabelStyle}"/>
+            </Grid>
         </Border>
         <Border x:Name="Cell8" Grid.Row="4" Grid.Column="2" Style="{StaticResource ChartCellStyle}">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <TextBlock x:Name="Planets8" Style="{StaticResource PlanetInfoStyle}" 
-                           VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
-            </ScrollViewer>
+            <Grid>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,15">
+                    <TextBlock x:Name="Planets8" Style="{StaticResource PlanetInfoStyle}" 
+                               VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
+                </ScrollViewer>
+                <TextBlock x:Name="Aprakash8" Style="{StaticResource AprakashLabelStyle}"/>
+            </Grid>
         </Border>
         <Border x:Name="Cell7" Grid.Row="4" Grid.Column="3" Style="{StaticResource ChartCellStyle}">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <TextBlock x:Name="Planets7" Style="{StaticResource PlanetInfoStyle}" 
-                           VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
-            </ScrollViewer>
+            <Grid>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,15">
+                    <TextBlock x:Name="Planets7" Style="{StaticResource PlanetInfoStyle}" 
+                               VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
+                </ScrollViewer>
+                <TextBlock x:Name="Aprakash7" Style="{StaticResource AprakashLabelStyle}"/>
+            </Grid>
         </Border>
         <Border x:Name="Cell6" Grid.Row="4" Grid.Column="4" Style="{StaticResource ChartCellStyle}">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <TextBlock x:Name="Planets6" Style="{StaticResource PlanetInfoStyle}" 
-                           VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
-            </ScrollViewer>
+            <Grid>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,15">
+                    <TextBlock x:Name="Planets6" Style="{StaticResource PlanetInfoStyle}" 
+                               VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"/>
+                </ScrollViewer>
+                <TextBlock x:Name="Aprakash6" Style="{StaticResource AprakashLabelStyle}"/>
+            </Grid>
         </Border>
     </Grid>
 </UserControl>
