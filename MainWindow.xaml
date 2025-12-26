@@ -111,46 +111,8 @@
                             </Border>
                         </Grid>
 
-                        <!-- Right Column: Details -->
-                        <Grid Grid.Column="1">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/> <!-- Planetary Details -->
-                                <RowDefinition Height="*"/>    <!-- Other Details + Ashtakavarga -->
-                            </Grid.RowDefinitions>
-
-                            <!-- Planetary Positions -->
-                            <Border Grid.Row="0" Background="#fffff8" CornerRadius="5" Padding="5" Margin="0,0,0,5" BorderBrush="#ddd" BorderThickness="1">
-                                <StackPanel>
-                                    <TextBlock Text="Planetary Positions" FontSize="14" FontWeight="Bold" 
-                                               Foreground="#cc0000" Margin="0,0,0,5"/>
-                                    <controls:JamakolPlanetGrid x:Name="BirthPlanetGridControl"/>
-                                </StackPanel>
-                            </Border>
-                            
-                            <!-- Bottom Details Area -->
-                            <Grid Grid.Row="1" Margin="0,5,0,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                
-                                <!-- Natal Details Placeholder -->
-                                <Border Grid.Column="0" Background="#fffff8" CornerRadius="5" Padding="10" Margin="0,0,5,0" BorderBrush="#ddd" BorderThickness="1">
-                                    <StackPanel>
-                                        <TextBlock Text="Natal Chart Details" FontWeight="Bold" Foreground="#990000" Margin="0,0,0,5"/>
-                                        <TextBlock Text="No content available" Foreground="#aaa" FontStyle="Italic"/>
-                                    </StackPanel>
-                                </Border>
-                                
-                                <!-- Ashtakavarga Placeholder -->
-                                <Border Grid.Column="1" Background="#fffff8" CornerRadius="5" Padding="10" Margin="5,0,0,0" BorderBrush="#ddd" BorderThickness="1">
-                                    <StackPanel>
-                                        <TextBlock Text="Ashtakavarga" FontWeight="Bold" Foreground="#990000" Margin="0,0,0,5"/>
-                                        <TextBlock Text="No content available" Foreground="#aaa" FontStyle="Italic"/>
-                                    </StackPanel>
-                                </Border>
-                            </Grid>
-                        </Grid>
+                        <!-- Right Column: Details with Sub-Tabs (Modular) -->
+                        <controls:BirthChartDetailsPanel x:Name="BirthDetailsPanel" Grid.Column="1"/>
                     </Grid>
                 </Grid>
             </TabItem>
