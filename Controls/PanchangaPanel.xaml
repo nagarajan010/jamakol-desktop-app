@@ -6,78 +6,81 @@
             <TextBlock Text="◇ Panchanga" FontSize="14" FontWeight="Bold" 
                        Foreground="#cc0000" Margin="0,0,0,10"/>
             
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                
-                <!-- Nakshatra -->
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="Nakshatra:" Foreground="#555" FontSize="10" Margin="0,2"/>
-                <TextBlock Grid.Row="0" Grid.Column="1" x:Name="NakshatraText" Text="-" Foreground="#cc0000" FontWeight="SemiBold" FontSize="10" Margin="5,2,0,2" TextWrapping="Wrap"/>
-                
-                <!-- Tithi -->
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="Tithi:" Foreground="#555" FontSize="10" Margin="0,2"/>
-                <TextBlock Grid.Row="1" Grid.Column="1" x:Name="TithiText" Text="-" Foreground="#cc0000" FontWeight="SemiBold" FontSize="10" Margin="5,2,0,2" TextWrapping="Wrap"/>
-                
-                <!-- Yoga -->
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="Yoga:" Foreground="#555" FontSize="10" Margin="0,2"/>
-                <TextBlock Grid.Row="2" Grid.Column="1" x:Name="YogaText" Text="-" Foreground="#cc0000" FontWeight="SemiBold" FontSize="10" Margin="5,2,0,2"/>
-                
-                <!-- Karana -->
-                <TextBlock Grid.Row="3" Grid.Column="0" Text="Karana:" Foreground="#555" FontSize="10" Margin="0,2"/>
-                <TextBlock Grid.Row="3" Grid.Column="1" x:Name="KaranaText" Text="-" Foreground="#cc0000" FontWeight="SemiBold" FontSize="10" Margin="5,2,0,2"/>
-                
-                <!-- Day -->
-                <TextBlock Grid.Row="4" Grid.Column="0" Text="Day:" Foreground="#555" FontSize="10" Margin="0,2"/>
-                <TextBlock Grid.Row="4" Grid.Column="1" x:Name="DayText" Text="-" Foreground="#cc0000" FontWeight="SemiBold" FontSize="10" Margin="5,2,0,2"/>
-                
-                <!-- Sunrise -->
-                <TextBlock Grid.Row="5" Grid.Column="0" Text="Sunrise:" Foreground="#555" FontSize="10" Margin="0,2"/>
-                <TextBlock Grid.Row="5" Grid.Column="1" x:Name="SunriseText" Text="-" Foreground="#0066cc" FontWeight="SemiBold" FontSize="10" Margin="5,2,0,2"/>
-                
-                <!-- Sunset -->
-                <TextBlock Grid.Row="6" Grid.Column="0" Text="Sunset:" Foreground="#555" FontSize="10" Margin="0,2"/>
-                <TextBlock Grid.Row="6" Grid.Column="1" x:Name="SunsetText" Text="-" Foreground="#0066cc" FontWeight="SemiBold" FontSize="10" Margin="5,2,0,2"/>
-                
-                <!-- Ayanamsa -->
-                <TextBlock Grid.Row="7" Grid.Column="0" Text="Ayanamsa:" Foreground="#555" FontSize="10" Margin="0,2"/>
-                <TextBlock Grid.Row="7" Grid.Column="1" x:Name="AyanamsaText" Text="-" Foreground="#0066cc" FontWeight="SemiBold" FontSize="10" Margin="5,2,0,2"/>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="350">
+                <Grid>
+                    <Grid.ColumnDefinitions> 
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    <!-- Nakshatra -->
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Nakshatra:" Foreground="#555" FontSize="10" Margin="0,2,0,4"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" x:Name="NakshatraText" Text="-" Foreground="#cc0000" FontWeight="SemiBold" FontSize="10" Margin="5,2,0,4" TextWrapping="Wrap"/>
+                    
+                    <!-- Tithi -->
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Tithi:" Foreground="#555" FontSize="10" Margin="0,2,0,4"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" x:Name="TithiText" Text="-" Foreground="#cc0000" FontWeight="SemiBold" FontSize="10" Margin="5,2,0,4" TextWrapping="Wrap"/>
+                    
+                    <!-- Yoga -->
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Yoga:" Foreground="#555" FontSize="10" Margin="0,2"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" x:Name="YogaText" Text="-" Foreground="#cc0000" FontWeight="SemiBold" FontSize="10" Margin="5,2,0,2"/>
+                    
+                    <!-- Karana -->
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Karana:" Foreground="#555" FontSize="10" Margin="0,2"/>
+                    <TextBlock Grid.Row="3" Grid.Column="1" x:Name="KaranaText" Text="-" Foreground="#cc0000" FontWeight="SemiBold" FontSize="10" Margin="5,2,0,2"/>
+                    
+                    <!-- Day -->
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Day:" Foreground="#555" FontSize="10" Margin="0,2"/>
+                    <TextBlock Grid.Row="4" Grid.Column="1" x:Name="DayText" Text="-" Foreground="#cc0000" FontWeight="SemiBold" FontSize="10" Margin="5,2,0,2"/>
+                    
+                    <!-- Sunrise -->
+                    <TextBlock Grid.Row="5" Grid.Column="0" Text="Sunrise:" Foreground="#555" FontSize="10" Margin="0,2"/>
+                    <TextBlock Grid.Row="5" Grid.Column="1" x:Name="SunriseText" Text="-" Foreground="#0066cc" FontWeight="SemiBold" FontSize="10" Margin="5,2,0,2"/>
+                    
+                    <!-- Sunset -->
+                    <TextBlock Grid.Row="6" Grid.Column="0" Text="Sunset:" Foreground="#555" FontSize="10" Margin="0,2"/>
+                    <TextBlock Grid.Row="6" Grid.Column="1" x:Name="SunsetText" Text="-" Foreground="#0066cc" FontWeight="SemiBold" FontSize="10" Margin="5,2,0,2"/>
+                    
+                    <!-- Ayanamsa -->
+                    <TextBlock Grid.Row="7" Grid.Column="0" Text="Ayanamsa:" Foreground="#555" FontSize="10" Margin="0,2"/>
+                    <TextBlock Grid.Row="7" Grid.Column="1" x:Name="AyanamsaText" Text="-" Foreground="#0066cc" FontWeight="SemiBold" FontSize="10" Margin="5,2,0,2"/>
 
-                <!-- Nazhikai -->
-                <TextBlock Grid.Row="8" Grid.Column="0" Text="Nazhikai:" Foreground="#555" FontSize="10" Margin="0,2"/>
-                <TextBlock Grid.Row="8" Grid.Column="1" x:Name="NazhikaiText" Text="-" Foreground="#0066cc" FontWeight="SemiBold" FontSize="10" Margin="5,2,0,2"/>
-                
-                <!-- Hora -->
-                <TextBlock Grid.Row="9" Grid.Column="0" Text="Hora:" Foreground="#555" FontSize="10" Margin="0,2"/>
-                <TextBlock Grid.Row="9" Grid.Column="1" x:Name="HoraText" Text="-" Foreground="#0066cc" FontWeight="SemiBold" FontSize="10" Margin="5,2,0,2"/>
-                
-                <!-- Kala Hora -->
-                <TextBlock Grid.Row="10" Grid.Column="0" Text="Kala Hora:" Foreground="#555" FontSize="10" Margin="0,2"/>
-                <TextBlock Grid.Row="10" Grid.Column="1" x:Name="KalaHoraText" Text="-" Foreground="#0066cc" FontWeight="SemiBold" FontSize="10" Margin="5,2,0,2"/>
+                    <!-- Nazhikai -->
+                    <TextBlock Grid.Row="8" Grid.Column="0" Text="Nazhikai:" Foreground="#555" FontSize="10" Margin="0,2"/>
+                    <TextBlock Grid.Row="8" Grid.Column="1" x:Name="NazhikaiText" Text="-" Foreground="#0066cc" FontWeight="SemiBold" FontSize="10" Margin="5,2,0,2"/>
+                    
+                    <!-- Hora -->
+                    <TextBlock Grid.Row="9" Grid.Column="0" Text="Hora:" Foreground="#555" FontSize="10" Margin="0,2"/>
+                    <TextBlock Grid.Row="9" Grid.Column="1" x:Name="HoraText" Text="-" Foreground="#0066cc" FontWeight="SemiBold" FontSize="10" Margin="5,2,0,2"/>
+                    
+                    <!-- Kala Hora -->
+                    <TextBlock Grid.Row="10" Grid.Column="0" Text="Kala Hora:" Foreground="#555" FontSize="10" Margin="0,2"/>
+                    <TextBlock Grid.Row="10" Grid.Column="1" x:Name="KalaHoraText" Text="-" Foreground="#0066cc" FontWeight="SemiBold" FontSize="10" Margin="5,2,0,2"/>
 
-                <!-- Rasi -->
-                <TextBlock Grid.Row="11" Grid.Column="0" Text="Rasi:" Foreground="#555" FontSize="10" Margin="0,2"/>
-                <TextBlock Grid.Row="11" Grid.Column="1" x:Name="RasiText" Text="-" Foreground="#cc0000" FontWeight="SemiBold" FontSize="10" Margin="5,2,0,2" TextWrapping="Wrap"/>
-                
-                <!-- Year/Month -->
-                 <TextBlock Grid.Row="12" Grid.Column="0" Text="Year/Mo:" Foreground="#555" FontSize="10" Margin="0,2"/>
-                <TextBlock Grid.Row="12" Grid.Column="1" x:Name="YearMonthText" Text="-" Foreground="#0066cc" FontWeight="SemiBold" FontSize="10" Margin="5,2,0,2" TextWrapping="Wrap"/>
-            </Grid>
+                    <!-- Rasi -->
+                    <TextBlock Grid.Row="11" Grid.Column="0" Text="Rasi:" Foreground="#555" FontSize="10" Margin="0,2,0,4"/>
+                    <TextBlock Grid.Row="11" Grid.Column="1" x:Name="RasiText" Text="-" Foreground="#cc0000" FontWeight="SemiBold" FontSize="10" Margin="5,2,0,4" TextWrapping="Wrap"/>
+                    
+                    <!-- Year/Month -->
+                    <TextBlock Grid.Row="12" Grid.Column="0" Text="Year/Mo:" Foreground="#555" FontSize="10" Margin="0,2,0,4"/>
+                    <TextBlock Grid.Row="12" Grid.Column="1" x:Name="YearMonthText" Text="-" Foreground="#0066cc" FontWeight="SemiBold" FontSize="10" Margin="5,2,0,4" TextWrapping="Wrap"/>
+                </Grid>
+            </ScrollViewer>
         </StackPanel>
     </Border>
 </UserControl>

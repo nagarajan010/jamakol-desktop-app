@@ -143,7 +143,14 @@ public class ChartOrchestratorService
             localNoon,
             tomorrowSunrise,
             result.ChartData.AyanamsaValue, 
-            siderealTime);
+            siderealTime,
+            result.VedicDate.DayOfWeek,
+            // Pass a fresh EphemerisService instance (or reuse if scoped properly, here we create a temp one inside the calculate method or pass one)
+            // Ideally should pass the one from 'using' block above?
+            // The existing 'using' block on line 128 is closed at line 131.
+            // We should create a new one or extend the scope.
+            new EphemerisService() 
+        );
 
         // 9. Calculate Inauspicious Periods (Rahu Kalam, Yamagandam, Gulikai Kalam)
         result.InauspiciousPeriods = _inauspiciousPeriodsCalculator.Calculate(

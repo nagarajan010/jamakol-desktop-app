@@ -216,4 +216,14 @@ public class EphemerisService : IDisposable
         }
         GC.SuppressFinalize(this);
     }
+
+    /// <summary>
+    /// Convert Julian Day to DateTime (UTC)
+    /// </summary>
+    public static DateTime JulianDateToDateTime(double julianDay)
+    {
+        // Julian Day 2440587.5 is 1970-01-01 00:00:00 UTC
+        double unixTime = (julianDay - 2440587.5) * 86400.0;
+        return new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(unixTime);
+    }
 }

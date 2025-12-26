@@ -60,6 +60,12 @@ public class PanchangaDetails
     public string TamilYear { get; set; } = "";
     public string TamilMonth { get; set; } = "";
 
+    // End Times
+    public string TithiEndTime { get; set; } = "";
+    public string NakshatraEndTime { get; set; } = "";
+    public string YogaEndTime { get; set; } = "";
+    public string KaranaEndTime { get; set; } = "";
+
     // Percentages Left (New)
     public double TithiPercentLeft { get; set; }
     public double NakshatraPercentLeft { get; set; }
