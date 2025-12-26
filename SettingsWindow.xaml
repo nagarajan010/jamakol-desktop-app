@@ -221,21 +221,8 @@
             <TextBox x:Name="InputFontSizeInput" Grid.Column="1" Style="{StaticResource InputStyle}" Text="12"/>
         </Grid>
 
-        <!-- Prasanna Calculation Mode -->
-        <Grid Grid.Row="12" Margin="0,8">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="130"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="Prasanna Mode:" Style="{StaticResource LabelStyle}"/>
-            <ComboBox x:Name="PrasannaModeCombo" Grid.Column="1" Style="{StaticResource ComboStyle}">
-                <ComboBoxItem Content="Jama Graha Box Sign" Tag="{x:Static models:PrasannaCalcMode.JamaGrahaBoxSign}"/>
-                <ComboBoxItem Content="Jama Graha Real Degree" Tag="{x:Static models:PrasannaCalcMode.JamaGrahaRealDegree}"/>
-            </ComboBox>
-        </Grid>
-
         <!-- Default Tab Mode -->
-        <Grid Grid.Row="13" Margin="0,8">
+        <Grid Grid.Row="12" Margin="0,8">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="130"/>
                 <ColumnDefinition Width="*"/>
@@ -245,6 +232,17 @@
                 <ComboBoxItem Content="Birth Chart" Tag="0"/>
                 <ComboBoxItem Content="Jamakol" Tag="1"/>
             </ComboBox>
+        </Grid>
+
+        <!-- Use Fixed Sign Boxes -->
+        <Grid Grid.Row="13" Margin="0,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Fixed Sign Boxes:" Style="{StaticResource LabelStyle}"/>
+            <CheckBox x:Name="UseFixedSignBoxesCheckbox" Grid.Column="1" 
+                      Content="Show planets in fixed sign positions" VerticalAlignment="Center"/>
         </Grid>
 
         <!-- Info Text -->

@@ -69,18 +69,11 @@ public partial class SettingsWindow : Window
         TableFontSizeInput.Text = Settings.TableFontSize.ToString();
         InputFontSizeInput.Text = Settings.InputFontSize.ToString();
 
-        // Select current Prasanna mode
-        foreach (ComboBoxItem item in PrasannaModeCombo.Items)
-        {
-            if (item.Tag is PrasannaCalcMode prasannaMode && prasannaMode == Settings.PrasannaMode)
-            {
-                PrasannaModeCombo.SelectedItem = item;
-                break;
-            }
-        }
-
         // Select Default Tab
         DefaultTabCombo.SelectedIndex = Settings.DefaultTabIndex;
+
+        // Load Fixed Sign Boxes setting
+        UseFixedSignBoxesCheckbox.IsChecked = Settings.UseFixedSignBoxes;
     }
 
     private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -109,14 +102,11 @@ public partial class SettingsWindow : Window
             Settings.TableFontSize = double.Parse(TableFontSizeInput.Text);
             Settings.InputFontSize = double.Parse(InputFontSizeInput.Text);
 
-            // Save Prasanna mode
-            if (PrasannaModeCombo.SelectedItem is ComboBoxItem prasannaItem && prasannaItem.Tag is PrasannaCalcMode prasannaMode)
-            {
-                Settings.PrasannaMode = prasannaMode;
-            }
-
             // Save Default Tab
             Settings.DefaultTabIndex = DefaultTabCombo.SelectedIndex;
+
+            // Save Fixed Sign Boxes setting
+            Settings.UseFixedSignBoxes = UseFixedSignBoxesCheckbox.IsChecked == true;
 
             IsSaved = true;
             DialogResult = true;

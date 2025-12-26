@@ -126,7 +126,8 @@ public partial class MainWindow : Window
                 result.SpecialPoints, 
                 _appSettings.ChartFontSize, 
                 _appSettings.JamaGrahaFontSize, 
-                result.DayLord);
+                result.DayLord,
+                _appSettings.UseFixedSignBoxes);
             
             DataGridsPanelControl.UpdatePlanetGrid(result.JamakolData);
             DataGridsPanelControl.UpdateJamaGrahaGrid(result.JamaGrahas, result.SpecialPoints);
@@ -183,7 +184,8 @@ public partial class MainWindow : Window
                 result.SpecialPoints, 
                 _appSettings.ChartFontSize, 
                 _appSettings.JamaGrahaFontSize, 
-                result.DayLord);
+                result.DayLord,
+                _appSettings.UseFixedSignBoxes);
 
             DataGridsPanelControl.UpdatePlanetGrid(result.JamakolData);
             DataGridsPanelControl.UpdateJamaGrahaGrid(result.JamaGrahas, result.SpecialPoints);

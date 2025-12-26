@@ -103,7 +103,13 @@ public class ChartOrchestratorService
         result.SpecialPoints = CalculateSpecialPoints(birthData, result.ChartData, todaySunrise, todaySunset, tomorrowSunrise);
 
         // 7. Calculate Prasanna Details (using Jama Graha positions)
-        result.PrasannaDetails = _prasannaCalculator.Calculate(result.JamaGrahas, result.SpecialPoints, settings.PrasannaMode);
+        // Derive PrasannaMode from UseFixedSignBoxes: 
+        // - UseFixedSignBoxes = true → use RealDegree (actual sign position)
+        // - UseFixedSignBoxes = false → use BoxSign (default box position)
+        var prasannaMode = settings.UseFixedSignBoxes 
+            ? PrasannaCalcMode.JamaGrahaRealDegree 
+            : PrasannaCalcMode.JamaGrahaBoxSign;
+        result.PrasannaDetails = _prasannaCalculator.Calculate(result.JamaGrahas, result.SpecialPoints, prasannaMode);
 
         // 8. Calculate Panchanga Details
         // Use the actual ayanamsa value from the chart calculation
