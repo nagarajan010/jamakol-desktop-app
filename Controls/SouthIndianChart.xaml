@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="400"
-             Background="#fffff0">
+             Background="#fffff0"
+             PreviewMouseWheel="Control_PreviewMouseWheel">
     <UserControl.Resources>
         <Style x:Key="ChartCellStyle" TargetType="Border">
             <Setter Property="BorderBrush" Value="#cc0000"/>
@@ -123,7 +124,7 @@
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                 <TextBlock x:Name="ChartTitle" Text="Birth Chart" 
                            Foreground="#cc0000" FontSize="14" FontWeight="Bold" 
-                           HorizontalAlignment="Center" Margin="0,0,0,3"
+                           HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" Margin="0,0,0,3"
                            ToolTip="Right-click chart to change division"/>
                 <TextBlock x:Name="AscendantLabel" Text="Asc: " 
                            Foreground="#333" FontSize="11" HorizontalAlignment="Center"/>

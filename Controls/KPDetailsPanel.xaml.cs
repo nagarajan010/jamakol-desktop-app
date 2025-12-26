@@ -64,6 +64,11 @@ public partial class KPDetailsPanel : UserControl
         KPGrid.ItemsSource = items;
     }
     
+    public void ClearChart()
+    {
+        KPGrid.ItemsSource = null;
+    }
+    
     // Helper to format ordinal
     private string FormatHouseName(int number)
     {

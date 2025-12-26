@@ -102,6 +102,22 @@ public partial class AshtakavargaDetailsPanel : UserControl
 
         PindaGrid.ItemsSource = pindaRows;
     }
+
+    public void ClearChart()
+    {
+        ChartSAV.Clear();
+        ChartLagna.Clear();
+        ChartSun.Clear();
+        ChartMoon.Clear();
+        ChartMars.Clear();
+        ChartMercury.Clear();
+        ChartJupiter.Clear();
+        ChartVenus.Clear();
+        ChartSaturn.Clear();
+        
+        AVGrid.ItemsSource = null;
+        PindaGrid.ItemsSource = null;
+    }
     
     private void AddPindaRow(List<PindaRow> rows, Planet p, string name, AshtakavargaData data)
     {
@@ -119,7 +135,7 @@ public partial class AshtakavargaDetailsPanel : UserControl
 
     private void UpdatePlanetChart(AshtakavargaChart control, string title, Planet planet, ChartData chart, AshtakavargaData data)
     {
-        if (data.Bhinnashtakavarga.TryGetValue(planet, out int[] points))
+        if (data.Bhinnashtakavarga.TryGetValue(planet, out int[]? points) && points != null)
         {
             // Find planet sign
             var p = chart.Planets.FirstOrDefault(pl => pl.Planet == planet);
@@ -163,7 +179,7 @@ public partial class AshtakavargaDetailsPanel : UserControl
 
     private int GetPoints(Dictionary<Planet, int[]> bhinna, Planet p, int index)
     {
-        if (bhinna.TryGetValue(p, out int[] points))
+        if (bhinna.TryGetValue(p, out int[]? points) && points != null)
         {
             return points[index];
         }

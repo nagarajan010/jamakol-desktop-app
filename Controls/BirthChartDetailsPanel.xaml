@@ -128,5 +128,11 @@
                 <controls:KPDetailsPanel x:Name="KpDetailsControl"/>
             </Grid>
         </TabItem>
+            
+        <TabItem Header="Chakras">
+            <Grid Margin="0,10,0,0">
+                <controls:ChakrasPanel x:Name="ChakrasControl"/>
+            </Grid>
+        </TabItem>
     </TabControl>
 </UserControl>

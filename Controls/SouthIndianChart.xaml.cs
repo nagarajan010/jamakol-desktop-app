@@ -18,7 +18,6 @@ public partial class SouthIndianChart : UserControl
     // Store chart data for division switching
     private ChartData? _currentChartData;
     private double _currentFontSize = 12;
-    private bool _isUpdating = false;
     private bool _hideDegrees = false;
     private int _currentDivision = 1;
     
@@ -146,14 +145,14 @@ public partial class SouthIndianChart : UserControl
         // Update chart title - show chart type with person name
         string personName = !string.IsNullOrEmpty(chartData.BirthData.Name) ? chartData.BirthData.Name : "";
         ChartTitle.Text = string.IsNullOrEmpty(personName) ? "Rasi (D-1)" : $"{personName}\nRasi (D-1)";
-        AscendantLabel.Text = $"Asc: {chartData.AscendantSignName}\n{ZodiacUtils.FormatDegreeInSign(chartData.AscendantDegree)}";
+        AscendantLabel.Text = "";
 
         // Prepare content for each sign
         var displayBySign = new Dictionary<int, List<(string text, string type)>>();
         for (int i = 1; i <= 12; i++) displayBySign[i] = new List<(string text, string type)>();
 
-        // Add "Lagna" to ascendant sign
-        displayBySign[chartData.AscendantSign].Add(("Lagna", "lagna"));
+        // Add "As" to ascendant sign
+        displayBySign[chartData.AscendantSign].Add(("As", "lagna"));
 
         // Add planets
         foreach (var p in chartData.Planets)
@@ -258,7 +257,16 @@ public partial class SouthIndianChart : UserControl
         }
 
         // Update chart title - show division name only
-        ChartTitle.Text = divisionalData.Name;
+        // Update chart title - show division name only, split into two lines if it contains " ("
+        // Example: "Navamsa (D-9)" -> "Navamsa\n(D-9)"
+        if (divisionalData.Name.Contains(" ("))
+        {
+            ChartTitle.Text = divisionalData.Name.Replace(" (", "\n(");
+        }
+        else
+        {
+            ChartTitle.Text = divisionalData.Name;
+        }
         AscendantLabel.Text = "";
         // AscendantLabel.Text = $"Asc: {divisionalData.AscendantSignName}\n{ZodiacUtils.FormatDegreeInSign(divisionalData.AscendantDegree)}";
 
@@ -266,8 +274,8 @@ public partial class SouthIndianChart : UserControl
         var displayBySign = new Dictionary<int, List<(string text, string type)>>();
         for (int i = 1; i <= 12; i++) displayBySign[i] = new List<(string text, string type)>();
 
-        // Add "Lagna" to ascendant sign
-        displayBySign[divisionalData.AscendantSign].Add(("Lagna", "lagna"));
+        // Add "As" to ascendant sign
+        displayBySign[divisionalData.AscendantSign].Add(("As", "lagna"));
 
         // Add planets at their divisional positions
         foreach (var p in divisionalData.Planets)
@@ -349,6 +357,53 @@ public partial class SouthIndianChart : UserControl
         {
             border.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#fffff8"));
             border.BorderThickness = new Thickness(1);
+        }
+    }
+
+    /// <summary>
+    /// Handle mouse wheel to allow bubbling if inner scrollviewer cannot scroll.
+    /// </summary>
+    private void Control_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+    {
+        // Find the ScrollViewer that the mouse is over
+        var element = e.OriginalSource as DependencyObject;
+        ScrollViewer? scroller = null;
+        
+        // Walk up to find ScrollViewer within this control
+        while (element != null && element != this)
+        {
+            if (element is ScrollViewer sv)
+            {
+                scroller = sv;
+                break;
+            }
+            if (element is Visual || element is System.Windows.Media.Media3D.Visual3D)
+            {
+                element = VisualTreeHelper.GetParent(element);
+            }
+            else
+            {
+                element = null;
+            }
+        }
+
+        // If over a scrollviewer
+        if (scroller != null)
+        {
+            // Check if it has scrollable content
+            if (scroller.ExtentHeight <= scroller.ViewportHeight)
+            {
+                // Can't scroll, so let parent scroll.
+                // We mark the preview event as handled so the inner scrollviewer doesn't catch it
+                e.Handled = true;
+
+                // Raise a new MouseWheel event that bubbles up from this control
+                var eventArg = new System.Windows.Input.MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
+                eventArg.RoutedEvent = UIElement.MouseWheelEvent;
+                eventArg.Source = this;
+                
+                this.RaiseEvent(eventArg);
+            }
         }
     }
 }

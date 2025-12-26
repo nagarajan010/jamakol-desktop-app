@@ -65,4 +65,16 @@ public partial class AshtakavargaChart : UserControl
             }
         }
     }
+    public void Clear()
+    {
+        TitleText.Text = "";
+        foreach (var tb in _textBlocks.Values)
+        {
+            tb.Text = "";
+        }
+        foreach (var border in _borders.Values)
+        {
+            border.Background = Brushes.White;
+        }
+    }
 }
