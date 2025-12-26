@@ -16,6 +16,8 @@ public class ChartOrchestratorService
     private readonly JamakolCalculator _jamakolCalculator;
     private readonly JamaGrahaCalculator _jamaGrahaCalculator;
     private readonly SpecialPointsCalculator _specialPointsCalculator;
+    private readonly SupplementaryPlanetsCalculator _supplementaryPlanetsCalculator;
+    private readonly InauspiciousPeriodsCalculator _inauspiciousPeriodsCalculator;
     private readonly PrasannaCalculator _prasannaCalculator;
     private readonly PanchangaCalculator _panchangaCalculator;
     private SunriseCalculator _sunriseCalculator;
@@ -26,6 +28,8 @@ public class ChartOrchestratorService
         _jamakolCalculator = new JamakolCalculator();
         _jamaGrahaCalculator = new JamaGrahaCalculator();
         _specialPointsCalculator = new SpecialPointsCalculator();
+        _supplementaryPlanetsCalculator = new SupplementaryPlanetsCalculator();
+        _inauspiciousPeriodsCalculator = new InauspiciousPeriodsCalculator();
         _prasannaCalculator = new PrasannaCalculator();
         _panchangaCalculator = new PanchangaCalculator();
         _sunriseCalculator = new SunriseCalculator();
@@ -100,7 +104,7 @@ public class ChartOrchestratorService
         result.JamaGrahas = _jamaGrahaCalculator.Calculate(birthData.BirthDateTime, dayLord);
 
         // 6. Calculate Special Points (Aarudam, Udayam, Kavippu)
-        result.SpecialPoints = CalculateSpecialPoints(birthData, result.ChartData, todaySunrise, todaySunset, tomorrowSunrise);
+        result.SpecialPoints = CalculateSpecialPoints(birthData, result.ChartData, dayLord, todaySunrise, todaySunset, tomorrowSunrise);
 
         // 7. Calculate Prasanna Details (using Jama Graha positions)
         // Derive PrasannaMode from UseFixedSignBoxes: 
@@ -115,12 +119,17 @@ public class ChartOrchestratorService
         // Use the actual ayanamsa value from the chart calculation
         result.PanchangaDetails = _panchangaCalculator.Calculate(result.ChartData, todaySunrise, todaySunset, result.ChartData.AyanamsaValue);
 
+        // 9. Calculate Inauspicious Periods (Rahu Kalam, Yamagandam, Gulikai Kalam)
+        result.InauspiciousPeriods = _inauspiciousPeriodsCalculator.Calculate(
+            todaySunrise, todaySunset, birthData.BirthDateTime, vedicDate.DayOfWeek);
+
         return result;
     }
 
     private List<SpecialPoint> CalculateSpecialPoints(
         BirthData birthData, 
         ChartData chartData,
+        string dayLord,
         DateTime todaySunrise,
         DateTime todaySunset,
         DateTime tomorrowSunrise)
@@ -151,6 +160,13 @@ public class ChartOrchestratorService
         var kavippu = _specialPointsCalculator.CalculateKavippu(
             sunSign, udayam.AbsoluteLongitude, aarudam.AbsoluteLongitude);
         specialPoints.Add(kavippu);
+
+        // Calculate Supplementary Points (Rahu Kalam, Yemakandam use portions; Mandhi uses offset)
+        // Need to determine if day or night for Mandhi calculation
+        bool isDay = birthData.BirthDateTime >= todaySunrise && birthData.BirthDateTime < todaySunset;
+        var supplementaryPoints = _supplementaryPlanetsCalculator.Calculate(
+            sunLongitude, dayLord, isDay, birthData.BirthDateTime.Date.DayOfWeek);
+        specialPoints.AddRange(supplementaryPoints);
 
         return specialPoints;
     }

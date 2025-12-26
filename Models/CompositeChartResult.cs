@@ -13,6 +13,7 @@ public class CompositeChartResult
     public JamakolData JamakolData { get; set; } = new();
     public List<JamaGrahaPosition> JamaGrahas { get; set; } = new();
     public List<SpecialPoint> SpecialPoints { get; set; } = new();
+    public List<InauspiciousPeriod> InauspiciousPeriods { get; set; } = new();
     public PrasannaDetails PrasannaDetails { get; set; } = new();
     public PanchangaDetails PanchangaDetails { get; set; } = new();
     
