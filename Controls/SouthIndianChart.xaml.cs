@@ -428,9 +428,11 @@ public partial class SouthIndianChart : UserControl
     /// <summary>
     /// Handle mouse wheel to allow bubbling if inner scrollviewer cannot scroll.
     /// </summary>
+    /// <summary>
+    /// Handle mouse wheel to allow bubbling if inner scrollviewer cannot scroll or is at boundary.
+    /// </summary>
     private void Control_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
     {
-        // Find the ScrollViewer that the mouse is over
         var element = e.OriginalSource as DependencyObject;
         ScrollViewer? scroller = null;
         
@@ -442,7 +444,13 @@ public partial class SouthIndianChart : UserControl
                 scroller = sv;
                 break;
             }
-            if (element is Visual || element is System.Windows.Media.Media3D.Visual3D)
+            
+            // Handle logical parent for non-visual elements like Run
+            if (element is FrameworkContentElement fce)
+            {
+                element = fce.Parent;
+            }
+            else if (element is Visual || element is System.Windows.Media.Media3D.Visual3D)
             {
                 element = VisualTreeHelper.GetParent(element);
             }
@@ -455,10 +463,28 @@ public partial class SouthIndianChart : UserControl
         // If over a scrollviewer
         if (scroller != null)
         {
-            // Check if it has scrollable content
+            // Check if we should pass the scroll to parent
+            bool shouldPassToParent = false;
+
+            // 1. If content fits entirely, always pass
             if (scroller.ExtentHeight <= scroller.ViewportHeight)
             {
-                // Can't scroll, so let parent scroll.
+                shouldPassToParent = true;
+            }
+            // 2. If scrolling UP (Delta > 0) and at TOP
+            else if (e.Delta > 0 && scroller.VerticalOffset <= 0)
+            {
+                shouldPassToParent = true;
+            }
+            // 3. If scrolling DOWN (Delta < 0) and at BOTTOM
+            else if (e.Delta < 0 && scroller.VerticalOffset >= scroller.ScrollableHeight)
+            {
+                shouldPassToParent = true;
+            }
+
+            if (shouldPassToParent)
+            {
+                // Can't scroll internally, so let parent scroll.
                 // We mark the preview event as handled so the inner scrollviewer doesn't catch it
                 e.Handled = true;
 
