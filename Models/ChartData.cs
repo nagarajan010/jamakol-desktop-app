@@ -47,4 +47,14 @@ public class ChartData
     {
         return Planets.Where(p => p.House == house);
     }
+    
+    /// <summary>
+    /// KP House Cusps (Placidus)
+    /// </summary>
+    public List<HouseCusp> HouseCusps { get; set; } = new();
+
+    /// <summary>
+    /// Ashtakavarga Calculations
+    /// </summary>
+    public AshtakavargaData Ashtakavarga { get; set; } = new();
 }

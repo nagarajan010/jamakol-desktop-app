@@ -21,6 +21,7 @@ public class ChartOrchestratorService
     private readonly PrasannaCalculator _prasannaCalculator;
     private readonly PanchangaCalculator _panchangaCalculator;
     private readonly VimshottariDashaCalculator _vimshottariDashaCalculator;
+    private readonly AshtakavargaCalculator _ashtakavargaCalculator;
     private SunriseCalculator _sunriseCalculator;
 
     public ChartOrchestratorService()
@@ -35,6 +36,7 @@ public class ChartOrchestratorService
         _panchangaCalculator = new PanchangaCalculator();
         _vimshottariDashaCalculator = new VimshottariDashaCalculator();
         _sunriseCalculator = new SunriseCalculator();
+        _ashtakavargaCalculator = new AshtakavargaCalculator();
     }
 
     /// <summary>
@@ -55,6 +57,9 @@ public class ChartOrchestratorService
 
         // 1. Calculate Basic Chart
         result.ChartData = _chartCalculator.CalculateChart(birthData, settings.Ayanamsha);
+        
+        // 1.1 Calculate Ashtakavarga
+        result.ChartData.Ashtakavarga = _ashtakavargaCalculator.Calculate(result.ChartData);
 
         // 2. Determine Vedic Day and Sunrise/Sunset logic
         var civilDate = birthData.BirthDateTime.Date;

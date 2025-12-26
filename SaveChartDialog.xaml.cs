@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using JamakolAstrology.Models;
 using JamakolAstrology.Services;
+using JamakolAstrology.Controls;
 
 namespace JamakolAstrology;
 
@@ -16,6 +17,7 @@ public partial class SaveChartDialog : Window
     private readonly ChartStorageService _storageService;
     private readonly SavedJamakolChart _chart;
     private List<Guid> _selectedTagIds = new();
+    private readonly GeoNamesService _geoService;
 
     public bool IsSaved { get; private set; }
 
@@ -24,6 +26,7 @@ public partial class SaveChartDialog : Window
         InitializeComponent();
         _storageService = storageService;
         _chart = chart;
+        _geoService = new GeoNamesService();
 
         // Set title and hide Result based on chart type
         if (chart.ChartType == "BirthChart")
@@ -45,6 +48,13 @@ public partial class SaveChartDialog : Window
     {
         NameInput.Text = _chart.Name;
         PredictionInput.Text = _chart.Prediction;
+        
+        // Populate Date/Time/Location
+        DateInput.SelectedDate = _chart.QueryDateTime.Date;
+        TimeInput.Text = _chart.QueryDateTime.ToString("HH:mm:ss");
+        LatInput.Text = _chart.Latitude.ToString();
+        LongInput.Text = _chart.Longitude.ToString();
+        TzInput.Text = _chart.Timezone.ToString();
         
         // Set result
         ResultCombo.SelectedIndex = (int)_chart.Result;
@@ -123,6 +133,24 @@ public partial class SaveChartDialog : Window
         dialog.ShowDialog();
         LoadTags();
     }
+    
+    private void SearchPlace_Click(object sender, RoutedEventArgs e)
+    {
+        var dialog = new PlaceSearchDialog();
+        dialog.Owner = Window.GetWindow(this);
+        if (dialog.ShowDialog() == true && dialog.SelectedLocation != null)
+        {
+            var loc = dialog.SelectedLocation;
+            LatInput.Text = loc.Lat;
+            LongInput.Text = loc.Lng;
+            
+            if (loc.Timezone != null && !string.IsNullOrEmpty(loc.Timezone.TimeZoneId))
+            {
+                var offset = _geoService.GetTimezoneOffset(loc.Timezone.TimeZoneId);
+                TzInput.Text = offset.ToString("0.##");
+            }
+        }
+    }
 
     private void Save_Click(object sender, RoutedEventArgs e)
     {
@@ -132,25 +160,47 @@ public partial class SaveChartDialog : Window
             return;
         }
 
-        _chart.Name = NameInput.Text.Trim();
-        _chart.Prediction = PredictionInput.Text;
-        _chart.Result = (ChartResult)ResultCombo.SelectedIndex;
-        
-        if (CategoryCombo.SelectedItem is ComboBoxItem catItem && catItem.Tag is Guid catId)
+        try
         {
-            _chart.CategoryId = catId;
+            // Parse Date and Time
+            DateTime date = DateInput.SelectedDate ?? DateTime.Now;
+            var timeParts = TimeInput.Text.Split(':');
+            if (timeParts.Length < 2) throw new Exception("Invalid time format. Use HH:mm:ss");
+            
+            DateTime newDateTime = new DateTime(date.Year, date.Month, date.Day, 
+                int.Parse(timeParts[0]), int.Parse(timeParts[1]), 
+                timeParts.Length > 2 ? int.Parse(timeParts[2]) : 0);
+
+            // Update Chart
+            _chart.Name = NameInput.Text.Trim();
+            _chart.QueryDateTime = newDateTime;
+            _chart.Latitude = double.Parse(LatInput.Text);
+            _chart.Longitude = double.Parse(LongInput.Text);
+            _chart.Timezone = double.Parse(TzInput.Text);
+            
+            _chart.Prediction = PredictionInput.Text;
+            _chart.Result = (ChartResult)ResultCombo.SelectedIndex;
+            
+            if (CategoryCombo.SelectedItem is ComboBoxItem catItem && catItem.Tag is Guid catId)
+            {
+                _chart.CategoryId = catId;
+            }
+            else
+            {
+                _chart.CategoryId = null;
+            }
+            
+            _chart.TagIds = _selectedTagIds.ToList();
+            
+            _storageService.SaveChart(_chart);
+            IsSaved = true;
+            DialogResult = true;
+            Close();
         }
-        else
+        catch (Exception ex)
         {
-            _chart.CategoryId = null;
+            MessageBox.Show($"Error saving: {ex.Message}", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
-        
-        _chart.TagIds = _selectedTagIds.ToList();
-        
-        _storageService.SaveChart(_chart);
-        IsSaved = true;
-        DialogResult = true;
-        Close();
     }
 
     private void Cancel_Click(object sender, RoutedEventArgs e)

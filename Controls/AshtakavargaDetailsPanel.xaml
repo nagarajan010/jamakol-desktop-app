@@ -1,0 +1,87 @@
+<UserControl x:Class="JamakolAstrology.Controls.AshtakavargaDetailsPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:JamakolAstrology.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style x:Key="CenterCell" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="BoldCenterCell" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+        <Style x:Key="RedBoldCenterCell" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#cc0000"/>
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid Background="Transparent">
+        <Grid.ContextMenu>
+            <ContextMenu>
+                <MenuItem Header="Show BAVs and SAV (Grid View)" Click="SwitchToGridView_Click" IsChecked="True" x:Name="MenuGridView"/>
+                <MenuItem Header="Show Table View" Click="SwitchToTableView_Click" IsChecked="False" x:Name="MenuTableView"/>
+                <MenuItem Header="Show Sodhya Pindas" Click="SwitchToPindaView_Click" IsChecked="False" x:Name="MenuPindaView"/>
+            </ContextMenu>
+        </Grid.ContextMenu>
+
+        <!-- Grid View (Charts) -->
+        <ScrollViewer x:Name="ChartsScrollViewer" VerticalScrollBarVisibility="Auto" Margin="0,0,0,0">
+            <UniformGrid Columns="3" Rows="3" Margin="5">
+                <!-- Row 1 -->
+                <local:AshtakavargaChart x:Name="ChartSAV" Margin="5"/>
+                <local:AshtakavargaChart x:Name="ChartLagna" Margin="5"/>
+                <local:AshtakavargaChart x:Name="ChartSun" Margin="5"/>
+                
+                <!-- Row 2 -->
+                <local:AshtakavargaChart x:Name="ChartMoon" Margin="5"/>
+                <local:AshtakavargaChart x:Name="ChartMars" Margin="5"/>
+                <local:AshtakavargaChart x:Name="ChartMercury" Margin="5"/>
+                
+                <!-- Row 3 -->
+                <local:AshtakavargaChart x:Name="ChartJupiter" Margin="5"/>
+                <local:AshtakavargaChart x:Name="ChartVenus" Margin="5"/>
+                <local:AshtakavargaChart x:Name="ChartSaturn" Margin="5"/>
+            </UniformGrid>
+        </ScrollViewer>
+
+        <!-- Table View -->
+        <DataGrid x:Name="AVGrid" Visibility="Collapsed" AutoGenerateColumns="False" CanUserAddRows="False" 
+                  HeadersVisibility="Column" GridLinesVisibility="All"
+                  Background="White" RowBackground="White" AlternatingRowBackground="#F8F8F8">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Sign" Binding="{Binding SignName}" Width="100" FontWeight="SemiBold"/>
+                
+                <DataGridTextColumn Header="Sun" Binding="{Binding SunPoints}" Width="50" ElementStyle="{StaticResource CenterCell}"/>
+                <DataGridTextColumn Header="Mon" Binding="{Binding MoonPoints}" Width="50" ElementStyle="{StaticResource CenterCell}"/>
+                <DataGridTextColumn Header="Mar" Binding="{Binding MarsPoints}" Width="50" ElementStyle="{StaticResource CenterCell}"/>
+                <DataGridTextColumn Header="Mer" Binding="{Binding MercuryPoints}" Width="50" ElementStyle="{StaticResource CenterCell}"/>
+                <DataGridTextColumn Header="Jup" Binding="{Binding JupiterPoints}" Width="50" ElementStyle="{StaticResource CenterCell}"/>
+                <DataGridTextColumn Header="Ven" Binding="{Binding VenusPoints}" Width="50" ElementStyle="{StaticResource CenterCell}"/>
+                <DataGridTextColumn Header="Sat" Binding="{Binding SaturnPoints}" Width="50" ElementStyle="{StaticResource CenterCell}"/>
+                <DataGridTextColumn Header="Lag" Binding="{Binding LagnaPoints}" Width="50" ElementStyle="{StaticResource CenterCell}"/>
+                
+                <DataGridTextColumn Header="Sarva" Binding="{Binding SarvaPoints}" Width="60" ElementStyle="{StaticResource RedBoldCenterCell}"/>
+                <DataGridTextColumn Header="Total(+Lg)" Binding="{Binding SarvaWithLagnaPoints}" Width="70" ElementStyle="{StaticResource BoldCenterCell}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Pinda View -->
+        <DataGrid x:Name="PindaGrid" Visibility="Collapsed" AutoGenerateColumns="False" CanUserAddRows="False"
+                  HeadersVisibility="Column" GridLinesVisibility="All"
+                  Background="White" RowBackground="White" AlternatingRowBackground="#F8F8F8"
+                  HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Planet" Binding="{Binding PlanetName}" Width="100" FontWeight="SemiBold"/>
+                <DataGridTextColumn Header="Sodhya Pinda" Binding="{Binding SodhyaPinda}" Width="100" ElementStyle="{StaticResource RedBoldCenterCell}"/>
+                <DataGridTextColumn Header="Rasi Pinda" Binding="{Binding RasiPinda}" Width="80" ElementStyle="{StaticResource CenterCell}"/>
+                <DataGridTextColumn Header="Graha Pinda" Binding="{Binding GrahaPinda}" Width="80" ElementStyle="{StaticResource CenterCell}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

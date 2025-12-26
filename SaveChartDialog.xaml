@@ -33,6 +33,8 @@
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/> <!-- New: Date/Time -->
+            <RowDefinition Height="Auto"/> <!-- New: Location -->
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -46,9 +48,49 @@
             <TextBlock Text="Chart Name" Style="{StaticResource LabelStyle}"/>
             <TextBox x:Name="NameInput" Style="{StaticResource InputStyle}" Text="Query"/>
         </StackPanel>
+
+        <!-- Date / Time -->
+        <StackPanel Grid.Row="1">
+            <TextBlock Text="Date / Time" Style="{StaticResource LabelStyle}"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <DatePicker x:Name="DateInput" Grid.Column="0" Padding="4" FontSize="13" VerticalContentAlignment="Center"/>
+                <TextBox x:Name="TimeInput" Grid.Column="2" Style="{StaticResource InputStyle}" ToolTip="HH:mm:ss"/>
+            </Grid>
+        </StackPanel>
+
+        <!-- Location -->
+        <StackPanel Grid.Row="2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Location (Lat / Long / TZ)" Style="{StaticResource LabelStyle}"/>
+                <Button Grid.Column="1" Content="🔍 Search Place..." FontSize="11" Padding="8,2" 
+                        Click="SearchPlace_Click" Background="Transparent" BorderThickness="0"
+                        Foreground="#cc0000" Cursor="Hand" VerticalAlignment="Bottom" Margin="0,0,0,5"/>
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="0.6*"/>
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="LatInput" Grid.Column="0" Style="{StaticResource InputStyle}" ToolTip="Latitude"/>
+                <TextBox x:Name="LongInput" Grid.Column="2" Style="{StaticResource InputStyle}" ToolTip="Longitude"/>
+                <TextBox x:Name="TzInput" Grid.Column="4" Style="{StaticResource InputStyle}" ToolTip="Timezone"/>
+            </Grid>
+        </StackPanel>
         
         <!-- Result -->
-        <StackPanel x:Name="ResultPanel" Grid.Row="1">
+        <StackPanel x:Name="ResultPanel" Grid.Row="3">
             <TextBlock Text="Result" Style="{StaticResource LabelStyle}"/>
             <ComboBox x:Name="ResultCombo" Style="{StaticResource ComboStyle}">
                 <ComboBoxItem Content="Pending" IsSelected="True"/>
@@ -58,7 +100,7 @@
         </StackPanel>
         
         <!-- Category -->
-        <StackPanel Grid.Row="2">
+        <StackPanel Grid.Row="4">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -73,7 +115,7 @@
         </StackPanel>
         
         <!-- Tags -->
-        <StackPanel Grid.Row="3">
+        <StackPanel Grid.Row="5">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -95,10 +137,10 @@
         </StackPanel>
         
         <!-- Prediction -->
-        <StackPanel Grid.Row="4">
+        <StackPanel Grid.Row="6">
             <TextBlock Text="Prediction / Notes" Style="{StaticResource LabelStyle}"/>
         </StackPanel>
-        <TextBox x:Name="PredictionInput" Grid.Row="5" 
+        <TextBox x:Name="PredictionInput" Grid.Row="7" 
                  Style="{StaticResource InputStyle}" 
                  AcceptsReturn="True" 
                  TextWrapping="Wrap"
@@ -106,10 +148,10 @@
                  VerticalAlignment="Stretch"/>
         
         <!-- Buttons -->
-        <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
+        <StackPanel Grid.Row="8" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
             <Button Content="Cancel" Style="{StaticResource ButtonStyle}" 
                     Click="Cancel_Click" Background="#ddd" Margin="0,0,10,0"/>
-            <Button Content="Save Chart" Style="{StaticResource ButtonStyle}" 
+            <Button Content="Save / Update" Style="{StaticResource ButtonStyle}" 
                     Click="Save_Click" Background="#cc0000" Foreground="White"/>
         </StackPanel>
     </Grid>

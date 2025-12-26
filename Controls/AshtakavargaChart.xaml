@@ -1,0 +1,64 @@
+<UserControl x:Class="JamakolAstrology.Controls.AshtakavargaChart"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="150" d:DesignWidth="150">
+    <UserControl.Resources>
+        <Style x:Key="AVBorder" TargetType="Border">
+            <Setter Property="BorderBrush" Value="#888"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+        </Style>
+        <Style x:Key="AVText" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#333"/>
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Row 0: 12, 1, 2, 3 -->
+        <Border x:Name="B12" Grid.Row="0" Grid.Column="0" Style="{StaticResource AVBorder}"> <TextBlock x:Name="T12" Style="{StaticResource AVText}"/> </Border>
+        <Border x:Name="B1"  Grid.Row="0" Grid.Column="1" Style="{StaticResource AVBorder}"> <TextBlock x:Name="T1"  Style="{StaticResource AVText}"/> </Border>
+        <Border x:Name="B2"  Grid.Row="0" Grid.Column="2" Style="{StaticResource AVBorder}"> <TextBlock x:Name="T2"  Style="{StaticResource AVText}"/> </Border>
+        <Border x:Name="B3"  Grid.Row="0" Grid.Column="3" Style="{StaticResource AVBorder}"> <TextBlock x:Name="T3"  Style="{StaticResource AVText}"/> </Border>
+
+        <!-- Row 1: 11, Center, 4 -->
+        <Border x:Name="B11" Grid.Row="1" Grid.Column="0" Style="{StaticResource AVBorder}"> <TextBlock x:Name="T11" Style="{StaticResource AVText}"/> </Border>
+        
+        <!-- Center Title -->
+        <Border Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Grid.ColumnSpan="2" Background="#fff8dc" BorderBrush="#cc0000" BorderThickness="1">
+            <TextBlock x:Name="TitleText" Text="SAV" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                       Foreground="#cc0000" FontWeight="Bold" FontSize="16"/>
+        </Border>
+        
+        <Border x:Name="B4"  Grid.Row="1" Grid.Column="3" Style="{StaticResource AVBorder}"> <TextBlock x:Name="T4"  Style="{StaticResource AVText}"/> </Border>
+
+        <!-- Row 2: 10, Center, 5 -->
+        <Border x:Name="B10" Grid.Row="2" Grid.Column="0" Style="{StaticResource AVBorder}"> <TextBlock x:Name="T10" Style="{StaticResource AVText}"/> </Border>
+        <Border x:Name="B5"  Grid.Row="2" Grid.Column="3" Style="{StaticResource AVBorder}"> <TextBlock x:Name="T5"  Style="{StaticResource AVText}"/> </Border>
+
+        <!-- Row 3: 9, 8, 7, 6 -->
+        <Border x:Name="B9"  Grid.Row="3" Grid.Column="0" Style="{StaticResource AVBorder}"> <TextBlock x:Name="T9"  Style="{StaticResource AVText}"/> </Border>
+        <Border x:Name="B8"  Grid.Row="3" Grid.Column="1" Style="{StaticResource AVBorder}"> <TextBlock x:Name="T8"  Style="{StaticResource AVText}"/> </Border>
+        <Border x:Name="B7"  Grid.Row="3" Grid.Column="2" Style="{StaticResource AVBorder}"> <TextBlock x:Name="T7"  Style="{StaticResource AVText}"/> </Border>
+        <Border x:Name="B6"  Grid.Row="3" Grid.Column="3" Style="{StaticResource AVBorder}"> <TextBlock x:Name="T6"  Style="{StaticResource AVText}"/> </Border>
+    </Grid>
+</UserControl>

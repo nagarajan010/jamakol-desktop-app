@@ -9,11 +9,13 @@ public class ChartCalculator
 {
     private readonly EphemerisService _ephemeris;
     private readonly DivisionalChartService _divisionalChartService;
+    private readonly KPCalculator _kpCalculator;
 
     public ChartCalculator()
     {
         _ephemeris = new EphemerisService();
         _divisionalChartService = new DivisionalChartService();
+        _kpCalculator = new KPCalculator();
     }
 
     /// <summary>
@@ -46,6 +48,24 @@ public class ChartCalculator
         var ascNakshatra = ZodiacUtils.GetNakshatraInfo(chartData.AscendantDegree);
         chartData.AscendantNakshatraName = ascNakshatra.name;
         chartData.AscendantNakshatraPada = ascNakshatra.pada;
+        
+        // --- KP HOUSE CUSPS (Placidus) ---
+        var cusps = _ephemeris.GetHouses(chartData.JulianDay, birthData.Latitude, birthData.Longitude, (int)ayanamsha);
+        chartData.HouseCusps = new List<HouseCusp>();
+        
+        for (int i = 0; i < 12; i++)
+        {
+            double longitude = cusps[i];
+            var cusp = new HouseCusp
+            {
+                HouseNumber = i + 1,
+                Degree = longitude,
+                SignName = ZodiacUtils.SignNames[ZodiacUtils.DegreeToSign(longitude)],
+                DegreeDisplay = ZodiacUtils.FormatDegreeInSign(longitude),
+                KpDetails = _kpCalculator.Calculate(longitude)
+            };
+            chartData.HouseCusps.Add(cusp);
+        }
 
         // Calculate positions for all planets
         chartData.Planets = new List<PlanetPosition>();
@@ -56,6 +76,10 @@ public class ChartCalculator
             if (planet == Planet.Ketu) continue; // Handle separately based on Rahu
 
             var position = CalculatePlanetPosition(chartData.JulianDay, planet, chartData.AscendantSign, (int)ayanamsha);
+            
+            // Calculate KP Lords for Planet
+            position.KpDetails = _kpCalculator.Calculate(position.Longitude);
+            
             chartData.Planets.Add(position);
         }
 
@@ -77,6 +101,9 @@ public class ChartCalculator
         ketuPosition.Nakshatra = ZodiacUtils.DegreeToNakshatra(ketuPosition.Longitude);
         ketuPosition.NakshatraName = ZodiacUtils.NakshatraNames[ketuPosition.Nakshatra];
         ketuPosition.NakshatraPada = ZodiacUtils.GetNakshatraPada(ketuPosition.Longitude);
+        
+        // Calculate KP Lords for Ketu
+        ketuPosition.KpDetails = _kpCalculator.Calculate(ketuPosition.Longitude);
         
         chartData.Planets.Add(ketuPosition);
 

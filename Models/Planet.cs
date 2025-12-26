@@ -35,4 +35,6 @@ public class PlanetPosition
     public int Nakshatra { get; set; }      // 1-27
     public string NakshatraName { get; set; } = string.Empty;
     public int NakshatraPada { get; set; }  // 1-4
+    
+    public KPLords KpDetails { get; set; } = new();
 }

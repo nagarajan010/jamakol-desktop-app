@@ -114,5 +114,19 @@
                 </Border>
             </Grid>
         </TabItem>
+        
+        <!-- Ashtakavarga Tab -->
+        <TabItem Header="Ashtakavarga">
+            <Grid Margin="0,10,0,0">
+                <controls:AshtakavargaDetailsPanel x:Name="AVDetailsControl"/>
+            </Grid>
+        </TabItem>
+        
+        <!-- KP Tab -->
+        <TabItem Header="KP">
+            <Grid Margin="0,10,0,0">
+                <controls:KPDetailsPanel x:Name="KpDetailsControl"/>
+            </Grid>
+        </TabItem>
     </TabControl>
 </UserControl>

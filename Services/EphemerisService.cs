@@ -1,6 +1,7 @@
 using SwissEphNet;
 using JamakolAstrology.Models;
 using System.IO;
+using System.Linq;
 
 namespace JamakolAstrology.Services;
 
@@ -151,6 +152,30 @@ public class EphemerisService : IDisposable
         );
         
         return ascmc[0]; // Ascendant
+    }
+
+    /// <summary>
+    /// Get all 12 House Cusps (Placidus)
+    /// </summary>
+    public double[] GetHouses(double julianDay, double latitude, double longitude, int ayanamshaId)
+    {
+        double[] cusps = new double[13];
+        double[] ascmc = new double[10];
+
+        _sweph.swe_set_sid_mode(ayanamshaId, 0, 0);
+
+        _sweph.swe_houses_ex(
+            julianDay,
+            SwissEph.SEFLG_SIDEREAL,
+            latitude,
+            longitude,
+            'P',  // Placidus
+            cusps,
+            ascmc
+        );
+
+        // Cusps are at indices 1-12
+        return cusps.Skip(1).Take(12).ToArray();
     }
 
     /// <summary>

@@ -17,8 +17,9 @@ public partial class BirthChartDetailsPanel : UserControl
     public void UpdatePlanetaryPositions(ChartData chartData)
     {
         PlanetGridControl.UpdateGrid(chartData);
+        KpDetailsControl.UpdateChart(chartData);
+        AVDetailsControl.UpdateChart(chartData);
     }
-
     /// <summary>
     /// Update Dasha details
     /// </summary>
@@ -69,6 +70,8 @@ public partial class BirthChartDetailsPanel : UserControl
     public void Clear()
     {
         PlanetGridControl.DataGridControl.ItemsSource = null;
+        KpDetailsControl.UpdateChart(null);
+        AVDetailsControl.UpdateChart(null);
         NatalDetailsText.Text = "No content available";
         AshtakavargaText.Text = "No content available";
         UpdateDashas(null);

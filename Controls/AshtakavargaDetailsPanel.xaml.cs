@@ -1,0 +1,200 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Controls;
+using JamakolAstrology.Models;
+using JamakolAstrology.Services;
+
+namespace JamakolAstrology.Controls;
+
+public partial class AshtakavargaDetailsPanel : UserControl
+{
+    public AshtakavargaDetailsPanel()
+    {
+        InitializeComponent();
+    }
+
+    public void UpdateChart(ChartData? chart)
+    {
+        if (chart == null || chart.Ashtakavarga == null)
+        {
+            AVGrid.ItemsSource = null;
+            return;
+        }
+
+        var data = chart.Ashtakavarga;
+        
+        // 1. Update Grid View Charts
+        // SAV
+        ChartSAV.Update("SAV", data.Sarvashtakavarga, 0, chart.AscendantSign); // No highlighted planet for SAV unless query? Or maybe Lagna?
+        
+        // Lagna
+        ChartLagna.Update("Asc", data.LagnaAshtakavarga, chart.AscendantSign, chart.AscendantSign);
+
+        // Planets
+        UpdatePlanetChart(ChartSun, "Sun", Planet.Sun, chart, data);
+        UpdatePlanetChart(ChartMoon, "Moon", Planet.Moon, chart, data);
+        UpdatePlanetChart(ChartMars, "Mars", Planet.Mars, chart, data);
+        UpdatePlanetChart(ChartMercury, "Merc", Planet.Mercury, chart, data);
+        UpdatePlanetChart(ChartJupiter, "Jup", Planet.Jupiter, chart, data);
+        UpdatePlanetChart(ChartVenus, "Ven", Planet.Venus, chart, data);
+        UpdatePlanetChart(ChartSaturn, "Sat", Planet.Saturn, chart, data);
+
+        // 2. Update Table View (Existing Logic)
+        var rows = new List<AVRow>();
+
+        for (int i = 0; i < 12; i++)
+        {
+            // Index i corresponds to sign index 0-11 (Aries-Pisces)
+            rows.Add(new AVRow
+            {
+                SignName = ZodiacUtils.SignNames[i + 1],
+                SunPoints = GetPoints(data.Bhinnashtakavarga, Planet.Sun, i),
+                MoonPoints = GetPoints(data.Bhinnashtakavarga, Planet.Moon, i),
+                MarsPoints = GetPoints(data.Bhinnashtakavarga, Planet.Mars, i),
+                MercuryPoints = GetPoints(data.Bhinnashtakavarga, Planet.Mercury, i),
+                JupiterPoints = GetPoints(data.Bhinnashtakavarga, Planet.Jupiter, i),
+                VenusPoints = GetPoints(data.Bhinnashtakavarga, Planet.Venus, i),
+                SaturnPoints = GetPoints(data.Bhinnashtakavarga, Planet.Saturn, i),
+                LagnaPoints = data.LagnaAshtakavarga[i],
+                SarvaPoints = data.Sarvashtakavarga[i],
+                SarvaWithLagnaPoints = data.SarvashtakavargaWithLagna[i]
+            });
+        }
+
+        var totalRow = new AVRow
+        {
+            SignName = "TOTAL",
+            SunPoints = SumPoints(rows, r => r.SunPoints),
+            MoonPoints = SumPoints(rows, r => r.MoonPoints),
+            MarsPoints = SumPoints(rows, r => r.MarsPoints),
+            MercuryPoints = SumPoints(rows, r => r.MercuryPoints),
+            JupiterPoints = SumPoints(rows, r => r.JupiterPoints),
+            VenusPoints = SumPoints(rows, r => r.VenusPoints),
+            SaturnPoints = SumPoints(rows, r => r.SaturnPoints),
+            LagnaPoints = SumPoints(rows, r => r.LagnaPoints),
+            SarvaPoints = SumPoints(rows, r => r.SarvaPoints),
+            SarvaWithLagnaPoints = SumPoints(rows, r => r.SarvaWithLagnaPoints)
+        };
+        rows.Add(totalRow);
+
+        AVGrid.ItemsSource = rows;
+
+        // 3. Update Pinda View
+        var pindaRows = new List<PindaRow>();
+        
+        // Lagna
+        pindaRows.Add(new PindaRow 
+        { 
+            PlanetName = "Lagna", 
+            RasiPinda = data.LagnaPinda.RasiPinda, 
+            GrahaPinda = data.LagnaPinda.GrahaPinda, 
+            SodhyaPinda = data.LagnaPinda.SodhyaPinda 
+        });
+
+        // Planets (Sun to Saturn)
+        AddPindaRow(pindaRows, Planet.Sun, "Sun", data);
+        AddPindaRow(pindaRows, Planet.Moon, "Moon", data);
+        AddPindaRow(pindaRows, Planet.Mars, "Mars", data);
+        AddPindaRow(pindaRows, Planet.Mercury, "Mercury", data);
+        AddPindaRow(pindaRows, Planet.Jupiter, "Jupiter", data);
+        AddPindaRow(pindaRows, Planet.Venus, "Venus", data);
+        AddPindaRow(pindaRows, Planet.Saturn, "Saturn", data);
+
+        PindaGrid.ItemsSource = pindaRows;
+    }
+    
+    private void AddPindaRow(List<PindaRow> rows, Planet p, string name, AshtakavargaData data)
+    {
+        if (data.Pindas.TryGetValue(p, out var res))
+        {
+            rows.Add(new PindaRow
+            {
+                PlanetName = name,
+                RasiPinda = res.RasiPinda,
+                GrahaPinda = res.GrahaPinda,
+                SodhyaPinda = res.SodhyaPinda
+            });
+        }
+    }
+
+    private void UpdatePlanetChart(AshtakavargaChart control, string title, Planet planet, ChartData chart, AshtakavargaData data)
+    {
+        if (data.Bhinnashtakavarga.TryGetValue(planet, out int[] points))
+        {
+            // Find planet sign
+            var p = chart.Planets.FirstOrDefault(pl => pl.Planet == planet);
+            int sign = p?.Sign ?? 0;
+            control.Update(title, points, sign, chart.AscendantSign);
+        }
+    }
+
+    private void SwitchToGridView_Click(object sender, System.Windows.RoutedEventArgs e)
+    {
+        ChartsScrollViewer.Visibility = System.Windows.Visibility.Visible;
+        AVGrid.Visibility = System.Windows.Visibility.Collapsed;
+        PindaGrid.Visibility = System.Windows.Visibility.Collapsed;
+        
+        MenuGridView.IsChecked = true;
+        MenuTableView.IsChecked = false;
+        MenuPindaView.IsChecked = false;
+    }
+
+    private void SwitchToTableView_Click(object sender, System.Windows.RoutedEventArgs e)
+    {
+        ChartsScrollViewer.Visibility = System.Windows.Visibility.Collapsed;
+        AVGrid.Visibility = System.Windows.Visibility.Visible;
+        PindaGrid.Visibility = System.Windows.Visibility.Collapsed;
+        
+        MenuGridView.IsChecked = false;
+        MenuTableView.IsChecked = true;
+        MenuPindaView.IsChecked = false;
+    }
+
+    private void SwitchToPindaView_Click(object sender, System.Windows.RoutedEventArgs e)
+    {
+        ChartsScrollViewer.Visibility = System.Windows.Visibility.Collapsed;
+        AVGrid.Visibility = System.Windows.Visibility.Collapsed;
+        PindaGrid.Visibility = System.Windows.Visibility.Visible;
+        
+        MenuGridView.IsChecked = false;
+        MenuTableView.IsChecked = false;
+        MenuPindaView.IsChecked = true;
+    }
+
+    private int GetPoints(Dictionary<Planet, int[]> bhinna, Planet p, int index)
+    {
+        if (bhinna.TryGetValue(p, out int[] points))
+        {
+            return points[index];
+        }
+        return 0;
+    }
+
+    private int SumPoints(List<AVRow> rows, System.Func<AVRow, int> selector)
+    {
+        return rows.Sum(selector);
+    }
+}
+
+public class AVRow
+{
+    public string SignName { get; set; } = "";
+    public int SunPoints { get; set; }
+    public int MoonPoints { get; set; }
+    public int MarsPoints { get; set; }
+    public int MercuryPoints { get; set; }
+    public int JupiterPoints { get; set; }
+    public int VenusPoints { get; set; }
+    public int SaturnPoints { get; set; }
+    public int LagnaPoints { get; set; }
+    public int SarvaPoints { get; set; }
+    public int SarvaWithLagnaPoints { get; set; }
+}
+
+public class PindaRow
+{
+    public string PlanetName { get; set; } = "";
+    public int SodhyaPinda { get; set; }
+    public int RasiPinda { get; set; }
+    public int GrahaPinda { get; set; }
+}
