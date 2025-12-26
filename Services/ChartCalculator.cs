@@ -162,14 +162,12 @@ public class ChartCalculator
     /// <summary>
     /// Calculate Gati (motion state) based on speed and average daily motion
     /// </summary>
+    /// <summary>
+    /// Calculate Gati (motion state) based on speed and average daily motion
+    /// Implements the 8 Gatis system for retrogradable planets.
+    /// </summary>
     private string CalculateGati(Planet planet, double speed)
     {
-        // 1. Vakra (Retrograde)
-        if (speed < 0) return "Vakra (Retrograde)";
-
-        // 2. Vikala (Stationary/Zero Speed)
-        if (Math.Abs(speed) < 0.002) return "Vikala (Stationary)";
-
         // Mean daily motions in degrees (approximate)
         double meanSpeed = 0;
         switch (planet)
@@ -184,28 +182,72 @@ public class ChartCalculator
             case Planet.Rahu: 
             case Planet.Ketu:
                 // User provided -0.05299198558774121 for Nodes.
-                // Standard logic returns Vakra for speed < 0 anyway.
-                // If we ever need mean speed for nodes (unlikely for standard Gati logic which defaults to Vakra), it would be approx 0.053.
                 return "Vakra (Retrograde)"; 
         }
-
+        
         if (meanSpeed == 0) return ""; 
 
-        // 3. Atichara (Accelerated/Fast) - significantly faster than mean
-        // Threshold: > 125% of mean speed is a good approximation for Atichara entering next sign quickly
-        if (speed > meanSpeed * 1.25) return "Atichara (Accelerated)";
+        // 1. Rahu/Ketu - Always Vakra (Handled in switch)
 
-        // 4. Chara (Moving/Fast) - faster than mean but not excessive
-        if (speed > meanSpeed) return "Chara (Fast)";
+        // 2. Sun/Moon - Never Retrograde. Use simple Fast/Normal/Slow
+        if (planet == Planet.Sun || planet == Planet.Moon)
+        {
+             if (Math.Abs(speed) < 0.002) return "Vikala (Stationary)";
+             
+             double ratio = speed / meanSpeed;
+             if (ratio > 1.1) return "Sheeghra (Fast)";
+             if (ratio < 0.9) return "Manda (Slow)";
+             return "Sama (Normal)";
+        }
 
-        // 5. Mandatara (Very Slow) - significantly slower than mean
-        if (speed < meanSpeed * 0.5) return "Mandatara (Very Slow)";
+        // 3. Five Retrogradable Planets (Mars, Mercury, Jupiter, Venus, Saturn)
+        // User Logic:
+        // Sheeghratara: > 150%
+        // Sheeghra: 125-150%
+        // Sama: 90-110% (We'll use 90-125 to close gap)
+        // Manda: 60-90%
+        // Mandatara: 30-60%
+        // Kutilla: < 10% (Stationary/Transitional)
+        // Anuvakra: 30-60% avg reverse (< 0) -> We'll use 10-60% reverse?
+        // Vakra: > 60% avg reverse 
+        
+        double absSpeed = Math.Abs(speed);
+        double pct = absSpeed / meanSpeed;
 
-        // 6. Manda (Slow) - slower than mean
-        if (speed < meanSpeed) return "Manda (Slow)";
+        // KUTILLA (Stationary/Transitional) - < 10% of mean speed
+        // This applies to both very slow forward and very slow backward
+        if (pct < 0.10) return "Kutilla (Stationary)";
 
-        // 7. Sama (Even/Mean) - roughly equal to mean
-        return "Sama (Even)"; 
+        if (speed < 0)
+        {
+            // RETROGRADE
+            
+            // Anuvakra: Slow retrograde (user says 30-60%, we cover 10-60%)
+            if (pct <= 0.60) return "Anuvakra (Slow Retro)";
+            
+            // Vakra: Fast retrograde (> 60%)
+            return "Vakra (Retrograde)";
+        }
+        else
+        {
+            // FORWARD
+            
+            // Mandatara: Very slow forward (30-60%, we cover 10-60%)
+            if (pct <= 0.60) return "Mandatara (Very Slow)";
+            
+            // Manda: Slow forward (60-90%)
+            if (pct <= 0.90) return "Manda (Slow)";
+            
+            // Sama: Normal forward (90-110%, we extend to 125% to bridge gap or stick to strict?)
+            // If we stick strictly, 110-125 is undefined. Let's make Sama 90-125.
+            if (pct <= 1.25) return "Sama (Normal)";
+            
+            // Sheeghra: Fast forward (125-150%)
+            if (pct <= 1.50) return "Sheeghra (Fast)";
+            
+            // Sheeghratara: Very fast forward (> 150%)
+            return "Sheeghratara (Very Fast)";
+        }
     }
 
     /// <summary>

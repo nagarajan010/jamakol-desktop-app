@@ -244,7 +244,7 @@ public static class AmshaDevataCalculator
         if (part > 26) part = 26;
         int partNumber = part + 1;
         
-        string name;
+
         int idx = 0;
         if (IsOdd(sign)) idx = part;
         else idx = 26 - part;

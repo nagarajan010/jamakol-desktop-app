@@ -36,6 +36,7 @@ public class JamakolPlanetPosition
     public int NakshatraPada { get; set; }
     public bool IsRetrograde { get; set; }
     public int JamakolValue { get; set; }
+    public double Speed { get; set; }
     public string Gati { get; set; } = string.Empty;
 
     // English name properties for display

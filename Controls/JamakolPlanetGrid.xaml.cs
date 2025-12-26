@@ -113,7 +113,8 @@ public partial class JamakolPlanetGrid : UserControl
 
             Gati = p.Gati, // Now populated from JamakolPlanetPosition
             RetroDisplay = p.IsRetrograde ? "R" : "",
-            CombustionFlag = p.CombustionFlag
+            CombustionFlag = p.CombustionFlag,
+            SpeedDisplay = p.Speed.ToString("F4")
         }));
 
         DataGridControl.ItemsSource = displayData;
@@ -172,7 +173,8 @@ public partial class JamakolPlanetGrid : UserControl
                  Pada = p.NakshatraPada.ToString(),
                  Gati = p.Gati,
                  RetroDisplay = p.IsRetrograde ? "R" : "",
-                 CombustionFlag = p.CombustionFlag
+                 CombustionFlag = p.CombustionFlag,
+                 SpeedDisplay = p.Speed.ToString("F4")
              };
         }));
 
@@ -193,4 +195,5 @@ public class JamakolPlanetGridItem
     public string Gati { get; set; } = "";
     public string RetroDisplay { get; set; } = "";
     public string CombustionFlag { get; set; } = "";
+    public string SpeedDisplay { get; set; } = "";
 }

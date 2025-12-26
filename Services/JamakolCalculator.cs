@@ -88,7 +88,8 @@ public class JamakolCalculator
                 IsRetrograde = planet.IsRetrograde,
                 IsCombust = planet.IsCombust,
                 JamakolValue = isStandardPlanet ? CalculatePlanetJamakolValue(planet) : 0, // Aprakash graha don't have Jamakol values
-                Gati = planet.Gati
+                Gati = planet.Gati,
+                Speed = planet.Speed
             };
             jamakolData.PlanetPositions.Add(jamakolPlanet);
         }
