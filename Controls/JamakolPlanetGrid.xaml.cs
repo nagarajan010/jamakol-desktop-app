@@ -93,7 +93,17 @@ public partial class JamakolPlanetGrid : UserControl
         }
         
         // Add planets
-        displayData.AddRange(jamakolData.PlanetPositions.Select(p => new JamakolPlanetGridItem
+        // Define sort order
+        var sortOrder = new List<string> { "Sun", "Moon", "Mars", "Mercury", "Jupiter", "Venus", "Saturn", "Rahu", "Ketu" };
+        
+        var sortedPlanets = jamakolData.PlanetPositions
+            .OrderBy(p => {
+                int index = sortOrder.IndexOf(p.EnglishName);
+                return index == -1 ? 999 : index;
+            })
+            .ToList();
+
+        displayData.AddRange(sortedPlanets.Select(p => new JamakolPlanetGridItem
         {
             EnglishName = p.EnglishName,
             SignEnglish = p.SignEnglish.Length > 2 ? p.SignEnglish.Substring(0, 2) : p.SignEnglish,
@@ -136,7 +146,17 @@ public partial class JamakolPlanetGrid : UserControl
         });
         
         // Add planets
-        displayData.AddRange(chartData.Planets.Select(p => {
+        // Define sort order
+        var sortOrder = new List<string> { "Sun", "Moon", "Mars", "Mercury", "Jupiter", "Venus", "Saturn", "Rahu", "Ketu" };
+        
+        var sortedPlanets = chartData.Planets
+            .OrderBy(p => {
+                int index = sortOrder.IndexOf(p.Name);
+                return index == -1 ? 999 : index;
+            })
+            .ToList();
+
+        displayData.AddRange(sortedPlanets.Select(p => {
              double pDeg = p.DegreeInSign;
              int pD = (int)pDeg;
              double pMFull = (pDeg - pD) * 60;

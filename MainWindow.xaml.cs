@@ -142,6 +142,7 @@ public partial class MainWindow : Window
                  else if (header == "Dashas" && DashasChartPlaceholder != null) DashasChartPlaceholder.Child = _sharedSideCharts;
                  else if (header == "Ashtakavarga" && AVChartPlaceholder != null) AVChartPlaceholder.Child = _sharedSideCharts;
                  else if (header == "KP" && KPChartPlaceholder != null) KPChartPlaceholder.Child = _sharedSideCharts;
+                 else if (header == "Amsha Devata" && AmshaDevataChartPlaceholder != null) AmshaDevataChartPlaceholder.Child = _sharedSideCharts;
                  // Chakras: Do nothing (Side charts remain detached/hidden)
              }
              catch (Exception)
@@ -191,6 +192,7 @@ public partial class MainWindow : Window
             if (DashasPanelControl != null) DashasPanelControl.UpdateDashas(result.DashaResult);
             if (AVDetailsPanelControl != null) AVDetailsPanelControl.UpdateChart(result.ChartData);
             if (KpDetailsPanelControl != null) KpDetailsPanelControl.UpdateChart(result.ChartData);
+            if (AmshaDevataPanelControl != null) AmshaDevataPanelControl.UpdateChart(result.ChartData, _appSettings.ChartFontSize);
             
             // Update Chakras panel
             ChakrasPanelControl.UpdateChart(result.ChartData, _appSettings.ChartFontSize);
