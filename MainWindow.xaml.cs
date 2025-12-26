@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
+using System.Windows.Controls;
 using JamakolAstrology.Models;
 using JamakolAstrology.Services;
 using JamakolAstrology.Helpers;
@@ -56,6 +57,34 @@ public partial class MainWindow : Window
 
     private void MainWindow_Loaded(object sender, RoutedEventArgs e)
     {
+        // Initialize SideChartsPanel first
+        _sharedSideCharts = new Controls.SideChartsPanel();
+        
+        // Initial Reparenting: Do NOT force to Basic if another tab (like Chakras) is default.
+        // However, since we don't know for sure which inner tab is selected yet, we'll let the SelectionChanged event handle it.
+        // But SelectionChanged might have fired before _sharedSideCharts was created.
+        // So we manually check active tab and assign.
+        
+        if (BirthContentTabs.SelectedItem is TabItem initialTab)
+        {
+             // Simulate selection logic
+             var header = initialTab.Header as string;
+             if (header != "Chakras" && BasicChartPlaceholder != null && _sharedSideCharts != null)
+             {
+                 // Default fallback if logic fails or just assign to Basic if Basic is active or other
+                 if (header == "Basic") BasicChartPlaceholder.Child = _sharedSideCharts;
+                 // Add others if needed, but Basic is the main fallback
+             }
+        }
+        else if (BasicChartPlaceholder != null && _sharedSideCharts != null)
+        {
+             // Fallback if no selection (unlikely)
+             // But since Chakras is now first, we should probably NOT default to Basic visually if Chakras is open.
+             // Safest is to do nothing and rely on SelectionChanged/User Action unless we want to force start on Basic?
+             // User just moved Chakras to first, so likely wants Chakras first.
+             // So we remove the forced Basic assignment.
+        }
+
         // Apply settings defaults to input panels
         BirthInputControl.ApplySettings(_appSettings);
         JamakolInputControl.ApplySettings(_appSettings);
@@ -78,6 +107,48 @@ public partial class MainWindow : Window
         
         // Apply initial font settings
         ApplyFontSizes();
+        
+        // DEFAULT: Select the "Basic" tab (Index 1) instead of the first one (Chakras)
+        // This triggers SelectionChanged which handles the side charts reparenting.
+        if (BirthContentTabs.Items.Count > 1)
+        {
+            BirthContentTabs.SelectedIndex = 1; 
+        }
+    }
+    
+    // Global shared side charts instance
+    private Controls.SideChartsPanel? _sharedSideCharts;
+
+    private void BirthContentTabs_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+    {
+        if (e.Source is TabControl && _sharedSideCharts != null)
+        {
+             var tabItem = BirthContentTabs.SelectedItem as TabItem;
+             if (tabItem == null) return;
+             
+             // Detach from current parent
+             var parent = VisualTreeHelper.GetParent(_sharedSideCharts) as Border;
+             if (parent != null)
+             {
+                 parent.Child = null;
+             }
+             
+             // Attach to new parent based on Header
+             string header = tabItem.Header as string;
+             
+             try 
+             {
+                 if (header == "Basic" && BasicChartPlaceholder != null) BasicChartPlaceholder.Child = _sharedSideCharts;
+                 else if (header == "Dashas" && DashasChartPlaceholder != null) DashasChartPlaceholder.Child = _sharedSideCharts;
+                 else if (header == "Ashtakavarga" && AVChartPlaceholder != null) AVChartPlaceholder.Child = _sharedSideCharts;
+                 else if (header == "KP" && KPChartPlaceholder != null) KPChartPlaceholder.Child = _sharedSideCharts;
+                 // Chakras: Do nothing (Side charts remain detached/hidden)
+             }
+             catch (Exception)
+             {
+                 // Ignore visual tree errors during initialization
+             }
+        }
     }
 
     #region Calculation Logic
@@ -107,17 +178,19 @@ public partial class MainWindow : Window
 
             // Update UI Components - pass current hide degrees setting
             bool hideDegrees = BirthInputControl.HideDegrees;
-            ChartControl.UpdateChart(result.ChartData, _appSettings.ChartFontSize, hideDegrees);
-            
-            // Display Navamsa (D-9) chart and pass chart data for division switching
-            var navamsaChart = result.ChartData.GetDivisionalChart(9);
-            if (navamsaChart != null && NavamsaChartControl != null)
+            // Update Side Charts Panel
+            if (_sharedSideCharts != null)
             {
-                NavamsaChartControl.HideDegrees = hideDegrees;
-                NavamsaChartControl.UpdateDivisionalChart(navamsaChart, result.ChartData, result.ChartData.BirthData.Name, _appSettings.ChartFontSize);
+                _sharedSideCharts.UpdateCharts(result.ChartData, _appSettings.ChartFontSize, BirthInputControl.HideDegrees);
             }
+            // Removed old individual chart updates as they are now in SideChartsPanel
             
             BirthDetailsPanel.UpdateDetails(result);
+            
+            // NEW: Update other top-level tabs content
+            if (DashasPanelControl != null) DashasPanelControl.UpdateDashas(result.DashaResult);
+            if (AVDetailsPanelControl != null) AVDetailsPanelControl.UpdateChart(result.ChartData);
+            if (KpDetailsPanelControl != null) KpDetailsPanelControl.UpdateChart(result.ChartData);
             
             // Update Chakras panel
             ChakrasPanelControl.UpdateChart(result.ChartData, _appSettings.ChartFontSize);
@@ -214,11 +287,10 @@ public partial class MainWindow : Window
     
     private void BirthInputControl_HideDegreesChanged(object? sender, bool hideDegrees)
     {
-        // Update both charts with the new hide degrees setting
-        ChartControl.HideDegrees = hideDegrees;
-        if (NavamsaChartControl != null)
+        // Update both charts with the new hide degrees setting via Shared Panel
+        if (_sharedSideCharts != null)
         {
-            NavamsaChartControl.HideDegrees = hideDegrees;
+            _sharedSideCharts.HideDegrees = hideDegrees;
         }
     }
 
@@ -354,7 +426,14 @@ public partial class MainWindow : Window
         if (PanchangaPanelControl != null) UiThemeHelper.SetFontSizeRecursive(PanchangaPanelControl, _appSettings.TableFontSize);
         if (SavedChartInfoPanelControl != null) UiThemeHelper.SetFontSizeRecursive(SavedChartInfoPanelControl, _appSettings.InputFontSize);
         if (BirthDetailsPanel != null) UiThemeHelper.SetFontSizeRecursive(BirthDetailsPanel, _appSettings.TableFontSize);
-        // Note: Chart controls (ChartControl, NavamsaChartControl) handle their own font sizing via UpdateChart parameters
+        
+        // NEW: apply fonts to new panels
+        if (DashasPanelControl != null) UiThemeHelper.SetFontSizeRecursive(DashasPanelControl, _appSettings.TableFontSize);
+        if (AVDetailsPanelControl != null) UiThemeHelper.SetFontSizeRecursive(AVDetailsPanelControl, _appSettings.TableFontSize);
+        if (KpDetailsPanelControl != null) UiThemeHelper.SetFontSizeRecursive(KpDetailsPanelControl, _appSettings.TableFontSize);
+        
+        // Chart controls are now in SideChartsPanel, need to trigger update if needed or just handle via layout refresh
+        // Note: ChartControl font size is usually passed during UpdateChart, but we can try to apply recursive if it helps static text
     }
 
     #endregion

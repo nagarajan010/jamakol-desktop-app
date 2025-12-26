@@ -19,6 +19,7 @@ public partial class BirthInputPanel : UserControl
     public event EventHandler<bool>? HideDegreesChanged;
     private readonly GeoNamesService _geoService;
     private bool _isUpdatingText = false; // Prevent circular events
+    private AppSettings? _cachedSettings;
 
     public BirthInputPanel()
     {
@@ -43,6 +44,7 @@ public partial class BirthInputPanel : UserControl
     /// </summary>
     public void ApplySettings(AppSettings settings)
     {
+        _cachedSettings = settings;
         _isUpdatingText = true;
         LocationInput.Text = settings.DefaultLocationName;
         _isUpdatingText = false;
@@ -53,6 +55,30 @@ public partial class BirthInputPanel : UserControl
 
     private void CalculateButton_Click(object sender, RoutedEventArgs e)
     {
+        CalculateRequested?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void NowButton_Click(object sender, RoutedEventArgs e)
+    {
+        // Reset Name
+        NameInput.Text = "Person";
+
+        // Reset Date/Time
+        var now = DateTime.Now;
+        DateInput.SelectedDate = now;
+        TimeInput.Text = now.ToString("HH:mm:ss");
+
+        // Reset Location if settings available
+        if (_cachedSettings != null)
+        {
+            _isUpdatingText = true;
+            LocationInput.Text = _cachedSettings.DefaultLocationName;
+            _isUpdatingText = false;
+            LatitudeInput.Text = _cachedSettings.DefaultLatitude.ToString("F4");
+            LongitudeInput.Text = _cachedSettings.DefaultLongitude.ToString("F4");
+            TimezoneInput.Text = _cachedSettings.DefaultTimezone.ToString("F1");
+        }
+
         CalculateRequested?.Invoke(this, EventArgs.Empty);
     }
 

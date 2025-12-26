@@ -13,6 +13,10 @@
 
             <TextBlock Text="Time:" Style="{StaticResource TopLabelStyle}"/>
             <TextBox x:Name="TimeInput" Style="{StaticResource TopInputStyle}" Width="70" Text="12:00:00"/>
+            <Button Content="Now" Width="30" Height="20" Click="NowButton_Click" 
+                     Margin="5,0,0,0" Padding="0" FontSize="10"
+                     Background="#E0E0E0" Foreground="Black" 
+                     BorderBrush="#999" BorderThickness="1"/>
 
             <TextBlock Text="Location:" Style="{StaticResource TopLabelStyle}"/>
             <Grid>

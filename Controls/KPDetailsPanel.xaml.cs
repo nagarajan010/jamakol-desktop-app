@@ -24,6 +24,24 @@ public partial class KPDetailsPanel : UserControl
         var items = new List<KPViewItem>();
         // ... (lines 26-38 assumed unchanged logic)
         
+        // Add Lagna (Ascendant)
+        if (chart.HouseCusps != null && chart.HouseCusps.Count > 0)
+        {
+            var lagna = chart.HouseCusps[0]; // 1st House Cusp is Lagna
+            items.Add(new KPViewItem
+            {
+                Name = "Lagna (As)",
+                DegreeDisplay = lagna.DegreeDisplay,
+                SignLord = lagna.KpDetails.SignLord,
+                StarLord = lagna.KpDetails.StarLord,
+                SubLord = lagna.KpDetails.SubLord,
+                SubSubLord = lagna.KpDetails.SubSubLord,
+                SookshmaLord = lagna.KpDetails.SookshmaLord,
+                PranaLord = lagna.KpDetails.PranaLord,
+                DehaLord = lagna.KpDetails.DehaLord
+            });
+        }
+        
         // Add Planets
         foreach (var p in chart.Planets)
         {
