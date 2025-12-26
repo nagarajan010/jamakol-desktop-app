@@ -19,7 +19,6 @@ public partial class BirthChartDetailsPanel : UserControl
         PlanetGridControl.UpdateGrid(chartData);
         KpDetailsControl.UpdateChart(chartData);
         AVDetailsControl.UpdateChart(chartData);
-        ChakrasControl.UpdateChart(chartData);
     }
 
     /// <summary>
@@ -196,7 +195,6 @@ public partial class BirthChartDetailsPanel : UserControl
         PlanetGridControl.DataGridControl.ItemsSource = null;
         KpDetailsControl.ClearChart();
         AVDetailsControl.ClearChart();
-        ChakrasControl.ClearChart();
         NatalDetailsText.Text = "No content available";
         AshtakavargaText.Text = "No content available";
         UpdateDashas(null);

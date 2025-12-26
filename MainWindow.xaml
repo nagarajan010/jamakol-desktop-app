@@ -87,33 +87,67 @@
                     <!-- Input Panel Inside Tab -->
                     <controls:BirthInputPanel x:Name="BirthInputControl" Grid.Row="0" CalculateRequested="OnBirthCalculateRequested"/>
 
-                    <Grid Grid.Row="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="0.7*"/>
-                            <ColumnDefinition Width="1.3*"/>
-                        </Grid.ColumnDefinitions>
+                    <!-- Chart/Chakras Sub-Tabs -->
+                    <TabControl Grid.Row="1" Background="Transparent" BorderThickness="0">
+                        <TabControl.Resources>
+                            <Style TargetType="TabItem">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="TabItem">
+                                            <Border x:Name="TabBorder" Background="#e0e0e0" CornerRadius="5,5,0,0" 
+                                                    Padding="15,8" Margin="0,0,2,0">
+                                                <ContentPresenter ContentSource="Header"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsSelected" Value="True">
+                                                    <Setter TargetName="TabBorder" Property="Background" Value="#cc0000"/>
+                                                    <Setter Property="Foreground" Value="White"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Setter Property="FontSize" Value="12"/>
+                            </Style>
+                        </TabControl.Resources>
+                        
+                        <!-- Chart Tab: Normal view with charts on left and details on right -->
+                        <TabItem Header="Chart">
+                            <Grid Margin="0,10,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.7*"/>
+                                    <ColumnDefinition Width="1.3*"/>
+                                </Grid.ColumnDefinitions>
 
-                        <!-- Left Column: Charts -->
-                        <Grid Grid.Column="0" Margin="0,0,5,0">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/> <!-- Rasi -->
-                                <RowDefinition Height="*"/> <!-- Navamsa -->
-                            </Grid.RowDefinitions>
-                            
-                            <!-- Rasi Chart -->
-                            <Border Grid.Row="0" Background="#fffff8" CornerRadius="3" Padding="2" Margin="0,0,0,2" BorderBrush="#ddd" BorderThickness="1">
-                                <controls:SouthIndianChart x:Name="ChartControl"/>
-                            </Border>
+                                <!-- Left Column: Rasi and Navamsa Charts -->
+                                <Grid Grid.Column="0" Margin="0,0,5,0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/> <!-- Rasi -->
+                                        <RowDefinition Height="*"/> <!-- Navamsa -->
+                                    </Grid.RowDefinitions>
+                                    
+                                    <!-- Rasi Chart -->
+                                    <Border Grid.Row="0" Background="#fffff8" CornerRadius="3" Padding="2" Margin="0,0,0,2" BorderBrush="#ddd" BorderThickness="1">
+                                        <controls:SouthIndianChart x:Name="ChartControl"/>
+                                    </Border>
 
-                            <!-- Navamsa Chart -->
-                            <Border Grid.Row="1" Background="#fffff8" CornerRadius="3" Padding="2" Margin="0,2,0,0" BorderBrush="#ddd" BorderThickness="1">
-                                <controls:SouthIndianChart x:Name="NavamsaChartControl"/>
-                            </Border>
-                        </Grid>
+                                    <!-- Navamsa Chart -->
+                                    <Border Grid.Row="1" Background="#fffff8" CornerRadius="3" Padding="2" Margin="0,2,0,0" BorderBrush="#ddd" BorderThickness="1">
+                                        <controls:SouthIndianChart x:Name="NavamsaChartControl"/>
+                                    </Border>
+                                </Grid>
 
-                        <!-- Right Column: Details with Sub-Tabs (Modular) -->
-                        <controls:BirthChartDetailsPanel x:Name="BirthDetailsPanel" Grid.Column="1"/>
-                    </Grid>
+                                <!-- Right Column: Details with Sub-Tabs (Modular) -->
+                                <controls:BirthChartDetailsPanel x:Name="BirthDetailsPanel" Grid.Column="1"/>
+                            </Grid>
+                        </TabItem>
+                        
+                        <!-- Chakras Tab: Full width divisional charts -->
+                        <TabItem Header="Chakras">
+                            <controls:ChakrasPanel x:Name="ChakrasPanelControl" Margin="0,10,0,0"/>
+                        </TabItem>
+                    </TabControl>
                 </Grid>
             </TabItem>
 

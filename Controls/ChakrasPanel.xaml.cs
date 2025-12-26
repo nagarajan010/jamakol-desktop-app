@@ -24,21 +24,25 @@ public partial class ChakrasPanel : UserControl
         {
             var chart = new SouthIndianChart
             {
-                Width = 280,
-                Height = 280,
-                Margin = new Thickness(1),
-                HideDegrees = true // Hide degrees by default to save space in small view
+                Width = 400,  // Fixed size for proper scaling
+                Height = 400,
+                HideDegrees = true
             };
             
-            // Set initial titles directly if possible, or wait for data update
-            // Since SouthIndianChart title is dynamic based on data, we wait.
+            // Wrap in Viewbox to scale while maintaining aspect ratio
+            var viewbox = new Viewbox
+            {
+                Stretch = System.Windows.Media.Stretch.Uniform,
+                Child = chart,
+                Margin = new Thickness(5)
+            };
             
             _chartControls.Add(chart);
-            ChartsContainer.Children.Add(chart);
+            ChartsContainer.Children.Add(viewbox);
         }
     }
 
-    public void UpdateChart(ChartData? chartData)
+    public void UpdateChart(ChartData? chartData, double fontSize = 14)
     {
         if (chartData == null)
         {
@@ -54,16 +58,15 @@ public partial class ChakrasPanel : UserControl
             int div = _divisions[i];
             SouthIndianChart control = _chartControls[i];
             
-            // Calculate on the fly
+            // Calculate on the fly using provided font size
             if (div == 1)
             {
-                 control.UpdateChart(chartData, fontSize: 10, hideDegrees: true);
-                 // Force title update if needed, but UpdateChart handles D1 title
+                 control.UpdateChart(chartData, fontSize: fontSize, hideDegrees: true);
             }
             else
             {
                 var divData = _divService.CalculateDivisionalChart(chartData, div);
-                control.UpdateDivisionalChart(divData, chartData, fontSize: 10);
+                control.UpdateDivisionalChart(divData, chartData, fontSize: fontSize);
             }
         }
     }

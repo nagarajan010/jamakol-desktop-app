@@ -119,6 +119,9 @@ public partial class MainWindow : Window
             
             BirthDetailsPanel.UpdateDetails(result);
             
+            // Update Chakras panel
+            ChakrasPanelControl.UpdateChart(result.ChartData, _appSettings.ChartFontSize);
+            
             // Note: We DO NOT update Jamakol controls here anymore, to keep tabs independent.
             // If user wants Jamakol, they switch to Jamakol tab which has its own calculation.
 
