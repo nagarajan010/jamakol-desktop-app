@@ -14,18 +14,51 @@
     </UserControl.Resources>
     
     <Grid>
-        <DataGrid x:Name="KPGrid" AutoGenerateColumns="False" CanUserAddRows="False" 
-                  HeadersVisibility="Column" GridLinesVisibility="All"
-                  Background="White" RowBackground="White" AlternatingRowBackground="#F8F8F8">
+        <DataGrid x:Name="KPGrid" 
+                  Style="{StaticResource DataGridStyle}"
+                  AutoGenerateColumns="False" 
+                  CanUserAddRows="False" 
+                  IsReadOnly="True"
+                  HeadersVisibility="Column" 
+                  GridLinesVisibility="Horizontal"
+                  HorizontalGridLinesBrush="#eee"
+                  Background="White"
+                  BorderThickness="0"
+                  FontSize="11"
+                  RowBackground="White" 
+                  AlternatingRowBackground="#F8F8F8">
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Background" Value="#cc0000"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="Padding" Value="6,4"/>
+                    <Setter Property="FontWeight" Value="SemiBold"/>
+                    <Setter Property="FontSize" Value="10"/>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Body/Cusp" Binding="{Binding Name}" Width="120" FontWeight="SemiBold"/>
-                <DataGridTextColumn Header="Nakshatra lord" Binding="{Binding StarLord}" Width="100"/>
-                <DataGridTextColumn Header="Sub lord" Binding="{Binding SubLord}" Width="80" 
-                                    ElementStyle="{StaticResource CenteredCell}"/>
-                <DataGridTextColumn Header="Prati-sub" Binding="{Binding SubSubLord}" Width="80"/>
-                <DataGridTextColumn Header="Sookshma-sub" Binding="{Binding SookshmaLord}" Width="100"/>
-                <DataGridTextColumn Header="Praana-sub" Binding="{Binding PranaLord}" Width="90"/>
-                <DataGridTextColumn Header="Deha-sub" Binding="{Binding DehaLord}" Width="80"/>
+                <DataGridTextColumn Header="Body/Cusp" Binding="{Binding Name}" Width="120">
+                     <DataGridTextColumn.ElementStyle>
+                         <Style TargetType="TextBlock">
+                             <Setter Property="FontWeight" Value="SemiBold"/>
+                             <Setter Property="Padding" Value="5,2"/>
+                         </Style>
+                     </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Nakshatra Lord" Binding="{Binding StarLord}" Width="*"/>
+                <DataGridTextColumn Header="Sub Lord" Binding="{Binding SubLord}" Width="*">
+                     <DataGridTextColumn.ElementStyle>
+                         <Style TargetType="TextBlock">
+                             <Setter Property="HorizontalAlignment" Value="Center"/>
+                             <Setter Property="FontWeight" Value="SemiBold"/>
+                             <Setter Property="Foreground" Value="#cc0000"/>
+                         </Style>
+                     </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Prati-Sub" Binding="{Binding SubSubLord}" Width="*"/>
+                <DataGridTextColumn Header="Sookshma" Binding="{Binding SookshmaLord}" Width="*"/>
+                <DataGridTextColumn Header="Prana" Binding="{Binding PranaLord}" Width="*"/>
+                <DataGridTextColumn Header="Deha" Binding="{Binding DehaLord}" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
