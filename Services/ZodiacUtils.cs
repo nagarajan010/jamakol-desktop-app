@@ -92,6 +92,56 @@ public static class ZodiacUtils
         { Models.Planet.Ketu, "Ke" }
     };
 
+    public static readonly Models.Planet[] NakshatraLords = 
+    {
+        Models.Planet.Ketu,      // 1 Ashwini
+        Models.Planet.Venus,     // 2 Bharani
+        Models.Planet.Sun,       // 3 Krittika
+        Models.Planet.Moon,      // 4 Rohini
+        Models.Planet.Mars,      // 5 Mrigashira
+        Models.Planet.Rahu,      // 6 Ardra
+        Models.Planet.Jupiter,   // 7 Punarvasu
+        Models.Planet.Saturn,    // 8 Pushya
+        Models.Planet.Mercury,   // 9 Ashlesha
+        Models.Planet.Ketu,      // 10 Magha
+        Models.Planet.Venus,     // 11 Purva Phalguni
+        Models.Planet.Sun,       // 12 Uttara Phalguni
+        Models.Planet.Moon,      // 13 Hasta
+        Models.Planet.Mars,      // 14 Chitra
+        Models.Planet.Rahu,      // 15 Swati
+        Models.Planet.Jupiter,   // 16 Vishakha
+        Models.Planet.Saturn,    // 17 Anuradha
+        Models.Planet.Mercury,   // 18 Jyeshtha
+        Models.Planet.Ketu,      // 19 Mula
+        Models.Planet.Venus,     // 20 Purva Ashadha
+        Models.Planet.Sun,       // 21 Uttara Ashadha
+        Models.Planet.Moon,      // 22 Shravana
+        Models.Planet.Mars,      // 23 Dhanishta
+        Models.Planet.Rahu,      // 24 Shatabhisha
+        Models.Planet.Jupiter,   // 25 Purva Bhadrapada
+        Models.Planet.Saturn,    // 26 Uttara Bhadrapada
+        Models.Planet.Mercury    // 27 Revati
+    };
+    
+    // Tithi Lords (1-15, repeated for Shukla/Krishna)
+    // 1: Sun, 2: Moon, 3: Mars, 4: Mercury, 5: Jupiter, 6: Venus, 7: Saturn, 8: Rahu, 9: Sun... sequence?
+    // Actually standard breakdown:
+    // 1 Sun, 2 Moon, 3 Mars, 4 Mercury, 5 Jupiter, 6 Venus, 7 Saturn, 8 Rahu
+    // 9 Sun, 10 Moon, 11 Mars, 12 Mercury, 13 Jupiter, 14 Venus, 15 Saturn
+    // Amavasya (30) -> Rahu
+    // Purnima (15) -> Saturn (follows pattern)
+    public static readonly Models.Planet[] TithiLords = 
+    {
+        Models.Planet.Sun,      // 1
+        Models.Planet.Moon,     // 2
+        Models.Planet.Mars,     // 3
+        Models.Planet.Mercury,  // 4
+        Models.Planet.Jupiter,  // 5
+        Models.Planet.Venus,    // 6
+        Models.Planet.Saturn,   // 7
+        Models.Planet.Rahu      // 8
+    };
+
     /// <summary>
     /// Convert degree (0-360) to sign number (1-12)
     /// </summary>

@@ -52,7 +52,7 @@
                         <Border Grid.Column="0" Background="#fffff8" CornerRadius="5" Padding="10" Margin="0,0,5,0" BorderBrush="#ddd" BorderThickness="1">
                             <StackPanel>
                                 <TextBlock Text="Natal Chart Details" FontWeight="Bold" Foreground="#990000" Margin="0,0,0,5"/>
-                                <TextBlock x:Name="NatalDetailsText" Text="No content available" Foreground="#aaa" FontStyle="Italic"/>
+                                <TextBlock x:Name="NatalDetailsText" FontFamily="Consolas" FontSize="12" Foreground="#333"/>
                             </StackPanel>
                         </Border>
                         

@@ -187,6 +187,26 @@ public class EphemerisService : IDisposable
         return _sweph.swe_get_ayanamsa_ut(julianDay);
     }
 
+    /// <summary>
+    /// Get Local Sidereal Time in hours
+    /// </summary>
+    public double GetSiderealTime(double julianDay, double longitude)
+    {
+        // GMST in hours
+        double gmst = _sweph.swe_sidtime(julianDay);
+        
+        // Add longitude offset (longitude is in degrees, convert to hours: 15 deg = 1 hour)
+        double offset = longitude / 15.0;
+        
+        double lst = gmst + offset;
+        
+        // Normalize to 0-24
+        while (lst < 0) lst += 24.0;
+        while (lst >= 24) lst -= 24.0;
+        
+        return lst;
+    }
+
     public void Dispose()
     {
         if (!_disposed)

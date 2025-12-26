@@ -117,8 +117,7 @@ public partial class MainWindow : Window
                 NavamsaChartControl.UpdateDivisionalChart(navamsaChart, result.ChartData, result.ChartData.BirthData.Name, _appSettings.ChartFontSize);
             }
             
-            BirthDetailsPanel.UpdatePlanetaryPositions(result.ChartData);
-            BirthDetailsPanel.UpdateDashas(result.DashaResult);
+            BirthDetailsPanel.UpdateDetails(result);
             
             // Note: We DO NOT update Jamakol controls here anymore, to keep tabs independent.
             // If user wants Jamakol, they switch to Jamakol tab which has its own calculation.

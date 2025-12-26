@@ -55,4 +55,21 @@ public class PanchangaDetails
     // Year (Tamil year)
     public string TamilYear { get; set; } = "";
     public string TamilMonth { get; set; } = "";
+
+    // Percentages Left (New)
+    public double TithiPercentLeft { get; set; }
+    public double NakshatraPercentLeft { get; set; }
+    public double YogaPercentLeft { get; set; }
+    public double KaranaPercentLeft { get; set; }
+
+    // Lords (Abbreviated)
+    public string TithiLord { get; set; } = "";
+    public string NakshatraLord { get; set; } = "";
+    public string YogaLord { get; set; } = "";
+    public string KaranaLord { get; set; } = "";
+    public string DayLordAbbr { get; set; } = "";
+
+    // Additional Time details
+    public double JanmaGhatis { get; set; }
+    public string SiderealTime { get; set; } = "";
 }

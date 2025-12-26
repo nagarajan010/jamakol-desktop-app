@@ -124,7 +124,13 @@ public class ChartOrchestratorService
 
         // 8. Calculate Panchanga Details
         // Use the actual ayanamsa value from the chart calculation
-        result.PanchangaDetails = _panchangaCalculator.Calculate(result.ChartData, todaySunrise, todaySunset, result.ChartData.AyanamsaValue);
+        double siderealTime;
+        using (var eph = new EphemerisService())
+        {
+            siderealTime = eph.GetSiderealTime(result.ChartData.JulianDay, birthData.Longitude);
+        }
+
+        result.PanchangaDetails = _panchangaCalculator.Calculate(result.ChartData, todaySunrise, todaySunset, result.ChartData.AyanamsaValue, siderealTime);
 
         // 9. Calculate Inauspicious Periods (Rahu Kalam, Yamagandam, Gulikai Kalam)
         result.InauspiciousPeriods = _inauspiciousPeriodsCalculator.Calculate(
