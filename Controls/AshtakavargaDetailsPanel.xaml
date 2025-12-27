@@ -53,7 +53,7 @@
         <!-- Table View -->
         <DataGrid x:Name="AVGrid" Visibility="Collapsed" AutoGenerateColumns="False" CanUserAddRows="False" 
                   HeadersVisibility="Column" GridLinesVisibility="All"
-                  Background="White" RowBackground="White" AlternatingRowBackground="#F8F8F8">
+                  Style="{StaticResource DataGridStyle}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Sign" Binding="{Binding SignName}" Width="100" FontWeight="SemiBold"/>
                 
@@ -74,7 +74,7 @@
         <!-- Pinda View -->
         <DataGrid x:Name="PindaGrid" Visibility="Collapsed" AutoGenerateColumns="False" CanUserAddRows="False"
                   HeadersVisibility="Column" GridLinesVisibility="All"
-                  Background="White" RowBackground="White" AlternatingRowBackground="#F8F8F8"
+                  Style="{StaticResource DataGridStyle}"
                   HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Planet" Binding="{Binding PlanetName}" Width="100" FontWeight="SemiBold"/>

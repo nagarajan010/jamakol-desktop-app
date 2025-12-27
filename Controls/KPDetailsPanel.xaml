@@ -20,13 +20,8 @@
                   CanUserAddRows="False" 
                   IsReadOnly="True"
                   HeadersVisibility="Column" 
-                  GridLinesVisibility="Horizontal"
-                  HorizontalGridLinesBrush="#eee"
-                  Background="White"
-                  BorderThickness="0"
                   FontSize="11"
-                  RowBackground="White" 
-                  AlternatingRowBackground="#F8F8F8">
+                  BorderThickness="0">
             <DataGrid.ColumnHeaderStyle>
                 <Style TargetType="DataGridColumnHeader">
                     <Setter Property="Background" Value="#cc0000"/>

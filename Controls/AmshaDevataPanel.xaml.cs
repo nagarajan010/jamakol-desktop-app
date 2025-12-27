@@ -16,6 +16,13 @@ public partial class AmshaDevataPanel : UserControl
     {
         InitializeComponent();
         InitializeContextMenu();
+        
+        // Apply font size from settings
+        var settings = AppSettings.Load();
+        if (settings != null)
+        {
+            DevataGrid.FontSize = settings.TableFontSize;
+        }
     }
 
     private void InitializeContextMenu()
@@ -60,6 +67,11 @@ public partial class AmshaDevataPanel : UserControl
     public void UpdateChart(ChartData? chart, double fontSize = 11)
     {
         _currentChart = chart;
+        
+        // Enforce settings
+        var settings = AppSettings.Load();
+        if (settings != null) fontSize = settings.TableFontSize;
+        
         DevataGrid.FontSize = fontSize;
         RefreshGrid();
     }

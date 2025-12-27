@@ -1,5 +1,6 @@
 using System.Windows.Controls;
 using JamakolAstrology.Models;
+using JamakolAstrology.Helpers;
 
 namespace JamakolAstrology.Controls;
 
@@ -11,6 +12,13 @@ public partial class PanchangaPanel : UserControl
     public PanchangaPanel()
     {
         InitializeComponent();
+        
+        // Apply font size from settings
+        var settings = AppSettings.Load();
+        if (settings != null)
+        {
+            UiThemeHelper.SetFontSizeRecursive(this, settings.TableFontSize);
+        }
     }
 
     /// <summary>

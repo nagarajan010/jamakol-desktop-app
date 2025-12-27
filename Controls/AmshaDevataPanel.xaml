@@ -14,18 +14,8 @@
             <Setter Property="BorderBrush" Value="#ddd"/>
             <Setter Property="BorderThickness" Value="0,0,1,1"/>
         </Style>
-        <Style TargetType="DataGridCell">
-            <Setter Property="Padding" Value="5"/>
-            <Setter Property="TextBlock.TextAlignment" Value="Center"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="DataGridCell">
-                        <Border Padding="{TemplateBinding Padding}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
-                            <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
+        <Style x:Key="CenteredCell" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
     </UserControl.Resources>
 
@@ -56,7 +46,8 @@
                   FontSize="11"
                   AlternatingRowBackground="#fafafa"
                   SelectionMode="Single"
-                  SelectionUnit="FullRow">
+                  SelectionUnit="FullRow"
+                  Style="{StaticResource DataGridStyle}">
             <DataGrid.ContextMenu>
                 <ContextMenu x:Name="VargaContextMenu">
                     <!-- Items populated in code-behind -->
@@ -73,37 +64,18 @@
                     <Setter Property="BorderThickness" Value="0,0,1,0"/>
                 </Style>
             </DataGrid.ColumnHeaderStyle>
-            <DataGrid.CellStyle>
-                <Style TargetType="DataGridCell">
-                    <Setter Property="Padding" Value="4,2"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="DataGridCell">
-                                <Border Padding="{TemplateBinding Padding}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
-                                    <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                    <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="#0078d7"/>
-                            <Setter Property="Foreground" Value="White"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </DataGrid.CellStyle>
+
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Body" Binding="{Binding PlanetName}" Width="1.2*"/>
-                <DataGridTextColumn Header="Division" Binding="{Binding DivisionSign}" Width="0.8*"/>
-                <DataGridTextColumn Header="Index" Binding="{Binding Index}" Width="0.6*"/>
+                <DataGridTextColumn Header="Division" Binding="{Binding DivisionSign}" Width="0.8*" ElementStyle="{StaticResource CenteredCell}"/>
+                <DataGridTextColumn Header="Index" Binding="{Binding Index}" Width="0.6*" ElementStyle="{StaticResource CenteredCell}"/>
                 <DataGridTextColumn x:Name="DeityColumn" Header="In whose amsa" Binding="{Binding Deity}" Width="2*" FontWeight="SemiBold" Foreground="#cc0000">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
-                            <Setter Property="Foreground" Value="#cc0000"/> 
+                            <Setter Property="Foreground" Value="#cc0000"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
-                                    <Setter Property="Foreground" Value="Yellow"/>
+                                    <Setter Property="Foreground" Value="Black"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>

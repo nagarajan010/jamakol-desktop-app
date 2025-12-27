@@ -17,6 +17,13 @@ public partial class JamakolPlanetGrid : UserControl
     public JamakolPlanetGrid()
     {
         InitializeComponent();
+        
+        // Apply font size from settings
+        var settings = AppSettings.Load();
+        if (settings != null)
+        {
+            DataGridControl.FontSize = settings.TableFontSize;
+        }
     }
 
     /// <summary>

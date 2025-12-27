@@ -11,6 +11,17 @@ public partial class AshtakavargaDetailsPanel : UserControl
     public AshtakavargaDetailsPanel()
     {
         InitializeComponent();
+        
+        // Apply font size from settings
+        var settings = AppSettings.Load();
+        if (settings != null)
+        {
+            AVGrid.FontSize = settings.TableFontSize;
+            PindaGrid.FontSize = settings.TableFontSize;
+            
+            // Also update chart styles if needed, but currently charts use UserControl specific sizing.
+            // If user meant "tables" as in DataGrids, this is sufficient.
+        }
     }
 
     public void UpdateChart(ChartData? chart)

@@ -11,6 +11,13 @@ public partial class KPDetailsPanel : UserControl
     public KPDetailsPanel()
     {
         InitializeComponent();
+        
+        // Apply font size from settings
+        var settings = AppSettings.Load();
+        if (settings != null)
+        {
+            KPGrid.FontSize = settings.TableFontSize;
+        }
     }
 
     public void UpdateChart(ChartData? chart)
