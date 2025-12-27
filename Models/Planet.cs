@@ -45,4 +45,9 @@ public class PlanetPosition
 
     public bool IsCombust { get; set; }
     public string CombustionFlag => IsCombust ? "C" : "";
+    
+    /// <summary>
+    /// Jaimini Karaka (AK, AmK, BK, MK, PK, GK, DK, PiK)
+    /// </summary>
+    public string Karaka { get; set; } = "";
 }

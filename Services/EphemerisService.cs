@@ -89,6 +89,30 @@ public class EphemerisService : IDisposable
     }
 
     /// <summary>
+    /// Calculate Julian Day from individual date components
+    /// Supports BC dates (negative years using astronomical year numbering)
+    /// Year 0 = 1 BCE, Year -1 = 2 BCE, etc.
+    /// Uses Julian calendar for dates before Oct 15, 1582 (when Gregorian was introduced)
+    /// </summary>
+    public double GetJulianDay(int year, int month, int day, double hour)
+    {
+        // Use Julian calendar for dates before October 15, 1582
+        // Gregorian calendar didn't exist before then
+        int calendarType = (year < 1582 || (year == 1582 && month < 10) || (year == 1582 && month == 10 && day < 15))
+            ? SwissEph.SE_JUL_CAL
+            : SwissEph.SE_GREG_CAL;
+            
+        return _sweph.swe_julday(
+            year,
+            month,
+            day,
+            hour,
+            calendarType
+        );
+    }
+
+
+    /// <summary>
     /// Get planet position at given Julian Day
     /// </summary>
     public (double longitude, double latitude, double speed) GetPlanetPosition(double julianDay, int planetId, int ayanamshaId)

@@ -92,16 +92,29 @@ public partial class JamakolPlanetGrid : UserControl
             });
         }
         
-        // Add planets
-        // Define sort order
-        var sortOrder = new List<string> { "Sun", "Moon", "Mars", "Mercury", "Jupiter", "Venus", "Saturn", "Rahu", "Ketu" };
+        // Add planets - sort by Karaka order for main planets only
+        var mainPlanets = new HashSet<string> { "Sun", "Moon", "Mars", "Mercury", "Jupiter", "Venus", "Saturn", "Rahu" };
+        var karakaOrder = new List<string> { "AK", "AmK", "BK", "MK", "PiK", "PuK", "GK", "DK" };
         
-        var sortedPlanets = jamakolData.PlanetPositions
+        // Main planets sorted by Karaka order
+        var karakaPlanets = jamakolData.PlanetPositions
+            .Where(p => mainPlanets.Contains(p.EnglishName))
             .OrderBy(p => {
-                int index = sortOrder.IndexOf(p.EnglishName);
-                return index == -1 ? 999 : index;
+                if (!string.IsNullOrEmpty(p.Karaka))
+                {
+                    int index = karakaOrder.IndexOf(p.Karaka);
+                    return index == -1 ? 100 : index;
+                }
+                return 100;
             })
             .ToList();
+        
+        // Other planets (Ketu, etc.) at end
+        var otherPlanets = jamakolData.PlanetPositions
+            .Where(p => !mainPlanets.Contains(p.EnglishName))
+            .ToList();
+        
+        var sortedPlanets = karakaPlanets.Concat(otherPlanets).ToList();
 
         displayData.AddRange(sortedPlanets.Select(p => new JamakolPlanetGridItem
         {
@@ -114,7 +127,8 @@ public partial class JamakolPlanetGrid : UserControl
             Gati = p.Gati, // Now populated from JamakolPlanetPosition
             RetroDisplay = p.IsRetrograde ? "R" : "",
             CombustionFlag = p.CombustionFlag,
-            SpeedDisplay = p.Speed.ToString("F4")
+            SpeedDisplay = p.Speed.ToString("F4"),
+            Karaka = p.Karaka ?? ""
         }));
 
         DataGridControl.ItemsSource = displayData;
@@ -146,16 +160,30 @@ public partial class JamakolPlanetGrid : UserControl
             RetroDisplay = ""
         });
         
-        // Add planets
-        // Define sort order
-        var sortOrder = new List<string> { "Sun", "Moon", "Mars", "Mercury", "Jupiter", "Venus", "Saturn", "Rahu", "Ketu" };
+        // Add planets - sort by Karaka order
+        // Main planets that get Karakas (exclude Ketu and Aprakash Graha)
+        var mainPlanets = new HashSet<string> { "Sun", "Moon", "Mars", "Mercury", "Jupiter", "Venus", "Saturn", "Rahu" };
+        var karakaOrder = new List<string> { "AK", "AmK", "BK", "MK", "PiK", "PuK", "GK", "DK" };
         
-        var sortedPlanets = chartData.Planets
+        // First, add main planets sorted by Karaka order
+        var karakaPlanets = chartData.Planets
+            .Where(p => mainPlanets.Contains(p.Name))
             .OrderBy(p => {
-                int index = sortOrder.IndexOf(p.Name);
-                return index == -1 ? 999 : index;
+                if (!string.IsNullOrEmpty(p.Karaka))
+                {
+                    int index = karakaOrder.IndexOf(p.Karaka);
+                    return index == -1 ? 100 : index;
+                }
+                return 100;
             })
             .ToList();
+        
+        // Then add remaining planets (Ketu, Aprakash Graha) in original order
+        var otherPlanets = chartData.Planets
+            .Where(p => !mainPlanets.Contains(p.Name))
+            .ToList();
+        
+        var sortedPlanets = karakaPlanets.Concat(otherPlanets).ToList();
 
         displayData.AddRange(sortedPlanets.Select(p => {
              double pDeg = p.DegreeInSign;
@@ -174,7 +202,8 @@ public partial class JamakolPlanetGrid : UserControl
                  Gati = p.Gati,
                  RetroDisplay = p.IsRetrograde ? "R" : "",
                  CombustionFlag = p.CombustionFlag,
-                 SpeedDisplay = p.Speed.ToString("F4")
+                 SpeedDisplay = p.Speed.ToString("F4"),
+                 Karaka = p.Karaka ?? ""
              };
         }));
 
@@ -196,4 +225,5 @@ public class JamakolPlanetGridItem
     public string RetroDisplay { get; set; } = "";
     public string CombustionFlag { get; set; } = "";
     public string SpeedDisplay { get; set; } = "";
+    public string Karaka { get; set; } = "";  // Jaimini Karaka (AK, AmK, etc.)
 }

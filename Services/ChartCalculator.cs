@@ -28,8 +28,9 @@ public class ChartCalculator
             BirthData = birthData
         };
 
-        // Calculate Julian Day
-        chartData.JulianDay = _ephemeris.GetJulianDay(birthData.UtcDateTime);
+        // Calculate Julian Day (supports BC dates via GetUtcComponents)
+        var (utcYear, utcMonth, utcDay, utcHour) = birthData.GetUtcComponents();
+        chartData.JulianDay = _ephemeris.GetJulianDay(utcYear, utcMonth, utcDay, utcHour);
 
         // Calculate and store the actual Ayanamsa value for this chart
         chartData.AyanamsaValue = _ephemeris.GetAyanamsa(chartData.JulianDay, (int)ayanamsha);
@@ -115,6 +116,10 @@ public class ChartCalculator
 
         // Calculate Combustion Status
         CalculateCombustion(chartData.Planets);
+
+        // Calculate Jaimini Karakas (8-Chara scheme)
+        var karakaCalc = new JaiminiKarakaCalculator();
+        karakaCalc.CalculateKarakas(chartData.Planets);
 
         // Calculate divisional charts (commonly used ones)
         // D-9 Navamsa is the most important divisional chart

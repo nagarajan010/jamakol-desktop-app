@@ -55,13 +55,33 @@ public class ChartOrchestratorService
     {
         var result = new CompositeChartResult();
 
-        // 1. Calculate Basic Chart
+        // 1. Calculate Basic Chart (works for BC dates)
         result.ChartData = _chartCalculator.CalculateChart(birthData, settings.Ayanamsha);
         
         // 1.1 Calculate Ashtakavarga
         result.ChartData.Ashtakavarga = _ashtakavargaCalculator.Calculate(result.ChartData);
 
-        // 2. Determine Vedic Day and Sunrise/Sunset logic
+        // For BC dates, skip DateTime-dependent calculations (sunrise, Jama Graha, Panchanga, etc.)
+        // These features are not meaningful for ancient/mythological dates
+        if (birthData.IsBCDate)
+        {
+            // Return basic chart data for BC dates
+            result.DayLord = GetApproximateDayLord(birthData);
+            result.JamakolData = _jamakolCalculator.Calculate(result.ChartData);
+            
+            // Calculate Vimshottari Dasha for BC dates (doesn't need DateTime operations)
+            var moon = result.ChartData.Planets.FirstOrDefault(p => p.Name == "Moon");
+            if (moon != null)
+            {
+                // For BC dates, use a dummy DateTime for dasha start
+                result.DashaResult = _vimshottariDashaCalculator.Calculate(
+                    moon.Longitude, DateTime.Now, DateTime.Now, 6);
+            }
+            
+            return result;
+        }
+
+        // 2. Determine Vedic Day and Sunrise/Sunset logic (AD dates only)
         var civilDate = birthData.BirthDateTime.Date;
         var civilSunrise = _sunriseCalculator.CalculateSunrise(
             civilDate, birthData.Latitude, birthData.Longitude, birthData.TimeZoneOffset);
@@ -157,8 +177,8 @@ public class ChartOrchestratorService
             todaySunrise, todaySunset, birthData.BirthDateTime, vedicDate.DayOfWeek);
 
         // 10. Calculate Vimshottari Dasha (sub-levels based on Moon's nakshatra)
-        var moon = result.ChartData.Planets.FirstOrDefault(p => p.Name == "Moon");
-        if (moon != null)
+        var moonAD = result.ChartData.Planets.FirstOrDefault(p => p.Name == "Moon");
+        if (moonAD != null)
         {
             // Calculate starting from birth, find current running dasa for "Now" (or query date)
             DateTime calculationTargetDate = DateTime.Now; 
@@ -166,10 +186,25 @@ public class ChartOrchestratorService
             if (birthData.Location == "Query") calculationTargetDate = birthData.BirthDateTime;
             
             result.DashaResult = _vimshottariDashaCalculator.Calculate(
-                moon.Longitude, birthData.BirthDateTime, calculationTargetDate, 6); // 6 levels
+                moonAD.Longitude, birthData.BirthDateTime, calculationTargetDate, 6); // 6 levels
         }
 
         return result;
+    }
+
+    /// <summary>
+    /// Calculate approximate day of week for BC dates using Julian Day
+    /// </summary>
+    private string GetApproximateDayLord(BirthData birthData)
+    {
+        // Julian Day can tell us the day of week
+        // JD 0 was Monday, so (JD + 1) % 7 gives day of week (0=Sun, 1=Mon, etc)
+        using var eph = new EphemerisService();
+        var (year, month, day, hour) = birthData.GetUtcComponents();
+        double jd = eph.GetJulianDay(year, month, day, hour);
+        int dayOfWeekIndex = ((int)Math.Floor(jd + 1.5)) % 7;
+        DayOfWeek dow = (DayOfWeek)dayOfWeekIndex;
+        return JamaGrahaCalculator.GetDayLord(dow);
     }
 
     private List<SpecialPoint> CalculateSpecialPoints(

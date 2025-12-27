@@ -71,9 +71,9 @@ public partial class BirthChartDetailsPanel : UserControl
         // Header
         AddLine("Natal Chart", "", "", true);
 
-        // Basic Info
-        AddLine("Date:          ", $"{bd.BirthDateTime:MMMM d, yyyy}");
-        AddLine("Time:          ", $"{bd.BirthDateTime:h:mm:ss tt}".ToLower());
+        // Basic Info - use GetDisplayDate/GetDisplayTime for BC date support
+        AddLine("Date:          ", bd.GetDisplayDate());
+        AddLine("Time:          ", bd.GetDisplayTime());
         
         var tzSpan = TimeSpan.FromHours(bd.TimeZoneOffset);
         AddLine("Time Zone:     ", $"{tzSpan.Hours}:{tzSpan.Minutes:00}:{tzSpan.Seconds:00} (East of GMT)");
@@ -86,39 +86,49 @@ public partial class BirthChartDetailsPanel : UserControl
 
         AddLine("", "");
 
-        // Panchanga
-        AddLine("Lunar Yr-Mo:   ", $"{pd.TamilYear} - {pd.TamilMonth}");
-        AddLine("Tithi:         ", $"{pd.Paksha} {pd.TithiName} ({pd.TithiLord}) ", $"({pd.TithiPercentLeft:F2}% left)");
-        AddLine("Vedic Weekday: ", $"{pd.DayName} ({pd.DayLordAbbr})");
-        AddLine("Nakshatra:     ", $"{pd.NakshatraName} ({pd.NakshatraLord}) ", $"({pd.NakshatraPercentLeft:F2}% left)");
-        AddLine("Yoga:          ", $"{pd.YogaName} ", $"({pd.YogaPercentLeft:F2}% left)");
-        AddLine("Karana:        ", $"{pd.KaranaName} ", $"({pd.KaranaPercentLeft:F2}% left)");
-        
-        string horaSignAbbr = "-";
-        var horaLordPlanet = result.ChartData.Planets.FirstOrDefault(p => p.Name.Equals(pd.HoraLord, StringComparison.OrdinalIgnoreCase));
-        if (horaLordPlanet != null)
+        // Panchanga - only show if NOT a BC date (sunrise/panchanga calculations not available for BC dates)
+        if (!bd.IsBCDate)
         {
-             int sign = horaLordPlanet.Sign;
-             if (sign >= 1 && sign <= 12) 
-             {
-                 string sName = JamakolAstrology.Services.ZodiacUtils.SignNames[sign];
-                 if (sName.Length >= 2) horaSignAbbr = sName.Substring(0, 2);
-             }
+            AddLine("Lunar Yr-Mo:   ", $"{pd.TamilYear} - {pd.TamilMonth}");
+            AddLine("Tithi:         ", $"{pd.Paksha} {pd.TithiName} ({pd.TithiLord}) ", $"({pd.TithiPercentLeft:F2}% left)");
+            AddLine("Vedic Weekday: ", $"{pd.DayName} ({pd.DayLordAbbr})");
+            AddLine("Nakshatra:     ", $"{pd.NakshatraName} ({pd.NakshatraLord}) ", $"({pd.NakshatraPercentLeft:F2}% left)");
+            AddLine("Yoga:          ", $"{pd.YogaName} ", $"({pd.YogaPercentLeft:F2}% left)");
+            AddLine("Karana:        ", $"{pd.KaranaName} ", $"({pd.KaranaPercentLeft:F2}% left)");
+            
+            string horaSignAbbr = "-";
+            var horaLordPlanet = result.ChartData.Planets.FirstOrDefault(p => p.Name.Equals(pd.HoraLord, StringComparison.OrdinalIgnoreCase));
+            if (horaLordPlanet != null)
+            {
+                 int sign = horaLordPlanet.Sign;
+                 if (sign >= 1 && sign <= 12) 
+                 {
+                     string sName = JamakolAstrology.Services.ZodiacUtils.SignNames[sign];
+                     if (sName.Length >= 2) horaSignAbbr = sName.Substring(0, 2);
+                 }
+            }
+            AddLine("Hora Lord:     ", $"{pd.HoraLord} (5 min sign: {horaSignAbbr})");
+            AddLine("Mahakala Hora: ", $"{pd.HoraLord}"); 
+            AddLine("Kaala Lord:    ", "-");
+
+            AddLine("", "");
+
+            // Sun & Time
+            AddLine("Sunrise:       ", $"{pd.Sunrise}");
+            AddLine("Sunset:        ", $"{pd.Sunset}");
+            AddLine("Janma Ghatis:  ", $"{pd.JanmaGhatis:F4}");
+
+            AddLine("", "");
+            AddLine("Ayanamsa:      ", $"{FormatDegree(pd.AyanamsaValue, true)}");;
+            AddLine("Sidereal Time: ", $"{pd.SiderealTime}");
         }
-        AddLine("Hora Lord:     ", $"{pd.HoraLord} (5 min sign: {horaSignAbbr})");
-        AddLine("Mahakala Hora: ", $"{pd.HoraLord}"); 
-        AddLine("Kaala Lord:    ", "-");
-
-        AddLine("", "");
-
-        // Sun & Time
-        AddLine("Sunrise:       ", $"{pd.Sunrise}");
-        AddLine("Sunset:        ", $"{pd.Sunset}");
-        AddLine("Janma Ghatis:  ", $"{pd.JanmaGhatis:F4}");
-
-        AddLine("", "");
-        AddLine("Ayanamsa:      ", $"{FormatDegree(pd.AyanamsaValue)}");
-        AddLine("Sidereal Time: ", $"{pd.SiderealTime}");
+        else
+        {
+            // BC date - show basic info from chartData instead
+            AddLine("Note:          ", "BC date - Panchanga details not available");
+            AddLine("", "");
+            AddLine("Ayanamsa:      ", $"{FormatDegree(result.ChartData.AyanamsaValue, true)}");;
+        }
     }
 
     private string ConvertToDms(double val, bool isLat)
@@ -133,13 +143,24 @@ public partial class BirthChartDetailsPanel : UserControl
         return $"{deg} {dir} {min:00}' {sec:00}\"";
     }
 
-    private string FormatDegree(double val)
+    private string FormatDegree(double val, bool normalizeForAyanamsa = false)
     {
-        int d = (int)val;
-        double rem = (val - d) * 60;
+        // For ayanamsa, values > 180° should be displayed as negative (common for BC dates)
+        // e.g., 311.68° → -48.32° (360 - 311.68 = 48.32)
+        if (normalizeForAyanamsa && val > 180)
+        {
+            val = val - 360;
+        }
+        
+        bool isNegative = val < 0;
+        double absVal = Math.Abs(val);
+        int d = (int)absVal;
+        double rem = (absVal - d) * 60;
         int m = (int)rem;
         double s = (rem - m) * 60;
-        return $"{d}-{m:00}-{s:00.00}";
+        
+        string sign = isNegative ? "-" : "";
+        return $"{sign}{d}-{m:00}-{s:00.00}";
     }
 
     /// <summary>

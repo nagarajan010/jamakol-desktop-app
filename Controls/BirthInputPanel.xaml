@@ -7,9 +7,12 @@
             <TextBlock Text="Name:" Style="{StaticResource TopLabelStyle}"/>
             <TextBox x:Name="NameInput" Style="{StaticResource TopInputStyle}" Width="120" Text="Person"/>
 
-            <TextBlock Text="Date:" Style="{StaticResource TopLabelStyle}"/>
-            <DatePicker x:Name="DateInput" Style="{StaticResource DatePickerStyle}" Width="120"
-                        SelectedDate="{x:Static sys:DateTime.Now}"/>
+            <TextBlock Text="Year:" Style="{StaticResource TopLabelStyle}"/>
+            <TextBox x:Name="YearInput" Style="{StaticResource TopInputStyle}" Width="55" Text="2024" ToolTip="Year (use negative for BC, e.g. -3227 = 3228 BCE)"/>
+            <TextBlock Text="/" Margin="2,0" VerticalAlignment="Center" Foreground="#666"/>
+            <TextBox x:Name="MonthInput" Style="{StaticResource TopInputStyle}" Width="30" Text="12" ToolTip="Month (1-12)"/>
+            <TextBlock Text="/" Margin="2,0" VerticalAlignment="Center" Foreground="#666"/>
+            <TextBox x:Name="DayInput" Style="{StaticResource TopInputStyle}" Width="30" Text="27" ToolTip="Day (1-31)"/>
 
             <TextBlock Text="Time:" Style="{StaticResource TopLabelStyle}"/>
             <TextBox x:Name="TimeInput" Style="{StaticResource TopInputStyle}" Width="70" Text="12:00:00"/>

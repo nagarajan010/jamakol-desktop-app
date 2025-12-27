@@ -31,7 +31,12 @@ public partial class BirthInputPanel : UserControl
 
     // Properties to access input values
     public string PersonName => NameInput.Text;
-    public DateTime? SelectedDate => DateInput.SelectedDate;
+    
+    // Year/Month/Day properties for BC date support
+    public int SelectedYear => int.TryParse(YearInput.Text, out int y) ? y : DateTime.Now.Year;
+    public int SelectedMonth => int.TryParse(MonthInput.Text, out int m) ? Math.Clamp(m, 1, 12) : DateTime.Now.Month;
+    public int SelectedDay => int.TryParse(DayInput.Text, out int d) ? Math.Clamp(d, 1, 31) : DateTime.Now.Day;
+    
     public string TimeText => TimeInput.Text;
     public string Location => LocationInput.Text;
     public string Latitude => LatitudeInput.Text;
@@ -63,9 +68,11 @@ public partial class BirthInputPanel : UserControl
         // Reset Name
         NameInput.Text = "Person";
 
-        // Reset Date/Time
+        // Reset Date/Time with new Year/Month/Day inputs
         var now = DateTime.Now;
-        DateInput.SelectedDate = now;
+        YearInput.Text = now.Year.ToString();
+        MonthInput.Text = now.Month.ToString();
+        DayInput.Text = now.Day.ToString();
         TimeInput.Text = now.ToString("HH:mm:ss");
 
         // Reset Location if settings available
@@ -222,14 +229,46 @@ public partial class BirthInputPanel : UserControl
 
     public void SetDateTime(DateTime dt)
     {
-        DateInput.SelectedDate = dt;
+        YearInput.Text = dt.Year.ToString();
+        MonthInput.Text = dt.Month.ToString();
+        DayInput.Text = dt.Day.ToString();
         TimeInput.Text = dt.ToString("HH:mm:ss");
+    }
+
+    /// <summary>
+    /// Set date from individual components (for BC date support)
+    /// </summary>
+    public void SetDate(int year, int month, int day)
+    {
+        YearInput.Text = year.ToString();
+        MonthInput.Text = month.ToString();
+        DayInput.Text = day.ToString();
     }
 
     public void SetInputs(string name, DateTime date, string time, double lat, double lng, double tz, string location)
     {
         NameInput.Text = name;
-        DateInput.SelectedDate = date;
+        YearInput.Text = date.Year.ToString();
+        MonthInput.Text = date.Month.ToString();
+        DayInput.Text = date.Day.ToString();
+        TimeInput.Text = time;
+        LatitudeInput.Text = lat.ToString("F4");
+        LongitudeInput.Text = lng.ToString("F4");
+        TimezoneInput.Text = tz.ToString("F1");
+        _isUpdatingText = true;
+        LocationInput.Text = location;
+        _isUpdatingText = false;
+    }
+
+    /// <summary>
+    /// Set inputs with BC date support (year can be negative)
+    /// </summary>
+    public void SetInputs(string name, int year, int month, int day, string time, double lat, double lng, double tz, string location)
+    {
+        NameInput.Text = name;
+        YearInput.Text = year.ToString();
+        MonthInput.Text = month.ToString();
+        DayInput.Text = day.ToString();
         TimeInput.Text = time;
         LatitudeInput.Text = lat.ToString("F4");
         LongitudeInput.Text = lng.ToString("F4");

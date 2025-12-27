@@ -49,9 +49,11 @@ public partial class SaveChartDialog : Window
         NameInput.Text = _chart.Name;
         PredictionInput.Text = _chart.Prediction;
         
-        // Populate Date/Time/Location
-        DateInput.SelectedDate = _chart.QueryDateTime.Date;
-        TimeInput.Text = _chart.QueryDateTime.ToString("HH:mm:ss");
+        // Populate Date/Time/Location with BC date support
+        YearInput.Text = _chart.Year.ToString();
+        MonthInput.Text = _chart.Month.ToString();
+        DayInput.Text = _chart.Day.ToString();
+        TimeInput.Text = $"{_chart.Hour:D2}:{_chart.Minute:D2}:{_chart.Second:D2}";
         LatInput.Text = _chart.Latitude.ToString();
         LongInput.Text = _chart.Longitude.ToString();
         TzInput.Text = _chart.Timezone.ToString();
@@ -162,18 +164,25 @@ public partial class SaveChartDialog : Window
 
         try
         {
-            // Parse Date and Time
-            DateTime date = DateInput.SelectedDate ?? DateTime.Now;
+            // Parse Date and Time with BC date support
+            int year = int.Parse(YearInput.Text);
+            int month = int.Parse(MonthInput.Text);
+            int day = int.Parse(DayInput.Text);
             var timeParts = TimeInput.Text.Split(':');
             if (timeParts.Length < 2) throw new Exception("Invalid time format. Use HH:mm:ss");
             
-            DateTime newDateTime = new DateTime(date.Year, date.Month, date.Day, 
-                int.Parse(timeParts[0]), int.Parse(timeParts[1]), 
-                timeParts.Length > 2 ? int.Parse(timeParts[2]) : 0);
+            int hour = int.Parse(timeParts[0]);
+            int minute = int.Parse(timeParts[1]);
+            int second = timeParts.Length > 2 ? int.Parse(timeParts[2]) : 0;
 
-            // Update Chart
+            // Update Chart with BC date support
             _chart.Name = NameInput.Text.Trim();
-            _chart.QueryDateTime = newDateTime;
+            _chart.Year = year;
+            _chart.Month = month;
+            _chart.Day = day;
+            _chart.Hour = hour;
+            _chart.Minute = minute;
+            _chart.Second = second;
             _chart.Latitude = double.Parse(LatInput.Text);
             _chart.Longitude = double.Parse(LongInput.Text);
             _chart.Timezone = double.Parse(TzInput.Text);

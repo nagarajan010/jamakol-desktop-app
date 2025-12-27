@@ -20,8 +20,45 @@ public class SavedJamakolChart
     /// <summary>Name/title for the saved chart</summary>
     public string Name { get; set; } = "";
     
-    /// <summary>Query date and time</summary>
-    public DateTime QueryDateTime { get; set; }
+    // Date/Time components for BC date support (Year can be negative)
+    public int Year { get; set; }
+    public int Month { get; set; }
+    public int Day { get; set; }
+    public int Hour { get; set; }
+    public int Minute { get; set; }
+    public int Second { get; set; }
+    
+    /// <summary>Returns true if this is a BC date (Year <= 0)</summary>
+    public bool IsBCDate => Year <= 0;
+    
+    /// <summary>Query date and time - for backward compatibility and AD dates only</summary>
+    public DateTime QueryDateTime 
+    { 
+        get
+        {
+            if (Year > 0 && Year <= 9999)
+            {
+                try { return new DateTime(Year, Month, Day, Hour, Minute, Second); }
+                catch { return DateTime.MinValue; }
+            }
+            return DateTime.MinValue;
+        }
+        set
+        {
+            // Only update Year/Month/Day from the DateTime if it's a valid date
+            // (not DateTime.MinValue, which is used as fallback for BC dates)
+            // This prevents JSON deserialization from overwriting BC date values
+            if (value != DateTime.MinValue)
+            {
+                Year = value.Year;
+                Month = value.Month;
+                Day = value.Day;
+                Hour = value.Hour;
+                Minute = value.Minute;
+                Second = value.Second;
+            }
+        }
+    }
     
     /// <summary>Location latitude</summary>
     public double Latitude { get; set; }

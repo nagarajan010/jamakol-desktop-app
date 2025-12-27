@@ -51,15 +51,23 @@
 
         <!-- Date / Time -->
         <StackPanel Grid.Row="1">
-            <TextBlock Text="Date / Time" Style="{StaticResource LabelStyle}"/>
+            <TextBlock Text="Date / Time (Year can be negative for BC)" Style="{StaticResource LabelStyle}"/>
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition Width="20"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <DatePicker x:Name="DateInput" Grid.Column="0" Padding="4" FontSize="13" VerticalContentAlignment="Center"/>
-                <TextBox x:Name="TimeInput" Grid.Column="2" Style="{StaticResource InputStyle}" ToolTip="HH:mm:ss"/>
+                <TextBox x:Name="YearInput" Grid.Column="0" Style="{StaticResource InputStyle}" ToolTip="Year (negative for BC)"/>
+                <TextBlock Grid.Column="1" Text="/" VerticalAlignment="Center" Margin="4,0"/>
+                <TextBox x:Name="MonthInput" Grid.Column="2" Style="{StaticResource InputStyle}" ToolTip="Month (1-12)"/>
+                <TextBlock Grid.Column="3" Text="/" VerticalAlignment="Center" Margin="4,0"/>
+                <TextBox x:Name="DayInput" Grid.Column="4" Style="{StaticResource InputStyle}" ToolTip="Day (1-31)"/>
+                <TextBox x:Name="TimeInput" Grid.Column="6" Style="{StaticResource InputStyle}" ToolTip="HH:mm:ss"/>
             </Grid>
         </StackPanel>
 

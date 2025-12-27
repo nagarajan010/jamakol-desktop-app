@@ -158,11 +158,21 @@ public partial class MainWindow : Window
     {
         BirthInputControl.SetStatus("Calculating...");
 
-        // Parse input data
+        // Parse input data with BC date support
+        var timeParts = BirthInputControl.TimeText.Split(':');
+        int hour = timeParts.Length > 0 ? int.Parse(timeParts[0]) : 12;
+        int minute = timeParts.Length > 1 ? int.Parse(timeParts[1]) : 0;
+        int second = timeParts.Length > 2 ? int.Parse(timeParts[2]) : 0;
+        
         var birthData = new BirthData
         {
             Name = BirthInputControl.PersonName.Trim(),
-            BirthDateTime = ParseDateTime(),
+            Year = BirthInputControl.SelectedYear,
+            Month = BirthInputControl.SelectedMonth,
+            Day = BirthInputControl.SelectedDay,
+            Hour = hour,
+            Minute = minute,
+            Second = second,
             Latitude = double.Parse(BirthInputControl.Latitude),
             Longitude = double.Parse(BirthInputControl.Longitude),
             Location = BirthInputControl.Location.Trim(),
@@ -230,7 +240,12 @@ public partial class MainWindow : Window
         var birthData = new BirthData
         {
             Name = JamakolInputControl.ChartName.Trim(),
-            BirthDateTime = jamakolDateTime,
+            Year = jamakolDate.Year,
+            Month = jamakolDate.Month,
+            Day = jamakolDate.Day,
+            Hour = hour,
+            Minute = minute,
+            Second = second,
             Latitude = double.Parse(JamakolInputControl.LatitudeText),
             Longitude = double.Parse(JamakolInputControl.LongitudeText),
             Location = "Query",
@@ -379,7 +394,9 @@ public partial class MainWindow : Window
             if (dialog.ShowDialog() == true && dialog.ShouldLoadChart && dialog.ChartToLoad != null)
             {
                 var chart = dialog.ChartToLoad;
-                JamakolInputControl.SetInputs(chart.Name, chart.QueryDateTime.Date, chart.QueryDateTime.ToString("HH:mm:ss"), 
+                // Use Year/Month/Day for BC date support
+                string timeStr = $"{chart.Hour:D2}:{chart.Minute:D2}:{chart.Second:D2}";
+                JamakolInputControl.SetInputs(chart.Name, chart.Year, chart.Month, chart.Day, timeStr, 
                                             chart.Latitude, chart.Longitude, chart.Timezone);
                 
                 CalculateJamakolChart();
@@ -403,9 +420,12 @@ public partial class MainWindow : Window
 
     private DateTime ParseDateTime()
     {
-        var date = BirthInputControl.SelectedDate ?? DateTime.Now;
+        int year = BirthInputControl.SelectedYear;
+        // For BC dates, this will return DateTime.MinValue
+        if (year <= 0) return DateTime.MinValue;
+        
         var timeParts = BirthInputControl.TimeText.Split(':');
-        return new DateTime(date.Year, date.Month, date.Day, 
+        return new DateTime(year, BirthInputControl.SelectedMonth, BirthInputControl.SelectedDay, 
                           timeParts.Length > 0 ? int.Parse(timeParts[0]) : 12,
                           timeParts.Length > 1 ? int.Parse(timeParts[1]) : 0, 
                           timeParts.Length > 2 ? int.Parse(timeParts[2]) : 0);
@@ -518,15 +538,21 @@ public partial class MainWindow : Window
 
         try
         {
-            // Create a SavedJamakolChart from current birth chart data
+            // Create a SavedJamakolChart from current birth chart data with BC date support
+            var bd = _currentChartData.BirthData;
             var savedChart = new SavedJamakolChart
             {
                 Name = BirthInputControl.PersonName,
-                QueryDateTime = _currentChartData.BirthData.BirthDateTime,
-                Latitude = _currentChartData.BirthData.Latitude,
-                Longitude = _currentChartData.BirthData.Longitude,
-                Location = _currentChartData.BirthData.Location,
-                Timezone = _currentChartData.BirthData.TimeZoneOffset,
+                Year = bd.Year,
+                Month = bd.Month,
+                Day = bd.Day,
+                Hour = bd.Hour,
+                Minute = bd.Minute,
+                Second = bd.Second,
+                Latitude = bd.Latitude,
+                Longitude = bd.Longitude,
+                Location = bd.Location,
+                Timezone = bd.TimeZoneOffset,
                 ChartType = "BirthChart",
                 ChartDataJson = System.Text.Json.JsonSerializer.Serialize(_currentChartData)
             };
@@ -562,10 +588,14 @@ public partial class MainWindow : Window
         if (dialog.ShowDialog() == true && dialog.ChartToLoad != null)
         {
             var chart = dialog.ChartToLoad;
+            // Use Year/Month/Day for BC date support
+            string timeStr = $"{chart.Hour:D2}:{chart.Minute:D2}:{chart.Second:D2}";
             BirthInputControl.SetInputs(
                 chart.Name,
-                chart.QueryDateTime,
-                chart.QueryDateTime.ToString("HH:mm:ss"),
+                chart.Year,
+                chart.Month,
+                chart.Day,
+                timeStr,
                 chart.Latitude,
                 chart.Longitude,
                 chart.Timezone,

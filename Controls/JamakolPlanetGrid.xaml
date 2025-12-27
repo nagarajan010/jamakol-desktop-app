@@ -9,6 +9,7 @@
               IsReadOnly="True"
               CanUserAddRows="False"
               CanUserDeleteRows="False"
+              CanUserSortColumns="False"
               FontSize="11"
               Background="White"
               BorderThickness="0"
@@ -33,6 +34,7 @@
             <DataGridTextColumn Header="Nakshatra" Binding="{Binding NakshatraEnglish}" Width="Auto"/>
             <DataGridTextColumn Header="Pada" Binding="{Binding Pada}" Width="Auto"/>
             <DataGridTextColumn Header="Sign" Binding="{Binding SignEnglish}" Width="Auto"/>
+            <DataGridTextColumn Header="Karaka" Binding="{Binding Karaka}" Width="Auto" FontWeight="Bold" Foreground="#006600"/>
             <DataGridTextColumn Header="Gati" Binding="{Binding Gati}" Width="Auto"/>
             <DataGridTextColumn Header="Speed" Binding="{Binding SpeedDisplay}" Width="Auto"/>
             <DataGridTextColumn Header="R" Binding="{Binding RetroDisplay}" Width="Auto"/>

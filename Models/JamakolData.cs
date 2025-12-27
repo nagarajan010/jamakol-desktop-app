@@ -52,4 +52,9 @@ public class JamakolPlanetPosition
     
     public bool IsCombust { get; set; }
     public string CombustionFlag => IsCombust ? "C" : "";
+    
+    /// <summary>
+    /// Jaimini Karaka (AK, AmK, BK, MK, PiK, PK, GK, DK)
+    /// </summary>
+    public string Karaka { get; set; } = "";
 }

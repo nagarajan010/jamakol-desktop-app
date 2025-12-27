@@ -15,7 +15,7 @@ public class SavedChartViewModel
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = "";
-    public DateTime QueryDateTime { get; set; }
+    public string DateTimeDisplay { get; set; } = ""; // BC date friendly display string
     public ChartResult Result { get; set; }
     public string CategoryName { get; set; } = "";
     public string PredictionPreview { get; set; } = "";
@@ -70,7 +70,10 @@ public partial class SavedChartsDialog : Window
         {
             Id = c.Id,
             Name = c.Name,
-            QueryDateTime = c.QueryDateTime,
+            // Create BC-friendly date display string
+            DateTimeDisplay = c.Year <= 0 
+                ? $"{Math.Abs(c.Year)} BCE {c.Month:D2}/{c.Day:D2} {c.Hour:D2}:{c.Minute:D2}"
+                : $"{c.Day:D2}-{c.Month:D2}-{c.Year} {c.Hour:D2}:{c.Minute:D2}",
             Result = c.Result,
             CategoryName = c.CategoryId.HasValue 
                 ? categories.FirstOrDefault(cat => cat.Id == c.CategoryId.Value)?.Name ?? "" 

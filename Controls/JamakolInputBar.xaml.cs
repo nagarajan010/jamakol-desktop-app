@@ -186,6 +186,26 @@ public partial class JamakolInputBar : UserControl
         TzInput.Text = tz.ToString();
     }
 
+    // Overload for BC date support (Year/Month/Day as integers)
+    public void SetInputs(string name, int year, int month, int day, string time, double lat, double lng, double tz)
+    {
+        NameInput.Text = name;
+        // For AD dates, set DatePicker; for BC dates, it won't display properly but we store the values
+        if (year > 0 && year <= 9999)
+        {
+            try { DateInput.SelectedDate = new DateTime(year, month, day); }
+            catch { DateInput.SelectedDate = null; }
+        }
+        else
+        {
+            DateInput.SelectedDate = null; // BC dates can't be displayed in DatePicker
+        }
+        TimeInput.Text = time;
+        LatInput.Text = lat.ToString();
+        LongInput.Text = lng.ToString();
+        TzInput.Text = tz.ToString();
+    }
+
     public void SetStatus(string message) => StatusText.Text = message;
 
     public void SetStartStopButtonText(string text) => StartStopButton.Content = text;
