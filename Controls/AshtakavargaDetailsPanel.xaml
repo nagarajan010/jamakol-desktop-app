@@ -26,7 +26,7 @@
             <ContextMenu>
                 <MenuItem Header="Show BAVs and SAV (Grid View)" Click="SwitchToGridView_Click" IsChecked="True" x:Name="MenuGridView"/>
                 <MenuItem Header="Show Table View" Click="SwitchToTableView_Click" IsChecked="False" x:Name="MenuTableView"/>
-                <MenuItem Header="Show Sodhya Pindas" Click="SwitchToPindaView_Click" IsChecked="False" x:Name="MenuPindaView"/>
+                <MenuItem Header="Show Sodhya Pindas" Click="SwitchToPindaView_Click" IsChecked="False" x:Name="MenuPindaView" Visibility="Collapsed"/>
             </ContextMenu>
         </Grid.ContextMenu>
 
