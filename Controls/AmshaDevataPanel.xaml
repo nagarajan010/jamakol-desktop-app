@@ -36,6 +36,7 @@
         <DataGrid x:Name="DevataGrid" Grid.Row="1" 
                   AutoGenerateColumns="False" 
                   CanUserAddRows="False" 
+                  CanUserSortColumns="False"
                   IsReadOnly="True" 
                   HeadersVisibility="Column" 
                   GridLinesVisibility="Horizontal"

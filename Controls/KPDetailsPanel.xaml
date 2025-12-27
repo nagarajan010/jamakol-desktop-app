@@ -18,6 +18,7 @@
                   Style="{StaticResource DataGridStyle}"
                   AutoGenerateColumns="False" 
                   CanUserAddRows="False" 
+                  CanUserSortColumns="False"
                   IsReadOnly="True"
                   HeadersVisibility="Column" 
                   FontSize="11"
