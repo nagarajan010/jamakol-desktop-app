@@ -32,21 +32,21 @@
 
         <!-- Grid View (Charts) -->
         <ScrollViewer x:Name="ChartsScrollViewer" VerticalScrollBarVisibility="Auto" Margin="0,0,0,0">
-            <UniformGrid Columns="3" Rows="3" Margin="5">
+            <UniformGrid Columns="3" Rows="3" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <!-- Row 1 -->
-                <local:AshtakavargaChart x:Name="ChartSAV" Margin="5"/>
-                <local:AshtakavargaChart x:Name="ChartLagna" Margin="5"/>
-                <local:AshtakavargaChart x:Name="ChartSun" Margin="5"/>
+                <local:AshtakavargaChart x:Name="ChartSAV" Margin="2"/>
+                <local:AshtakavargaChart x:Name="ChartLagna" Margin="2"/>
+                <local:AshtakavargaChart x:Name="ChartSun" Margin="2"/>
                 
                 <!-- Row 2 -->
-                <local:AshtakavargaChart x:Name="ChartMoon" Margin="5"/>
-                <local:AshtakavargaChart x:Name="ChartMars" Margin="5"/>
-                <local:AshtakavargaChart x:Name="ChartMercury" Margin="5"/>
+                <local:AshtakavargaChart x:Name="ChartMoon" Margin="2"/>
+                <local:AshtakavargaChart x:Name="ChartMars" Margin="2"/>
+                <local:AshtakavargaChart x:Name="ChartMercury" Margin="2"/>
                 
                 <!-- Row 3 -->
-                <local:AshtakavargaChart x:Name="ChartJupiter" Margin="5"/>
-                <local:AshtakavargaChart x:Name="ChartVenus" Margin="5"/>
-                <local:AshtakavargaChart x:Name="ChartSaturn" Margin="5"/>
+                <local:AshtakavargaChart x:Name="ChartJupiter" Margin="2"/>
+                <local:AshtakavargaChart x:Name="ChartVenus" Margin="2"/>
+                <local:AshtakavargaChart x:Name="ChartSaturn" Margin="2"/>
             </UniformGrid>
         </ScrollViewer>
 
