@@ -14,27 +14,9 @@ public class AshtakavargaCalculator
     // Bindu maps: Key is the "Contributor" planet, Value is list of houses (1-based) from that contributor where points are gained.
     
     // Sun's AV (BinduSy)
-    private static readonly Dictionary<Planet, int[]> BinduSun = new()
-    {
-        { Planet.Sun,     new[] { 1, 2, 4, 7, 8, 9, 10, 11 } },
-        { Planet.Moon,    new[] { 3, 6, 10, 11 } },
-        { Planet.Mars,    new[] { 1, 2, 4, 7, 8, 9, 10, 11 } },
-        { Planet.Mercury, new[] { 3, 5, 6, 9, 10, 11, 12 } },
-        { Planet.Jupiter, new[] { 5, 6, 9, 11 } },
-        { Planet.Venus,   new[] { 6, 7, 12 } },
-        { Planet.Saturn,  new[] { 1, 2, 4, 7, 8, 9, 10, 11 } },
-        // Lagna is treated as a contributor (Planet.Ascendant isn't in Enum, we'll handle it specially or rely on map key if we extend enum, but here we'll use a specific method or mapping)
-        // Wait, Planet enum doesn't have Lagna/Ascendant usually as a value 0-9 cleanly if mixed.
-        // Let's check Planet.cs. It has Rahu/Ketu. No Ascendant.
-        // We will assume Lagna is handled separately or we need a way to key it.
-        // The PHP code uses 'LG' key.
-        // I will use a helper to get contributor position.
-    };
+    // Bindu maps: Key is the "Contributor" planet, Value is list of houses (1-based) from that contributor where points are gained.
+    // Keys match the PHP implementation (SY, CH, MA, BU, GU, SK, SA, LG).
 
-    // Since Dictionary<Planet, ...> can't hold Lagna if it's not in the enum, 
-    // and we also need to iterate "Lagna's AV" (BinduLg),
-    // I will use a custom structure or just helper methods. 
-    // Actually, distinct dictionaries for each AV might be cleaner given the "BinduX" structure.
     
     // Let's define the tables exactly as in PHP.
     
@@ -51,14 +33,14 @@ public class AshtakavargaCalculator
         { "LG", [3, 4, 6, 10, 11, 12] }
     };
 
-    // 2. Moon AV
+    // 2. Moon AV (with JH variations applied)
     private static readonly Dictionary<string, int[]> BinduCh = new()
     {
         { "SY", [3, 6, 7, 8, 10, 11] },
-        { "CH", [1, 3, 6, 7, 9, 10, 11] },
-        { "MA", [2, 3, 5, 6, 10, 11] },
+        { "CH", [1, 3, 6, 7, 9, 10, 11] }, // JH: +9th from Moon
+        { "MA", [2, 3, 5, 6, 10, 11] }, // JH: -9th from Mars
         { "BU", [1, 3, 4, 5, 7, 8, 10, 11] },
-        { "GU", [1, 2, 4, 7, 8, 10, 11] },
+        { "GU", [1, 2, 4, 7, 8, 10, 11] }, // JH: +2nd, -12th from Jupiter
         { "SK", [3, 4, 5, 7, 9, 10, 11] },
         { "SA", [3, 5, 6, 11] },
         { "LG", [3, 6, 10, 11] }
@@ -100,15 +82,15 @@ public class AshtakavargaCalculator
         { "GU", [1, 2, 3, 4, 7, 8, 10, 11] },
         { "SK", [2, 5, 6, 9, 10, 11] },
         { "SA", [3, 5, 6, 12] },
-        { "LG", [1, 2, 4, 5, 6, 7, 9, 10, 11] }
+        { "LG", [1, 2, 4, 5, 6, 9, 10, 11] } // User Data: Excludes 7
     };
 
-    // 6. Venus AV
+    // 6. Venus AV (with JH variations applied)
     private static readonly Dictionary<string, int[]> BinduSk = new()
     {
         { "SY", [8, 11, 12] },
         { "CH", [1, 2, 3, 4, 5, 8, 9, 11, 12] },
-        { "MA", [3, 4, 6, 9, 11, 12] },
+        { "MA", [3, 4, 6, 9, 11, 12] }, // JH: +4th, -5th from Mars
         { "BU", [3, 5, 6, 9, 11] },
         { "GU", [5, 8, 9, 10, 11] },
         { "SK", [1, 2, 3, 4, 5, 8, 9, 10, 11] },
@@ -152,6 +134,14 @@ public class AshtakavargaCalculator
 
         foreach (var p in chart.Planets)
         {
+            // Skip Aprakash Graha (shadow planets) - they use Planet.Sun as placeholder
+            // and would overwrite the real Sun's position
+            if (p.Name == "Dhooma" || p.Name == "Vyatipata" || p.Name == "Parivesha" || 
+                p.Name == "Indrachapa" || p.Name == "Upaketu")
+            {
+                continue;
+            }
+            
             string key = GetPlanetKey(p.Planet);
             if (key != "")
             {
@@ -159,6 +149,8 @@ public class AshtakavargaCalculator
             }
         }
         positions["LG"] = chart.AscendantSign; // 1-12
+
+
 
         // Process each AV
         // Order: Sun, Moon, Mars, Mercury, Jupiter, Venus, Saturn, Lagna
@@ -208,23 +200,28 @@ public class AshtakavargaCalculator
 
                 if (positions.TryGetValue(contribKey, out int contribSign))
                 {
+                    // Convert 1-based sign (1-12) to 0-based index (0-11)
+                    int contribIndex = contribSign - 1;
+                    
                     foreach (int house in houses)
                     {
-                        // Calculate target sign
-                        // Target = (ContributorSign + House - 1) % 12
-                        // If result is 0, it's 12.
-                        // Logic: (Sign + House - 1)
-                        // Example: Aries(1) + 1st house = 1 (Aries).
-                        // Aries(1) + 2nd house = 2 (Taurus).
+                        // Calculate target sign using 0-based indexing
+                        // Formula: (donor_index + house_offset - 1) % 12
+                        // Example: Aries(0) + 1st house = (0 + 1 - 1) % 12 = 0 (Aries)
+                        // Example: Pisces(11) + 2nd house = (11 + 2 - 1) % 12 = 0 (Aries)
                         
-                        int targetSign = (contribSign + house - 1) % 12;
-                        if (targetSign == 0) targetSign = 12;
+                        int targetIndex = (contribIndex + house - 1) % 12;
 
-                        // Index 0-11
-                        points[targetSign - 1]++;
+
+
+                        // Add point to target sign (index 0-11)
+                        points[targetIndex]++;
                     }
                 }
             }
+            
+
+            
             bhinna[ownerKey] = points;
         }
 

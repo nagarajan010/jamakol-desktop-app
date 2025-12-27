@@ -134,7 +134,7 @@ public partial class MainWindow : Window
              }
              
              // Attach to new parent based on Header
-             string header = tabItem.Header as string;
+             string header = tabItem.Header as string ?? string.Empty;
              
              try 
              {
