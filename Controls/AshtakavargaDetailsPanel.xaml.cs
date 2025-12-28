@@ -62,7 +62,7 @@ public partial class AshtakavargaDetailsPanel : UserControl
             // Index i corresponds to sign index 0-11 (Aries-Pisces)
             rows.Add(new AVRow
             {
-                SignName = ZodiacUtils.SignNames[i + 1],
+                SignName = ZodiacUtils.GetSignName(i + 1),
                 SunPoints = GetPoints(data.Bhinnashtakavarga, Planet.Sun, i),
                 MoonPoints = GetPoints(data.Bhinnashtakavarga, Planet.Moon, i),
                 MarsPoints = GetPoints(data.Bhinnashtakavarga, Planet.Mars, i),
@@ -78,7 +78,7 @@ public partial class AshtakavargaDetailsPanel : UserControl
 
         var totalRow = new AVRow
         {
-            SignName = "TOTAL",
+            SignName = ZodiacUtils.IsTamil ? "மொத்தம்" : "TOTAL",
             SunPoints = SumPoints(rows, r => r.SunPoints),
             MoonPoints = SumPoints(rows, r => r.MoonPoints),
             MarsPoints = SumPoints(rows, r => r.MarsPoints),
@@ -100,7 +100,7 @@ public partial class AshtakavargaDetailsPanel : UserControl
         // Lagna
         pindaRows.Add(new PindaRow 
         { 
-            PlanetName = "Lagna", 
+            PlanetName = ZodiacUtils.IsTamil ? "லக்னம்" : "Lagna", 
             RasiPinda = data.LagnaPinda.RasiPinda, 
             GrahaPinda = data.LagnaPinda.GrahaPinda, 
             SodhyaPinda = data.LagnaPinda.SodhyaPinda 
@@ -116,6 +116,37 @@ public partial class AshtakavargaDetailsPanel : UserControl
         AddPindaRow(pindaRows, Planet.Saturn, "Saturn", data);
 
         PindaGrid.ItemsSource = pindaRows;
+        
+        LocalizeHeaders();
+    }
+    
+    private void LocalizeHeaders()
+    {
+        if (AVGrid.Columns.Count < 11) return;
+        
+        bool isTa = ZodiacUtils.IsTamil;
+        
+        // AV Grid Headers
+        AVGrid.Columns[0].Header = isTa ? "ராசி" : "Sign";
+        AVGrid.Columns[1].Header = isTa ? "சூரி" : "Sun";
+        AVGrid.Columns[2].Header = isTa ? "சந்" : "Mon";
+        AVGrid.Columns[3].Header = isTa ? "செவ்" : "Mar";
+        AVGrid.Columns[4].Header = isTa ? "புத" : "Mer";
+        AVGrid.Columns[5].Header = isTa ? "குரு" : "Jup";
+        AVGrid.Columns[6].Header = isTa ? "சுக்" : "Ven";
+        AVGrid.Columns[7].Header = isTa ? "சனி" : "Sat";
+        AVGrid.Columns[8].Header = isTa ? "லக்" : "Lag";
+        AVGrid.Columns[9].Header = isTa ? "சர்வா" : "Sarva";
+        AVGrid.Columns[10].Header = isTa ? "மொத்தம்(+ல)" : "Total(+Lg)";
+        
+        // Pinda Grid Headers
+        if (PindaGrid.Columns.Count >= 4)
+        {
+            PindaGrid.Columns[0].Header = isTa ? "கிரகம்" : "Planet";
+            PindaGrid.Columns[1].Header = isTa ? "சோத்ய பிண்டம்" : "Sodhya Pinda";
+            PindaGrid.Columns[2].Header = isTa ? "ராசி பிண்டம்" : "Rasi Pinda";
+            PindaGrid.Columns[3].Header = isTa ? "கிரக பிண்டம்" : "Graha Pinda";
+        }
     }
 
     public void ClearChart()
@@ -140,7 +171,7 @@ public partial class AshtakavargaDetailsPanel : UserControl
         {
             rows.Add(new PindaRow
             {
-                PlanetName = name,
+                PlanetName = ZodiacUtils.IsTamil ? ZodiacUtils.GetPlanetName(p) : name,
                 RasiPinda = res.RasiPinda,
                 GrahaPinda = res.GrahaPinda,
                 SodhyaPinda = res.SodhyaPinda
