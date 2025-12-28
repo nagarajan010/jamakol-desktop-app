@@ -43,7 +43,7 @@ public class ChartCalculator
             (int)ayanamsha
         );
         chartData.AscendantSign = ZodiacUtils.DegreeToSign(chartData.AscendantDegree);
-        chartData.AscendantSignName = ZodiacUtils.SignNames[chartData.AscendantSign];
+        chartData.AscendantSignName = ZodiacUtils.GetSignName(chartData.AscendantSign);
         
         // Calculate Ascendant nakshatra info
         var ascNakshatra = ZodiacUtils.GetNakshatraInfo(chartData.AscendantDegree);
@@ -61,7 +61,7 @@ public class ChartCalculator
             {
                 HouseNumber = i + 1,
                 Degree = longitude,
-                SignName = ZodiacUtils.SignNames[ZodiacUtils.DegreeToSign(longitude)],
+                SignName = ZodiacUtils.GetSignName(ZodiacUtils.DegreeToSign(longitude)),
                 DegreeDisplay = ZodiacUtils.FormatDegreeInSign(longitude),
                 KpDetails = _kpCalculator.Calculate(longitude)
             };
@@ -96,7 +96,7 @@ public class ChartCalculator
             Speed = rahu.Speed
         };
         ketuPosition.Sign = ZodiacUtils.DegreeToSign(ketuPosition.Longitude);
-        ketuPosition.SignName = ZodiacUtils.SignNames[ketuPosition.Sign];
+        ketuPosition.SignName = ZodiacUtils.GetSignName(ketuPosition.Sign);
         ketuPosition.DegreeInSign = ZodiacUtils.DegreeInSign(ketuPosition.Longitude);
         ketuPosition.House = ZodiacUtils.CalculateHouse(ketuPosition.Sign, chartData.AscendantSign);
         ketuPosition.Nakshatra = ZodiacUtils.DegreeToNakshatra(ketuPosition.Longitude);
@@ -156,7 +156,7 @@ public class ChartCalculator
             NakshatraPada = ZodiacUtils.GetNakshatraPada(longitude)
         };
 
-        position.SignName = ZodiacUtils.SignNames[position.Sign];
+        position.SignName = ZodiacUtils.GetSignName(position.Sign);
         position.NakshatraName = ZodiacUtils.NakshatraNames[position.Nakshatra];
         position.House = ZodiacUtils.CalculateHouse(position.Sign, ascendantSign);
         position.Gati = CalculateGati(planet, speed);
@@ -173,6 +173,9 @@ public class ChartCalculator
     /// </summary>
     private string CalculateGati(Planet planet, double speed)
     {
+        // Helper for translation
+        string T(string en, string ta) => ZodiacUtils.IsTamil ? ta : en;
+
         // Mean daily motions in degrees (approximate)
         double meanSpeed = 0;
         switch (planet)
@@ -186,72 +189,39 @@ public class ChartCalculator
             case Planet.Saturn: meanSpeed = 0.03360972270041907; break;
             case Planet.Rahu: 
             case Planet.Ketu:
-                // User provided -0.05299198558774121 for Nodes.
-                return "Vakra (Retrograde)"; 
+                return T("Vakra (Retrograde)", "வக்ரம்"); 
         }
         
         if (meanSpeed == 0) return ""; 
 
-        // 1. Rahu/Ketu - Always Vakra (Handled in switch)
-
-        // 2. Sun/Moon - Never Retrograde. Use simple Fast/Normal/Slow
+        // 2. Sun/Moon
         if (planet == Planet.Sun || planet == Planet.Moon)
         {
-             if (Math.Abs(speed) < 0.002) return "Vikala (Stationary)";
+             if (Math.Abs(speed) < 0.002) return T("Vikala (Stationary)", "விகலா");
              
              double ratio = speed / meanSpeed;
-             if (ratio > 1.1) return "Sheeghra (Fast)";
-             if (ratio < 0.9) return "Manda (Slow)";
-             return "Sama (Normal)";
+             if (ratio > 1.1) return T("Sheeghra (Fast)", "சீக்ரம்");
+             if (ratio < 0.9) return T("Manda (Slow)", "மந்தம்");
+             return T("Sama (Normal)", "சமம்");
         }
 
-        // 3. Five Retrogradable Planets (Mars, Mercury, Jupiter, Venus, Saturn)
-        // User Logic:
-        // Sheeghratara: > 150%
-        // Sheeghra: 125-150%
-        // Sama: 90-110% (We'll use 90-125 to close gap)
-        // Manda: 60-90%
-        // Mandatara: 30-60%
-        // Kutilla: < 10% (Stationary/Transitional)
-        // Anuvakra: 30-60% avg reverse (< 0) -> We'll use 10-60% reverse?
-        // Vakra: > 60% avg reverse 
-        
         double absSpeed = Math.Abs(speed);
         double pct = absSpeed / meanSpeed;
 
-        // KUTILLA (Stationary/Transitional) - < 10% of mean speed
-        // This applies to both very slow forward and very slow backward
-        if (pct < 0.10) return "Kutilla (Stationary)";
+        if (pct < 0.10) return T("Kutilla (Stationary)", "குடிலா");
 
         if (speed < 0)
         {
-            // RETROGRADE
-            
-            // Anuvakra: Slow retrograde (user says 30-60%, we cover 10-60%)
-            if (pct <= 0.60) return "Anuvakra (Slow Retro)";
-            
-            // Vakra: Fast retrograde (> 60%)
-            return "Vakra (Retrograde)";
+            if (pct <= 0.60) return T("Anuvakra (Slow Retro)", "அனுவக்ரம்");
+            return T("Vakra (Retrograde)", "வக்ரம்");
         }
         else
         {
-            // FORWARD
-            
-            // Mandatara: Very slow forward (30-60%, we cover 10-60%)
-            if (pct <= 0.60) return "Mandatara (Very Slow)";
-            
-            // Manda: Slow forward (60-90%)
-            if (pct <= 0.90) return "Manda (Slow)";
-            
-            // Sama: Normal forward (90-110%, we extend to 125% to bridge gap or stick to strict?)
-            // If we stick strictly, 110-125 is undefined. Let's make Sama 90-125.
-            if (pct <= 1.25) return "Sama (Normal)";
-            
-            // Sheeghra: Fast forward (125-150%)
-            if (pct <= 1.50) return "Sheeghra (Fast)";
-            
-            // Sheeghratara: Very fast forward (> 150%)
-            return "Sheeghratara (Very Fast)";
+            if (pct <= 0.60) return T("Mandatara (Very Slow)", "அதி மந்தம்");
+            if (pct <= 0.90) return T("Manda (Slow)", "மந்தம்");
+            if (pct <= 1.25) return T("Sama (Normal)", "சமம்");
+            if (pct <= 1.50) return T("Sheeghra (Fast)", "சீக்ரம்");
+            return T("Sheeghratara (Very Fast)", "அதி சீக்ரம்");
         }
     }
 
@@ -352,7 +322,7 @@ public class ChartCalculator
             NakshatraPada = ZodiacUtils.GetNakshatraPada(longitude)
         };
 
-        position.SignName = ZodiacUtils.SignNames[position.Sign];
+        position.SignName = ZodiacUtils.GetSignName(position.Sign);
         position.NakshatraName = ZodiacUtils.NakshatraNames[position.Nakshatra];
         position.House = ZodiacUtils.CalculateHouse(position.Sign, ascendantSign);
         position.Gati = ""; // Shadow planets don't have motion

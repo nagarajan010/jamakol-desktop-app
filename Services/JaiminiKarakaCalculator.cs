@@ -23,6 +23,18 @@ public class JaiminiKarakaCalculator
         "DK"    // Darakaraka - 8th (lowest degree)
     };
 
+    private static readonly string[] KarakaNamesTamil = 
+    {
+        "ஆத்ம",   // AK
+        "அமாத்",  // AmK
+        "பிராத்", // BK
+        "மாத்ரு", // MK
+        "பித்ரு", // PiK
+        "புத்ர",  // PuK
+        "ஞாதி",   // GK
+        "தார"    // DK
+    };
+
     // Planets that participate in Karaka calculation (exclude Ketu, include Rahu)
     private static readonly HashSet<string> KarakaPlanets = new()
     {
@@ -54,9 +66,10 @@ public class JaiminiKarakaCalculator
             .ToList();
 
         // Assign karakas based on order
-        for (int i = 0; i < sortedPlanets.Count && i < KarakaNames.Length; i++)
+        var names = ZodiacUtils.IsTamil ? KarakaNamesTamil : KarakaNames;
+        for (int i = 0; i < sortedPlanets.Count && i < names.Length; i++)
         {
-            sortedPlanets[i].Planet.Karaka = KarakaNames[i];
+            sortedPlanets[i].Planet.Karaka = names[i];
         }
 
         // Ketu doesn't get a Karaka - ensure it's empty
