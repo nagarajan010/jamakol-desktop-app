@@ -59,6 +59,8 @@ public class PanchangaDetails
     // Year (Tamil year)
     public string TamilYear { get; set; } = "";
     public string TamilMonth { get; set; } = "";
+    public string EnglishYear { get; set; } = "";
+    public string EnglishMonth { get; set; } = "";
 
     // End Times
     public string TithiEndTime { get; set; } = "";

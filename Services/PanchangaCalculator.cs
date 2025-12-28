@@ -114,11 +114,35 @@ public class PanchangaCalculator
         "துந்துபி", "ருத்ரோத்காரி", "ரக்தாட்சி", "குரோதன", "அட்சய"
     };
 
+    // English year names (60-year cycle - Sanskrit transliteration)
+    private static readonly string[] EnglishYears = 
+    {
+        "Prabhava", "Vibhava", "Shukla", "Pramodoota", "Prajotpatti",
+        "Angirasa", "Srimukha", "Bhava", "Yuva", "Dhatu",
+        "Eswara", "Bahudhanya", "Pramathi", "Vikrama", "Vishu",
+        "Chitrabhanu", "Subhanu", "Tarana", "Parthiva", "Vyaya",
+        "Sarvajit", "Sarvadhari", "Virodhi", "Vikruti", "Khara",
+        "Nandana", "Vijaya", "Jaya", "Manmatha", "Durmukhi",
+        "Hevilambi", "Vilambi", "Vikari", "Sharvari", "Plava",
+        "Shubhakrut", "Shobhakrut", "Krodhi", "Vishvavasu", "Parabhava",
+        "Plavanga", "Keelaka", "Saumya", "Sadharana", "Virodhikrut",
+        "Paridhaavi", "Pramadicha", "Ananda", "Rakshasa", "Nala",
+        "Pingala", "Kalayukti", "Siddharthi", "Raudri", "Durmathi",
+        "Dundubhi", "Rudhirodgari", "Raktakshi", "Krodhana", "Akshaya"
+    };
+
     // Tamil month names
     private static readonly string[] TamilMonths = 
     {
         "", "சித்திரை", "வைகாசி", "ஆனி", "ஆடி", "ஆவணி", "புரட்டாசி",
         "ஐப்பசி", "கார்த்திகை", "மார்கழி", "தை", "மாசி", "பங்குனி"
+    };
+
+    // English month names (Solar months)
+    private static readonly string[] EnglishMonths = 
+    {
+        "", "Chithirai", "Vaikasi", "Aani", "Aadi", "Aavani", "Purattasi",
+        "Aippasi", "Karthigai", "Margazhi", "Thai", "Maasi", "Panguni"
     };
 
     /// <summary>
@@ -587,11 +611,13 @@ public class PanchangaCalculator
         if (cycleYear >= 0 && cycleYear < TamilYears.Length)
         {
             details.TamilYear = TamilYears[cycleYear];
+            details.EnglishYear = EnglishYears[cycleYear];
         }
 
         if (sunSign >= 1 && sunSign <= 12)
         {
             details.TamilMonth = TamilMonths[sunSign];
+            details.EnglishMonth = EnglishMonths[sunSign];
         }
     }
 }

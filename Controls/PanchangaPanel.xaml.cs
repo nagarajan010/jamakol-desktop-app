@@ -82,9 +82,9 @@ public partial class PanchangaPanel : UserControl
             ? details.MoonRasi 
             : "-";
         
-        // Year/Month (Tamil names since these are traditional)
-        YearMonthText.Text = !string.IsNullOrEmpty(details.TamilYear) 
-            ? $"{details.TamilYear} / {details.TamilMonth}" 
+        // Year/Month (English names)
+        YearMonthText.Text = !string.IsNullOrEmpty(details.EnglishYear) 
+            ? $"{details.EnglishYear} / {details.EnglishMonth}" 
             : "-";
     }
 }
