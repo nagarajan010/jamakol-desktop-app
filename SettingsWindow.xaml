@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:models="clr-namespace:JamakolAstrology.Models"
         Title="Settings" 
-        Height="720" Width="500"
+        Height="480" Width="680"
         WindowStartupLocation="CenterOwner"
         ResizeMode="CanResize"
         Background="#fffff0">
@@ -78,24 +78,25 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
         <!-- Title -->
-        <TextBlock Grid.Row="0" Text="Settings" 
+        <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="Settings" 
                    Foreground="#cc0000" FontSize="20" FontWeight="Bold"/>
 
+        <!-- LEFT COLUMN -->
+        
         <!-- Ayanamsha -->
-        <Grid Grid.Row="2" Margin="0,8">
+        <Grid Grid.Row="2" Grid.Column="0" Margin="0,8">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <TextBlock Text="Ayanamsha:" Style="{StaticResource LabelStyle}"/>
@@ -103,9 +104,9 @@
         </Grid>
 
         <!-- Sunrise Mode -->
-        <Grid Grid.Row="3" Margin="0,8">
+        <Grid Grid.Row="3" Grid.Column="0" Margin="0,8">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <TextBlock Text="Sunrise Mode:" Style="{StaticResource LabelStyle}"/>
@@ -118,9 +119,9 @@
         </Grid>
 
         <!-- Default Location Name -->
-        <Grid Grid.Row="4" Margin="0,8">
+        <Grid Grid.Row="4" Grid.Column="0" Margin="0,8">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
@@ -152,9 +153,9 @@
         </Grid>
 
         <!-- Default Latitude -->
-        <Grid Grid.Row="5" Margin="0,8">
+        <Grid Grid.Row="5" Grid.Column="0" Margin="0,8">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <TextBlock Text="Def. Latitude:" Style="{StaticResource LabelStyle}"/>
@@ -162,9 +163,9 @@
         </Grid>
 
         <!-- Default Longitude -->
-        <Grid Grid.Row="6" Margin="0,8">
+        <Grid Grid.Row="6" Grid.Column="0" Margin="0,8">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <TextBlock Text="Def. Longitude:" Style="{StaticResource LabelStyle}"/>
@@ -172,19 +173,21 @@
         </Grid>
 
         <!-- Default Timezone -->
-        <Grid Grid.Row="7" Margin="0,8">
+        <Grid Grid.Row="7" Grid.Column="0" Margin="0,8">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <TextBlock Text="Def. Timezone:" Style="{StaticResource LabelStyle}"/>
             <TextBox x:Name="TimezoneInput" Grid.Column="1" Style="{StaticResource InputStyle}" Text="5.5"/>
         </Grid>
 
+        <!-- RIGHT COLUMN -->
+        
         <!-- Chart Font Size -->
-        <Grid Grid.Row="8" Margin="0,8">
+        <Grid Grid.Row="2" Grid.Column="2" Margin="0,8">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="110"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <TextBlock Text="Chart Font Size:" Style="{StaticResource LabelStyle}"/>
@@ -192,9 +195,9 @@
         </Grid>
 
         <!-- Jama Graha Font Size -->
-        <Grid Grid.Row="9" Margin="0,8">
+        <Grid Grid.Row="3" Grid.Column="2" Margin="0,8">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="110"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <TextBlock Text="Jama Graha Font:" Style="{StaticResource LabelStyle}"/>
@@ -202,9 +205,9 @@
         </Grid>
 
         <!-- Table Font Size -->
-        <Grid Grid.Row="10" Margin="0,8">
+        <Grid Grid.Row="4" Grid.Column="2" Margin="0,8">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="110"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <TextBlock Text="Table Font Size:" Style="{StaticResource LabelStyle}"/>
@@ -212,9 +215,9 @@
         </Grid>
 
         <!-- Input Font Size -->
-        <Grid Grid.Row="11" Margin="0,8">
+        <Grid Grid.Row="5" Grid.Column="2" Margin="0,8">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="110"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <TextBlock Text="Input Font Size:" Style="{StaticResource LabelStyle}"/>
@@ -222,9 +225,9 @@
         </Grid>
 
         <!-- Default Tab Mode -->
-        <Grid Grid.Row="12" Margin="0,8">
+        <Grid Grid.Row="6" Grid.Column="2" Margin="0,8">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="110"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <TextBlock Text="Default Tab:" Style="{StaticResource LabelStyle}"/>
@@ -235,24 +238,24 @@
         </Grid>
 
         <!-- Use Fixed Sign Boxes -->
-        <Grid Grid.Row="13" Margin="0,8">
+        <Grid Grid.Row="7" Grid.Column="2" Margin="0,8">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="110"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <TextBlock Text="Fixed Sign Boxes:" Style="{StaticResource LabelStyle}"/>
             <CheckBox x:Name="UseFixedSignBoxesCheckbox" Grid.Column="1" 
-                      Content="Show planets in fixed sign positions" VerticalAlignment="Center"/>
+                      Content="Show in fixed positions" VerticalAlignment="Center"/>
         </Grid>
 
         <!-- Info Text -->
-        <TextBlock Grid.Row="14" Margin="0,15,0,0" TextWrapping="Wrap"
+        <TextBlock Grid.Row="8" Grid.ColumnSpan="3" Margin="0,15,0,0" TextWrapping="Wrap"
                    Foreground="#888" FontSize="11" VerticalAlignment="Top">
             Sunrise/sunset times are calculated automatically based on location and date.
         </TextBlock>
 
         <!-- Buttons -->
-        <StackPanel Grid.Row="15" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
+        <StackPanel Grid.Row="10" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
             <Button x:Name="CancelButton" Content="Cancel" Style="{StaticResource CancelButtonStyle}" Click="CancelButton_Click"/>
             <Button x:Name="SaveButton" Content="Save" Style="{StaticResource ButtonStyle}" Click="SaveButton_Click"/>
         </StackPanel>
