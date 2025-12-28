@@ -24,9 +24,9 @@ public partial class AshtakavargaDetailsPanel : UserControl
         }
     }
 
-    public void ShowGridView() => SwitchToGridView_Click(null, null);
-    public void ShowTableView() => SwitchToTableView_Click(null, null);
-    public void ShowPindaView() => SwitchToPindaView_Click(null, null);
+    public void ShowGridView() => SetGridView();
+    public void ShowTableView() => SetTableView();
+    public void ShowPindaView() => SetPindaView();
 
     public void UpdateChart(ChartData? chart)
     {
@@ -196,6 +196,11 @@ public partial class AshtakavargaDetailsPanel : UserControl
 
     private void SwitchToGridView_Click(object sender, System.Windows.RoutedEventArgs e)
     {
+        SetGridView();
+    }
+
+    private void SetGridView()
+    {
         ChartsScrollViewer.Visibility = System.Windows.Visibility.Visible;
         AVGrid.Visibility = System.Windows.Visibility.Collapsed;
         PindaGrid.Visibility = System.Windows.Visibility.Collapsed;
@@ -207,6 +212,11 @@ public partial class AshtakavargaDetailsPanel : UserControl
 
     private void SwitchToTableView_Click(object sender, System.Windows.RoutedEventArgs e)
     {
+        SetTableView();
+    }
+
+    private void SetTableView()
+    {
         ChartsScrollViewer.Visibility = System.Windows.Visibility.Collapsed;
         AVGrid.Visibility = System.Windows.Visibility.Visible;
         PindaGrid.Visibility = System.Windows.Visibility.Collapsed;
@@ -217,6 +227,11 @@ public partial class AshtakavargaDetailsPanel : UserControl
     }
 
     private void SwitchToPindaView_Click(object sender, System.Windows.RoutedEventArgs e)
+    {
+        SetPindaView();
+    }
+
+    private void SetPindaView()
     {
         ChartsScrollViewer.Visibility = System.Windows.Visibility.Collapsed;
         AVGrid.Visibility = System.Windows.Visibility.Collapsed;
