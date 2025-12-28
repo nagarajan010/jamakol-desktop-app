@@ -57,6 +57,12 @@ Real-time calculation of the five limbs of time:
   * Computation: Configurable Sunrise modes (Tip/Center, Apparent/True).
   * Usage: Toggle "Hide Degrees" for cleaner presentations.
 
+## 🌍 Supported Languages
+
+The application is fully localized in:
+*   **English** (Default)
+*   **Tamil** (தமிழ்)
+
 ## 🏗️ Technical Architecture
 
 This project is built using **C# .NET 6.0 (WPF)** following the **MVVM** pattern.
@@ -103,6 +109,25 @@ This project is built using **C# .NET 6.0 (WPF)** following the **MVVM** pattern
    * Open `JamakolAstrology.sln`.
    * select **Debug** or **Release** mode.
    * `Ctrl + Shift + B` to build.
+
+## 📦 Creating an Installer
+
+To create a distributable `.exe` setup file:
+
+1.  **Prerequisites**:
+    *   Install [Inno Setup 6](https://jrsoftware.org/isdl.php).
+    *   Ensure `ISCC.exe` is available at `C:\Program Files (x86)\Inno Setup 6\ISCC.exe` (default location).
+
+2.  **Run Build Script**:
+    *   Double-click `build-installer.bat` in the project root.
+    *   **OR** run from command line:
+        ```bash
+        .\build-installer.bat
+        ```
+
+3.  **Output**:
+    *   The creation process will compile the app and generate the installer.
+    *   Find the setup file in the `installer/` directory (e.g., `installer/JamakolAstrology_Setup.exe`).
 
 ## 📋 Requirements
 * **OS**: Windows 10 or Windows 11 (64-bit recommended).
