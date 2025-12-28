@@ -139,35 +139,41 @@ public enum SunriseCalculationMode
 /// </summary>
 public enum AyanamshaType
 {
-    /// <summary>Lahiri (Chitrapaksha) - Most commonly used in India</summary>
-    Lahiri = 1,
-
-    /// <summary>Raman - B.V. Raman's ayanamsha</summary>
-    Raman = 3,
-
-    /// <summary>KP Krishnamurti - Used in KP system</summary>
-    KP_Krishnamurti = 5,
-
-    /// <summary>True Chitra - Based on fixed star Spica</summary>
-    TrueChitra = 27,
-
-    /// <summary>Fagan-Bradley - Western sidereal</summary>
     FaganBradley = 0,
-
-    /// <summary>De Luce</summary>
-    DeLuce = 4,
-
-    /// <summary>Djwhal Khul</summary>
-    DjwhalKhul = 12,
-
-    /// <summary>Yukteshwar - Sri Yukteshwar's ayanamsha</summary>
+    Lahiri = 1,
+    DeLuce = 2,
+    Raman = 3,
+    UshaShashi = 4,
+    Krishnamurti = 5,
+    DjwhalKhul = 6,
     Yukteshwar = 7,
-
-    /// <summary>JN Bhasin</summary>
     JNBhasin = 8,
-
-    /// <summary>Usha-Shashi</summary>
-    UshaShashi = 6
+    Babylonian_Kugler1 = 9,
+    Babylonian_Kugler2 = 10,
+    Babylonian_Kugler3 = 11,
+    Babylonian_Huber = 12,
+    Babylonian_EtaPiscium = 13,
+    Babylonian_Aldebaran15Tau = 14,
+    Hipparchus = 15,
+    Sassanian = 16,
+    GalacticCenter_0Sag = 17,
+    J2000 = 18,
+    J1900 = 19,
+    B1950 = 20,
+    Suryasiddhanta = 21,
+    Suryasiddhanta_MeanSun = 22,
+    Aryabhata = 23,
+    Aryabhata_MeanSun = 24,
+    SS_Revati = 25,
+    SS_Citra = 26,
+    TrueChitra = 27,
+    TrueRevati = 28,
+    TruePushya = 29,
+    GalacticCenter_GilBrand = 30,
+    GalacticCenter_MulaBol = 31,
+    Skydram = 32,
+    TrueMula_ChandraHari = 33,
+    Dhruva = 34
 }
 
 /// <summary>
@@ -180,16 +186,41 @@ public static class AyanamshaExtensions
     {
         return ayanamsha switch
         {
-            AyanamshaType.Lahiri => "Lahiri (Chitrapaksha)",
-            AyanamshaType.Raman => "Raman",
-            AyanamshaType.KP_Krishnamurti => "KP (Krishnamurti)",
-            AyanamshaType.TrueChitra => "True Chitra",
             AyanamshaType.FaganBradley => "Fagan-Bradley",
+            AyanamshaType.Lahiri => "Lahiri (Chitrapaksha)",
             AyanamshaType.DeLuce => "De Luce",
+            AyanamshaType.Raman => "Raman",
+            AyanamshaType.UshaShashi => "Usha-Shashi",
+            AyanamshaType.Krishnamurti => "KP (Krishnamurti)",
             AyanamshaType.DjwhalKhul => "Djwhal Khul",
             AyanamshaType.Yukteshwar => "Yukteshwar",
             AyanamshaType.JNBhasin => "JN Bhasin",
-            AyanamshaType.UshaShashi => "Usha-Shashi",
+            AyanamshaType.Babylonian_Kugler1 => "Babylonian (Kugler 1)",
+            AyanamshaType.Babylonian_Kugler2 => "Babylonian (Kugler 2)",
+            AyanamshaType.Babylonian_Kugler3 => "Babylonian (Kugler 3)",
+            AyanamshaType.Babylonian_Huber => "Babylonian (Huber)",
+            AyanamshaType.Babylonian_EtaPiscium => "Babylonian (Eta Piscium)",
+            AyanamshaType.Babylonian_Aldebaran15Tau => "Babylonian (Aldebaran = 15 Tau)",
+            AyanamshaType.Hipparchus => "Hipparchus",
+            AyanamshaType.Sassanian => "Sassanian",
+            AyanamshaType.GalacticCenter_0Sag => "Galactic Center (0 Sag)",
+            AyanamshaType.J2000 => "J2000",
+            AyanamshaType.J1900 => "J1900",
+            AyanamshaType.B1950 => "B1950",
+            AyanamshaType.Suryasiddhanta => "Suryasiddhanta",
+            AyanamshaType.Suryasiddhanta_MeanSun => "Suryasiddhanta (Mean Sun)",
+            AyanamshaType.Aryabhata => "Aryabhata",
+            AyanamshaType.Aryabhata_MeanSun => "Aryabhata (Mean Sun)",
+            AyanamshaType.SS_Revati => "SS Revati",
+            AyanamshaType.SS_Citra => "SS Citra",
+            AyanamshaType.TrueChitra => "True Chitra (Spica)",
+            AyanamshaType.TrueRevati => "True Revati",
+            AyanamshaType.TruePushya => "True Pushya",
+            AyanamshaType.GalacticCenter_GilBrand => "Galactic Center (Gil Brand)",
+            AyanamshaType.GalacticCenter_MulaBol => "Galactic Center (Mula Bol)",
+            AyanamshaType.Skydram => "Skydram (Rabinowitz)",
+            AyanamshaType.TrueMula_ChandraHari => "True Mula (Chandra Hari)",
+            AyanamshaType.Dhruva => "Dhruva",
             _ => ayanamsha.ToString()
         };
     }
