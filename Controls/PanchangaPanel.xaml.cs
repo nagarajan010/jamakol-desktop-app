@@ -77,9 +77,9 @@ public partial class PanchangaPanel : UserControl
             ? details.KalaHoraLord 
             : "-";
         
-        // Rasi (English - Moon, Sun)
+        // Rasi (English - Moon only)
         RasiText.Text = !string.IsNullOrEmpty(details.MoonRasi) 
-            ? $"{details.MoonRasi}, {details.SunRasi}" 
+            ? details.MoonRasi 
             : "-";
         
         // Year/Month (Tamil names since these are traditional)

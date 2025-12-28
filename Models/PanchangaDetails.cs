@@ -46,7 +46,7 @@ public class PanchangaDetails
     public string SunRasiTamil { get; set; } = "";
     public string MoonRasi { get; set; } = "";
     public string MoonRasiTamil { get; set; } = "";
-    public string RasiDisplay => $"{MoonRasiTamil}, {SunRasiTamil}";
+    public string RasiDisplay => MoonRasiTamil;
 
     // Hora (current hora lord)
     public string HoraLord { get; set; } = "";
