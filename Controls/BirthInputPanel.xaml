@@ -17,8 +17,8 @@
 
             <TextBlock Text="{x:Static res:Strings.LabelTime}" Style="{StaticResource TopLabelStyle}"/>
             <TextBox x:Name="TimeInput" Style="{StaticResource TopInputStyle}" Width="70" Text="12:00:00"/>
-            <Button Content="{x:Static res:Strings.BtnNow}" Width="30" Height="20" Click="NowButton_Click" 
-                     Margin="5,0,0,0" Padding="0" FontSize="10"
+            <Button Content="{x:Static res:Strings.BtnNow}" Width="Auto" MinWidth="30" Height="20" Click="NowButton_Click" 
+                     Margin="5,0,0,0" Padding="5,0" FontSize="10"
                      Background="#E0E0E0" Foreground="Black" 
                      BorderBrush="#999" BorderThickness="1"/>
 
