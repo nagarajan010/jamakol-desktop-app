@@ -73,16 +73,22 @@ public partial class HousesPanel : UserControl
     
     private string GetPlanetAbbrev(PlanetPosition p)
     {
-        // Check for Aprakash Graha (shadow planets) by symbol length
+        // Main planets - use abbreviation dictionary first
+        if (ZodiacUtils.PlanetAbbreviations.TryGetValue(p.Planet, out var abbrev))
+        {
+            return abbrev;
+        }
+        
+        // For Aprakash Graha (shadow planets) - use their 2-letter symbol
         if (!string.IsNullOrEmpty(p.Symbol) && p.Symbol.Length <= 2)
         {
             return p.Symbol; // Dh, Vy, Pa, In, Uk
         }
         
-        // Main planets - use abbreviation dictionary
-        if (ZodiacUtils.PlanetAbbreviations.TryGetValue(p.Planet, out var abbrev))
+        // Fallback: use first 2 letters of name
+        if (!string.IsNullOrEmpty(p.Name) && p.Name.Length >= 2)
         {
-            return abbrev;
+            return p.Name.Substring(0, 2);
         }
         
         return p.Symbol ?? "";
