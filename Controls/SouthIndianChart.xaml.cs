@@ -152,8 +152,10 @@ public partial class SouthIndianChart : UserControl
         }
 
         // Update chart title - show chart type with person name
+        // Update chart title - show chart type with person name
         string personName = !string.IsNullOrEmpty(chartData.BirthData.Name) ? chartData.BirthData.Name : "";
-        ChartTitle.Text = string.IsNullOrEmpty(personName) ? "Rasi (D-1)" : $"{personName}\nRasi (D-1)";
+        string rasiTitle = GetLocalizedChartTitle(1);
+        ChartTitle.Text = string.IsNullOrEmpty(personName) ? rasiTitle : $"{personName}\n{rasiTitle}";
         AscendantLabel.Text = "";
 
         // Prepare content for each sign - separate regular planets from Aprakash graha
@@ -292,14 +294,15 @@ public partial class SouthIndianChart : UserControl
             border.BorderThickness = new Thickness(1);
         }
 
-        // Update chart title - show division name only, split into two lines if it contains " ("
-        if (divisionalData.Name.Contains(" ("))
+        // Update chart title
+        string localizedTitle = GetLocalizedChartTitle(divisionalData.Division);
+        if (localizedTitle.Contains(" ("))
         {
-            ChartTitle.Text = divisionalData.Name.Replace(" (", "\n(");
+            ChartTitle.Text = localizedTitle.Replace(" (", "\n(");
         }
         else
         {
-            ChartTitle.Text = divisionalData.Name;
+            ChartTitle.Text = localizedTitle;
         }
         AscendantLabel.Text = "";
 
@@ -514,5 +517,31 @@ public partial class SouthIndianChart : UserControl
             Planet.Ketu => "கேது",
             _ => ZodiacUtils.PlanetAbbreviations[p]
         };
+    }
+
+    private string GetLocalizedChartTitle(int div)
+    {
+        string baseName = div switch {
+            1 => "Rasi", 2 => "Hora", 3 => "Drekkana", 4 => "Chaturthamsa", 7 => "Saptamsa", 9 => "Navamsa",
+            10 => "Dasamsa", 12 => "Dwadasamsa", 16 => "Shodasamsa", 20 => "Vimsamsa",
+            24 => "Siddhamsa", 27 => "Nakshatramsa", 30 => "Trimsamsa", 40 => "Khavedamsa",
+            45 => "Akshavedamsa", 60 => "Shashtiamsa", _ => "Varga"
+        };
+        
+        string name = baseName;
+        if (ZodiacUtils.IsTamil)
+        {
+             name = baseName switch {
+                 "Rasi" => "ராசி",
+                 "Hora" => "ஹோரா", "Drekkana" => "திரேக்காணம்", "Chaturthamsa" => "சதுர்த்தாம்சம்",
+                 "Saptamsa" => "சப்தாம்சம்", "Navamsa" => "நவாம்சம்", "Dasamsa" => "தசாம்சம்",
+                 "Dwadasamsa" => "துவாதாம்சம்", "Shodasamsa" => "ஷோடசாம்சம்", "Vimsamsa" => "விம்சாம்சம்",
+                 "Siddhamsa" => "சித்தாம்சம்", "Nakshatramsa" => "நட்சத்திராம்சம்", "Trimsamsa" => "திரிம்சாம்சம்",
+                 "Khavedamsa" => "கவேதாம்சம்", "Akshavedamsa" => "அட்சவேதாம்சம்", "Shashtiamsa" => "சஷ்டியாம்சம்",
+                 _ => name
+             };
+        }
+        
+        return $"{name} (D-{div})";
     }
 }
