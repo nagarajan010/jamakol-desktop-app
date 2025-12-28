@@ -24,11 +24,11 @@
             </Style>
         </DataGrid.ColumnHeaderStyle>
         <DataGrid.Columns>
-            <DataGridTextColumn Header="Planet" Binding="{Binding EnglishName}" Width="Auto"/>
+            <DataGridTextColumn Header="Planet" Binding="{Binding EnglishName, Converter={StaticResource PlanetNameConverter}}" Width="Auto"/>
             <DataGridTextColumn Header="Degree" Binding="{Binding DegreeDisplay}" Width="Auto"/>
-            <DataGridTextColumn Header="Nakshatra" Binding="{Binding NakshatraEnglish}" Width="Auto"/>
+            <DataGridTextColumn Header="Nakshatra" Binding="{Binding NakshatraEnglish, Converter={StaticResource NakshatraNameConverter}}" Width="Auto"/>
             <DataGridTextColumn Header="Pada" Binding="{Binding Pada}" Width="Auto"/>
-            <DataGridTextColumn Header="Sign" Binding="{Binding SignEnglish}" Width="Auto"/>
+            <DataGridTextColumn Header="Sign" Binding="{Binding SignEnglish, Converter={StaticResource SignNameConverter}}" Width="Auto"/>
             <DataGridTextColumn Header="Karaka" Binding="{Binding Karaka}" Width="Auto" FontWeight="Bold" Foreground="#006600"/>
             <DataGridTextColumn Header="R" Binding="{Binding RetroDisplay}" Width="Auto"/>
             <DataGridTextColumn Header="C" Binding="{Binding CombustionFlag}" Width="Auto" FontWeight="Bold" Foreground="#cc0000"/>

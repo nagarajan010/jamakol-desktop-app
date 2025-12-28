@@ -1,7 +1,8 @@
 <Window x:Class="JamakolAstrology.SavedChartsDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Saved Jamakol Charts"
+        xmlns:res="clr-namespace:JamakolAstrology.Resources"
+        Title="{x:Static res:Strings.DialogSavedCharts}"
         Height="500" Width="700"
         WindowStartupLocation="CenterOwner"
         Background="#fffff0">
@@ -13,7 +14,7 @@
         </Grid.RowDefinitions>
         
         <!-- Header -->
-        <TextBlock Grid.Row="0" Text="📋 Your Saved Charts" FontSize="18" FontWeight="Bold" 
+        <TextBlock Grid.Row="0" Text="{x:Static res:Strings.HeaderSavedCharts}" FontSize="18" FontWeight="Bold" 
                    Foreground="#cc0000" Margin="0,0,0,15"/>
         
         <!-- Charts List -->
@@ -47,17 +48,18 @@
         
         <!-- Buttons -->
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
-            <Button x:Name="LoadBtn" Content="📤 Load Chart" Padding="15,8" Margin="0,0,10,0"
+            <Button x:Name="LoadBtn" Content="{x:Static res:Strings.BtnLoadChart}" Padding="15,8" Margin="0,0,10,0"
                     Click="Load_Click" Background="#28A745" Foreground="White" 
                     FontWeight="SemiBold" BorderThickness="0" Cursor="Hand" IsEnabled="False"/>
-            <Button x:Name="EditBtn" Content="✏️ Edit" Padding="15,8" Margin="0,0,10,0"
+            <Button x:Name="EditBtn" Content="{x:Static res:Strings.BtnEdit}" Padding="15,8" Margin="0,0,10,0"
                     Click="Edit_Click" Background="#4A90D9" Foreground="White" 
                     FontWeight="SemiBold" BorderThickness="0" Cursor="Hand" IsEnabled="False"/>
-            <Button x:Name="DeleteBtn" Content="🗑️ Delete" Padding="15,8" Margin="0,0,10,0"
+            <Button x:Name="DeleteBtn" Content="{x:Static res:Strings.BtnDelete}" Padding="15,8" Margin="0,0,10,0"
                     Click="Delete_Click" Background="#dc3545" Foreground="White" 
                     FontWeight="SemiBold" BorderThickness="0" Cursor="Hand" IsEnabled="False"/>
-            <Button Content="Close" Padding="15,8" Click="Close_Click" Background="#666" Foreground="White"
+            <Button Content="{x:Static res:Strings.BtnClose}" Padding="15,8" Click="Close_Click" Background="#666" Foreground="White"
                     FontWeight="SemiBold" BorderThickness="0" Cursor="Hand"/>
         </StackPanel>
     </Grid>
 </Window>
+

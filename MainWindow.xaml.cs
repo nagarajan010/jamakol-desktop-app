@@ -67,12 +67,12 @@ public partial class MainWindow : Window
         
         if (BirthContentTabs.SelectedItem is TabItem initialTab)
         {
-             // Simulate selection logic
-             var header = initialTab.Header as string;
-             if (header != "Chakras" && BasicChartPlaceholder != null && _sharedSideCharts != null)
+             // Use TabItem Name instead of Header for language-independent comparison
+             var tabName = initialTab.Name ?? string.Empty;
+             if (tabName != "ChakrasTab" && BasicChartPlaceholder != null && _sharedSideCharts != null)
              {
                  // Default fallback if logic fails or just assign to Basic if Basic is active or other
-                 if (header == "Basic") BasicChartPlaceholder.Child = _sharedSideCharts;
+                 if (tabName == "BasicTab") BasicChartPlaceholder.Child = _sharedSideCharts;
                  // Add others if needed, but Basic is the main fallback
              }
         }
@@ -133,17 +133,17 @@ public partial class MainWindow : Window
                  parent.Child = null;
              }
              
-             // Attach to new parent based on Header
-             string header = tabItem.Header as string ?? string.Empty;
+             // Attach to new parent based on TabItem Name (language-independent)
+             string tabName = tabItem.Name ?? string.Empty;
              
              try 
              {
-                 if (header == "Basic" && BasicChartPlaceholder != null) BasicChartPlaceholder.Child = _sharedSideCharts;
-                 else if (header == "Dashas" && DashasChartPlaceholder != null) DashasChartPlaceholder.Child = _sharedSideCharts;
-                 else if (header == "Ashtakavarga" && AVChartPlaceholder != null) AVChartPlaceholder.Child = _sharedSideCharts;
-                 else if (header == "KP" && KPChartPlaceholder != null) KPChartPlaceholder.Child = _sharedSideCharts;
-                 else if (header == "Amsha Devata" && AmshaDevataChartPlaceholder != null) AmshaDevataChartPlaceholder.Child = _sharedSideCharts;
-                 // Chakras: Do nothing (Side charts remain detached/hidden)
+                 if (tabName == "BasicTab" && BasicChartPlaceholder != null) BasicChartPlaceholder.Child = _sharedSideCharts;
+                 else if (tabName == "DashasTab" && DashasChartPlaceholder != null) DashasChartPlaceholder.Child = _sharedSideCharts;
+                 else if (tabName == "AshtakavargaTab" && AVChartPlaceholder != null) AVChartPlaceholder.Child = _sharedSideCharts;
+                 else if (tabName == "KPTab" && KPChartPlaceholder != null) KPChartPlaceholder.Child = _sharedSideCharts;
+                 else if (tabName == "AmshaDevataTab" && AmshaDevataChartPlaceholder != null) AmshaDevataChartPlaceholder.Child = _sharedSideCharts;
+                 // ChakrasTab: Do nothing (Side charts remain detached/hidden)
              }
              catch (Exception)
              {

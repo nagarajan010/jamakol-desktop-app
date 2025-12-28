@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:JamakolAstrology.Controls"
+        xmlns:res="clr-namespace:JamakolAstrology.Resources"
         mc:Ignorable="d"
-        Title="Jamakol Astrology - Vedic Birth Chart Calculator" 
+        Title="{x:Static res:Strings.AppTitle}" 
         Height="800" Width="1300"
         MinHeight="700" MinWidth="1100"
         WindowStartupLocation="CenterScreen"
@@ -30,7 +31,7 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.Column="0" Orientation="Horizontal">
-                    <Button x:Name="BtnBirthChart" Content="Birth Chart" 
+                    <Button x:Name="BtnBirthChart" Content="{x:Static res:Strings.TabBirthChart}" 
                             Style="{StaticResource ButtonStyle}" 
                             Click="BtnBirthChart_Click"
                             Background="#990000"
@@ -38,7 +39,7 @@
                             Margin="0,0,10,0"
                             FontSize="14"/>
                     
-                    <Button x:Name="BtnJamakol" Content="Jamakol" 
+                    <Button x:Name="BtnJamakol" Content="{x:Static res:Strings.TabJamakol}" 
                             Style="{StaticResource ButtonStyle}" 
                             Click="BtnJamakol_Click"
                             Background="#cc0000"
@@ -47,17 +48,17 @@
                 </StackPanel>
 
                 <StackPanel Grid.Column="2" Orientation="Horizontal">
-                    <Button Content="📤 Export" Click="ExportButton_Click"
+                    <Button Content="{x:Static res:Strings.BtnExport}" Click="ExportButton_Click"
                             Background="#FF9800" Foreground="White" 
                             Padding="8,6" Margin="0,0,5,0" FontSize="12"
                             FontWeight="SemiBold" BorderThickness="0" Cursor="Hand"
-                            ToolTip="Export saved charts to file"/>
-                    <Button Content="📥 Import" Click="ImportButton_Click"
+                            ToolTip="{x:Static res:Strings.TooltipExport}"/>
+                    <Button Content="{x:Static res:Strings.BtnImport}" Click="ImportButton_Click"
                             Background="#9C27B0" Foreground="White" 
                             Padding="8,6" Margin="0,0,10,0" FontSize="12"
                             FontWeight="SemiBold" BorderThickness="0" Cursor="Hand"
-                            ToolTip="Import charts from file"/>
-                    <Button x:Name="SettingsButton" Content="⚙ Settings" 
+                            ToolTip="{x:Static res:Strings.TooltipImport}"/>
+                    <Button x:Name="SettingsButton" Content="{x:Static res:Strings.BtnSettings}" 
                             Style="{StaticResource ButtonStyle}" 
                             Click="SettingsButton_Click"
                             Background="#990000"
@@ -113,12 +114,12 @@
                         </TabControl.Resources>
 
                         <!-- Chakras Tab: Full width divisional charts -->
-                        <TabItem Header="Chakras">
+                        <TabItem x:Name="ChakrasTab" Header="{x:Static res:Strings.TabChakras}">
                             <controls:ChakrasPanel x:Name="ChakrasPanelControl" Margin="0,5,0,0"/>
                         </TabItem>
 
                         <!-- Basic Tab: Charts Left, Details Right -->
-                        <TabItem Header="Basic">
+                        <TabItem x:Name="BasicTab" Header="{x:Static res:Strings.TabBasic}">
                             <Border Background="#fffff0" BorderBrush="#aaaaaa" BorderThickness="1" Margin="0" Padding="5">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -135,7 +136,7 @@
                         </TabItem>
                         
                         <!-- Dashas Tab: Charts Left, Dashas Right -->
-                        <TabItem Header="Dashas">
+                        <TabItem x:Name="DashasTab" Header="{x:Static res:Strings.TabDashas}">
                             <Border Background="#fffff0" BorderBrush="#aaaaaa" BorderThickness="1" Margin="0" Padding="5">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -151,7 +152,7 @@
                         </TabItem>
                         
                         <!-- Ashtakavarga Tab: Charts Left, AV Right -->
-                        <TabItem Header="Ashtakavarga">
+                        <TabItem x:Name="AshtakavargaTab" Header="{x:Static res:Strings.TabAshtakavarga}">
                             <Border Background="#fffff0" BorderBrush="#aaaaaa" BorderThickness="1" Margin="0" Padding="5">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -167,7 +168,7 @@
                         </TabItem>
                         
                         <!-- KP Tab: Charts Left, KP Right -->
-                        <TabItem Header="KP">
+                        <TabItem x:Name="KPTab" Header="{x:Static res:Strings.TabKP}">
                             <Border Background="#fffff0" BorderBrush="#aaaaaa" BorderThickness="1" Margin="0" Padding="5">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -183,7 +184,7 @@
                         </TabItem>
 
                         <!-- Amsha Devata Tab: Charts Left, Empty Right -->
-                        <TabItem Header="Amsha Devata">
+                        <TabItem x:Name="AmshaDevataTab" Header="{x:Static res:Strings.TabAmshaDevata}">
                             <Border Background="#fffff0" BorderBrush="#aaaaaa" BorderThickness="1" Margin="0" Padding="5">
                                 <Grid>
                                     <Grid.ColumnDefinitions>

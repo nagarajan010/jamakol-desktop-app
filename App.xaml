@@ -2,8 +2,14 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:JamakolAstrology"
+             xmlns:converters="clr-namespace:JamakolAstrology.Converters"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+        <!-- Localization Converters -->
+        <converters:PlanetNameConverter x:Key="PlanetNameConverter"/>
+        <converters:NakshatraNameConverter x:Key="NakshatraNameConverter"/>
+        <converters:SignNameConverter x:Key="SignNameConverter"/>
+        
         <!-- Light Theme Styles -->
         <Style x:Key="TopInputStyle" TargetType="TextBox">
             <Setter Property="Background" Value="#fff"/>

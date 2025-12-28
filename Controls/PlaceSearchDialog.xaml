@@ -1,7 +1,8 @@
 <Window x:Class="JamakolAstrology.Controls.PlaceSearchDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Search Location" Height="400" Width="500"
+        xmlns:res="clr-namespace:JamakolAstrology.Resources"
+        Title="{x:Static res:Strings.DialogPlaceSearch}" Height="400" Width="500"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
         Background="#fffff0">
@@ -37,7 +38,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <TextBox x:Name="SearchInput" Margin="0,0,10,0" Padding="5" FontSize="14" KeyDown="SearchInput_KeyDown"/>
-            <Button x:Name="SearchButton" Grid.Column="1" Content="Search" Click="SearchButton_Click"/>
+            <Button x:Name="SearchButton" Grid.Column="1" Content="{x:Static res:Strings.BtnSearchText}" Click="SearchButton_Click"/>
         </Grid>
 
         <!-- Results List -->
@@ -57,8 +58,8 @@
         <!-- Footer -->
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
             <TextBlock x:Name="StatusText" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="#666" FontStyle="Italic"/>
-            <Button Content="Cancel" Background="#999" Click="CancelButton_Click" Margin="0,0,10,0"/>
-            <Button Content="Select" Click="SelectButton_Click"/>
+            <Button Content="{x:Static res:Strings.BtnCancel}" Background="#999" Click="CancelButton_Click" Margin="0,0,10,0"/>
+            <Button Content="{x:Static res:Strings.BtnSelect}" Click="SelectButton_Click"/>
         </StackPanel>
     </Grid>
 </Window>

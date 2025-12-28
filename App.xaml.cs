@@ -1,6 +1,8 @@
 ﻿using System.Configuration;
 using System.Data;
 using System.Windows;
+using JamakolAstrology.Helpers;
+using JamakolAstrology.Models;
 
 namespace JamakolAstrology;
 
@@ -11,6 +13,10 @@ public partial class App : Application
 {
     public App()
     {
+        // Load settings and apply language before any UI is created
+        var settings = AppSettings.Load();
+        LocalizationHelper.SetLanguage(settings.Language);
+
         this.DispatcherUnhandledException += App_DispatcherUnhandledException;
     }
 
@@ -25,4 +31,3 @@ public partial class App : Application
         e.Handled = true;
     }
 }
-

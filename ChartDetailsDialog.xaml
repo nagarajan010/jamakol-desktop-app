@@ -1,7 +1,8 @@
 <Window x:Class="JamakolAstrology.ChartDetailsDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Chart Details"
+        xmlns:res="clr-namespace:JamakolAstrology.Resources"
+        Title="{x:Static res:Strings.DialogChartDetails}"
         Height="400" Width="450"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
@@ -18,13 +19,13 @@
         
         <!-- Chart Name -->
         <StackPanel Grid.Row="0" Margin="0,0,0,15">
-            <TextBlock Text="📊 Chart Name" FontSize="11" Foreground="#666"/>
+            <TextBlock Text="{x:Static res:Strings.LabelChartNameIcon}" FontSize="11" Foreground="#666"/>
             <TextBlock x:Name="ChartNameText" Text="" FontSize="16" FontWeight="Bold" Foreground="#cc0000"/>
         </StackPanel>
         
         <!-- Result -->
         <StackPanel Grid.Row="1" Margin="0,0,0,10">
-            <TextBlock Text="Result" FontSize="11" Foreground="#666"/>
+            <TextBlock Text="{x:Static res:Strings.LabelResult}" FontSize="11" Foreground="#666"/>
             <Border x:Name="ResultBorder" Padding="10,5" CornerRadius="4" HorizontalAlignment="Left">
                 <TextBlock x:Name="ResultText" Text="" FontSize="13" FontWeight="SemiBold" Foreground="White"/>
             </Border>
@@ -32,19 +33,19 @@
         
         <!-- Category -->
         <StackPanel Grid.Row="2" Margin="0,0,0,10">
-            <TextBlock Text="Category" FontSize="11" Foreground="#666"/>
+            <TextBlock Text="{x:Static res:Strings.LabelCategory}" FontSize="11" Foreground="#666"/>
             <TextBlock x:Name="CategoryText" Text="" FontSize="13" Foreground="#333"/>
         </StackPanel>
         
         <!-- Tags -->
         <StackPanel Grid.Row="3" Margin="0,0,0,10">
-            <TextBlock Text="Tags" FontSize="11" Foreground="#666"/>
+            <TextBlock Text="{x:Static res:Strings.LabelTags}" FontSize="11" Foreground="#666"/>
             <WrapPanel x:Name="TagsPanel"/>
         </StackPanel>
         
         <!-- Prediction -->
         <StackPanel Grid.Row="4">
-            <TextBlock Text="Prediction / Notes" FontSize="11" Foreground="#666"/>
+            <TextBlock Text="{x:Static res:Strings.LabelPredictionNotes}" FontSize="11" Foreground="#666"/>
             <Border Background="White" BorderBrush="#ddd" BorderThickness="1" Padding="10" CornerRadius="4">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="120">
                     <TextBlock x:Name="PredictionText" Text="" FontSize="12" Foreground="#333" TextWrapping="Wrap"/>
@@ -53,7 +54,7 @@
         </StackPanel>
         
         <!-- Close Button -->
-        <Button Grid.Row="5" Content="Close" Padding="20,8" Margin="0,15,0,0"
+        <Button Grid.Row="5" Content="{x:Static res:Strings.BtnClose}" Padding="20,8" Margin="0,15,0,0"
                 HorizontalAlignment="Right" Click="Close_Click"
                 Background="#cc0000" Foreground="White" FontWeight="SemiBold"
                 BorderThickness="0" Cursor="Hand"/>

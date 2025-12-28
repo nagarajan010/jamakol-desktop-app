@@ -2,7 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:models="clr-namespace:JamakolAstrology.Models"
-        Title="Settings" 
+        xmlns:res="clr-namespace:JamakolAstrology.Resources"
+        Title="{x:Static res:Strings.SettingsTitle}" 
         Height="480" Width="680"
         WindowStartupLocation="CenterOwner"
         ResizeMode="CanResize"
@@ -88,7 +89,7 @@
         </Grid.ColumnDefinitions>
 
         <!-- Title -->
-        <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="Settings" 
+        <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="{x:Static res:Strings.SettingsTitle}" 
                    Foreground="#cc0000" FontSize="20" FontWeight="Bold"/>
 
         <!-- LEFT COLUMN -->
@@ -96,10 +97,10 @@
         <!-- Ayanamsha -->
         <Grid Grid.Row="2" Grid.Column="0" Margin="0,8">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Ayanamsha:" Style="{StaticResource LabelStyle}"/>
+            <TextBlock Text="{x:Static res:Strings.LabelAyanamsha}" Style="{StaticResource LabelStyle}"/>
             <ComboBox x:Name="AyanamshaCombo" Grid.Column="1" Style="{StaticResource ComboStyle}"/>
         </Grid>
 
@@ -109,23 +110,23 @@
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Sunrise Mode:" Style="{StaticResource LabelStyle}"/>
+            <TextBlock Text="{x:Static res:Strings.LabelSunriseMode}" Style="{StaticResource LabelStyle}"/>
             <ComboBox x:Name="SunriseModeCombo" Grid.Column="1" Style="{StaticResource ComboStyle}">
-                <ComboBoxItem Content="Center True" Tag="{x:Static models:SunriseCalculationMode.CenterTrue}"/>
-                <ComboBoxItem Content="Tip True" Tag="{x:Static models:SunriseCalculationMode.TipTrue}"/>
-                <ComboBoxItem Content="Tip Apparent (Default)" Tag="{x:Static models:SunriseCalculationMode.TipApparent}"/>
-                <ComboBoxItem Content="Center Apparent" Tag="{x:Static models:SunriseCalculationMode.CenterApparent}"/>
+                <ComboBoxItem Content="{x:Static res:Strings.SunriseCenterTrue}" Tag="{x:Static models:SunriseCalculationMode.CenterTrue}"/>
+                <ComboBoxItem Content="{x:Static res:Strings.SunriseTipTrue}" Tag="{x:Static models:SunriseCalculationMode.TipTrue}"/>
+                <ComboBoxItem Content="{x:Static res:Strings.SunriseTipApparent}" Tag="{x:Static models:SunriseCalculationMode.TipApparent}"/>
+                <ComboBoxItem Content="{x:Static res:Strings.SunriseCenterApparent}" Tag="{x:Static models:SunriseCalculationMode.CenterApparent}"/>
             </ComboBox>
         </Grid>
 
         <!-- Default Location Name -->
         <Grid Grid.Row="4" Grid.Column="0" Margin="0,8">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Def. City:" Style="{StaticResource LabelStyle}"/>
+            <TextBlock Text="{x:Static res:Strings.LabelDefCity}" Style="{StaticResource LabelStyle}"/>
             <Grid Grid.Column="1">
                 <TextBox x:Name="DefaultLocationInput" Style="{StaticResource InputStyle}" Text="Chennai"
                          TextChanged="DefaultLocationInput_TextChanged" PreviewKeyDown="DefaultLocationInput_PreviewKeyDown"/>
@@ -147,38 +148,38 @@
                     </Border>
                 </Popup>
             </Grid>
-            <Button Grid.Column="2" Content="🔍" Width="30" Height="26" Margin="5,0,0,0"
+            <Button Grid.Column="2" Content="{x:Static res:Strings.BtnSearch}" Width="30" Height="26" Margin="5,0,0,0"
                     Background="White" BorderBrush="#ccc" BorderThickness="1" Foreground="#555"
-                    Click="SearchButton_Click" ToolTip="Search Default City"/>
+                    Click="SearchButton_Click" ToolTip="{x:Static res:Strings.TooltipSearchCity}"/>
         </Grid>
 
         <!-- Default Latitude -->
         <Grid Grid.Row="5" Grid.Column="0" Margin="0,8">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Def. Latitude:" Style="{StaticResource LabelStyle}"/>
+            <TextBlock Text="{x:Static res:Strings.LabelDefLatitude}" Style="{StaticResource LabelStyle}"/>
             <TextBox x:Name="LatitudeInput" Grid.Column="1" Style="{StaticResource InputStyle}" Text="13.0827"/>
         </Grid>
 
         <!-- Default Longitude -->
         <Grid Grid.Row="6" Grid.Column="0" Margin="0,8">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Def. Longitude:" Style="{StaticResource LabelStyle}"/>
+            <TextBlock Text="{x:Static res:Strings.LabelDefLongitude}" Style="{StaticResource LabelStyle}"/>
             <TextBox x:Name="LongitudeInput" Grid.Column="1" Style="{StaticResource InputStyle}" Text="80.2707"/>
         </Grid>
 
         <!-- Default Timezone -->
         <Grid Grid.Row="7" Grid.Column="0" Margin="0,8">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Def. Timezone:" Style="{StaticResource LabelStyle}"/>
+            <TextBlock Text="{x:Static res:Strings.LabelDefTimezone}" Style="{StaticResource LabelStyle}"/>
             <TextBox x:Name="TimezoneInput" Grid.Column="1" Style="{StaticResource InputStyle}" Text="5.5"/>
         </Grid>
 
@@ -187,77 +188,89 @@
         <!-- Chart Font Size -->
         <Grid Grid.Row="2" Grid.Column="2" Margin="0,8">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="110"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Chart Font Size:" Style="{StaticResource LabelStyle}"/>
+            <TextBlock Text="{x:Static res:Strings.LabelChartFontSize}" Style="{StaticResource LabelStyle}"/>
             <TextBox x:Name="ChartFontSizeInput" Grid.Column="1" Style="{StaticResource InputStyle}" Text="14"/>
         </Grid>
 
         <!-- Jama Graha Font Size -->
         <Grid Grid.Row="3" Grid.Column="2" Margin="0,8">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="110"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Jama Graha Font:" Style="{StaticResource LabelStyle}"/>
+            <TextBlock Text="{x:Static res:Strings.LabelJamaGrahaFont}" Style="{StaticResource LabelStyle}"/>
             <TextBox x:Name="JamaGrahaFontSizeInput" Grid.Column="1" Style="{StaticResource InputStyle}" Text="10"/>
         </Grid>
 
         <!-- Table Font Size -->
         <Grid Grid.Row="4" Grid.Column="2" Margin="0,8">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="110"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Table Font Size:" Style="{StaticResource LabelStyle}"/>
+            <TextBlock Text="{x:Static res:Strings.LabelTableFontSize}" Style="{StaticResource LabelStyle}"/>
             <TextBox x:Name="TableFontSizeInput" Grid.Column="1" Style="{StaticResource InputStyle}" Text="11"/>
         </Grid>
 
         <!-- Input Font Size -->
         <Grid Grid.Row="5" Grid.Column="2" Margin="0,8">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="110"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Input Font Size:" Style="{StaticResource LabelStyle}"/>
+            <TextBlock Text="{x:Static res:Strings.LabelInputFontSize}" Style="{StaticResource LabelStyle}"/>
             <TextBox x:Name="InputFontSizeInput" Grid.Column="1" Style="{StaticResource InputStyle}" Text="12"/>
         </Grid>
 
         <!-- Default Tab Mode -->
         <Grid Grid.Row="6" Grid.Column="2" Margin="0,8">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="110"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Default Tab:" Style="{StaticResource LabelStyle}"/>
+            <TextBlock Text="{x:Static res:Strings.LabelDefaultTab}" Style="{StaticResource LabelStyle}"/>
             <ComboBox x:Name="DefaultTabCombo" Grid.Column="1" Style="{StaticResource ComboStyle}">
-                <ComboBoxItem Content="Birth Chart" Tag="0"/>
-                <ComboBoxItem Content="Jamakol" Tag="1"/>
+                <ComboBoxItem Content="{x:Static res:Strings.TabBirthChart}" Tag="0"/>
+                <ComboBoxItem Content="{x:Static res:Strings.TabJamakol}" Tag="1"/>
             </ComboBox>
         </Grid>
 
         <!-- Use Fixed Sign Boxes -->
         <Grid Grid.Row="7" Grid.Column="2" Margin="0,8">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="110"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Fixed Sign Boxes:" Style="{StaticResource LabelStyle}"/>
+            <TextBlock Text="{x:Static res:Strings.LabelFixedSignBoxes}" Style="{StaticResource LabelStyle}"/>
             <CheckBox x:Name="UseFixedSignBoxesCheckbox" Grid.Column="1" 
-                      Content="Show in fixed positions" VerticalAlignment="Center"/>
+                      Content="{x:Static res:Strings.ChkShowInFixedPositions}" VerticalAlignment="Center"/>
+        </Grid>
+
+        <!-- Language Selection -->
+        <Grid Grid.Row="8" Grid.Column="2" Margin="0,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{x:Static res:Strings.LabelLanguage}" Style="{StaticResource LabelStyle}"/>
+            <ComboBox x:Name="LanguageCombo" Grid.Column="1" Style="{StaticResource ComboStyle}">
+                <ComboBoxItem Content="{x:Static res:Strings.LangEnglish}" Tag="en"/>
+                <ComboBoxItem Content="{x:Static res:Strings.LangTamil}" Tag="ta"/>
+            </ComboBox>
         </Grid>
 
         <!-- Info Text -->
-        <TextBlock Grid.Row="8" Grid.ColumnSpan="3" Margin="0,15,0,0" TextWrapping="Wrap"
-                   Foreground="#888" FontSize="11" VerticalAlignment="Top">
-            Sunrise/sunset times are calculated automatically based on location and date.
-        </TextBlock>
+        <TextBlock Grid.Row="9" Grid.ColumnSpan="3" Margin="0,15,0,0" TextWrapping="Wrap"
+                   Foreground="#888" FontSize="11" VerticalAlignment="Top"
+                   Text="{x:Static res:Strings.SettingsInfoText}"/>
 
         <!-- Buttons -->
         <StackPanel Grid.Row="10" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
-            <Button x:Name="CancelButton" Content="Cancel" Style="{StaticResource CancelButtonStyle}" Click="CancelButton_Click"/>
-            <Button x:Name="SaveButton" Content="Save" Style="{StaticResource ButtonStyle}" Click="SaveButton_Click"/>
+            <Button x:Name="CancelButton" Content="{x:Static res:Strings.BtnCancel}" Style="{StaticResource CancelButtonStyle}" Click="CancelButton_Click"/>
+            <Button x:Name="SaveButton" Content="{x:Static res:Strings.BtnSave}" Style="{StaticResource ButtonStyle}" Click="SaveButton_Click"/>
         </StackPanel>
     </Grid>
 </Window>

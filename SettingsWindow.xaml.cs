@@ -74,6 +74,18 @@ public partial class SettingsWindow : Window
 
         // Load Fixed Sign Boxes setting
         UseFixedSignBoxesCheckbox.IsChecked = Settings.UseFixedSignBoxes;
+
+        // Load Language setting
+        foreach (ComboBoxItem item in LanguageCombo.Items)
+        {
+            if (item.Tag is string lang && lang == Settings.Language)
+            {
+                LanguageCombo.SelectedItem = item;
+                break;
+            }
+        }
+        if (LanguageCombo.SelectedItem == null)
+            LanguageCombo.SelectedIndex = 0; // Default to English
     }
 
     private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -107,6 +119,12 @@ public partial class SettingsWindow : Window
 
             // Save Fixed Sign Boxes setting
             Settings.UseFixedSignBoxes = UseFixedSignBoxesCheckbox.IsChecked == true;
+
+            // Save Language setting
+            if (LanguageCombo.SelectedItem is ComboBoxItem langItem && langItem.Tag is string langCode)
+            {
+                Settings.Language = langCode;
+            }
 
             IsSaved = true;
             DialogResult = true;

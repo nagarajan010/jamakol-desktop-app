@@ -49,6 +49,9 @@ public class AppSettings
     /// <summary>Use fixed sign boxes in Jamakol chart (show only boxes with planets)</summary>
     public bool UseFixedSignBoxes { get; set; } = false;
 
+    /// <summary>Application language code (en, ta)</summary>
+    public string Language { get; set; } = "en";
+
     // Settings saved to user's AppData folder (writable even with Program Files install)
     private static string SettingsFolder
     {

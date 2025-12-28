@@ -1,12 +1,35 @@
 MSBuild version 17.8.3+195e7f5a3 for .NET
   Determining projects to restore...
   All projects are up-to-date for restore.
-C:\laragon\www\jamakol-desktop-app\Controls\SouthIndianChart.xaml(134,10): error MC3088: Property elements cannot be in the middle of an element's content.  They must be before or after the content. Line 134 Position 10. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+Resources\Strings.resx : warning MSB3568: Duplicate resource name "LabelTithi" is not allowed, ignored. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+Resources\Strings.resx : warning MSB3568: Duplicate resource name "LabelNakshatra" is not allowed, ignored. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+Resources\Strings.resx : warning MSB3568: Duplicate resource name "LabelYoga" is not allowed, ignored. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+Resources\Strings.resx : warning MSB3568: Duplicate resource name "LabelKarana" is not allowed, ignored. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+Resources\Strings.resx : warning MSB3568: Duplicate resource name "LabelSunrise" is not allowed, ignored. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+Resources\Strings.resx : warning MSB3568: Duplicate resource name "LabelSunset" is not allowed, ignored. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+Resources\Strings.ta.resx : warning MSB3568: Duplicate resource name "LabelTithi" is not allowed, ignored. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+Resources\Strings.ta.resx : warning MSB3568: Duplicate resource name "LabelNakshatra" is not allowed, ignored. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+Resources\Strings.ta.resx : warning MSB3568: Duplicate resource name "LabelYoga" is not allowed, ignored. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+Resources\Strings.ta.resx : warning MSB3568: Duplicate resource name "LabelKarana" is not allowed, ignored. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+Resources\Strings.ta.resx : warning MSB3568: Duplicate resource name "LabelSunrise" is not allowed, ignored. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+Resources\Strings.ta.resx : warning MSB3568: Duplicate resource name "LabelSunset" is not allowed, ignored. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+  JamakolAstrology -> C:\laragon\www\jamakol-desktop-app\bin\Debug\net8.0-windows\JamakolAstrology.dll
 
-Build FAILED.
+Build succeeded.
 
-C:\laragon\www\jamakol-desktop-app\Controls\SouthIndianChart.xaml(134,10): error MC3088: Property elements cannot be in the middle of an element's content.  They must be before or after the content. Line 134 Position 10. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
-    0 Warning(s)
-    1 Error(s)
+Resources\Strings.resx : warning MSB3568: Duplicate resource name "LabelTithi" is not allowed, ignored. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+Resources\Strings.resx : warning MSB3568: Duplicate resource name "LabelNakshatra" is not allowed, ignored. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+Resources\Strings.resx : warning MSB3568: Duplicate resource name "LabelYoga" is not allowed, ignored. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+Resources\Strings.resx : warning MSB3568: Duplicate resource name "LabelKarana" is not allowed, ignored. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+Resources\Strings.resx : warning MSB3568: Duplicate resource name "LabelSunrise" is not allowed, ignored. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+Resources\Strings.resx : warning MSB3568: Duplicate resource name "LabelSunset" is not allowed, ignored. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+Resources\Strings.ta.resx : warning MSB3568: Duplicate resource name "LabelTithi" is not allowed, ignored. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+Resources\Strings.ta.resx : warning MSB3568: Duplicate resource name "LabelNakshatra" is not allowed, ignored. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+Resources\Strings.ta.resx : warning MSB3568: Duplicate resource name "LabelYoga" is not allowed, ignored. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+Resources\Strings.ta.resx : warning MSB3568: Duplicate resource name "LabelKarana" is not allowed, ignored. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+Resources\Strings.ta.resx : warning MSB3568: Duplicate resource name "LabelSunrise" is not allowed, ignored. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+Resources\Strings.ta.resx : warning MSB3568: Duplicate resource name "LabelSunset" is not allowed, ignored. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+    12 Warning(s)
+    0 Error(s)
 
-Time Elapsed 00:00:00.97
+Time Elapsed 00:00:02.22

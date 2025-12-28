@@ -69,32 +69,39 @@ public partial class BirthChartDetailsPanel : UserControl
         }
 
         // Header
-        AddLine("Natal Chart", "", "", true);
+        AddLine(JamakolAstrology.Resources.Strings.NatalChartDetails, "", "", true);
 
         // Basic Info - use GetDisplayDate/GetDisplayTime for BC date support
-        AddLine("Date:          ", bd.GetDisplayDate());
-        AddLine("Time:          ", bd.GetDisplayTime());
+        AddLine(JamakolAstrology.Resources.Strings.LabelDate, bd.GetDisplayDate());
+        AddLine(JamakolAstrology.Resources.Strings.LabelTime, bd.GetDisplayTime());
         
         var tzSpan = TimeSpan.FromHours(bd.TimeZoneOffset);
-        AddLine("Time Zone:     ", $"{tzSpan.Hours}:{tzSpan.Minutes:00}:{tzSpan.Seconds:00} (East of GMT)");
+        AddLine(JamakolAstrology.Resources.Strings.LabelTimeZone, $"{tzSpan.Hours}:{tzSpan.Minutes:00}:{tzSpan.Seconds:00} (East of GMT)");
         
         string latStr = ConvertToDms(bd.Latitude, true);
         string longStr = ConvertToDms(bd.Longitude, false);
-        AddLine("Place:         ", $"{longStr}, {latStr}");
+        AddLine(JamakolAstrology.Resources.Strings.LabelPlace, $"{longStr}, {latStr}");
         AddLine("               ", $"{bd.Location}");
-        AddLine("Altitude:      ", "0.00 meters");
+        AddLine(JamakolAstrology.Resources.Strings.LabelAltitude, "0.00 meters");
 
         AddLine("", "");
 
+        // Helper for culture-aware string selection
+        string GetVal(string en, string ta) => JamakolAstrology.Services.ZodiacUtils.IsTamil ? ta : en;
+        
         // Panchanga - only show if NOT a BC date (sunrise/panchanga calculations not available for BC dates)
         if (!bd.IsBCDate)
         {
-            AddLine("Lunar Yr-Mo:   ", $"{pd.TamilYear} - {pd.TamilMonth}");
-            AddLine("Tithi:         ", $"{pd.Paksha} {pd.TithiName} ({pd.TithiLord}) ", $"({pd.TithiPercentLeft:F2}% left)");
-            AddLine("Vedic Weekday: ", $"{pd.DayName} ({pd.DayLordAbbr})");
-            AddLine("Nakshatra:     ", $"{pd.NakshatraName} ({pd.NakshatraLord}) ", $"({pd.NakshatraPercentLeft:F2}% left)");
-            AddLine("Yoga:          ", $"{pd.YogaName} ", $"({pd.YogaPercentLeft:F2}% left)");
-            AddLine("Karana:        ", $"{pd.KaranaName} ", $"({pd.KaranaPercentLeft:F2}% left)");
+            AddLine(JamakolAstrology.Resources.Strings.LabelLunarYearMonth, $"{GetVal(pd.EnglishYear, pd.TamilYear)} - {GetVal(pd.EnglishMonth, pd.TamilMonth)}");
+            
+            string tithiName = GetVal(pd.TithiName, pd.TithiTamil);
+            string paksha = GetVal(pd.Paksha, pd.PakshaTamil);
+            AddLine(JamakolAstrology.Resources.Strings.LabelTithi, $"{paksha} {tithiName} ({pd.TithiLord}) ", $"({pd.TithiPercentLeft:F2}% left)");
+            
+            AddLine(JamakolAstrology.Resources.Strings.LabelVedicWeekday, $"{GetVal(pd.DayName, pd.DayTamil)} ({pd.DayLordAbbr})");
+            AddLine(JamakolAstrology.Resources.Strings.LabelNakshatra, $"{GetVal(pd.NakshatraName, pd.NakshatraTamil)} ({pd.NakshatraLord}) ", $"({pd.NakshatraPercentLeft:F2}% left)");
+            AddLine(JamakolAstrology.Resources.Strings.LabelYoga, $"{GetVal(pd.YogaName, pd.YogaTamil)} ", $"({pd.YogaPercentLeft:F2}% left)");
+            AddLine(JamakolAstrology.Resources.Strings.LabelKarana, $"{GetVal(pd.KaranaName, pd.KaranaTamil)} ", $"({pd.KaranaPercentLeft:F2}% left)");
             
             string horaSignAbbr = "-";
             var horaLordPlanet = result.ChartData.Planets.FirstOrDefault(p => p.Name.Equals(pd.HoraLord, StringComparison.OrdinalIgnoreCase));
@@ -103,31 +110,40 @@ public partial class BirthChartDetailsPanel : UserControl
                  int sign = horaLordPlanet.Sign;
                  if (sign >= 1 && sign <= 12) 
                  {
-                     string sName = JamakolAstrology.Services.ZodiacUtils.SignNames[sign];
+                     string sName = JamakolAstrology.Services.ZodiacUtils.GetSignName(sign);
                      if (sName.Length >= 2) horaSignAbbr = sName.Substring(0, 2);
+                     else horaSignAbbr = sName;
                  }
             }
-            AddLine("Hora Lord:     ", $"{pd.HoraLord} (5 min sign: {horaSignAbbr})");
-            AddLine("Mahakala Hora: ", $"{pd.HoraLord}"); 
-            AddLine("Kaala Lord:    ", "-");
+            
+            // Localize Hora Lord Name if possible
+            string horaLordName = pd.HoraLord;
+            if (Enum.TryParse<JamakolAstrology.Models.Planet>(pd.HoraLord, true, out var hPlanet))
+            {
+                horaLordName = JamakolAstrology.Services.ZodiacUtils.GetPlanetName(hPlanet);
+            }
+            
+            AddLine(JamakolAstrology.Resources.Strings.LabelHoraLord, $"{horaLordName} (5 min sign: {horaSignAbbr})");
+            AddLine(JamakolAstrology.Resources.Strings.LabelMahakalaHora, $"{horaLordName}"); 
+            AddLine(JamakolAstrology.Resources.Strings.LabelKaalaLord, "-");
 
             AddLine("", "");
 
             // Sun & Time
-            AddLine("Sunrise:       ", $"{pd.Sunrise}");
-            AddLine("Sunset:        ", $"{pd.Sunset}");
-            AddLine("Janma Ghatis:  ", $"{pd.JanmaGhatis:F4}");
+            AddLine(JamakolAstrology.Resources.Strings.LabelSunrise, $"{pd.Sunrise}");
+            AddLine(JamakolAstrology.Resources.Strings.LabelSunset, $"{pd.Sunset}");
+            AddLine(JamakolAstrology.Resources.Strings.LabelJanmaGhatis, $"{pd.JanmaGhatis:F4}");
 
             AddLine("", "");
-            AddLine("Ayanamsa:      ", $"{FormatDegree(pd.AyanamsaValue, true)}");;
-            AddLine("Sidereal Time: ", $"{pd.SiderealTime}");
+            AddLine(JamakolAstrology.Resources.Strings.LabelAyanamsa, $"{FormatDegree(pd.AyanamsaValue, true)}");;
+            AddLine(JamakolAstrology.Resources.Strings.LabelSiderealTime, $"{pd.SiderealTime}");
         }
         else
         {
             // BC date - show basic info from chartData instead
             AddLine("Note:          ", "BC date - Panchanga details not available");
             AddLine("", "");
-            AddLine("Ayanamsa:      ", $"{FormatDegree(result.ChartData.AyanamsaValue, true)}");;
+            AddLine(JamakolAstrology.Resources.Strings.LabelAyanamsa, $"{FormatDegree(result.ChartData.AyanamsaValue, true)}");;
         }
     }
 

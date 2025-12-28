@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:JamakolAstrology.Controls"
+             xmlns:res="clr-namespace:JamakolAstrology.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     
@@ -26,13 +27,13 @@
                 </Style>
             </DataGrid.ColumnHeaderStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Body/Cusp" Binding="{Binding Name}" Width="Auto"/>
-                <DataGridTextColumn Header="Nakshatra Lord" Binding="{Binding StarLord}" Width="Auto"/>
-                <DataGridTextColumn Header="Sub Lord" Binding="{Binding SubLord}" Width="Auto" FontWeight="Bold" Foreground="#cc0000"/>
-                <DataGridTextColumn Header="Prati-Sub" Binding="{Binding SubSubLord}" Width="Auto"/>
-                <DataGridTextColumn Header="Sookshma" Binding="{Binding SookshmaLord}" Width="Auto"/>
-                <DataGridTextColumn Header="Prana" Binding="{Binding PranaLord}" Width="Auto"/>
-                <DataGridTextColumn Header="Deha" Binding="{Binding DehaLord}" Width="Auto"/>
+                <DataGridTextColumn Header="Body/Cusp" Binding="{Binding Name, Converter={StaticResource PlanetNameConverter}}" Width="Auto"/>
+                <DataGridTextColumn Header="Nakshatra Lord" Binding="{Binding StarLord, Converter={StaticResource PlanetNameConverter}}" Width="Auto"/>
+                <DataGridTextColumn Header="Sub Lord" Binding="{Binding SubLord, Converter={StaticResource PlanetNameConverter}}" Width="Auto" FontWeight="Bold" Foreground="#cc0000"/>
+                <DataGridTextColumn Header="Prati-Sub" Binding="{Binding SubSubLord, Converter={StaticResource PlanetNameConverter}}" Width="Auto"/>
+                <DataGridTextColumn Header="Sookshma" Binding="{Binding SookshmaLord, Converter={StaticResource PlanetNameConverter}}" Width="Auto"/>
+                <DataGridTextColumn Header="Prana" Binding="{Binding PranaLord, Converter={StaticResource PlanetNameConverter}}" Width="Auto"/>
+                <DataGridTextColumn Header="Deha" Binding="{Binding DehaLord, Converter={StaticResource PlanetNameConverter}}" Width="Auto"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

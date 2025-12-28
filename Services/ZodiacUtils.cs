@@ -1,3 +1,6 @@
+using System.Globalization;
+using System.Threading;
+
 namespace JamakolAstrology.Services;
 
 /// <summary>
@@ -5,6 +8,35 @@ namespace JamakolAstrology.Services;
 /// </summary>
 public static class ZodiacUtils
 {
+    /// <summary>
+    /// Check if current UI culture is Tamil
+    /// </summary>
+    public static bool IsTamil => Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName == "ta";
+
+    /// <summary>
+    /// Get localized sign name based on current culture
+    /// </summary>
+    public static string GetSignName(int signIndex) => 
+        signIndex >= 1 && signIndex <= 12 
+            ? (IsTamil ? SignNamesTamil[signIndex] : SignNames[signIndex]) 
+            : "";
+
+    /// <summary>
+    /// Get localized nakshatra name based on current culture
+    /// </summary>
+    public static string GetNakshatraName(int nakshatraIndex) => 
+        nakshatraIndex >= 1 && nakshatraIndex <= 27 
+            ? (IsTamil ? NakshatraNamesTamil[nakshatraIndex] : NakshatraNames[nakshatraIndex]) 
+            : "";
+
+    /// <summary>
+    /// Get localized planet name based on current culture
+    /// </summary>
+    public static string GetPlanetName(Models.Planet planet) => 
+        IsTamil 
+            ? (PlanetNamesTamil.TryGetValue(planet, out var t) ? t : planet.ToString())
+            : (PlanetNames.TryGetValue(planet, out var e) ? e : planet.ToString());
+
     public static readonly string[] SignNames = 
     {
         "", "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo",

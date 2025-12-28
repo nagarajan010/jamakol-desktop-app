@@ -1,14 +1,15 @@
 <UserControl x:Class="JamakolAstrology.Controls.BirthChartDetailsPanel"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:controls="clr-namespace:JamakolAstrology.Controls">
+             xmlns:controls="clr-namespace:JamakolAstrology.Controls"
+             xmlns:res="clr-namespace:JamakolAstrology.Resources">
     
     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,10,0,0">
         <StackPanel>
             <!-- Planetary Positions -->
             <Border Background="#fffff8" CornerRadius="5" Padding="5" Margin="0,0,0,5" BorderBrush="#ddd" BorderThickness="1">
                 <StackPanel>
-                    <TextBlock Text="Planetary Positions" FontSize="14" FontWeight="Bold" 
+                    <TextBlock Text="{x:Static res:Strings.PlanetaryPositions}" FontSize="14" FontWeight="Bold" 
                                Foreground="#cc0000" Margin="0,0,0,5"/>
                     <controls:JamakolPlanetGrid x:Name="PlanetGridControl"/>
                 </StackPanel>
@@ -24,7 +25,7 @@
                 <!-- Natal Details -->
                 <Border Grid.Column="0" Background="#fffff8" CornerRadius="5" Padding="10" Margin="0,0,5,0" BorderBrush="#ddd" BorderThickness="1">
                     <StackPanel>
-                        <TextBlock Text="Natal Chart Details" FontWeight="Bold" Foreground="#990000" Margin="0,0,0,5"/>
+                        <TextBlock Text="{x:Static res:Strings.NatalChartDetails}" FontWeight="Bold" Foreground="#990000" Margin="0,0,0,5"/>
                         <TextBlock x:Name="NatalDetailsText" FontFamily="Consolas" FontSize="12" Foreground="#333"/>
                     </StackPanel>
                 </Border>
@@ -32,8 +33,8 @@
                 <!-- Ashtakavarga -->
                 <Border Grid.Column="1" Background="#fffff8" CornerRadius="5" Padding="10" Margin="5,0,0,0" BorderBrush="#ddd" BorderThickness="1">
                     <StackPanel>
-                        <TextBlock Text="Ashtakavarga" FontWeight="Bold" Foreground="#990000" Margin="0,0,0,5"/>
-                        <TextBlock x:Name="AshtakavargaText" Text="No content available" Foreground="#aaa" FontStyle="Italic"/>
+                        <TextBlock Text="{x:Static res:Strings.TabAshtakavarga}" FontWeight="Bold" Foreground="#990000" Margin="0,0,0,5"/>
+                        <TextBlock x:Name="AshtakavargaText" Text="{x:Static res:Strings.NoContentAvailable}" Foreground="#aaa" FontStyle="Italic"/>
                     </StackPanel>
                 </Border>
             </Grid>

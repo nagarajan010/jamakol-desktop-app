@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:JamakolAstrology.Controls"
+             xmlns:res="clr-namespace:JamakolAstrology.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -24,9 +25,9 @@
     <Grid Background="Transparent">
         <Grid.ContextMenu>
             <ContextMenu>
-                <MenuItem Header="Show BAVs and SAV (Grid View)" Click="SwitchToGridView_Click" IsChecked="True" x:Name="MenuGridView"/>
-                <MenuItem Header="Show Table View" Click="SwitchToTableView_Click" IsChecked="False" x:Name="MenuTableView"/>
-                <MenuItem Header="Show Sodhya Pindas" Click="SwitchToPindaView_Click" IsChecked="False" x:Name="MenuPindaView" Visibility="Collapsed"/>
+                <MenuItem Header="{x:Static res:Strings.MenuShowBAVGrid}" Click="SwitchToGridView_Click" IsChecked="True" x:Name="MenuGridView"/>
+                <MenuItem Header="{x:Static res:Strings.MenuShowTableView}" Click="SwitchToTableView_Click" IsChecked="False" x:Name="MenuTableView"/>
+                <MenuItem Header="{x:Static res:Strings.MenuShowPindas}" Click="SwitchToPindaView_Click" IsChecked="False" x:Name="MenuPindaView" Visibility="Collapsed"/>
             </ContextMenu>
         </Grid.ContextMenu>
 
