@@ -68,6 +68,23 @@ public partial class SouthIndianChart : UserControl
         };
         
         _divisionalChartService = new DivisionalChartService();
+        LocalizeContextMenu();
+    }
+    
+    private void LocalizeContextMenu()
+    {
+        if (DivisionContextMenu == null) return;
+        
+        foreach (var item in DivisionContextMenu.Items)
+        {
+            if (item is MenuItem menuItem && menuItem.Tag != null)
+            {
+                if (int.TryParse(menuItem.Tag.ToString(), out int div))
+                {
+                    menuItem.Header = GetLocalizedChartTitle(div);
+                }
+            }
+        }
     }
     
     /// <summary>
