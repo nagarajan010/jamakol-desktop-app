@@ -4,6 +4,9 @@ A comprehensive desktop application for **Vedic Astrology**, specialized in **Ja
 
 ![Jamakol Astrology](https://via.placeholder.com/800x400?text=Jamakol+Astrology+Desktop+App)
 
+> [!NOTE] 
+> **Work in Progress**: This software is currently under active development. Features may change, and bugs may be present.
+
 ## ✨ Key Features
 
 ### 🕉️ Jamakol Prasanam
@@ -132,6 +135,25 @@ To create a distributable `.exe` setup file:
 ## 📋 Requirements
 * **OS**: Windows 10 or Windows 11 (64-bit recommended).
 * **Screen Resolution**: Minimum 1366x768 (1920x1080 recommended for best experience).
+
+## 🐛 Feedback & Contribution
+
+Found a bug or have a feature request? Please help us improve by reporting it:
+
+*   **Bug Reports**: Open a [New Issue](https://github.com/nagarajan010/jamakol-desktop-app/issues) with a detailed description.
+*   **Feature Requests**: We welcome ideas! Feel free to discuss them in the Issues section.
+
+## 📜 License
+
+This project is licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**.
+
+### ⚠️ Swiss Ephemeris
+This software uses the **Swiss Ephemeris** for astronomical calculations.
+*   **Copyright**: © Astrodienst AG, Zürich, Switzerland.
+*   **License**: The Swiss Ephemeris is licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**.
+
+> [!IMPORTANT]
+> Because this application links to the Swiss Ephemeris, **this entire project is also subject to the AGPL-3.0 license terms** (unless a commercial license is obtained from Astrodienst).
 
 ---
 *Developed by Nagarajan*
