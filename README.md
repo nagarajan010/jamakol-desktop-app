@@ -185,4 +185,4 @@ This software uses the **Swiss Ephemeris** for astronomical calculations.
 > Because this application links to the Swiss Ephemeris, **this entire project is also subject to the AGPL-3.0 license terms** (unless a commercial license is obtained from Astrodienst).
 
 ---
-*Developed by Nagarajan*
+
