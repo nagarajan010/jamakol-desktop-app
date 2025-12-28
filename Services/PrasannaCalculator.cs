@@ -110,7 +110,7 @@ public class PrasannaCalculator
             if (closest != null)
             {
                 details.PlanetTowardsUdhayam = closest.Value.planet;
-                details.PlanetTowardsUdhayamPercent = closest.Value.percent;
+                details.PlanetTowardsUdhayamPercent = closest.Value.degreeDistance;
             }
         }
 
@@ -127,7 +127,7 @@ public class PrasannaCalculator
             if (closest != null)
             {
                 details.PlanetTowardsArudam = closest.Value.planet;
-                details.PlanetTowardsArudamPercent = closest.Value.percent;
+                details.PlanetTowardsArudamPercent = closest.Value.degreeDistance;
             }
         }
 
@@ -143,7 +143,7 @@ public class PrasannaCalculator
             if (closest != null)
             {
                 details.PlanetTowardsKavippu = closest.Value.planet;
-                details.PlanetTowardsKavippuPercent = closest.Value.percent;
+                details.PlanetTowardsKavippuPercent = closest.Value.degreeDistance;
             }
         }
 
@@ -153,22 +153,47 @@ public class PrasannaCalculator
         details.DebilitatedPlanets = GetDebilitatedJamaGrahas(jamaGrahas, useBoxSign);
         details.ParivarthanaPlanets = GetParivarthanaJamaGrahas(jamaGrahas, useBoxSign);
 
-        // Emakandam - Saturn-related (using Jama Graha)
-        var saturn = jamaGrahas.FirstOrDefault(p => p.Name.Equals("Saturn", StringComparison.OrdinalIgnoreCase));
-        if (saturn != null)
+        // Emakandam (Yamakandam) - use the Yemakandam special point
+        var yemakandam = specialPoints.FirstOrDefault(sp => 
+            sp.Name.Equals("Yemakandam", StringComparison.OrdinalIgnoreCase) || 
+            sp.Symbol.Equals("YK", StringComparison.OrdinalIgnoreCase));
+        if (yemakandam != null)
         {
-            // Find Jama Graha closest to Saturn (Emakandam)
-            var closest = FindClosestJamaGraha(jamaGrahas.Where(p => !p.Name.Equals("Saturn", StringComparison.OrdinalIgnoreCase)).ToList(), saturn.Degree);
+            var closest = FindClosestJamaGraha(jamaGrahas, yemakandam.AbsoluteLongitude);
             if (closest != null)
             {
                 details.PlanetTowardsEmakandam = closest.Value.planet;
-                details.PlanetTowardsEmakandamPercent = closest.Value.percent;
+                details.PlanetTowardsEmakandamPercent = closest.Value.degreeDistance;
             }
         }
 
-        // Rahu Time and Mrithyu - left empty for now
-        details.PlanetInRahuTime = "-";
-        details.PlanetTowardsMrithyu = "-";
+        // Rahu Time - find closest Jama Graha to Rahu Kalam special point
+        var rahuKalam = specialPoints.FirstOrDefault(sp => 
+            sp.Name.Equals("Rahu Kalam", StringComparison.OrdinalIgnoreCase) || 
+            sp.Symbol.Equals("RK", StringComparison.OrdinalIgnoreCase));
+        if (rahuKalam != null)
+        {
+            var closest = FindClosestJamaGraha(jamaGrahas, rahuKalam.AbsoluteLongitude);
+            if (closest != null)
+            {
+                details.PlanetInRahuTime = closest.Value.planet;
+                details.PlanetInRahuTimePercent = closest.Value.degreeDistance;
+            }
+        }
+        
+        // Mrithyu - find closest Jama Graha to Mrithyu special point
+        var mrithyu = specialPoints.FirstOrDefault(sp => 
+            sp.Name.Equals("Mrithyu", StringComparison.OrdinalIgnoreCase) || 
+            sp.Symbol.Equals("MR", StringComparison.OrdinalIgnoreCase));
+        if (mrithyu != null)
+        {
+            var closest = FindClosestJamaGraha(jamaGrahas, mrithyu.AbsoluteLongitude);
+            if (closest != null)
+            {
+                details.PlanetTowardsMrithyu = closest.Value.planet;
+                details.PlanetTowardsMrithyuPercent = closest.Value.degreeDistance;
+            }
+        }
 
         return details;
     }
@@ -226,11 +251,11 @@ public class PrasannaCalculator
     }
 
     /// <summary>
-    /// Find the Jama Graha closest to a given longitude and calculate the proximity percentage.
+    /// Find the Jama Graha closest to a given longitude and calculate the degree distance.
     /// Since Jama Graha moves in REVERSE (decreasing degrees), only considers planets
     /// that have NOT yet crossed the target point (i.e., planets with HIGHER degrees).
     /// </summary>
-    private (string planet, double percent)? FindClosestJamaGraha(List<JamaGrahaPosition> jamaGrahas, double targetLongitude)
+    private (string planet, double degreeDistance)? FindClosestJamaGraha(List<JamaGrahaPosition> jamaGrahas, double targetLongitude)
     {
         if (jamaGrahas == null || jamaGrahas.Count == 0)
             return null;
@@ -268,11 +293,8 @@ public class PrasannaCalculator
         if (closestPlanet == null)
             return null;
 
-        // Calculate proximity percentage (closer = higher percentage)
-        // Max considered distance is 180 degrees, so: percent = (180 - distance) / 180 * 100
-        double percent = Math.Max(0, (180 - minDistance) / 180 * 100);
-        
-        return (closestPlanet, Math.Round(percent, 2));
+        // Return the actual degree distance (how far the planet is from the target)
+        return (closestPlanet, Math.Round(minDistance, 2));
     }
 
     /// <summary>

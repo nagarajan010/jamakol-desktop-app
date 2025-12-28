@@ -20,7 +20,7 @@ public partial class PrasannaPanel : UserControl
     {
         // Planet towards Udhayam
         PlanetTowardsUdhayamText.Text = !string.IsNullOrEmpty(details.PlanetTowardsUdhayam) 
-            ? $"{details.PlanetTowardsUdhayam.ToUpper()} {details.PlanetTowardsUdhayamPercent:F2}%" 
+            ? $"{details.PlanetTowardsUdhayam.ToUpper()} {details.PlanetTowardsUdhayamPercent:F2}°" 
             : "-";
         
         // Udhayam Lord & Bhava
@@ -33,12 +33,12 @@ public partial class PrasannaPanel : UserControl
         
         // Planet towards Arudam
         PlanetTowardsArudamText.Text = !string.IsNullOrEmpty(details.PlanetTowardsArudam) 
-            ? $"{details.PlanetTowardsArudam.ToUpper()} {details.PlanetTowardsArudamPercent:F2}%" 
+            ? $"{details.PlanetTowardsArudam.ToUpper()} {details.PlanetTowardsArudamPercent:F2}°" 
             : "-";
         
         // Planet towards Kavippu
         PlanetTowardsKavippuText.Text = !string.IsNullOrEmpty(details.PlanetTowardsKavippu) 
-            ? $"{details.PlanetTowardsKavippu.ToUpper()} {details.PlanetTowardsKavippuPercent:F2}%" 
+            ? $"{details.PlanetTowardsKavippu.ToUpper()} {details.PlanetTowardsKavippuPercent:F2}°" 
             : "-";
         
         // Bhava in Kavippu
@@ -51,11 +51,17 @@ public partial class PrasannaPanel : UserControl
         
         // Emakandam
         EmakandamText.Text = !string.IsNullOrEmpty(details.PlanetTowardsEmakandam) 
-            ? $"{details.PlanetTowardsEmakandam.ToUpper()} {details.PlanetTowardsEmakandamPercent:F2}%" 
+            ? $"{details.PlanetTowardsEmakandam.ToUpper()} {details.PlanetTowardsEmakandamPercent:F2}°" 
             : "-";
         
-        // Rahu Time and Mrithyu
-        RahuTimeText.Text = details.PlanetInRahuTime ?? "-";
-        MrithyuText.Text = details.PlanetTowardsMrithyu ?? "-";
+        // Rahu Time
+        RahuTimeText.Text = !string.IsNullOrEmpty(details.PlanetInRahuTime) && details.PlanetInRahuTime != "-"
+            ? $"{details.PlanetInRahuTime.ToUpper()} {details.PlanetInRahuTimePercent:F2}°" 
+            : "-";
+        
+        // Mrithyu
+        MrithyuText.Text = !string.IsNullOrEmpty(details.PlanetTowardsMrithyu) && details.PlanetTowardsMrithyu != "-"
+            ? $"{details.PlanetTowardsMrithyu.ToUpper()} {details.PlanetTowardsMrithyuPercent:F2}°" 
+            : "-";
     }
 }

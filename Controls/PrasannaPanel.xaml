@@ -113,7 +113,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="Planet → Rahu Time" Foreground="#555" FontSize="11"/>
-                <TextBlock x:Name="RahuTimeText" Grid.Column="1" Text="-" Foreground="#888" FontSize="11"/>
+                <TextBlock x:Name="RahuTimeText" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
             </Grid>
             
             <!-- Planet → Mrithyu -->
@@ -123,7 +123,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="Planet → Mrithyu (8th)" Foreground="#555" FontSize="11"/>
-                <TextBlock x:Name="MrithyuText" Grid.Column="1" Text="-" Foreground="#888" FontSize="11"/>
+                <TextBlock x:Name="MrithyuText" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
             </Grid>
         </StackPanel>
     </Border>
