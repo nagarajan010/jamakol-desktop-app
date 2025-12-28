@@ -31,7 +31,11 @@ public partial class DashasPanel : UserControl
         if (result.CurrentAntarDasha != null)
         {
             // Format: Jupiter / Saturn / Mercury
-            CurrentDashaText.Text = result.CurrentDashaDisplay;
+            // Localize planets for display
+            string GetLocPlanet(string p) => Services.ZodiacUtils.IsTamil && Enum.TryParse<Planet>(p, true, out var pl) 
+                ? Services.ZodiacUtils.GetPlanetName(pl) : p;
+
+            CurrentDashaText.Text = $"{GetLocPlanet(result.CurrentMahaDasha?.Planet ?? "-")} / {GetLocPlanet(result.CurrentAntarDasha?.Planet ?? "-")} / {GetLocPlanet(result.CurrentPratyantaraDasha?.Planet ?? "-")}";
             
             // Format: 15-Oct-2023 to 22-Feb-2024 (showing range of deepest active level)
             var deepest = result.CurrentDehaDasha ?? 
@@ -39,16 +43,26 @@ public partial class DashasPanel : UserControl
                           result.CurrentSookshmaDasha ?? 
                           result.CurrentPratyantaraDasha ?? 
                           result.CurrentAntarDasha;
-                          
-            CurrentDashaDates.Text = deepest != null 
-                ? $"{deepest.DisplayName} ends on {deepest.EndDate:dd-MMM-yyyy HH:mm}" 
-                : "";
+            
+            if (deepest != null)
+            {
+                string endsOn = Services.ZodiacUtils.IsTamil ? "முடிவு" : "ends on";
+                CurrentDashaDates.Text = $"{deepest.DisplayName} {endsOn} {deepest.EndDate:dd-MMM-yyyy HH:mm}";
+            }
+            else
+            {
+                CurrentDashaDates.Text = "";
+            }
 
             // Full chain
-            string levels = $"{result.CurrentMahaDasha?.Planet} > {result.CurrentAntarDasha?.Planet} > {result.CurrentPratyantaraDasha?.Planet}";
-            if (result.CurrentSookshmaDasha != null) levels += $" > {result.CurrentSookshmaDasha.Planet}";
-            if (result.CurrentPranaDasha != null) levels += $" > {result.CurrentPranaDasha.Planet}";
-            if (result.CurrentDehaDasha != null) levels += $" > {result.CurrentDehaDasha.Planet}";
+            string p1 = GetLocPlanet(result.CurrentMahaDasha?.Planet ?? "-");
+            string p2 = GetLocPlanet(result.CurrentAntarDasha?.Planet ?? "-");
+            string p3 = GetLocPlanet(result.CurrentPratyantaraDasha?.Planet ?? "-");
+            
+            string levels = $"{p1} > {p2} > {p3}";
+            if (result.CurrentSookshmaDasha != null) levels += $" > {GetLocPlanet(result.CurrentSookshmaDasha.Planet)}";
+            if (result.CurrentPranaDasha != null) levels += $" > {GetLocPlanet(result.CurrentPranaDasha.Planet)}";
+            if (result.CurrentDehaDasha != null) levels += $" > {GetLocPlanet(result.CurrentDehaDasha.Planet)}";
             
             CurrentDashaLevels.Text = levels;
         }

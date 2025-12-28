@@ -33,16 +33,43 @@ public class DashaPeriod
     public bool IsActive { get; set; }
     
     /// <summary>Display name with level prefix</summary>
-    public string DisplayName => Level switch
+    public string DisplayName 
     {
-        1 => $"{Planet} Maha Dasa",
-        2 => $"{Planet} Bhukti",
-        3 => $"{Planet} Pratyantara",
-        4 => $"{Planet} Sookshma",
-        5 => $"{Planet} Prana",
-        6 => $"{Planet} Deha",
-        _ => Planet
-    };
+        get
+        {
+            // Get localized planet name
+            string pName = Services.ZodiacUtils.IsTamil && Enum.TryParse<Planet>(Planet, true, out var p) 
+                ? Services.ZodiacUtils.GetPlanetName(p) 
+                : Planet;
+
+            if (Services.ZodiacUtils.IsTamil)
+            {
+                return Level switch
+                {
+                    1 => $"{pName} மகா தசை",
+                    2 => $"{pName} புத்தி",
+                    3 => $"{pName} அந்தரம்",
+                    4 => $"{pName} சூட்சுமம்",
+                    5 => $"{pName} பிராணன்",
+                    6 => $"{pName} தேகம்",
+                    _ => pName
+                };
+            }
+
+            return Level switch
+            {
+                1 => $"{pName} Maha Dasa",
+                2 => $"{pName} Bhukti",
+                3 => $"{pName} Pratyantara",
+                4 => $"{pName} Sookshma",
+                5 => $"{pName} Prana",
+                6 => $"{pName} Deha",
+                _ => pName
+            };
+        }
+    }
+
+    public string ActiveLabel => IsActive ? (Services.ZodiacUtils.IsTamil ? " ▶ நடப்பில்" : " ▶ Current") : "";
     
     /// <summary>Date range display</summary>
     public string DateRange => $"{StartDate:dd-MM-yyyy} to {EndDate:dd-MM-yyyy}";

@@ -34,21 +34,25 @@ public partial class AshtakavargaDetailsPanel : UserControl
 
         var data = chart.Ashtakavarga;
         
+        // Helper to get localized title
+        string GetTitle(string en, string ta) => ZodiacUtils.IsTamil ? ta : en;
+        string GetPlanetTitle(Planet p) => ZodiacUtils.IsTamil ? ZodiacUtils.GetPlanetName(p) : p.ToString();
+
         // 1. Update Grid View Charts
         // SAV
-        ChartSAV.Update("SAV", data.Sarvashtakavarga, 0, chart.AscendantSign); // No highlighted planet for SAV unless query? Or maybe Lagna?
+        ChartSAV.Update(GetTitle("SAV", "சர்வா"), data.Sarvashtakavarga, 0, chart.AscendantSign); 
         
         // Lagna
-        ChartLagna.Update("Asc", data.LagnaAshtakavarga, chart.AscendantSign, chart.AscendantSign);
+        ChartLagna.Update(GetTitle("Asc", "லக்னம்"), data.LagnaAshtakavarga, chart.AscendantSign, chart.AscendantSign);
 
         // Planets
-        UpdatePlanetChart(ChartSun, "Sun", Planet.Sun, chart, data);
-        UpdatePlanetChart(ChartMoon, "Moon", Planet.Moon, chart, data);
-        UpdatePlanetChart(ChartMars, "Mars", Planet.Mars, chart, data);
-        UpdatePlanetChart(ChartMercury, "Merc", Planet.Mercury, chart, data);
-        UpdatePlanetChart(ChartJupiter, "Jup", Planet.Jupiter, chart, data);
-        UpdatePlanetChart(ChartVenus, "Ven", Planet.Venus, chart, data);
-        UpdatePlanetChart(ChartSaturn, "Sat", Planet.Saturn, chart, data);
+        UpdatePlanetChart(ChartSun, GetPlanetTitle(Planet.Sun), Planet.Sun, chart, data);
+        UpdatePlanetChart(ChartMoon, GetPlanetTitle(Planet.Moon), Planet.Moon, chart, data);
+        UpdatePlanetChart(ChartMars, GetPlanetTitle(Planet.Mars), Planet.Mars, chart, data);
+        UpdatePlanetChart(ChartMercury, GetPlanetTitle(Planet.Mercury), Planet.Mercury, chart, data);
+        UpdatePlanetChart(ChartJupiter, GetPlanetTitle(Planet.Jupiter), Planet.Jupiter, chart, data);
+        UpdatePlanetChart(ChartVenus, GetPlanetTitle(Planet.Venus), Planet.Venus, chart, data);
+        UpdatePlanetChart(ChartSaturn, GetPlanetTitle(Planet.Saturn), Planet.Saturn, chart, data);
 
         // 2. Update Table View (Existing Logic)
         var rows = new List<AVRow>();
