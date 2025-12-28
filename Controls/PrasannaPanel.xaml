@@ -2,6 +2,15 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:res="clr-namespace:JamakolAstrology.Resources">
+    <UserControl.Resources>
+        <Style x:Key="LabelStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#555"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="0,0,5,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Resources>
     <Border Background="#ffebe0" BorderBrush="#ff9966" BorderThickness="1" CornerRadius="5" Padding="10">
         <StackPanel>
             <TextBlock Text="{x:Static res:Strings.PrasannaTitle}" FontSize="14" FontWeight="Bold" 
@@ -13,7 +22,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="{x:Static res:Strings.LabelPlanetTowardsUdhayam}" Foreground="#555" FontSize="11"/>
+                <TextBlock Text="{x:Static res:Strings.LabelPlanetTowardsUdhayam}" Style="{StaticResource LabelStyle}"/>
                 <TextBlock x:Name="PlanetTowardsUdhayamText" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
             </Grid>
             
@@ -23,7 +32,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="{x:Static res:Strings.LabelUdhayamLordBhava}" Foreground="#555" FontSize="11"/>
+                <TextBlock Text="{x:Static res:Strings.LabelUdhayamLordBhava}" Style="{StaticResource LabelStyle}"/>
                 <TextBlock x:Name="UdhayamLordBhavaText" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
             </Grid>
             
@@ -33,7 +42,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="{x:Static res:Strings.LabelArudamBhava}" Foreground="#555" FontSize="11"/>
+                <TextBlock Text="{x:Static res:Strings.LabelArudamBhava}" Style="{StaticResource LabelStyle}"/>
                 <TextBlock x:Name="ArudamBhavaText" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
             </Grid>
             
@@ -43,7 +52,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="{x:Static res:Strings.LabelPlanetTowardsArudam}" Foreground="#555" FontSize="11"/>
+                <TextBlock Text="{x:Static res:Strings.LabelPlanetTowardsArudam}" Style="{StaticResource LabelStyle}"/>
                 <TextBlock x:Name="PlanetTowardsArudamText" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
             </Grid>
             
@@ -53,7 +62,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="{x:Static res:Strings.LabelPlanetTowardsKavippu}" Foreground="#555" FontSize="11"/>
+                <TextBlock Text="{x:Static res:Strings.LabelPlanetTowardsKavippu}" Style="{StaticResource LabelStyle}"/>
                 <TextBlock x:Name="PlanetTowardsKavippuText" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
             </Grid>
             
@@ -63,7 +72,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="{x:Static res:Strings.LabelBhavaInKavippu}" Foreground="#555" FontSize="11"/>
+                <TextBlock Text="{x:Static res:Strings.LabelBhavaInKavippu}" Style="{StaticResource LabelStyle}"/>
                 <TextBlock x:Name="BhavaInKavippuText" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
             </Grid>
             
@@ -73,7 +82,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="{x:Static res:Strings.LabelExaltedPlanets}" Foreground="#555" FontSize="11"/>
+                <TextBlock Text="{x:Static res:Strings.LabelExaltedPlanets}" Style="{StaticResource LabelStyle}"/>
                 <TextBlock x:Name="ExaltedPlanetsText" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
             </Grid>
             
@@ -83,7 +92,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="{x:Static res:Strings.LabelDebilitatedPlanets}" Foreground="#555" FontSize="11"/>
+                <TextBlock Text="{x:Static res:Strings.LabelDebilitatedPlanets}" Style="{StaticResource LabelStyle}"/>
                 <TextBlock x:Name="DebilitatedPlanetsText" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
             </Grid>
             
@@ -93,7 +102,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="{x:Static res:Strings.LabelParivarthanaPlanets}" Foreground="#555" FontSize="11"/>
+                <TextBlock Text="{x:Static res:Strings.LabelParivarthanaPlanets}" Style="{StaticResource LabelStyle}"/>
                 <TextBlock x:Name="ParivarthanaPlanetsText" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
             </Grid>
             
@@ -103,7 +112,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="{x:Static res:Strings.LabelPlanetTowardsEmakandam}" Foreground="#555" FontSize="11"/>
+                <TextBlock Text="{x:Static res:Strings.LabelPlanetTowardsEmakandam}" Style="{StaticResource LabelStyle}"/>
                 <TextBlock x:Name="EmakandamText" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
             </Grid>
             
@@ -113,7 +122,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="{x:Static res:Strings.LabelPlanetInRahuTime}" Foreground="#555" FontSize="11"/>
+                <TextBlock Text="{x:Static res:Strings.LabelPlanetInRahuTime}" Style="{StaticResource LabelStyle}"/>
                 <TextBlock x:Name="RahuTimeText" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
             </Grid>
             
@@ -123,7 +132,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="{x:Static res:Strings.LabelPlanetTowardsMrithyu}" Foreground="#555" FontSize="11"/>
+                <TextBlock Text="{x:Static res:Strings.LabelPlanetTowardsMrithyu}" Style="{StaticResource LabelStyle}"/>
                 <TextBlock x:Name="MrithyuText" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
             </Grid>
         </StackPanel>
