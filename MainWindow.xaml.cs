@@ -340,6 +340,17 @@ public partial class MainWindow : Window
                 // Update orchestrator with new settings
                 _chartOrchestrator.UpdateSunriseMode(_appSettings.SunriseMode);
                 
+                // If language changed, restart the window to apply new culture to UI
+                if (settingsWindow.LanguageChanged)
+                {
+                    LocalizationHelper.SetLanguage(_appSettings.Language);
+                    
+                    var newWindow = new MainWindow();
+                    newWindow.Show();
+                    this.Close();
+                    return;
+                }
+
                 // Recalculate active tab
                 if (MainTabControl.SelectedIndex == 0) CalculateChart();
                 else CalculateJamakolChart();

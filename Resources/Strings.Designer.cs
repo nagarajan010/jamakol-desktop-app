@@ -825,5 +825,117 @@ namespace JamakolAstrology.Resources {
                 return ResourceManager.GetString("LabelSiderealTime", resourceCulture);
             }
         }
+        public static string LabelPlanetTowardsUdhayam {
+            get {
+                return ResourceManager.GetString("LabelPlanetTowardsUdhayam", resourceCulture);
+            }
+        }
+
+        public static string LabelUdhayamLordBhava {
+            get {
+                return ResourceManager.GetString("LabelUdhayamLordBhava", resourceCulture);
+            }
+        }
+
+        public static string LabelArudamBhava {
+            get {
+                return ResourceManager.GetString("LabelArudamBhava", resourceCulture);
+            }
+        }
+
+        public static string LabelPlanetTowardsArudam {
+            get {
+                return ResourceManager.GetString("LabelPlanetTowardsArudam", resourceCulture);
+            }
+        }
+
+        public static string LabelPlanetTowardsKavippu {
+            get {
+                return ResourceManager.GetString("LabelPlanetTowardsKavippu", resourceCulture);
+            }
+        }
+
+        public static string LabelBhavaInKavippu {
+            get {
+                return ResourceManager.GetString("LabelBhavaInKavippu", resourceCulture);
+            }
+        }
+
+        public static string LabelExaltedPlanets {
+            get {
+                return ResourceManager.GetString("LabelExaltedPlanets", resourceCulture);
+            }
+        }
+
+        public static string LabelDebilitatedPlanets {
+            get {
+                return ResourceManager.GetString("LabelDebilitatedPlanets", resourceCulture);
+            }
+        }
+
+        public static string LabelParivarthanaPlanets {
+            get {
+                return ResourceManager.GetString("LabelParivarthanaPlanets", resourceCulture);
+            }
+        }
+
+        public static string LabelPlanetTowardsEmakandam {
+            get {
+                return ResourceManager.GetString("LabelPlanetTowardsEmakandam", resourceCulture);
+            }
+        }
+
+        public static string LabelPlanetInRahuTime {
+            get {
+                return ResourceManager.GetString("LabelPlanetInRahuTime", resourceCulture);
+            }
+        }
+
+        public static string LabelPlanetTowardsMrithyu {
+            get {
+                return ResourceManager.GetString("LabelPlanetTowardsMrithyu", resourceCulture);
+            }
+        }
+
+        public static string LabelNazhikai {
+            get {
+                return ResourceManager.GetString("LabelNazhikai", resourceCulture);
+            }
+        }
+        public static string HeaderNakshatra {
+            get {
+                return ResourceManager.GetString("HeaderNakshatra", resourceCulture);
+            }
+        }
+
+        public static string HeaderPada {
+            get {
+                return ResourceManager.GetString("HeaderPada", resourceCulture);
+            }
+        }
+
+        public static string HeaderKaraka {
+            get {
+                return ResourceManager.GetString("HeaderKaraka", resourceCulture);
+            }
+        }
+
+        public static string HeaderGati {
+            get {
+                return ResourceManager.GetString("HeaderGati", resourceCulture);
+            }
+        }
+
+        public static string HeaderR {
+            get {
+                return ResourceManager.GetString("HeaderR", resourceCulture);
+            }
+        }
+
+        public static string HeaderC {
+            get {
+                return ResourceManager.GetString("HeaderC", resourceCulture);
+            }
+        }
     }
 }

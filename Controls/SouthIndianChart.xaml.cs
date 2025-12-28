@@ -178,7 +178,7 @@ public partial class SouthIndianChart : UserControl
              if (isStandardPlanet)
              {
                  // Regular planet - display in main area
-                 string abbr = ZodiacUtils.PlanetAbbreviations[p.Planet];
+                 string abbr = GetLocalizedAbbr(p.Planet);
                  string planetDisplay = p.IsRetrograde ? $"({abbr})" : abbr;
                  string text = _hideDegrees ? planetDisplay : $"{(int)p.DegreeInSign}° {planetDisplay}";
                  
@@ -323,7 +323,7 @@ public partial class SouthIndianChart : UserControl
             
             if (isStandardPlanet)
             {
-                string abbr = ZodiacUtils.PlanetAbbreviations[p.Planet];
+                string abbr = GetLocalizedAbbr(p.Planet);
                 string planetDisplay = p.IsRetrograde ? $"({abbr})" : abbr;
                 string text = _hideDegrees ? planetDisplay : $"{(int)p.DivisionalDegree}° {planetDisplay}";
                 
@@ -496,5 +496,23 @@ public partial class SouthIndianChart : UserControl
                 this.RaiseEvent(eventArg);
             }
         }
+    }
+    private string GetLocalizedAbbr(Planet p)
+    {
+        if (!ZodiacUtils.IsTamil) return ZodiacUtils.PlanetAbbreviations[p];
+
+        return p switch
+        {
+            Planet.Sun => "சூ",
+            Planet.Moon => "ச",
+            Planet.Mars => "செ",
+            Planet.Mercury => "பு",
+            Planet.Jupiter => "கு",
+            Planet.Venus => "சு",
+            Planet.Saturn => "சனி",
+            Planet.Rahu => "ராகு",
+            Planet.Ketu => "கேது",
+            _ => ZodiacUtils.PlanetAbbreviations[p]
+        };
     }
 }

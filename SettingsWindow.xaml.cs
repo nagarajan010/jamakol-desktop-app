@@ -13,8 +13,10 @@ public partial class SettingsWindow : Window
 {
     public AppSettings Settings { get; private set; }
     public bool IsSaved { get; private set; }
+    public bool LanguageChanged { get; private set; }
     private readonly GeoNamesService _geoService;
     private bool _isUpdatingText = false;
+    private string _initialLanguage;
 
     public SettingsWindow(AppSettings currentSettings)
     {
@@ -22,6 +24,7 @@ public partial class SettingsWindow : Window
         _isUpdatingText = true; // Prevent TextChanged during init
         InitializeComponent();
         Settings = currentSettings ?? new AppSettings();
+        _initialLanguage = Settings.Language;
         LoadSettings();
         _isUpdatingText = false;
     }
@@ -126,6 +129,7 @@ public partial class SettingsWindow : Window
                 Settings.Language = langCode;
             }
 
+            LanguageChanged = (Settings.Language != _initialLanguage);
             IsSaved = true;
             DialogResult = true;
             Close();

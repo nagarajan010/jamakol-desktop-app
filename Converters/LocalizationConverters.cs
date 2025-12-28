@@ -33,6 +33,15 @@ namespace JamakolAstrology.Converters
                     "Parivesha" => "பரிவேஷம்",
                     "Indrachapa" => "இந்திரசாபம்",
                     "Upaketu" => "உபகேது",
+                    // Jamakol Special Points
+                    "Udayam" => "உதயம்",
+                    "Aarudam" => "ஆருடம்",
+                    "Kavippu" => "கவிப்பு",
+                    "Yemakandam" => "எமகண்டம்",
+                    "Mrithyu" => "மிருத்யு",
+                    "Mandhi" => "மாந்தி",
+                    "Rahu Kalam" => "ராகு காலம்",
+                    "Snake" => "பாம்பு",
                     _ => englishName
                 };
             }

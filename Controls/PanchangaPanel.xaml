@@ -58,11 +58,13 @@
                     <TextBlock Grid.Row="6" Grid.Column="1" x:Name="SunsetText" Text="-" Foreground="#0066cc" FontWeight="SemiBold" FontSize="10" Margin="5,2,0,2"/>
                     
                     <!-- Ayanamsa -->
-                    <TextBlock Grid.Row="7" Grid.Column="0" Text="Ayanamsa:" Foreground="#555" FontSize="10" Margin="0,2"/>
+                    <!-- Ayanamsa -->
+                    <TextBlock Grid.Row="7" Grid.Column="0" Text="{x:Static res:Strings.LabelAyanamsa}" Foreground="#555" FontSize="10" Margin="0,2"/>
                     <TextBlock Grid.Row="7" Grid.Column="1" x:Name="AyanamsaText" Text="-" Foreground="#0066cc" FontWeight="SemiBold" FontSize="10" Margin="5,2,0,2"/>
 
                     <!-- Nazhikai -->
-                    <TextBlock Grid.Row="8" Grid.Column="0" Text="Nazhikai:" Foreground="#555" FontSize="10" Margin="0,2"/>
+                    <!-- Nazhikai -->
+                    <TextBlock Grid.Row="8" Grid.Column="0" Text="{x:Static res:Strings.LabelNazhikai}" Foreground="#555" FontSize="10" Margin="0,2"/>
                     <TextBlock Grid.Row="8" Grid.Column="1" x:Name="NazhikaiText" Text="-" Foreground="#0066cc" FontWeight="SemiBold" FontSize="10" Margin="5,2,0,2"/>
                     
                     <!-- Hora -->
@@ -78,7 +80,8 @@
                     <TextBlock Grid.Row="11" Grid.Column="1" x:Name="RasiText" Text="-" Foreground="#cc0000" FontWeight="SemiBold" FontSize="10" Margin="5,2,0,4" TextWrapping="Wrap"/>
                     
                     <!-- Year/Month -->
-                    <TextBlock Grid.Row="12" Grid.Column="0" Text="Year/Mo:" Foreground="#555" FontSize="10" Margin="0,2,0,4"/>
+                    <!-- Year/Month -->
+                    <TextBlock Grid.Row="12" Grid.Column="0" Text="{x:Static res:Strings.LabelLunarYearMonth}" Foreground="#555" FontSize="10" Margin="0,2,0,4"/>
                     <TextBlock Grid.Row="12" Grid.Column="1" x:Name="YearMonthText" Text="-" Foreground="#0066cc" FontWeight="SemiBold" FontSize="10" Margin="5,2,0,4" TextWrapping="Wrap"/>
                 </Grid>
             </ScrollViewer>

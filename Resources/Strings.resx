@@ -389,6 +389,45 @@
   <data name="DialogChartDetails" xml:space="preserve">
     <value>Chart Details</value>
   </data>
+  <data name="LabelPlanetTowardsUdhayam" xml:space="preserve">
+    <value>Planet Towards Udhayam</value>
+  </data>
+  <data name="LabelUdhayamLordBhava" xml:space="preserve">
+    <value>Udhayam Lord &amp; Bhava</value>
+  </data>
+  <data name="LabelArudamBhava" xml:space="preserve">
+    <value>Arudam Bhava</value>
+  </data>
+  <data name="LabelPlanetTowardsArudam" xml:space="preserve">
+    <value>Planet towards Arudam</value>
+  </data>
+  <data name="LabelPlanetTowardsKavippu" xml:space="preserve">
+    <value>Planet towards Kavippu</value>
+  </data>
+  <data name="LabelBhavaInKavippu" xml:space="preserve">
+    <value>Bhava in Kavippu</value>
+  </data>
+  <data name="LabelExaltedPlanets" xml:space="preserve">
+    <value>Exalted Planets</value>
+  </data>
+  <data name="LabelDebilitatedPlanets" xml:space="preserve">
+    <value>Debilitated Planets</value>
+  </data>
+  <data name="LabelParivarthanaPlanets" xml:space="preserve">
+    <value>Parivarthana Planets</value>
+  </data>
+  <data name="LabelPlanetTowardsEmakandam" xml:space="preserve">
+    <value>Planet → Emakandam (ħ)</value>
+  </data>
+  <data name="LabelPlanetInRahuTime" xml:space="preserve">
+    <value>Planet → Rahu Time</value>
+  </data>
+  <data name="LabelPlanetTowardsMrithyu" xml:space="preserve">
+    <value>Planet → Mrithyu (8th)</value>
+  </data>
+  <data name="LabelNazhikai" xml:space="preserve">
+    <value>Nazhikai:</value>
+  </data>
   <data name="LabelChartNameIcon" xml:space="preserve">
     <value>📊 Chart Name</value>
   </data>
@@ -458,6 +497,24 @@
   </data>
   <data name="HeaderNakshatraLord" xml:space="preserve">
     <value>Nakshatra Lord</value>
+  </data>
+  <data name="HeaderNakshatra" xml:space="preserve">
+    <value>Nakshatra</value>
+  </data>
+  <data name="HeaderPada" xml:space="preserve">
+    <value>Pada</value>
+  </data>
+  <data name="HeaderKaraka" xml:space="preserve">
+    <value>Karaka</value>
+  </data>
+  <data name="HeaderGati" xml:space="preserve">
+    <value>Gati</value>
+  </data>
+  <data name="HeaderR" xml:space="preserve">
+    <value>R</value>
+  </data>
+  <data name="HeaderC" xml:space="preserve">
+    <value>C</value>
   </data>
   <data name="HeaderSpeed" xml:space="preserve">
     <value>Speed</value>

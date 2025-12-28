@@ -398,6 +398,45 @@
   <data name="NatalChartDetails" xml:space="preserve">
     <value>ஜாதக விவரங்கள்</value>
   </data>
+  <data name="LabelPlanetTowardsUdhayam" xml:space="preserve">
+    <value>உதயத்தை நோக்கி செல்லும் கிரகம்</value>
+  </data>
+  <data name="LabelUdhayamLordBhava" xml:space="preserve">
+    <value>உதய அதிபதி &amp; பாவம்</value>
+  </data>
+  <data name="LabelArudamBhava" xml:space="preserve">
+    <value>ஆருட பாவம்</value>
+  </data>
+  <data name="LabelPlanetTowardsArudam" xml:space="preserve">
+    <value>ஆருடத்தை நோக்கி செல்லும் கிரகம்</value>
+  </data>
+  <data name="LabelPlanetTowardsKavippu" xml:space="preserve">
+    <value>கவிப்பை நோக்கி செல்லும் கிரகம்</value>
+  </data>
+  <data name="LabelBhavaInKavippu" xml:space="preserve">
+    <value>கவிப்பில் உள்ள பாவம்</value>
+  </data>
+  <data name="LabelExaltedPlanets" xml:space="preserve">
+    <value>உச்ச கிரகங்கள்</value>
+  </data>
+  <data name="LabelDebilitatedPlanets" xml:space="preserve">
+    <value>நீச்ச கிரகங்கள்</value>
+  </data>
+  <data name="LabelParivarthanaPlanets" xml:space="preserve">
+    <value>பரிவர்த்தனை கிரகங்கள்</value>
+  </data>
+  <data name="LabelPlanetTowardsEmakandam" xml:space="preserve">
+    <value>எமகண்டத்தை நோக்கி செல்லும் கிரகம்</value>
+  </data>
+  <data name="LabelPlanetInRahuTime" xml:space="preserve">
+    <value>ராகு காலத்தில் உள்ள கிரகம்</value>
+  </data>
+  <data name="LabelPlanetTowardsMrithyu" xml:space="preserve">
+    <value>மிருத்யுவை நோக்கி செல்லும் கிரகம்</value>
+  </data>
+  <data name="LabelNazhikai" xml:space="preserve">
+    <value>நாழிகை:</value>
+  </data>
   <data name="NoContentAvailable" xml:space="preserve">
     <value>உள்ளடக்கம் இல்லை</value>
   </data>
@@ -458,6 +497,24 @@
   </data>
   <data name="HeaderNakshatraLord" xml:space="preserve">
     <value>நட்சத்திர அதிபதி</value>
+  </data>
+  <data name="HeaderNakshatra" xml:space="preserve">
+    <value>நட்சத்திரம்</value>
+  </data>
+  <data name="HeaderPada" xml:space="preserve">
+    <value>பாதம்</value>
+  </data>
+  <data name="HeaderKaraka" xml:space="preserve">
+    <value>காரகன்</value>
+  </data>
+  <data name="HeaderGati" xml:space="preserve">
+    <value>கதி</value>
+  </data>
+  <data name="HeaderR" xml:space="preserve">
+    <value>வ</value>
+  </data>
+  <data name="HeaderC" xml:space="preserve">
+    <value>அ</value>
   </data>
   <data name="HeaderSpeed" xml:space="preserve">
     <value>வேகம்</value>

@@ -1,5 +1,6 @@
 using System.Windows.Controls;
 using JamakolAstrology.Models;
+using JamakolAstrology.Services;
 using JamakolAstrology.Helpers;
 
 namespace JamakolAstrology.Controls;
@@ -24,34 +25,47 @@ public partial class PanchangaPanel : UserControl
     /// <summary>
     /// Update the panel with Panchanga details
     /// </summary>
+    /// <summary>
+    /// Update the panel with Panchanga details
+    /// </summary>
     public void UpdateDetails(PanchangaDetails details)
     {
-        // Nakshatra (English with pada)
-        NakshatraText.Text = !string.IsNullOrEmpty(details.NakshatraName) 
-            ? $"{details.NakshatraName} ({details.NakshatraPada})" 
+        bool isTamil = ZodiacUtils.IsTamil;
+
+        // Nakshatra
+        string nakName = isTamil ? details.NakshatraTamil : details.NakshatraName;
+        NakshatraText.Text = !string.IsNullOrEmpty(nakName) 
+            ? $"{nakName} ({details.NakshatraPada})" 
             : "-";
         
-        // Tithi (English with Paksha)
-        TithiText.Text = !string.IsNullOrEmpty(details.TithiName) 
-            ? $"{details.Paksha} / {details.TithiName}" 
+        // Tithi
+        string tithiName = isTamil ? details.TithiTamil : details.TithiName;
+        string paksha = isTamil ? details.PakshaTamil : details.Paksha;
+        TithiText.Text = !string.IsNullOrEmpty(tithiName) 
+            ? $"{paksha} / {tithiName}" 
             : "-";
         
-        // Yoga (English)
-        YogaText.Text = !string.IsNullOrEmpty(details.YogaName) 
-            ? details.YogaName 
+        // Yoga
+        string yogaName = isTamil ? details.YogaTamil : details.YogaName;
+        YogaText.Text = !string.IsNullOrEmpty(yogaName) 
+            ? yogaName 
             : "-";
         
-        // Karana (English)
-        KaranaText.Text = !string.IsNullOrEmpty(details.KaranaName) 
-            ? details.KaranaName 
+        // Karana
+        string karanaName = isTamil ? details.KaranaTamil : details.KaranaName;
+        KaranaText.Text = !string.IsNullOrEmpty(karanaName) 
+            ? karanaName 
             : "-";
         
-        // Day (English)
-        DayText.Text = !string.IsNullOrEmpty(details.DayName) 
-            ? details.DayName 
+        // Day
+        string dayName = isTamil ? details.DayTamil : details.DayName;
+        DayText.Text = !string.IsNullOrEmpty(dayName) 
+            ? dayName 
             : "-";
         
-        // Sunrise/Sunset
+        // Sunrise/Sunset - Time is culture invariant mostly (digits), but maybe "AM/PM" vs "மு/பி"?
+        // DateTime.ToString() handles it if culture set. detailed.Sunrise is string. 
+        // Keeping as is for now as it's time string.
         SunriseText.Text = !string.IsNullOrEmpty(details.Sunrise) 
             ? details.Sunrise 
             : "-";
@@ -67,24 +81,31 @@ public partial class PanchangaPanel : UserControl
             ? details.UdayadiNazhikai 
             : "-";
         
-        // Hora (English)
-        HoraText.Text = !string.IsNullOrEmpty(details.HoraLord) 
-            ? details.HoraLord 
+        // Hora
+        // Use Pre-calculated Tamil property if available, else standard
+        string hora = isTamil ? details.HoraLordTamil : details.HoraLord;
+        HoraText.Text = !string.IsNullOrEmpty(hora) 
+            ? hora 
             : "-";
             
         // Kala Hora
-        KalaHoraText.Text = !string.IsNullOrEmpty(details.KalaHoraLord) 
-            ? details.KalaHoraLord 
+        string kalaHora = isTamil ? details.KalaHoraLordTamil : details.KalaHoraLord;
+        KalaHoraText.Text = !string.IsNullOrEmpty(kalaHora) 
+            ? kalaHora 
             : "-";
         
-        // Rasi (English - Moon only)
-        RasiText.Text = !string.IsNullOrEmpty(details.MoonRasi) 
-            ? details.MoonRasi 
+        // Rasi (Moon)
+        string rasi = isTamil ? details.MoonRasiTamil : details.MoonRasi;
+        RasiText.Text = !string.IsNullOrEmpty(rasi) 
+            ? rasi 
             : "-";
         
-        // Year/Month (English names)
-        YearMonthText.Text = !string.IsNullOrEmpty(details.EnglishYear) 
-            ? $"{details.EnglishYear} / {details.EnglishMonth}" 
+        // Year/Month
+        // Use localized strings
+        string year = isTamil ? details.TamilYear : details.EnglishYear;
+        string month = isTamil ? details.TamilMonth : details.EnglishMonth;
+        YearMonthText.Text = !string.IsNullOrEmpty(year) 
+            ? $"{year} / {month}" 
             : "-";
     }
 }

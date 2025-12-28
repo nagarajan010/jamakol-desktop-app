@@ -13,7 +13,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Planet Towards Udhayam" Foreground="#555" FontSize="11"/>
+                <TextBlock Text="{x:Static res:Strings.LabelPlanetTowardsUdhayam}" Foreground="#555" FontSize="11"/>
                 <TextBlock x:Name="PlanetTowardsUdhayamText" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
             </Grid>
             
@@ -23,7 +23,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Udhayam Lord &amp; Bhava" Foreground="#555" FontSize="11"/>
+                <TextBlock Text="{x:Static res:Strings.LabelUdhayamLordBhava}" Foreground="#555" FontSize="11"/>
                 <TextBlock x:Name="UdhayamLordBhavaText" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
             </Grid>
             
@@ -33,7 +33,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Arudam Bhava" Foreground="#555" FontSize="11"/>
+                <TextBlock Text="{x:Static res:Strings.LabelArudamBhava}" Foreground="#555" FontSize="11"/>
                 <TextBlock x:Name="ArudamBhavaText" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
             </Grid>
             
@@ -43,7 +43,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Planet towards Arudam" Foreground="#555" FontSize="11"/>
+                <TextBlock Text="{x:Static res:Strings.LabelPlanetTowardsArudam}" Foreground="#555" FontSize="11"/>
                 <TextBlock x:Name="PlanetTowardsArudamText" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
             </Grid>
             
@@ -53,7 +53,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Planet towards Kavippu" Foreground="#555" FontSize="11"/>
+                <TextBlock Text="{x:Static res:Strings.LabelPlanetTowardsKavippu}" Foreground="#555" FontSize="11"/>
                 <TextBlock x:Name="PlanetTowardsKavippuText" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
             </Grid>
             
@@ -63,7 +63,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Bhava in Kavippu" Foreground="#555" FontSize="11"/>
+                <TextBlock Text="{x:Static res:Strings.LabelBhavaInKavippu}" Foreground="#555" FontSize="11"/>
                 <TextBlock x:Name="BhavaInKavippuText" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
             </Grid>
             
@@ -73,7 +73,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Exalted Planets" Foreground="#555" FontSize="11"/>
+                <TextBlock Text="{x:Static res:Strings.LabelExaltedPlanets}" Foreground="#555" FontSize="11"/>
                 <TextBlock x:Name="ExaltedPlanetsText" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
             </Grid>
             
@@ -83,7 +83,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Debilitated Planets" Foreground="#555" FontSize="11"/>
+                <TextBlock Text="{x:Static res:Strings.LabelDebilitatedPlanets}" Foreground="#555" FontSize="11"/>
                 <TextBlock x:Name="DebilitatedPlanetsText" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
             </Grid>
             
@@ -93,7 +93,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Parivarthana Planets" Foreground="#555" FontSize="11"/>
+                <TextBlock Text="{x:Static res:Strings.LabelParivarthanaPlanets}" Foreground="#555" FontSize="11"/>
                 <TextBlock x:Name="ParivarthanaPlanetsText" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
             </Grid>
             
@@ -103,7 +103,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Planet → Emakandam (ħ)" Foreground="#555" FontSize="11"/>
+                <TextBlock Text="{x:Static res:Strings.LabelPlanetTowardsEmakandam}" Foreground="#555" FontSize="11"/>
                 <TextBlock x:Name="EmakandamText" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
             </Grid>
             
@@ -113,7 +113,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Planet → Rahu Time" Foreground="#555" FontSize="11"/>
+                <TextBlock Text="{x:Static res:Strings.LabelPlanetInRahuTime}" Foreground="#555" FontSize="11"/>
                 <TextBlock x:Name="RahuTimeText" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
             </Grid>
             
@@ -123,7 +123,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Planet → Mrithyu (8th)" Foreground="#555" FontSize="11"/>
+                <TextBlock Text="{x:Static res:Strings.LabelPlanetTowardsMrithyu}" Foreground="#555" FontSize="11"/>
                 <TextBlock x:Name="MrithyuText" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
             </Grid>
         </StackPanel>

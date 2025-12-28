@@ -1,6 +1,7 @@
 <UserControl x:Class="JamakolAstrology.Controls.JamaGrahaGrid"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:res="clr-namespace:JamakolAstrology.Resources">
     
     <DataGrid x:Name="DataGridControl" 
               Style="{StaticResource DataGridStyle}"
@@ -24,11 +25,11 @@
             </Style>
         </DataGrid.ColumnHeaderStyle>
         <DataGrid.Columns>
-            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="Auto"/>
-            <DataGridTextColumn Header="Degree" Binding="{Binding DegreeDisplay}" Width="Auto"/>
-            <DataGridTextColumn Header="Nakshatra" Binding="{Binding NakshatraName}" Width="Auto"/>
-            <DataGridTextColumn Header="Pada" Binding="{Binding Pada}" Width="Auto"/>
-            <DataGridTextColumn Header="Sign" Binding="{Binding SignName}" Width="Auto"/>
+            <DataGridTextColumn Header="{x:Static res:Strings.HeaderPlanet}" Binding="{Binding Name, Converter={StaticResource PlanetNameConverter}}" Width="Auto"/>
+            <DataGridTextColumn Header="{x:Static res:Strings.HeaderDegree}" Binding="{Binding DegreeDisplay}" Width="Auto"/>
+            <DataGridTextColumn Header="{x:Static res:Strings.HeaderNakshatra}" Binding="{Binding NakshatraName, Converter={StaticResource NakshatraNameConverter}}" Width="Auto"/>
+            <DataGridTextColumn Header="{x:Static res:Strings.HeaderPada}" Binding="{Binding Pada}" Width="Auto"/>
+            <DataGridTextColumn Header="{x:Static res:Strings.HeaderSign}" Binding="{Binding SignName, Converter={StaticResource SignNameConverter}}" Width="Auto"/>
         </DataGrid.Columns>
     </DataGrid>
 </UserControl>
