@@ -61,6 +61,12 @@
   <data name="BtnSettings" xml:space="preserve">
     <value>⚙ அமைப்புகள்</value>
   </data>
+  <data name="TabJamaGrahaPositions" xml:space="preserve">
+    <value>ஜாம கிரக நிலைகள்</value>
+  </data>
+  <data name="TabPlanetaryPositions" xml:space="preserve">
+    <value>கிரக நிலைகள்</value>
+  </data>
 
   <!-- Birth Chart Tabs -->
   <data name="TabChakras" xml:space="preserve">
@@ -340,7 +346,7 @@
     <value>📋 உங்கள் சேமித்த ஜாதகங்கள்</value>
   </data>
   <data name="BtnLoadChart" xml:space="preserve">
-    <value>📤 ஜாதகத்தை ஏற்று</value>
+    <value>📤 ஜாதகத்தை காட்டு</value>
   </data>
   <data name="BtnEdit" xml:space="preserve">
     <value>✏️ திருத்து</value>
@@ -349,7 +355,7 @@
     <value>🗑️ நீக்கு</value>
   </data>
   <data name="BtnClose" xml:space="preserve">
-    <value>மூடு</value>
+    <value>வெளியேறு</value>
   </data>
   <data name="BtnSearchText" xml:space="preserve">
     <value>தேடு</value>

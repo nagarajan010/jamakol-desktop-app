@@ -95,6 +95,18 @@ namespace JamakolAstrology.Resources {
             }
         }
         
+        public static string TabJamaGrahaPositions {
+            get {
+                return ResourceManager.GetString("TabJamaGrahaPositions", resourceCulture);
+            }
+        }
+        
+        public static string TabPlanetaryPositions {
+            get {
+                return ResourceManager.GetString("TabPlanetaryPositions", resourceCulture);
+            }
+        }
+        
         public static string TabChakras {
             get {
                 return ResourceManager.GetString("TabChakras", resourceCulture);

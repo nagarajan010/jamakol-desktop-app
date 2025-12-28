@@ -61,6 +61,12 @@
   <data name="BtnSettings" xml:space="preserve">
     <value>⚙ Settings</value>
   </data>
+  <data name="TabJamaGrahaPositions" xml:space="preserve">
+    <value>Jama Graha Positions</value>
+  </data>
+  <data name="TabPlanetaryPositions" xml:space="preserve">
+    <value>Planetary Positions</value>
+  </data>
 
   <!-- Birth Chart Tabs -->
   <data name="TabChakras" xml:space="preserve">
