@@ -6,12 +6,6 @@
              xmlns:local="clr-namespace:JamakolAstrology.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
-        <Style x:Key="CenteredCell" TargetType="TextBlock">
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-        </Style>
-    </UserControl.Resources>
     
     <Grid>
         <DataGrid x:Name="KPGrid" 
@@ -21,7 +15,6 @@
                   CanUserSortColumns="False"
                   IsReadOnly="True"
                   HeadersVisibility="Column" 
-                  FontSize="11"
                   BorderThickness="0">
             <DataGrid.ColumnHeaderStyle>
                 <Style TargetType="DataGridColumnHeader">
@@ -33,28 +26,13 @@
                 </Style>
             </DataGrid.ColumnHeaderStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Body/Cusp" Binding="{Binding Name}" Width="120">
-                     <DataGridTextColumn.ElementStyle>
-                         <Style TargetType="TextBlock">
-                             <Setter Property="FontWeight" Value="SemiBold"/>
-                             <Setter Property="Padding" Value="5,2"/>
-                         </Style>
-                     </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="Nakshatra Lord" Binding="{Binding StarLord}" Width="*"/>
-                <DataGridTextColumn Header="Sub Lord" Binding="{Binding SubLord}" Width="*">
-                     <DataGridTextColumn.ElementStyle>
-                         <Style TargetType="TextBlock">
-                             <Setter Property="HorizontalAlignment" Value="Center"/>
-                             <Setter Property="FontWeight" Value="SemiBold"/>
-                             <Setter Property="Foreground" Value="#cc0000"/>
-                         </Style>
-                     </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="Prati-Sub" Binding="{Binding SubSubLord}" Width="*"/>
-                <DataGridTextColumn Header="Sookshma" Binding="{Binding SookshmaLord}" Width="*"/>
-                <DataGridTextColumn Header="Prana" Binding="{Binding PranaLord}" Width="*"/>
-                <DataGridTextColumn Header="Deha" Binding="{Binding DehaLord}" Width="*"/>
+                <DataGridTextColumn Header="Body/Cusp" Binding="{Binding Name}" Width="Auto"/>
+                <DataGridTextColumn Header="Nakshatra Lord" Binding="{Binding StarLord}" Width="Auto"/>
+                <DataGridTextColumn Header="Sub Lord" Binding="{Binding SubLord}" Width="Auto" FontWeight="Bold" Foreground="#cc0000"/>
+                <DataGridTextColumn Header="Prati-Sub" Binding="{Binding SubSubLord}" Width="Auto"/>
+                <DataGridTextColumn Header="Sookshma" Binding="{Binding SookshmaLord}" Width="Auto"/>
+                <DataGridTextColumn Header="Prana" Binding="{Binding PranaLord}" Width="Auto"/>
+                <DataGridTextColumn Header="Deha" Binding="{Binding DehaLord}" Width="Auto"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

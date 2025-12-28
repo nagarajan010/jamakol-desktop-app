@@ -5,19 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
-        <Style TargetType="DataGridColumnHeader">
-            <Setter Property="Background" Value="#fff8dc"/>
-            <Setter Property="Foreground" Value="#333"/>
-            <Setter Property="Padding" Value="10,5"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="BorderBrush" Value="#ddd"/>
-            <Setter Property="BorderThickness" Value="0,0,1,1"/>
-        </Style>
-        <Style x:Key="CenteredCell" TargetType="TextBlock">
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-        </Style>
-    </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -39,15 +26,7 @@
                   CanUserSortColumns="False"
                   IsReadOnly="True" 
                   HeadersVisibility="Column" 
-                  GridLinesVisibility="Horizontal"
-                  HorizontalGridLinesBrush="#eee"
-                  VerticalGridLinesBrush="#eee"
-                  Background="White" 
                   BorderThickness="0"
-                  FontSize="11"
-                  AlternatingRowBackground="#fafafa"
-                  SelectionMode="Single"
-                  SelectionUnit="FullRow"
                   Style="{StaticResource DataGridStyle}">
             <DataGrid.ContextMenu>
                 <ContextMenu x:Name="VargaContextMenu">
@@ -61,28 +40,16 @@
                     <Setter Property="Padding" Value="6,4"/>
                     <Setter Property="FontWeight" Value="SemiBold"/>
                     <Setter Property="FontSize" Value="10"/>
-                    <Setter Property="BorderBrush" Value="#cc0000"/>
-                    <Setter Property="BorderThickness" Value="0,0,1,0"/>
                 </Style>
             </DataGrid.ColumnHeaderStyle>
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Body" Binding="{Binding PlanetName}" Width="1.2*"/>
-                <DataGridTextColumn Header="Division" Binding="{Binding DivisionSign}" Width="0.8*" ElementStyle="{StaticResource CenteredCell}"/>
-                <DataGridTextColumn Header="Index" Binding="{Binding Index}" Width="0.6*" ElementStyle="{StaticResource CenteredCell}"/>
-                <DataGridTextColumn x:Name="DeityColumn" Header="In whose amsa" Binding="{Binding Deity}" Width="2*" FontWeight="SemiBold" Foreground="#cc0000">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Foreground" Value="#cc0000"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
-                                    <Setter Property="Foreground" Value="Black"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
+                <DataGridTextColumn Header="Body" Binding="{Binding PlanetName}" Width="Auto"/>
+                <DataGridTextColumn Header="Division" Binding="{Binding DivisionSign}" Width="Auto"/>
+                <DataGridTextColumn Header="Index" Binding="{Binding Index}" Width="Auto"/>
+                <DataGridTextColumn x:Name="DeityColumn" Header="In whose amsa" Binding="{Binding Deity}" Width="Auto" FontWeight="Bold" Foreground="#cc0000"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
 </UserControl>
+

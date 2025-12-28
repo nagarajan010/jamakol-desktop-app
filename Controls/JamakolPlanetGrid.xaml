@@ -10,7 +10,6 @@
               CanUserAddRows="False"
               CanUserDeleteRows="False"
               CanUserSortColumns="False"
-              FontSize="11"
               IsSynchronizedWithCurrentItem="False"
               SelectionMode="Single"
               PreviewMouseWheel="DataGrid_PreviewMouseWheel"
