@@ -116,8 +116,32 @@ public partial class MainWindow : Window
         }
     }
     
+
+    
     // Global shared side charts instance
     private Controls.SideChartsPanel? _sharedSideCharts;
+
+    private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (e.Source is TabControl && MainTabControl.SelectedIndex != -1)
+        {
+            // Update tab buttons appearance
+            UpdateTabButtons(MainTabControl.SelectedIndex);
+
+            // Focus Name Field on Active Tab
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                if (MainTabControl.SelectedIndex == 0) // Birth Chart
+                {
+                    BirthInputControl.FocusNameField();
+                }
+                else if (MainTabControl.SelectedIndex == 1) // Jamakol
+                {
+                    JamakolInputControl.FocusNameField();
+                }
+            }), System.Windows.Threading.DispatcherPriority.Input);
+        }
+    }
 
     private void BirthContentTabs_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
     {
@@ -314,13 +338,13 @@ public partial class MainWindow : Window
     private void BtnBirthChart_Click(object sender, RoutedEventArgs e)
     {
         MainTabControl.SelectedIndex = 0;
-        UpdateTabButtons(0);
+        // SelectionChanged event handles the update
     }
 
     private void BtnJamakol_Click(object sender, RoutedEventArgs e)
     {
         MainTabControl.SelectedIndex = 1;
-        UpdateTabButtons(1);
+        // SelectionChanged event handles the update
     }
 
     private void SettingsButton_Click(object sender, RoutedEventArgs e)

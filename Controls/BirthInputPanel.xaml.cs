@@ -27,6 +27,25 @@ public partial class BirthInputPanel : UserControl
         _isUpdatingText = true; // Prevent initial search/popup on startup
         InitializeComponent();
         _isUpdatingText = false;
+
+        // Auto-select text on focus
+        NameInput.GotKeyboardFocus += TextBox_GotKeyboardFocus;
+        YearInput.GotKeyboardFocus += TextBox_GotKeyboardFocus;
+        MonthInput.GotKeyboardFocus += TextBox_GotKeyboardFocus;
+        DayInput.GotKeyboardFocus += TextBox_GotKeyboardFocus;
+        TimeInput.GotKeyboardFocus += TextBox_GotKeyboardFocus;
+        LocationInput.GotKeyboardFocus += TextBox_GotKeyboardFocus;
+        LatitudeInput.GotKeyboardFocus += TextBox_GotKeyboardFocus;
+        LongitudeInput.GotKeyboardFocus += TextBox_GotKeyboardFocus;
+        TimezoneInput.GotKeyboardFocus += TextBox_GotKeyboardFocus;
+    }
+
+    private void TextBox_GotKeyboardFocus(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
+    {
+        if (sender is TextBox textBox)
+        {
+            textBox.SelectAll();
+        }
     }
 
     // Properties to access input values
@@ -277,5 +296,11 @@ public partial class BirthInputPanel : UserControl
         _isUpdatingText = true;
         LocationInput.Text = location;
         _isUpdatingText = false;
+    }
+
+
+    public void FocusNameField()
+    {
+        NameInput.Focus();
     }
 }

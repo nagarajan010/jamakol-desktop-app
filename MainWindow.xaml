@@ -69,7 +69,7 @@
         </Border>
 
         <!-- Full Screen Tabs -->
-        <TabControl x:Name="MainTabControl" Grid.Row="1" Background="#fffff0" BorderThickness="0" Margin="2">
+        <TabControl x:Name="MainTabControl" Grid.Row="1" Background="#fffff0" BorderThickness="0" Margin="2" SelectionChanged="MainTabControl_SelectionChanged">
             <TabControl.Template>
                 <ControlTemplate TargetType="TabControl">
                     <Grid>

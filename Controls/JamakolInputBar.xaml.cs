@@ -44,6 +44,22 @@ public partial class JamakolInputBar : UserControl
         // Setup live timer
         _liveTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
         _liveTimer.Tick += LiveTimer_Tick_Internal;
+
+        // Auto-select text on focus
+        NameInput.GotKeyboardFocus += TextBox_GotKeyboardFocus;
+        TimeInput.GotKeyboardFocus += TextBox_GotKeyboardFocus;
+        LocationInput.GotKeyboardFocus += TextBox_GotKeyboardFocus;
+        LatInput.GotKeyboardFocus += TextBox_GotKeyboardFocus;
+        LongInput.GotKeyboardFocus += TextBox_GotKeyboardFocus;
+        TzInput.GotKeyboardFocus += TextBox_GotKeyboardFocus;
+    }
+
+    private void TextBox_GotKeyboardFocus(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
+    {
+        if (sender is TextBox textBox)
+        {
+            textBox.SelectAll();
+        }
     }
 
     /// <summary>
@@ -296,5 +312,10 @@ public partial class JamakolInputBar : UserControl
     private void ImportButton_Click(object sender, RoutedEventArgs e)
     {
         ImportRequested?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void FocusNameField()
+    {
+        NameInput.Focus();
     }
 }
