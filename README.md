@@ -23,12 +23,20 @@ The core feature of this application is the robust **Jamakol Prasanam** module, 
 ### 🌌 Birth Chart Analysis
 A full-featured horoscope generation engine powered by **Swiss Ephemeris**.
 * **High Precision**: Planetary longitudes calculated to the second.
-* **Ayanamsa Support**: Over 30+ Ayanamsas supported including:
-  * Lahiri (Chitrapaksha)
-  * KP (Krishnamurti)
-  * Raman
-  * Fagan-Bradley
-  * True Chitra / True Revati
+* **Combustion (Asta) Settings**:
+  * **Mars**: 17°
+  * **Mercury**: 14° (12° if Retrograde)
+  * **Jupiter**: 11°
+  * **Venus**: 10° (8° if Retrograde)
+  * **Saturn**: 15°
+* **Ayanamsa Support**: Comprehensive support for 30+ Ayanamsas used in Vedic and Western astrology:
+  * **Standard**: Lahiri (Chitrapaksha), KP (Krishnamurti), Raman, Fagan-Bradley.
+  * **Vedic/Siddhantic**: Suryasiddhanta (True/Mean), Aryabhata (True/Mean), SS Revati, SS Citra.
+  * **Star-Based**: True Chitra (Spica), True Revati, True Pushya, True Mula (Chandra Hari), Dhruva.
+  * **Babylonian**: Kugler (1, 2, 3), Huber, Eta Piscium, Aldebaran.
+  * **Galactic**: Galactic Center (0 Sag, Gil Brand, Mula Bol), Skydram.
+  * **Western/Historical**: Hipparchus, Sassanian, J2000, J1900, B1950.
+  * **Others**: De Luce, Usha-Shashi, Djwhal Khul, Yukteshwar, JN Bhasin.
 * **Divisional Charts (Vargas)**: Complete support for all major Vargas:
   * D1 (Rasi), D2 (Hora), D3 (Drekkana), D4 (Chaturthamsha), D7 (Saptamia), D9 (Navamsa)
   * D10 (Dasamsa), D12 (Dwadasamsa), D16 (Shodashamsa), D20, D24, D27, D30, D40, D45, D60.
@@ -160,7 +168,11 @@ Found a bug or have a feature request? Please help us improve by reporting it:
 *   **Bug Reports**: Open a [New Issue](https://github.com/nagarajan010/jamakol-desktop-app/issues) with a detailed description.
 *   **Feature Requests**: We welcome ideas! Feel free to discuss them in the Issues section.
 
-## 📜 License
+## � Acknowledgements
+
+Special thanks to the [kunjara/jyotish](https://github.com/kunjara/jyotish/) repository. Their open-source code was incredibly helpful in verifying calculation logic and understanding complex astrological algorithms.
+
+## �📜 License
 
 This project is licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**.
 
