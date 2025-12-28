@@ -278,29 +278,11 @@
   <data name="PanchangaTitle" xml:space="preserve">
     <value>பஞ்சாங்க விவரங்கள்</value>
   </data>
-  <data name="LabelTithi" xml:space="preserve">
-    <value>திதி:</value>
-  </data>
-  <data name="LabelNakshatra" xml:space="preserve">
-    <value>நட்சத்திரம்:</value>
-  </data>
-  <data name="LabelYoga" xml:space="preserve">
-    <value>யோகம்:</value>
-  </data>
-  <data name="LabelKarana" xml:space="preserve">
-    <value>கரணம்:</value>
-  </data>
   <data name="LabelVara" xml:space="preserve">
     <value>வாரம்:</value>
   </data>
   <data name="LabelRasi" xml:space="preserve">
     <value>ராசி:</value>
-  </data>
-  <data name="LabelSunrise" xml:space="preserve">
-    <value>சூரிய உதயம்:</value>
-  </data>
-  <data name="LabelSunset" xml:space="preserve">
-    <value>சூரிய அஸ்தமனம்:</value>
   </data>
   <data name="LabelHora" xml:space="preserve">
     <value>ஹோரை:</value>

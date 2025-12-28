@@ -9,6 +9,14 @@
         <converters:PlanetNameConverter x:Key="PlanetNameConverter"/>
         <converters:NakshatraNameConverter x:Key="NakshatraNameConverter"/>
         <converters:SignNameConverter x:Key="SignNameConverter"/>
+
+        <!-- Fonts -->
+        <FontFamily x:Key="TamilFont">pack://application:,,,/Fonts/#Noto Sans Tamil</FontFamily>
+
+        <!-- Global Window Style -->
+        <Style TargetType="Window">
+            <Setter Property="FontFamily" Value="{StaticResource TamilFont}"/>
+        </Style>
         
         <!-- Light Theme Styles -->
         <Style x:Key="TopInputStyle" TargetType="TextBox">
