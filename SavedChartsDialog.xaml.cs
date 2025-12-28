@@ -43,12 +43,12 @@ public partial class SavedChartsDialog : Window
         // Set title based on chart type
         if (chartTypeFilter == "BirthChart")
         {
-            this.Title = "Saved Birth Charts";
+            this.Title = JamakolAstrology.Resources.Strings.TitleSavedBirthCharts;
             ResultColumn.Visibility = Visibility.Collapsed;
         }
         else if (chartTypeFilter == "Jamakol")
         {
-            this.Title = "Saved Jamakol Charts";
+            this.Title = JamakolAstrology.Resources.Strings.TitleSavedJamakolCharts;
         }
         
         LoadCharts();

@@ -371,6 +371,27 @@
   <data name="DialogChartDetails" xml:space="preserve">
     <value>Chart Details</value>
   </data>
+  <data name="TitleSavedBirthCharts" xml:space="preserve">
+    <value>Saved Birth Charts</value>
+  </data>
+  <data name="TitleSavedJamakolCharts" xml:space="preserve">
+    <value>Saved Jamakol Charts</value>
+  </data>
+  <data name="HeaderName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="HeaderDateTime" xml:space="preserve">
+    <value>Date/Time</value>
+  </data>
+  <data name="HeaderResult" xml:space="preserve">
+    <value>Result</value>
+  </data>
+  <data name="HeaderCategory" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="HeaderPrediction" xml:space="preserve">
+    <value>Prediction</value>
+  </data>
   <data name="LabelPlanetTowardsUdhayam" xml:space="preserve">
     <value>Planet Towards Udhayam</value>
   </data>

@@ -176,7 +176,7 @@
     <value>💾 சேமி</value>
   </data>
   <data name="BtnSavedCharts" xml:space="preserve">
-    <value>📋 சேமித்த படங்கள்</value>
+    <value>📋 சேமித்த ஜாதகங்கள்</value>
   </data>
   <data name="BtnCancel" xml:space="preserve">
     <value>ரத்து</value>
@@ -213,7 +213,7 @@
     <value>இயல்பு நேர மண்டலம்:</value>
   </data>
   <data name="LabelChartFontSize" xml:space="preserve">
-    <value>படம் எழுத்து அளவு:</value>
+    <value>ஜாதகம் எழுத்து அளவு:</value>
   </data>
   <data name="LabelJamaGrahaFont" xml:space="preserve">
     <value>ஜம கிரக எழுத்து:</value>
@@ -259,10 +259,10 @@
     <value>நகரத்தை தேடு</value>
   </data>
   <data name="TooltipExport" xml:space="preserve">
-    <value>சேமித்த படங்களை ஏற்றுமதி செய்</value>
+    <value>சேமித்த ஜாதகங்களை ஏற்றுமதி செய்</value>
   </data>
   <data name="TooltipImport" xml:space="preserve">
-    <value>படங்களை இறக்குமதி செய்</value>
+    <value>ஜாதகங்களை இறக்குமதி செய்</value>
   </data>
   <data name="TooltipYear" xml:space="preserve">
     <value>ஆண்டு (கி.மு. க்கு எதிர்மறை பயன்படுத்தவும், எ.கா. -3227 = 3228 கி.மு.)</value>
@@ -298,7 +298,7 @@
 
   <!-- Save Dialog Labels -->
   <data name="LabelChartName" xml:space="preserve">
-    <value>படத்தின் பெயர்</value>
+    <value>ஜாதகத்தின் பெயர்</value>
   </data>
   <data name="LabelDateTimeBc" xml:space="preserve">
     <value>தேதி / நேரம் (கி.மு. க்கு எதிர்மறை ஆண்டு)</value>
@@ -337,10 +337,10 @@
     <value>சேமி / புதுப்பி</value>
   </data>
   <data name="HeaderSavedCharts" xml:space="preserve">
-    <value>📋 உங்கள் சேமித்த படங்கள்</value>
+    <value>📋 உங்கள் சேமித்த ஜாதகங்கள்</value>
   </data>
   <data name="BtnLoadChart" xml:space="preserve">
-    <value>📤 படத்தை ஏற்று</value>
+    <value>📤 ஜாதகத்தை ஏற்று</value>
   </data>
   <data name="BtnEdit" xml:space="preserve">
     <value>✏️ திருத்து</value>
@@ -360,19 +360,40 @@
 
   <!-- Dialog Titles -->
   <data name="DialogSaveChart" xml:space="preserve">
-    <value>படத்தை சேமி</value>
+    <value>ஜாதகத்தை சேமி</value>
   </data>
   <data name="DialogSavedCharts" xml:space="preserve">
-    <value>சேமித்த படங்கள்</value>
+    <value>சேமித்த ஜாதகங்கள்</value>
   </data>
   <data name="DialogPlaceSearch" xml:space="preserve">
     <value>இடத்தை தேடு</value>
   </data>
   <data name="DialogChartDetails" xml:space="preserve">
-    <value>படத்தின் விவரங்கள்</value>
+    <value>ஜாதகத்தின் விவரங்கள்</value>
+  </data>
+  <data name="TitleSavedBirthCharts" xml:space="preserve">
+    <value>சேமித்த ஜாதகங்கள்</value>
+  </data>
+  <data name="TitleSavedJamakolCharts" xml:space="preserve">
+    <value>சேமித்த ஜமகோல் ஜாதகங்கள்</value>
+  </data>
+  <data name="HeaderName" xml:space="preserve">
+    <value>பெயர்</value>
+  </data>
+  <data name="HeaderDateTime" xml:space="preserve">
+    <value>தேதி/நேரம்</value>
+  </data>
+  <data name="HeaderResult" xml:space="preserve">
+    <value>முடிவு</value>
+  </data>
+  <data name="HeaderCategory" xml:space="preserve">
+    <value>வகை</value>
+  </data>
+  <data name="HeaderPrediction" xml:space="preserve">
+    <value>கணிப்பு</value>
   </data>
   <data name="LabelChartNameIcon" xml:space="preserve">
-    <value>📊 படத்தின் பெயர்</value>
+    <value>📊 ஜாதகத்தின் பெயர்</value>
   </data>
   <data name="PlanetaryPositions" xml:space="preserve">
     <value>கிரக நிலைகள்</value>
@@ -446,22 +467,22 @@
 
   <!-- Messages -->
   <data name="MsgChartSaved" xml:space="preserve">
-    <value>படம் வெற்றிகரமாக சேமிக்கப்பட்டது!</value>
+    <value>ஜாதகம் வெற்றிகரமாக சேமிக்கப்பட்டது!</value>
   </data>
   <data name="MsgSettingsSaved" xml:space="preserve">
     <value>அமைப்புகள் சேமிக்கப்பட்டன. மொழி மாற்றங்கள் நடைமுறைக்கு வர பயன்பாட்டை மீண்டும் தொடங்கவும்.</value>
   </data>
   <data name="MsgConfirmDelete" xml:space="preserve">
-    <value>இந்த படத்தை நிச்சயமாக நீக்க விரும்புகிறீர்களா?</value>
+    <value>இந்த ஜாதகத்தை நிச்சயமாக நீக்க விரும்புகிறீர்களா?</value>
   </data>
   <data name="MsgExportSuccess" xml:space="preserve">
-    <value>படங்கள் வெற்றிகரமாக ஏற்றுமதி செய்யப்பட்டன!</value>
+    <value>ஜாதகங்கள் வெற்றிகரமாக ஏற்றுமதி செய்யப்பட்டன!</value>
   </data>
   <data name="MsgImportSuccess" xml:space="preserve">
-    <value>படங்கள் வெற்றிகரமாக இறக்குமதி செய்யப்பட்டன!</value>
+    <value>ஜாதகங்கள் வெற்றிகரமாக இறக்குமதி செய்யப்பட்டன!</value>
   </data>
   <data name="MsgNoChartsFound" xml:space="preserve">
-    <value>சேமித்த படங்கள் எதுவும் இல்லை.</value>
+    <value>சேமித்த ஜாதகங்கள் எதுவும் இல்லை.</value>
   </data>
 
   <!-- Data Grid Headers -->

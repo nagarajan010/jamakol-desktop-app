@@ -937,5 +937,47 @@ namespace JamakolAstrology.Resources {
                 return ResourceManager.GetString("HeaderC", resourceCulture);
             }
         }
+
+        public static string TitleSavedBirthCharts {
+            get {
+                return ResourceManager.GetString("TitleSavedBirthCharts", resourceCulture);
+            }
+        }
+
+        public static string TitleSavedJamakolCharts {
+            get {
+                return ResourceManager.GetString("TitleSavedJamakolCharts", resourceCulture);
+            }
+        }
+
+        public static string HeaderName {
+            get {
+                return ResourceManager.GetString("HeaderName", resourceCulture);
+            }
+        }
+
+        public static string HeaderDateTime {
+            get {
+                return ResourceManager.GetString("HeaderDateTime", resourceCulture);
+            }
+        }
+
+        public static string HeaderResult {
+            get {
+                return ResourceManager.GetString("HeaderResult", resourceCulture);
+            }
+        }
+
+        public static string HeaderCategory {
+            get {
+                return ResourceManager.GetString("HeaderCategory", resourceCulture);
+            }
+        }
+
+        public static string HeaderPrediction {
+            get {
+                return ResourceManager.GetString("HeaderPrediction", resourceCulture);
+            }
+        }
     }
 }

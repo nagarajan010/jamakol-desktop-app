@@ -38,11 +38,11 @@
                 </Style>
             </DataGrid.ColumnHeaderStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="150"/>
-                <DataGridTextColumn Header="Date/Time" Binding="{Binding DateTimeDisplay}" Width="130"/>
-                <DataGridTextColumn x:Name="ResultColumn" Header="Result" Binding="{Binding Result}" Width="70"/>
-                <DataGridTextColumn Header="Category" Binding="{Binding CategoryName}" Width="100"/>
-                <DataGridTextColumn Header="Prediction" Binding="{Binding PredictionPreview}" Width="*"/>
+                <DataGridTextColumn Header="{x:Static res:Strings.HeaderName}" Binding="{Binding Name}" Width="150"/>
+                <DataGridTextColumn Header="{x:Static res:Strings.HeaderDateTime}" Binding="{Binding DateTimeDisplay}" Width="130"/>
+                <DataGridTextColumn x:Name="ResultColumn" Header="{x:Static res:Strings.HeaderResult}" Binding="{Binding Result}" Width="70"/>
+                <DataGridTextColumn Header="{x:Static res:Strings.HeaderCategory}" Binding="{Binding CategoryName}" Width="100"/>
+                <DataGridTextColumn Header="{x:Static res:Strings.HeaderPrediction}" Binding="{Binding PredictionPreview}" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
         
