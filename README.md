@@ -57,8 +57,25 @@ Real-time calculation of the five limbs of time:
 * **Import/Export**: Backup your entire chart database to a single JSON file or share with others.
 * **Settings & Customization**:
   * Visual: Adjustable font sizes for Tables, Charts, and Inputs.
-  * Computation: Configurable Sunrise modes (Tip/Center, Apparent/True).
+  * Computation: **4 Advanced Sunrise Calculation Modes**:
+    1.  **Tip (Upper Limb) + Apparent** (Standard for most almanacs).
+    2.  **Tip (Upper Limb) + True** (Geometric).
+    3.  **Center + Apparent** (Refraction corrected).
+    4.  **Center + True** (Astronomical center).
   * Usage: Toggle "Hide Degrees" for cleaner presentations.
+
+## 🕰️ Supported Date Ranges
+
+The application comes bundled with extensive Swiss Ephemeris data files, allowing for deep historical and futuristic analysis.
+
+*   **Range**: Approximately **13,000 BCE** to **16,800 CE**.
+*   **Precision**: High-precision calculations are available throughout this entire period, making it suitable for research into ancient historical charts and long-term astrological cycles.
+
+> [!NOTE] 
+> **BC Date Convention**: This software follows the **Astronomical Year Numbering** used by Swiss Ephemeris.
+> *   **Year 0** corresponds to **1 BCE**
+> *   **Year -1** corresponds to **2 BCE**
+> *   *Formula*: `Astronomical Year = 1 - Historical Year (BCE)`
 
 ## 🌍 Supported Languages
 
