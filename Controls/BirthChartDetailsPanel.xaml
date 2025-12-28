@@ -34,7 +34,7 @@
                 <Border Grid.Column="1" Background="#fffff8" CornerRadius="5" Padding="5" Margin="5,0,0,0" BorderBrush="#ddd" BorderThickness="1">
                     <StackPanel>
                         <TextBlock Text="{x:Static res:Strings.TabAshtakavarga}" FontWeight="Bold" Foreground="#990000" Margin="0,0,0,5"/>
-                        <controls:AshtakavargaDetailsPanel x:Name="AshtakavargaControl" Height="300"/>
+                        <controls:AshtakavargaDetailsPanel x:Name="AshtakavargaControl" Height="Auto"/>
                     </StackPanel>
                 </Border>
             </Grid>
