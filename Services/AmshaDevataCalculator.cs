@@ -15,7 +15,16 @@ public static class AmshaDevataCalculator
 
     public static AmshaDevataResult GetDeity(int division, double longitude, int sign)
     {
-        // Degree in sign = longitude % 30
+        var result = GetDeityInternal(division, longitude, sign);
+        if (ZodiacUtils.IsTamil)
+        {
+            result.Deity = LocalizeDeity(result.Deity);
+        }
+        return result;
+    }
+
+    private static AmshaDevataResult GetDeityInternal(int division, double longitude, int sign)
+    {
         double degreeInSign = longitude % 30;
         
         switch (division)
@@ -37,6 +46,72 @@ public static class AmshaDevataCalculator
             case 60: return GetShashtiamsaDeity(degreeInSign, sign);
             default: return new AmshaDevataResult { Deity = "", DeityIndex = 0, PartNumber = 0 };
         }
+    }
+    
+    private static string LocalizeDeity(string en)
+    {
+        return en switch
+        {
+            // D-2 / D-9
+            "Deva" => "தேவர்",
+            "Pitri" => "பித்ரு",
+            "Manushya" => "மனுஷ்ய",
+            "Rakshasa" => "ராட்சச",
+            
+            // D-3
+            "Narada" => "நாரதர்",
+            "Agastya" => "அகஸ்தியர்",
+            "Durvasa" => "துர்வாசர்",
+            
+            // D-7 (Liquids)
+            "Kshaara" => "கார", // Salty
+            "Ksheera" => "க்ஷீர", // Milk
+            "Dadhi" => "ததி", // Curd
+            "Ghrita" => "கிருத", // Ghee
+            "Ikshu Rasa" => "இக்ஷு ரச", // Sugarcane
+            "Madya" => "மத்ய", // Wine/Alchohol
+            "Suddha Jala" => "சுத்த ஜல", // Pure Water
+            
+            // D-10 (Digpalas)
+            "Indra" => "இந்திரன்",
+            "Agni" => "அக்னி",
+            "Yama" => "யமன்",
+            "Varuna" => "வருணன்",
+            "Vayu" => "வாயு",
+            "Kubera" => "குபேரன்",
+            "Isana" => "ஈசானன்",
+            "Brahma" => "பிரம்மா",
+            "Ananta" => "அனந்தன்",
+            
+            // D-12
+            "Ganesha" => "கணேசர்",
+            "Ashvini Kumaras" => "அஸ்வினி குமாரர்",
+            "Sarpa" => "சர்ப்பம்",
+            
+            // D-16
+            "Vishnu" => "விஷ்ணு",
+            "Shiva" => "சிவன்",
+            "Surya" => "சூரியன்",
+            
+            // D-20 (Devis)
+            "Kali" => "காளி", "Gauri" => "கௌரி", "Jaya" => "ஜெயா", "Lakshmi" => "லட்சுமி", 
+            "Vijaya" => "விஜயா", "Vimala" => "விமலா", "Sati" => "சதி", "Tara" => "தாரா",
+            "Jvalamukhi" => "ஜ்வாலாமுகி", "Sveta" => "ஸ்வேதா", "Lalita" => "லலிதா", 
+            "Bagalamukhi" => "பகலாமுகி", "Pratyangira" => "பிரத்தியங்கிரா", "Shachi" => "சசி",
+            "Raudri" => "ரௌத்ரி", "Bhavani" => "பவானி", "Varada" => "வரதா", 
+            "Tripurasundari" => "திரிபுரசுந்தரி",
+            
+            // D-24
+            "Skanda" => "ஸ்கந்தன்", "Parshudhara" => "பரசுதார", "Anala" => "அனல",
+            "Vishwakarma" => "விஸ்வகர்மா", "Bhaga" => "பக", "Mitra" => "மித்ர",
+            "Maya" => "மாயா", "Antaka" => "அந்தக", "Vrishadwaja" => "வருஷத்வஜ",
+            "Govinda" => "கோவிந்தா", "Madana" => "மதன", "Bhima" => "பீமா",
+            
+            // Common
+            "Chandra" => "சந்திரன்",
+            
+            _ => en
+        };
     }
 
     private static bool IsOdd(int sign) => sign % 2 != 0;

@@ -37,7 +37,7 @@ public partial class KPDetailsPanel : UserControl
             var lagna = chart.HouseCusps[0]; // 1st House Cusp is Lagna
             items.Add(new KPViewItem
             {
-                Name = "Lagna (As)",
+                Name = ZodiacUtils.IsTamil ? "லக்னம் (As)" : "Lagna (As)",
                 DegreeDisplay = lagna.DegreeDisplay,
                 SignLord = lagna.KpDetails.SignLord,
                 StarLord = lagna.KpDetails.StarLord,
@@ -54,7 +54,7 @@ public partial class KPDetailsPanel : UserControl
         {
             items.Add(new KPViewItem
             {
-                Name = $"{p.Name} ({p.Symbol})",
+                Name = $"{(ZodiacUtils.IsTamil ? ZodiacUtils.GetPlanetName(p.Planet) : p.Name)} ({p.Symbol})",
                 DegreeDisplay = ZodiacUtils.FormatDegreeInSign(p.Longitude),
                 SignLord = p.KpDetails.SignLord,
                 StarLord = p.KpDetails.StarLord,
@@ -87,6 +87,21 @@ public partial class KPDetailsPanel : UserControl
         }
         
         KPGrid.ItemsSource = items;
+        LocalizeHeaders();
+    }
+
+    private void LocalizeHeaders()
+    {
+        if (KPGrid.Columns.Count < 7) return;
+        
+        bool isTa = ZodiacUtils.IsTamil;
+        KPGrid.Columns[0].Header = isTa ? "கிரகம்/முனை" : "Body/Cusp";
+        KPGrid.Columns[1].Header = isTa ? "நட்சத்திர அதிபதி" : "Nakshatra Lord";
+        KPGrid.Columns[2].Header = isTa ? "உப அதிபதி" : "Sub Lord";
+        KPGrid.Columns[3].Header = isTa ? "உப-உப அதிபதி" : "Prati-Sub"; // Or Prati-Sub transliterated? "பிரதி-உப"
+        KPGrid.Columns[4].Header = isTa ? "சூட்சுமம்" : "Sookshma";
+        KPGrid.Columns[5].Header = isTa ? "பிராணன்" : "Prana";
+        KPGrid.Columns[6].Header = isTa ? "தேகம்" : "Deha";
     }
     
     public void ClearChart()
@@ -97,6 +112,9 @@ public partial class KPDetailsPanel : UserControl
     // Helper to format ordinal
     private string FormatHouseName(int number)
     {
+        if (ZodiacUtils.IsTamil)
+            return $"{number}ம் பாவம்";
+            
         string suffix = (number % 100 >= 11 && number % 100 <= 13) ? "th"
             : (number % 10) switch { 1 => "st", 2 => "nd", 3 => "rd", _ => "th" };
         return $"{number}{suffix} House";
