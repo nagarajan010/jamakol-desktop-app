@@ -35,14 +35,14 @@ public class PanchangaCalculator
     {
         "Pratipada", "Dwitiya", "Tritiya", "Chaturthi", "Panchami",
         "Shashthi", "Saptami", "Ashtami", "Navami", "Dashami",
-        "Ekadashi", "Dwadashi", "Trayodashi", "Chaturdashi", "Purnima/Amavasya"
+        "Ekadashi", "Dwadashi", "Trayodashi", "Chaturdashi", "Purnima"
     };
 
     private static readonly string[] TithiNamesTamil = 
     {
         "பிரதமை", "துவிதியை", "திரிதியை", "சதுர்த்தி", "பஞ்சமி",
         "சஷ்டி", "சப்தமி", "அஷ்டமி", "நவமி", "தசமி",
-        "ஏகாதசி", "துவாதசி", "திரயோதசி", "சதுர்தசி", "பௌர்ணமி/அமாவாசை"
+        "ஏகாதசி", "துவாதசி", "திரயோதசி", "சதுர்தசி", "பௌர்ணமி"
     };
 
     // Yoga names (27 yogas)
@@ -254,9 +254,18 @@ public class PanchangaCalculator
         {
             details.Paksha = "Krishna";
             details.PakshaTamil = "கிருஷ்ண";
-            int idx = tithiNumber - 16;
-            details.TithiName = TithiNames[idx];
-            details.TithiTamil = TithiNamesTamil[idx];
+            
+            if (tithiNumber == 30)
+            {
+                details.TithiName = "Amavasya";
+                details.TithiTamil = "அமாவாசை";
+            }
+            else
+            {
+                int idx = tithiNumber - 16;
+                details.TithiName = TithiNames[idx];
+                details.TithiTamil = TithiNamesTamil[idx];
+            }
         }
 
         // Tithi Lord
