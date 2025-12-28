@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:res="clr-namespace:JamakolAstrology.Resources"
         Title="{x:Static res:Strings.DialogSaveChart}"
-        Height="500" Width="450"
+        Height="650" Width="450"
         WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize"
+        ResizeMode="CanResize"
         Background="#fffff0">
     <Window.Resources>
         <Style x:Key="LabelStyle" TargetType="TextBlock">
