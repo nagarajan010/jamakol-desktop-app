@@ -93,7 +93,7 @@ The application is fully localized in:
 
 ## 🏗️ Technical Architecture
 
-This project is built using **C# .NET 6.0 (WPF)** following the **MVVM** pattern.
+This project is built using **C# .NET 8.0 (WPF)** following the **MVVM** pattern.
 
 ### Project Structure
 * **`MainWindow.xaml`**: The application shell, orchestrating navigation between tabs (Birth Chart vs. Jamakol).
@@ -115,7 +115,7 @@ This project is built using **C# .NET 6.0 (WPF)** following the **MVVM** pattern
 * Data format: **JSON**.
 
 ## 💻 Tech Stack
-* **Language**: C# 10.0 / .NET 6.0
+* **Language**: C# 12.0 / .NET 8.0
 * **Framework**: WPF (Windows Presentation Foundation)
 * **Libraries**:
   * `SwissEphNet`: .NET wrapper for the Swiss Ephemeris.
@@ -129,7 +129,7 @@ This project is built using **C# .NET 6.0 (WPF)** following the **MVVM** pattern
    ```
 2. **Prerequisites**:
    * Visual Studio 2022 (Community or higher).
-   * .NET 6.0 Desktop Runtime.
+   * .NET 8.0 Desktop Runtime.
 3. **Ephemeris Files**:
    * The application requires standard Swiss Ephemeris files (`sea_*.se1`, `sefstars.txt`).
    * These should be placed in the `ephe/` directory in the build output or project root.
@@ -158,7 +158,8 @@ To create a distributable `.exe` setup file:
     *   Find the setup file in the `installer/` directory (e.g., `installer/JamakolAstrology_Setup.exe`).
 
 ## 📋 Requirements
-* **OS**: Windows 10 or Windows 11 (64-bit recommended).
+* **OS**: Windows 10 or Windows 11 (64-bit required).
+* **Note**: Windows 7 and 8 are **not supported** due to .NET 8.0 requirements.
 * **Screen Resolution**: Minimum 1366x768 (1920x1080 recommended for best experience).
 
 ## 🐛 Feedback & Contribution
