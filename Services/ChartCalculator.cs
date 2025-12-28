@@ -56,14 +56,25 @@ public class ChartCalculator
         
         for (int i = 0; i < 12; i++)
         {
-            double longitude = cusps[i];
+            double cuspLongitude = cusps[i];
+            // Start of house = previous house cusp
+            int prevIndex = (i == 0) ? 11 : i - 1;
+            double startLongitude = cusps[prevIndex];
+            // End of house = next house cusp
+            int nextIndex = (i + 1) % 12;
+            double endLongitude = cusps[nextIndex];
+            
             var cusp = new HouseCusp
             {
                 HouseNumber = i + 1,
-                Degree = longitude,
-                SignName = ZodiacUtils.GetSignName(ZodiacUtils.DegreeToSign(longitude)),
-                DegreeDisplay = ZodiacUtils.FormatDegreeInSign(longitude),
-                KpDetails = _kpCalculator.Calculate(longitude)
+                Degree = cuspLongitude,
+                StartDegree = startLongitude,
+                EndDegree = endLongitude,
+                SignName = ZodiacUtils.GetSignName(ZodiacUtils.DegreeToSign(cuspLongitude)),
+                DegreeDisplay = FormatDegreeWithSign(cuspLongitude),
+                StartDisplay = FormatDegreeWithSign(startLongitude),
+                EndDisplay = FormatDegreeWithSign(endLongitude),
+                KpDetails = _kpCalculator.Calculate(cuspLongitude)
             };
             chartData.HouseCusps.Add(cusp);
         }
@@ -331,8 +342,29 @@ public class ChartCalculator
         return position;
     }
 
+    /// <summary>
+    /// Format degree with sign abbreviation like "12 Li 56' 11"" (JHora style)
+    /// </summary>
+    private string FormatDegreeWithSign(double degree)
+    {
+        degree = ZodiacUtils.NormalizeDegree(degree);
+        int signIndex = ZodiacUtils.DegreeToSign(degree);
+        double degInSign = ZodiacUtils.DegreeInSign(degree);
+        
+        int deg = (int)degInSign;
+        double minVal = (degInSign - deg) * 60;
+        int min = (int)minVal;
+        int sec = (int)((minVal - min) * 60);
+        
+        // Sign abbreviations (2 letters)
+        string[] signAbbr = { "", "Ar", "Ta", "Ge", "Cn", "Le", "Vi", "Li", "Sc", "Sg", "Cp", "Aq", "Pi" };
+        
+        return $"{deg} {signAbbr[signIndex]} {min:D2}' {sec:D2}\"";
+    }
+
     public void Dispose()
     {
         _ephemeris?.Dispose();
     }
 }
+

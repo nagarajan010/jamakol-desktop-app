@@ -143,6 +143,12 @@ namespace JamakolAstrology.Resources {
             }
         }
         
+        public static string TabHouses {
+            get {
+                return ResourceManager.GetString("TabHouses", resourceCulture);
+            }
+        }
+        
         public static string LabelName {
             get {
                 return ResourceManager.GetString("LabelName", resourceCulture);

@@ -87,6 +87,9 @@
   <data name="TabAmshaDevata" xml:space="preserve">
     <value>Amsha Devata</value>
   </data>
+  <data name="TabHouses" xml:space="preserve">
+    <value>Houses</value>
+  </data>
 
   <!-- Input Labels -->
   <data name="LabelName" xml:space="preserve">

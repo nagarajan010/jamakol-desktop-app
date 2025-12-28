@@ -166,6 +166,7 @@ public partial class MainWindow : Window
                  else if (tabName == "DashasTab" && DashasChartPlaceholder != null) DashasChartPlaceholder.Child = _sharedSideCharts;
                  else if (tabName == "AshtakavargaTab" && AVChartPlaceholder != null) AVChartPlaceholder.Child = _sharedSideCharts;
                  else if (tabName == "KPTab" && KPChartPlaceholder != null) KPChartPlaceholder.Child = _sharedSideCharts;
+                 else if (tabName == "HousesTab" && HousesChartPlaceholder != null) HousesChartPlaceholder.Child = _sharedSideCharts;
                  else if (tabName == "AmshaDevataTab" && AmshaDevataChartPlaceholder != null) AmshaDevataChartPlaceholder.Child = _sharedSideCharts;
                  // ChakrasTab: Do nothing (Side charts remain detached/hidden)
              }
@@ -226,6 +227,7 @@ public partial class MainWindow : Window
             if (DashasPanelControl != null) DashasPanelControl.UpdateDashas(result.DashaResult);
             if (AVDetailsPanelControl != null) AVDetailsPanelControl.UpdateChart(result.ChartData);
             if (KpDetailsPanelControl != null) KpDetailsPanelControl.UpdateChart(result.ChartData);
+            if (HousesPanelControl != null) HousesPanelControl.UpdateChart(result.ChartData);
             if (AmshaDevataPanelControl != null) AmshaDevataPanelControl.UpdateChart(result.ChartData, _appSettings.ChartFontSize);
             
             // Update Chakras panel
@@ -487,7 +489,9 @@ public partial class MainWindow : Window
         // NEW: apply fonts to new panels
         if (DashasPanelControl != null) UiThemeHelper.SetFontSizeRecursive(DashasPanelControl, _appSettings.TableFontSize);
         if (AVDetailsPanelControl != null) UiThemeHelper.SetFontSizeRecursive(AVDetailsPanelControl, _appSettings.TableFontSize);
+        if (AVDetailsPanelControl != null) UiThemeHelper.SetFontSizeRecursive(AVDetailsPanelControl, _appSettings.TableFontSize);
         if (KpDetailsPanelControl != null) UiThemeHelper.SetFontSizeRecursive(KpDetailsPanelControl, _appSettings.TableFontSize);
+        if (HousesPanelControl != null) UiThemeHelper.SetFontSizeRecursive(HousesPanelControl, _appSettings.TableFontSize);
         
         // Chart controls are now in SideChartsPanel, need to trigger update if needed or just handle via layout refresh
         // Note: ChartControl font size is usually passed during UpdateChart, but we can try to apply recursive if it helps static text

@@ -183,6 +183,22 @@
                             </Border>
                         </TabItem>
 
+                        <!-- Houses Tab: Charts Left, Houses Right -->
+                        <TabItem x:Name="HousesTab" Header="{x:Static res:Strings.TabHouses}">
+                            <Border Background="#fffff0" BorderBrush="#aaaaaa" BorderThickness="1" Margin="0" Padding="5">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="0.5*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <Border x:Name="HousesChartPlaceholder" Grid.Column="0" Margin="0,0,5,0"/>
+
+                                    <controls:HousesPanel x:Name="HousesPanelControl" Grid.Column="1"/>
+                                </Grid>
+                            </Border>
+                        </TabItem>
+
                         <!-- Amsha Devata Tab: Charts Left, Empty Right -->
                         <TabItem x:Name="AmshaDevataTab" Header="{x:Static res:Strings.TabAmshaDevata}">
                             <Border Background="#fffff0" BorderBrush="#aaaaaa" BorderThickness="1" Margin="0" Padding="5">
