@@ -67,12 +67,23 @@ public partial class JamakolChart : UserControl
         
         // Show real ascendant from chart data
         int ascSign = jamakolData.ChartData.AscendantSign;
-        string ascName = ZodiacUtils.SignNames[ascSign];
+        string ascName = ZodiacUtils.GetSignName(ascSign);
         AscendantLabel.Text = $"Ascendant: {ascName}";
 
         // Show day lord (use passed Vedic day lord or calculate from civil date as fallback)
-        string dayLord = vedicDayLord ?? JamaGrahaCalculator.GetDayLord(birthData.BirthDateTime.DayOfWeek);
-        DayLordLabel.Text = $"Day Lord: {dayLord}";
+        // Show day lord (use passed Vedic day lord or calculate from civil date as fallback)
+        string dayLordEn = vedicDayLord ?? JamaGrahaCalculator.GetDayLord(birthData.BirthDateTime.DayOfWeek);
+        string dayLord = dayLordEn;
+        if (ZodiacUtils.IsTamil && Enum.TryParse<Models.Planet>(dayLordEn, true, out var dayLordPlanet))
+        {
+            dayLord = ZodiacUtils.GetPlanetName(dayLordPlanet);
+        }
+        
+        string labelAsc = ZodiacUtils.IsTamil ? "லக்னம்" : "Ascendant";
+        string labelDay = ZodiacUtils.IsTamil ? "நாள் அதிபதி" : "Day Lord";
+
+        AscendantLabel.Text = $"{labelAsc}: {ascName}";
+        DayLordLabel.Text = $"{labelDay}: {dayLord}";
 
         // Build display content for each sign: planets + special points with colors
         // We'll store structured tuples instead of strings
@@ -83,7 +94,8 @@ public partial class JamakolChart : UserControl
         }
 
         // Show "Lagna" marker at the real ascendant sign
-        displayBySign[ascSign].Insert(0, ("Lagna", "lagna"));
+        string lagnaText = ZodiacUtils.IsTamil ? "லக்னம்" : "Lagna";
+        displayBySign[ascSign].Insert(0, (lagnaText, "lagna"));
 
         // Prepare for aprakash grahas
         var aprakashBySign = new Dictionary<int, List<string>>();
@@ -118,7 +130,7 @@ public partial class JamakolChart : UserControl
             else
             {
                 // Aprakash graha - collect for bottom-left display
-                string abbr = planet.Symbol; // Dh, Vy, Pa, In, Uk
+                string abbr = GetLocalizedSymbol(planet.Symbol); 
                 string text = $"{abbr}";
                 aprakashBySign[planet.Sign].Add(text);
             }
@@ -131,8 +143,10 @@ public partial class JamakolChart : UserControl
             {
                 int house = sp.SignIndex + 1; // SignIndex is 0-based
                 // Format: "12° UD" - just degree and symbol
+                // Format: "12° UD" - just degree and symbol
                 int degree = (int)Math.Floor(sp.AbsoluteLongitude % 30);
-                string displayText = $"{degree}° {sp.Symbol}";
+                string localizedSymbol = GetLocalizedSymbol(sp.Symbol);
+                string displayText = $"{degree}° {localizedSymbol}";
                 displayBySign[house].Add((displayText, "special"));
             }
         }
@@ -272,7 +286,11 @@ public partial class JamakolChart : UserControl
         tb.FontSize = fontSize;
 
         // 1. Symbol (Bold, Black)
-        var symbolRun = new System.Windows.Documents.Run(graha.Symbol);
+        string locSymbol = GetLocalizedSymbol(graha.Symbol); // Expects abbreviation like "Su", "Mo" or "Sn"
+        // If symbol is full name "Sn" (Snake) or "Su" need to handle
+        // Graha.Symbol comes from JamaGrahaCalculator which returns "Su", "Mo", "Sn"
+        
+        var symbolRun = new System.Windows.Documents.Run(locSymbol);
         symbolRun.Foreground = new SolidColorBrush(Colors.Black);
         symbolRun.FontWeight = System.Windows.FontWeights.Bold;
         tb.Inlines.Add(symbolRun);
@@ -290,7 +308,12 @@ public partial class JamakolChart : UserControl
 
         // 3. Sign Name in Parentheses (Normal, Red)
         // Format: (Aries)
-        var signRun = new System.Windows.Documents.Run($"({graha.SignName})");
+        // 3. Sign Name in Parentheses (Normal, Red)
+        // Format: (Aries)
+        string signName = ZodiacUtils.GetSignName(graha.Sign); // Use sign index properly if available, or name
+        // JamaGrahaPosition has Sign (int) and SignName (string). Use Sign (int) with utility.
+        
+        var signRun = new System.Windows.Documents.Run($"({signName})");
         signRun.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(204, 0, 0)); // Red
         tb.Inlines.Add(signRun);
     }
@@ -318,6 +341,23 @@ public partial class JamakolChart : UserControl
 
     private string GetPlanetAbbreviation(Models.Planet planet)
     {
+        if (ZodiacUtils.IsTamil)
+        {
+             return planet switch
+             {
+                 Models.Planet.Sun => "சூரி",
+                 Models.Planet.Moon => "சந்",
+                 Models.Planet.Mars => "செவ்",
+                 Models.Planet.Mercury => "புத",
+                 Models.Planet.Jupiter => "குரு",
+                 Models.Planet.Venus => "சுக்",
+                 Models.Planet.Saturn => "சனி",
+                 Models.Planet.Rahu => "ராகு",
+                 Models.Planet.Ketu => "கேது",
+                 _ => ""
+             };
+        }
+
         return planet switch
         {
             Models.Planet.Sun => "Su",
@@ -343,5 +383,41 @@ public partial class JamakolChart : UserControl
         DateTimeLabel.Text = "";
         AscendantLabel.Text = "Ascendant:";
         DayLordLabel.Text = "Day Lord:";
+    }
+    private string GetLocalizedSymbol(string symbol)
+    {
+        if (!ZodiacUtils.IsTamil) return symbol;
+        
+        // Handle Jama Graha Symbols: Su, Mo, Ma, Me, Ju, Ve, Sa, Sn (Snake)
+        // Handle Special Points: UD, AR, KV, YK, MR, MA, RK
+        // Handle Aprakash: Dh, Vy, Pa, In, Uk
+        return symbol switch
+        {
+            "Su" => "சூரி",
+            "Mo" => "சந்",
+            "Ma" => "செவ்",
+            "Me" => "புத",
+            "Ju" => "குரு",
+            "Ve" => "சுக்",
+            "Sa" => "சனி",
+            "Sn" => "பாம்பு", // Snake
+            
+            "UD" => "உத",
+            "AR" => "ஆரு",
+            "KV" => "கவி",
+            "YK" => "எம",
+            "MR" => "மிரு",
+            "MA" => "மா",
+            "RK" => "ராகு", // Rahu Kalam
+            
+            "Dh" => "தூ",
+            "Vy" => "வ", // Vyatipat
+            "Pa" => "ப", // Parivesh or Pata (check context)
+            "In" => "இ",
+            "Uk" => "உ",
+            "Ka" => "கா",
+            
+            _ => symbol
+        };
     }
 }

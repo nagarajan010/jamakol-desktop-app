@@ -503,12 +503,12 @@ public partial class SouthIndianChart : UserControl
 
         return p switch
         {
-            Planet.Sun => "சூ",
-            Planet.Moon => "ச",
-            Planet.Mars => "செ",
-            Planet.Mercury => "பு",
-            Planet.Jupiter => "கு",
-            Planet.Venus => "சு",
+            Planet.Sun => "சூரி",
+            Planet.Moon => "சந்",
+            Planet.Mars => "செவ்",
+            Planet.Mercury => "புத",
+            Planet.Jupiter => "குரு",
+            Planet.Venus => "சுக்",
             Planet.Saturn => "சனி",
             Planet.Rahu => "ராகு",
             Planet.Ketu => "கேது",
