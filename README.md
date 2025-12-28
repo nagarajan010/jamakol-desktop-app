@@ -59,6 +59,10 @@ Real-time calculation of the five limbs of time:
 5.  **Karana**: Half-tithi.
 * **Extras**: **Kala Hora**, **Nazhikai**, and **Tamil Month/Date** calculation.
 
+### 🌍 Global Atlas
+* **Massive Database**: Built-in offline database of **226,000+ cities** worldwide.
+* **Instant Lookup**: Search by city name for accurate latitude, longitude, and timezone data without an internet connection.
+
 ### 🛠️ Tools & Utilities
 * **Save & Load**: Store unlimited charts locally (JSON format).
 * **Organization**: Group charts by **Categories** and **Tags** for easy retrieval.
