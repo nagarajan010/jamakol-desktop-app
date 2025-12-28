@@ -24,6 +24,10 @@ public partial class AshtakavargaDetailsPanel : UserControl
         }
     }
 
+    public void ShowGridView() => SwitchToGridView_Click(null, null);
+    public void ShowTableView() => SwitchToTableView_Click(null, null);
+    public void ShowPindaView() => SwitchToPindaView_Click(null, null);
+
     public void UpdateChart(ChartData? chart)
     {
         if (chart == null || chart.Ashtakavarga == null)

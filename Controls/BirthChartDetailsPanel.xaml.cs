@@ -11,6 +11,7 @@ public partial class BirthChartDetailsPanel : UserControl
     public BirthChartDetailsPanel()
     {
         InitializeComponent();
+        AshtakavargaControl.ShowGridView();
     }
 
     /// <summary>
@@ -145,6 +146,9 @@ public partial class BirthChartDetailsPanel : UserControl
             AddLine("", "");
             AddLine(JamakolAstrology.Resources.Strings.LabelAyanamsa, $"{FormatDegree(result.ChartData.AyanamsaValue, true)}");;
         }
+        
+        // Update Ashtakavarga Control
+        AshtakavargaControl.UpdateChart(result.ChartData);
     }
 
     private string ConvertToDms(double val, bool isLat)
@@ -186,6 +190,6 @@ public partial class BirthChartDetailsPanel : UserControl
     {
         PlanetGridControl.DataGridControl.ItemsSource = null;
         NatalDetailsText.Text = "No content available";
-        AshtakavargaText.Text = "No content available";
+        AshtakavargaControl.ClearChart();
     }
 }
