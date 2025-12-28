@@ -68,209 +68,211 @@
         </Style>
     </Window.Resources>
 
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="15"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="20"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-
-        <!-- Title -->
-        <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="{x:Static res:Strings.SettingsTitle}" 
-                   Foreground="#cc0000" FontSize="20" FontWeight="Bold"/>
-
-        <!-- LEFT COLUMN -->
-        
-        <!-- Ayanamsha -->
-        <Grid Grid.Row="2" Grid.Column="0" Margin="0,8">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="15"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="20"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="{x:Static res:Strings.LabelAyanamsha}" Style="{StaticResource LabelStyle}"/>
-            <ComboBox x:Name="AyanamshaCombo" Grid.Column="1" Style="{StaticResource ComboStyle}"/>
-        </Grid>
-
-        <!-- Sunrise Mode -->
-        <Grid Grid.Row="3" Grid.Column="0" Margin="0,8">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="{x:Static res:Strings.LabelSunriseMode}" Style="{StaticResource LabelStyle}"/>
-            <ComboBox x:Name="SunriseModeCombo" Grid.Column="1" Style="{StaticResource ComboStyle}">
-                <ComboBoxItem Content="{x:Static res:Strings.SunriseCenterTrue}" Tag="{x:Static models:SunriseCalculationMode.CenterTrue}"/>
-                <ComboBoxItem Content="{x:Static res:Strings.SunriseTipTrue}" Tag="{x:Static models:SunriseCalculationMode.TipTrue}"/>
-                <ComboBoxItem Content="{x:Static res:Strings.SunriseTipApparent}" Tag="{x:Static models:SunriseCalculationMode.TipApparent}"/>
-                <ComboBoxItem Content="{x:Static res:Strings.SunriseCenterApparent}" Tag="{x:Static models:SunriseCalculationMode.CenterApparent}"/>
-            </ComboBox>
-        </Grid>
-
-        <!-- Default Location Name -->
-        <Grid Grid.Row="4" Grid.Column="0" Margin="0,8">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="{x:Static res:Strings.LabelDefCity}" Style="{StaticResource LabelStyle}"/>
-            <Grid Grid.Column="1">
-                <TextBox x:Name="DefaultLocationInput" Style="{StaticResource InputStyle}" Text="Chennai"
-                         TextChanged="DefaultLocationInput_TextChanged" PreviewKeyDown="DefaultLocationInput_PreviewKeyDown"/>
-                <Popup x:Name="SuggestionsPopup" PlacementTarget="{Binding ElementName=DefaultLocationInput}" 
-                       StaysOpen="False" IsOpen="False" AllowsTransparency="True" PopupAnimation="Slide">
-                    <Border Background="White" BorderBrush="#ccc" BorderThickness="1" CornerRadius="3" MaxHeight="200" MinWidth="250">
-                        <ListBox x:Name="SuggestionsList" BorderThickness="0" Background="Transparent"
-                                 PreviewKeyDown="SuggestionsList_PreviewKeyDown"
-                                 MouseDoubleClick="SuggestionsList_MouseDoubleClick">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Vertical" Margin="2">
-                                        <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
-                                        <TextBlock Text="{Binding DisplayName}" FontSize="10" Foreground="#666"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </Border>
-                </Popup>
+    
+            <!-- Title -->
+            <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="{x:Static res:Strings.SettingsTitle}" 
+                       Foreground="#cc0000" FontSize="20" FontWeight="Bold"/>
+    
+            <!-- LEFT COLUMN -->
+            
+            <!-- Ayanamsha -->
+            <Grid Grid.Row="2" Grid.Column="0" Margin="0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{x:Static res:Strings.LabelAyanamsha}" Style="{StaticResource LabelStyle}"/>
+                <ComboBox x:Name="AyanamshaCombo" Grid.Column="1" Style="{StaticResource ComboStyle}"/>
             </Grid>
-            <Button Grid.Column="2" Content="{x:Static res:Strings.BtnSearch}" Width="30" Height="26" Margin="5,0,0,0"
-                    Background="White" BorderBrush="#ccc" BorderThickness="1" Foreground="#555"
-                    Click="SearchButton_Click" ToolTip="{x:Static res:Strings.TooltipSearchCity}"/>
+    
+            <!-- Sunrise Mode -->
+            <Grid Grid.Row="3" Grid.Column="0" Margin="0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{x:Static res:Strings.LabelSunriseMode}" Style="{StaticResource LabelStyle}"/>
+                <ComboBox x:Name="SunriseModeCombo" Grid.Column="1" Style="{StaticResource ComboStyle}">
+                    <ComboBoxItem Content="{x:Static res:Strings.SunriseCenterTrue}" Tag="{x:Static models:SunriseCalculationMode.CenterTrue}"/>
+                    <ComboBoxItem Content="{x:Static res:Strings.SunriseTipTrue}" Tag="{x:Static models:SunriseCalculationMode.TipTrue}"/>
+                    <ComboBoxItem Content="{x:Static res:Strings.SunriseTipApparent}" Tag="{x:Static models:SunriseCalculationMode.TipApparent}"/>
+                    <ComboBoxItem Content="{x:Static res:Strings.SunriseCenterApparent}" Tag="{x:Static models:SunriseCalculationMode.CenterApparent}"/>
+                </ComboBox>
+            </Grid>
+    
+            <!-- Default Location Name -->
+            <Grid Grid.Row="4" Grid.Column="0" Margin="0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{x:Static res:Strings.LabelDefCity}" Style="{StaticResource LabelStyle}"/>
+                <Grid Grid.Column="1">
+                    <TextBox x:Name="DefaultLocationInput" Style="{StaticResource InputStyle}" Text="Chennai"
+                             TextChanged="DefaultLocationInput_TextChanged" PreviewKeyDown="DefaultLocationInput_PreviewKeyDown"/>
+                    <Popup x:Name="SuggestionsPopup" PlacementTarget="{Binding ElementName=DefaultLocationInput}" 
+                           StaysOpen="False" IsOpen="False" AllowsTransparency="True" PopupAnimation="Slide">
+                        <Border Background="White" BorderBrush="#ccc" BorderThickness="1" CornerRadius="3" MaxHeight="200" MinWidth="250">
+                            <ListBox x:Name="SuggestionsList" BorderThickness="0" Background="Transparent"
+                                     PreviewKeyDown="SuggestionsList_PreviewKeyDown"
+                                     PreviewMouseLeftButtonUp="SuggestionsList_PreviewMouseLeftButtonUp">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Vertical" Margin="2">
+                                            <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
+                                            <TextBlock Text="{Binding DisplayName}" FontSize="10" Foreground="#666"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Border>
+                    </Popup>
+                </Grid>
+                <Button Grid.Column="2" Content="{x:Static res:Strings.BtnSearch}" Width="30" Height="26" Margin="5,0,0,0"
+                        Background="White" BorderBrush="#ccc" BorderThickness="1" Foreground="#555"
+                        Click="SearchButton_Click" ToolTip="{x:Static res:Strings.TooltipSearchCity}"/>
+            </Grid>
+    
+            <!-- Default Latitude -->
+            <Grid Grid.Row="5" Grid.Column="0" Margin="0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{x:Static res:Strings.LabelDefLatitude}" Style="{StaticResource LabelStyle}"/>
+                <TextBox x:Name="LatitudeInput" Grid.Column="1" Style="{StaticResource InputStyle}" Text="13.0827"/>
+            </Grid>
+    
+            <!-- Default Longitude -->
+            <Grid Grid.Row="6" Grid.Column="0" Margin="0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{x:Static res:Strings.LabelDefLongitude}" Style="{StaticResource LabelStyle}"/>
+                <TextBox x:Name="LongitudeInput" Grid.Column="1" Style="{StaticResource InputStyle}" Text="80.2707"/>
+            </Grid>
+    
+            <!-- Default Timezone -->
+            <Grid Grid.Row="7" Grid.Column="0" Margin="0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{x:Static res:Strings.LabelDefTimezone}" Style="{StaticResource LabelStyle}"/>
+                <TextBox x:Name="TimezoneInput" Grid.Column="1" Style="{StaticResource InputStyle}" Text="5.5"/>
+            </Grid>
+    
+            <!-- RIGHT COLUMN -->
+            
+            <!-- Chart Font Size -->
+            <Grid Grid.Row="2" Grid.Column="2" Margin="0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{x:Static res:Strings.LabelChartFontSize}" Style="{StaticResource LabelStyle}"/>
+                <TextBox x:Name="ChartFontSizeInput" Grid.Column="1" Style="{StaticResource InputStyle}" Text="14"/>
+            </Grid>
+    
+            <!-- Jama Graha Font Size -->
+            <Grid Grid.Row="3" Grid.Column="2" Margin="0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{x:Static res:Strings.LabelJamaGrahaFont}" Style="{StaticResource LabelStyle}"/>
+                <TextBox x:Name="JamaGrahaFontSizeInput" Grid.Column="1" Style="{StaticResource InputStyle}" Text="10"/>
+            </Grid>
+    
+            <!-- Table Font Size -->
+            <Grid Grid.Row="4" Grid.Column="2" Margin="0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{x:Static res:Strings.LabelTableFontSize}" Style="{StaticResource LabelStyle}"/>
+                <TextBox x:Name="TableFontSizeInput" Grid.Column="1" Style="{StaticResource InputStyle}" Text="11"/>
+            </Grid>
+    
+            <!-- Input Font Size -->
+            <Grid Grid.Row="5" Grid.Column="2" Margin="0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{x:Static res:Strings.LabelInputFontSize}" Style="{StaticResource LabelStyle}"/>
+                <TextBox x:Name="InputFontSizeInput" Grid.Column="1" Style="{StaticResource InputStyle}" Text="12"/>
+            </Grid>
+    
+            <!-- Default Tab Mode -->
+            <Grid Grid.Row="6" Grid.Column="2" Margin="0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{x:Static res:Strings.LabelDefaultTab}" Style="{StaticResource LabelStyle}"/>
+                <ComboBox x:Name="DefaultTabCombo" Grid.Column="1" Style="{StaticResource ComboStyle}">
+                    <ComboBoxItem Content="{x:Static res:Strings.TabBirthChart}" Tag="0"/>
+                    <ComboBoxItem Content="{x:Static res:Strings.TabJamakol}" Tag="1"/>
+                </ComboBox>
+            </Grid>
+    
+            <!-- Use Fixed Sign Boxes -->
+            <Grid Grid.Row="7" Grid.Column="2" Margin="0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{x:Static res:Strings.LabelFixedSignBoxes}" Style="{StaticResource LabelStyle}"/>
+                <CheckBox x:Name="UseFixedSignBoxesCheckbox" Grid.Column="1" 
+                          Content="{x:Static res:Strings.ChkShowInFixedPositions}" VerticalAlignment="Center"/>
+            </Grid>
+    
+            <!-- Language Selection -->
+            <Grid Grid.Row="8" Grid.Column="2" Margin="0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{x:Static res:Strings.LabelLanguage}" Style="{StaticResource LabelStyle}"/>
+                <ComboBox x:Name="LanguageCombo" Grid.Column="1" Style="{StaticResource ComboStyle}">
+                    <ComboBoxItem Content="{x:Static res:Strings.LangEnglish}" Tag="en"/>
+                    <ComboBoxItem Content="{x:Static res:Strings.LangTamil}" Tag="ta"/>
+                </ComboBox>
+            </Grid>
+    
+            <!-- Info Text -->
+            <TextBlock Grid.Row="9" Grid.ColumnSpan="3" Margin="0,15,0,0" TextWrapping="Wrap"
+                       Foreground="#888" FontSize="11" VerticalAlignment="Top"
+                       Text="{x:Static res:Strings.SettingsInfoText}"/>
+    
+            <!-- Buttons -->
+            <StackPanel Grid.Row="10" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
+                <Button x:Name="CancelButton" Content="{x:Static res:Strings.BtnCancel}" Style="{StaticResource CancelButtonStyle}" Click="CancelButton_Click"/>
+                <Button x:Name="SaveButton" Content="{x:Static res:Strings.BtnSave}" Style="{StaticResource ButtonStyle}" Click="SaveButton_Click"/>
+            </StackPanel>
         </Grid>
-
-        <!-- Default Latitude -->
-        <Grid Grid.Row="5" Grid.Column="0" Margin="0,8">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="{x:Static res:Strings.LabelDefLatitude}" Style="{StaticResource LabelStyle}"/>
-            <TextBox x:Name="LatitudeInput" Grid.Column="1" Style="{StaticResource InputStyle}" Text="13.0827"/>
-        </Grid>
-
-        <!-- Default Longitude -->
-        <Grid Grid.Row="6" Grid.Column="0" Margin="0,8">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="{x:Static res:Strings.LabelDefLongitude}" Style="{StaticResource LabelStyle}"/>
-            <TextBox x:Name="LongitudeInput" Grid.Column="1" Style="{StaticResource InputStyle}" Text="80.2707"/>
-        </Grid>
-
-        <!-- Default Timezone -->
-        <Grid Grid.Row="7" Grid.Column="0" Margin="0,8">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="{x:Static res:Strings.LabelDefTimezone}" Style="{StaticResource LabelStyle}"/>
-            <TextBox x:Name="TimezoneInput" Grid.Column="1" Style="{StaticResource InputStyle}" Text="5.5"/>
-        </Grid>
-
-        <!-- RIGHT COLUMN -->
-        
-        <!-- Chart Font Size -->
-        <Grid Grid.Row="2" Grid.Column="2" Margin="0,8">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="{x:Static res:Strings.LabelChartFontSize}" Style="{StaticResource LabelStyle}"/>
-            <TextBox x:Name="ChartFontSizeInput" Grid.Column="1" Style="{StaticResource InputStyle}" Text="14"/>
-        </Grid>
-
-        <!-- Jama Graha Font Size -->
-        <Grid Grid.Row="3" Grid.Column="2" Margin="0,8">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="{x:Static res:Strings.LabelJamaGrahaFont}" Style="{StaticResource LabelStyle}"/>
-            <TextBox x:Name="JamaGrahaFontSizeInput" Grid.Column="1" Style="{StaticResource InputStyle}" Text="10"/>
-        </Grid>
-
-        <!-- Table Font Size -->
-        <Grid Grid.Row="4" Grid.Column="2" Margin="0,8">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="{x:Static res:Strings.LabelTableFontSize}" Style="{StaticResource LabelStyle}"/>
-            <TextBox x:Name="TableFontSizeInput" Grid.Column="1" Style="{StaticResource InputStyle}" Text="11"/>
-        </Grid>
-
-        <!-- Input Font Size -->
-        <Grid Grid.Row="5" Grid.Column="2" Margin="0,8">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="{x:Static res:Strings.LabelInputFontSize}" Style="{StaticResource LabelStyle}"/>
-            <TextBox x:Name="InputFontSizeInput" Grid.Column="1" Style="{StaticResource InputStyle}" Text="12"/>
-        </Grid>
-
-        <!-- Default Tab Mode -->
-        <Grid Grid.Row="6" Grid.Column="2" Margin="0,8">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="{x:Static res:Strings.LabelDefaultTab}" Style="{StaticResource LabelStyle}"/>
-            <ComboBox x:Name="DefaultTabCombo" Grid.Column="1" Style="{StaticResource ComboStyle}">
-                <ComboBoxItem Content="{x:Static res:Strings.TabBirthChart}" Tag="0"/>
-                <ComboBoxItem Content="{x:Static res:Strings.TabJamakol}" Tag="1"/>
-            </ComboBox>
-        </Grid>
-
-        <!-- Use Fixed Sign Boxes -->
-        <Grid Grid.Row="7" Grid.Column="2" Margin="0,8">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="{x:Static res:Strings.LabelFixedSignBoxes}" Style="{StaticResource LabelStyle}"/>
-            <CheckBox x:Name="UseFixedSignBoxesCheckbox" Grid.Column="1" 
-                      Content="{x:Static res:Strings.ChkShowInFixedPositions}" VerticalAlignment="Center"/>
-        </Grid>
-
-        <!-- Language Selection -->
-        <Grid Grid.Row="8" Grid.Column="2" Margin="0,8">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="{x:Static res:Strings.LabelLanguage}" Style="{StaticResource LabelStyle}"/>
-            <ComboBox x:Name="LanguageCombo" Grid.Column="1" Style="{StaticResource ComboStyle}">
-                <ComboBoxItem Content="{x:Static res:Strings.LangEnglish}" Tag="en"/>
-                <ComboBoxItem Content="{x:Static res:Strings.LangTamil}" Tag="ta"/>
-            </ComboBox>
-        </Grid>
-
-        <!-- Info Text -->
-        <TextBlock Grid.Row="9" Grid.ColumnSpan="3" Margin="0,15,0,0" TextWrapping="Wrap"
-                   Foreground="#888" FontSize="11" VerticalAlignment="Top"
-                   Text="{x:Static res:Strings.SettingsInfoText}"/>
-
-        <!-- Buttons -->
-        <StackPanel Grid.Row="10" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
-            <Button x:Name="CancelButton" Content="{x:Static res:Strings.BtnCancel}" Style="{StaticResource CancelButtonStyle}" Click="CancelButton_Click"/>
-            <Button x:Name="SaveButton" Content="{x:Static res:Strings.BtnSave}" Style="{StaticResource ButtonStyle}" Click="SaveButton_Click"/>
-        </StackPanel>
-    </Grid>
+    </ScrollViewer>
 </Window>

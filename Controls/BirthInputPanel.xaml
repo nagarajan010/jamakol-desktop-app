@@ -31,7 +31,7 @@
                     <Border Background="White" BorderBrush="#ccc" BorderThickness="1" CornerRadius="3" MaxHeight="200" MinWidth="200">
                         <ListBox x:Name="SuggestionsList" BorderThickness="0" Background="Transparent"
                                  PreviewKeyDown="SuggestionsList_PreviewKeyDown"
-                                 MouseDoubleClick="SuggestionsList_MouseDoubleClick">
+                                 PreviewMouseLeftButtonUp="SuggestionsList_PreviewMouseLeftButtonUp">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Vertical" Margin="2">

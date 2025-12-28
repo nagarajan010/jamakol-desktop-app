@@ -145,9 +145,10 @@ public partial class BirthInputPanel : UserControl
         }
     }
 
-    private void SuggestionsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    private void SuggestionsList_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
     {
-        if (SuggestionsList.SelectedItem is GeoLocation loc)
+        var item = ItemsControl.ContainerFromElement(SuggestionsList, e.OriginalSource as DependencyObject) as ListBoxItem;
+        if (item != null && item.Content is GeoLocation loc)
         {
             ApplyLocation(loc);
             SuggestionsPopup.IsOpen = false;

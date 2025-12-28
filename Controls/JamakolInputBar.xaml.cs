@@ -138,9 +138,10 @@ public partial class JamakolInputBar : UserControl
         }
     }
 
-    private void SuggestionsList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    private void SuggestionsList_PreviewMouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
-        if (SuggestionsList.SelectedItem is GeoLocation loc)
+        var item = ItemsControl.ContainerFromElement(SuggestionsList, e.OriginalSource as DependencyObject) as ListBoxItem;
+        if (item != null && item.Content is GeoLocation loc)
         {
             ApplyLocation(loc);
             SuggestionsPopup.IsOpen = false;
