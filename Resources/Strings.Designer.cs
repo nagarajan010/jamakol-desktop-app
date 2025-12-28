@@ -149,6 +149,30 @@ namespace JamakolAstrology.Resources {
             }
         }
         
+        public static string HeaderStart {
+            get {
+                return ResourceManager.GetString("HeaderStart", resourceCulture);
+            }
+        }
+        
+        public static string HeaderCusp {
+            get {
+                return ResourceManager.GetString("HeaderCusp", resourceCulture);
+            }
+        }
+        
+        public static string HeaderEnd {
+            get {
+                return ResourceManager.GetString("HeaderEnd", resourceCulture);
+            }
+        }
+        
+        public static string HeaderPlanetsInIt {
+            get {
+                return ResourceManager.GetString("HeaderPlanetsInIt", resourceCulture);
+            }
+        }
+        
         public static string LabelName {
             get {
                 return ResourceManager.GetString("LabelName", resourceCulture);

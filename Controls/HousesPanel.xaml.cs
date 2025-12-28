@@ -73,9 +73,26 @@ public partial class HousesPanel : UserControl
     
     private string GetPlanetAbbrev(PlanetPosition p)
     {
-        // Main planets - use abbreviation dictionary first
+        // Main planets - use localized abbreviations
         if (ZodiacUtils.PlanetAbbreviations.TryGetValue(p.Planet, out var abbrev))
         {
+            // If Tamil, use same abbreviations as chart display
+            if (ZodiacUtils.IsTamil)
+            {
+                return p.Planet switch
+                {
+                    Models.Planet.Sun => "சூரி",
+                    Models.Planet.Moon => "சந்",
+                    Models.Planet.Mars => "செவ்",
+                    Models.Planet.Mercury => "புத",
+                    Models.Planet.Jupiter => "குரு",
+                    Models.Planet.Venus => "சுக்",
+                    Models.Planet.Saturn => "சனி",
+                    Models.Planet.Rahu => "ராகு",
+                    Models.Planet.Ketu => "கேது",
+                    _ => abbrev
+                };
+            }
             return abbrev;
         }
         

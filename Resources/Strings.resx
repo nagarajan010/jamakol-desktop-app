@@ -91,6 +91,22 @@
     <value>Houses</value>
   </data>
 
+  <data name="TabHouses" xml:space="preserve">
+    <value>Houses</value>
+  </data>
+  <data name="HeaderStart" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="HeaderCusp" xml:space="preserve">
+    <value>Cusp</value>
+  </data>
+  <data name="HeaderEnd" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="HeaderPlanetsInIt" xml:space="preserve">
+    <value>Planets in it</value>
+  </data>
+
   <!-- Input Labels -->
   <data name="LabelName" xml:space="preserve">
     <value>Name:</value>

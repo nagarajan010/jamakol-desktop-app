@@ -26,10 +26,10 @@
             </DataGrid.ColumnHeaderStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{x:Static res:Strings.HeaderHouse}" Binding="{Binding HouseName}" Width="Auto" FontWeight="SemiBold" Foreground="#cc0000"/>
-                <DataGridTextColumn Header="Start" Binding="{Binding StartDisplay}" Width="Auto"/>
-                <DataGridTextColumn Header="Cusp" Binding="{Binding CuspDisplay}" Width="Auto"/>
-                <DataGridTextColumn Header="End" Binding="{Binding EndDisplay}" Width="Auto"/>
-                <DataGridTextColumn Header="Planets in it" Binding="{Binding PlanetsInHouse}" Width="*"/>
+                <DataGridTextColumn Header="{x:Static res:Strings.HeaderStart}" Binding="{Binding StartDisplay}" Width="Auto"/>
+                <DataGridTextColumn Header="{x:Static res:Strings.HeaderCusp}" Binding="{Binding CuspDisplay}" Width="Auto"/>
+                <DataGridTextColumn Header="{x:Static res:Strings.HeaderEnd}" Binding="{Binding EndDisplay}" Width="Auto"/>
+                <DataGridTextColumn Header="{x:Static res:Strings.HeaderPlanetsInIt}" Binding="{Binding PlanetsInHouse}" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

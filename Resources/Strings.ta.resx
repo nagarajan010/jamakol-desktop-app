@@ -87,6 +87,21 @@
   <data name="TabAmshaDevata" xml:space="preserve">
     <value>அம்ச தேவதை</value>
   </data>
+  <data name="TabHouses" xml:space="preserve">
+    <value>பாவங்கள்</value>
+  </data>
+  <data name="HeaderStart" xml:space="preserve">
+    <value>தொடக்கம்</value>
+  </data>
+  <data name="HeaderCusp" xml:space="preserve">
+    <value>கொனை</value>
+  </data>
+  <data name="HeaderEnd" xml:space="preserve">
+    <value>முடிவு</value>
+  </data>
+  <data name="HeaderPlanetsInIt" xml:space="preserve">
+    <value>கிரகங்கள்</value>
+  </data>
 
   <!-- Input Labels -->
   <data name="LabelName" xml:space="preserve">
