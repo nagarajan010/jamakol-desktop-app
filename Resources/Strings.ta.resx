@@ -234,10 +234,12 @@
     <value>இயல்பு தாவல்:</value>
   </data>
   <data name="LabelFixedSignBoxes" xml:space="preserve">
-    <value>நிலையான ராசி பெட்டிகள்:</value>
+    <value>ஸ்திர ராசி 
+    (ஜமகோல்):</value>
   </data>
   <data name="ChkShowInFixedPositions" xml:space="preserve">
-    <value>நிலையான இடங்களில் காட்டு</value>
+    <value>ஸ்திர ராசிகளை
+பயன்படுத்து</value>
   </data>
   <data name="LabelLanguage" xml:space="preserve">
     <value>மொழி:</value>

@@ -234,10 +234,10 @@
     <value>Default Tab:</value>
   </data>
   <data name="LabelFixedSignBoxes" xml:space="preserve">
-    <value>Fixed Sign Boxes:</value>
+    <value>Fixed Signs (Jamakol):</value>
   </data>
   <data name="ChkShowInFixedPositions" xml:space="preserve">
-    <value>Show in fixed positions</value>
+    <value>Use Fixed Signs</value>
   </data>
   <data name="LabelLanguage" xml:space="preserve">
     <value>Language:</value>
