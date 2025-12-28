@@ -227,7 +227,7 @@ public partial class JamakolInputBar : UserControl
         {
             _liveTimer.Stop();
             _isLiveUpdateRunning = false;
-            StartStopButton.Content = "Start";
+            StartStopButton.Content = JamakolAstrology.Resources.Strings.BtnStart;
             // Revert to Blue
             StartStopButton.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(33, 150, 243)); 
             StatusText.Text = "Live update stopped";
@@ -235,7 +235,7 @@ public partial class JamakolInputBar : UserControl
         else
         {
             _isLiveUpdateRunning = true;
-            StartStopButton.Content = "Stop";
+            StartStopButton.Content = JamakolAstrology.Resources.Strings.BtnStop;
             // Change to Red
             StartStopButton.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(244, 67, 54));
             StatusText.Text = "Live update running...";
