@@ -32,6 +32,12 @@ public class DashaPeriod
     /// <summary>Whether this period is currently active</summary>
     public bool IsActive { get; set; }
     
+    /// <summary>Start date of this period (Julian Day)</summary>
+    public double StartJulianDay { get; set; }
+
+    /// <summary>End date of this period (Julian Day)</summary>
+    public double EndJulianDay { get; set; }
+
     /// <summary>Display name with level prefix</summary>
     public string DisplayName 
     {
@@ -71,13 +77,13 @@ public class DashaPeriod
 
     public string ActiveLabel => IsActive ? (Services.ZodiacUtils.IsTamil ? " ▶ நடப்பில்" : " ▶ Current") : "";
     
-    /// <summary>Date range display</summary>
-    public string DateRange => $"{StartDate:dd-MM-yyyy} to {EndDate:dd-MM-yyyy}";
+    /// <summary>Date range display using Julian Days for BC support</summary>
+    public string DateRange => $"{Helpers.TimeFormatHelper.FormatJulianDay(StartJulianDay)} to {Helpers.TimeFormatHelper.FormatJulianDay(EndJulianDay)}";
     
     /// <summary>Short date range for compact display</summary>
     public string ShortDateRange => Level >= 5 
-        ? $"{StartDate:dd-MMM HH:mm} - {EndDate:dd-MMM HH:mm}" // Show time for Prana/Deha
-        : $"{StartDate:dd-MMM-yyyy} - {EndDate:dd-MMM-yyyy}";
+        ? $"{Helpers.TimeFormatHelper.FormatJulianDay(StartJulianDay, true)} - {Helpers.TimeFormatHelper.FormatJulianDay(EndJulianDay, true)}"
+        : $"{Helpers.TimeFormatHelper.FormatJulianDay(StartJulianDay)} - {Helpers.TimeFormatHelper.FormatJulianDay(EndJulianDay)}";
 }
 
 /// <summary>

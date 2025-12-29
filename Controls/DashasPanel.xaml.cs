@@ -47,7 +47,8 @@ public partial class DashasPanel : UserControl
             if (deepest != null)
             {
                 string endsOn = Services.ZodiacUtils.IsTamil ? "முடிவு" : "ends on";
-                CurrentDashaDates.Text = $"{deepest.DisplayName} {endsOn} {deepest.EndDate:dd-MMM-yyyy HH:mm}";
+                string dateStr = Helpers.TimeFormatHelper.FormatJulianDay(deepest.EndJulianDay, true);
+                CurrentDashaDates.Text = $"{deepest.DisplayName} {endsOn} {dateStr}";
             }
             else
             {

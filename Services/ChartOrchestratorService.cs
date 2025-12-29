@@ -69,13 +69,18 @@ public class ChartOrchestratorService
             result.DayLord = GetApproximateDayLord(birthData);
             result.JamakolData = _jamakolCalculator.Calculate(result.ChartData);
             
-            // Calculate Vimshottari Dasha for BC dates (doesn't need DateTime operations)
+            // Calculate Vimshottari Dasha for BC dates using Julian Days
             var moon = result.ChartData.Planets.FirstOrDefault(p => p.Name == "Moon");
             if (moon != null)
             {
-                // For BC dates, use a dummy DateTime for dasha start
+                // Calculate current JD for "Now" to show active dasha
+                // For BC dates, "Now" is arguably 2025 AD or the birth date itself if we want to show starting dashas
+                // Let's use current system time converted to JD
+                using var eph = new EphemerisService();
+                double currentJd = eph.GetJulianDay(DateTime.UtcNow);
+                
                 result.DashaResult = _vimshottariDashaCalculator.Calculate(
-                    moon.Longitude, DateTime.Now, DateTime.Now, 6);
+                    moon.Longitude, result.ChartData.JulianDay, currentJd, 6);
             }
             
             return result;
@@ -181,12 +186,23 @@ public class ChartOrchestratorService
         if (moonAD != null)
         {
             // Calculate starting from birth, find current running dasa for "Now" (or query date)
-            DateTime calculationTargetDate = DateTime.Now; 
             // If it's Jamakol (query chart), we might care about the query time
-            if (birthData.Location == "Query") calculationTargetDate = birthData.BirthDateTime;
+            double currentJd;
+            using (var eph = new EphemerisService())
+            {
+                 // We don't have direct JD for "Now" unless we calc it, but EphemerisService can do it from UTC
+                 // But wait, EphemerisService is disposable.
+                 currentJd = eph.GetJulianDay(DateTime.UtcNow);
+                 
+                 // If query chart, use chart time
+                 if (birthData.Location == "Query") 
+                 {
+                     currentJd = result.ChartData.JulianDay;
+                 }
+            }
             
             result.DashaResult = _vimshottariDashaCalculator.Calculate(
-                moonAD.Longitude, birthData.BirthDateTime, calculationTargetDate, 6); // 6 levels
+                moonAD.Longitude, result.ChartData.JulianDay, currentJd, 6); // 6 levels
         }
 
         return result;

@@ -49,10 +49,10 @@ public class VimshottariDashaCalculator
     /// Calculate complete Vimshottari Dasa from Moon's position
     /// </summary>
     /// <param name="moonLongitude">Moon's absolute longitude (0-360)</param>
-    /// <param name="birthDateTime">Birth date and time</param>
-    /// <param name="currentDate">Date to check for current running dasa (usually today)</param>
+    /// <param name="birthJulianDay">Birth date in Julian Day</param>
+    /// <param name="currentJulianDay">Target date in Julian Day for identifying "current" dasa</param>
     /// <param name="calculateLevels">Number of levels to calculate (1-5)</param>
-    public DashaResult Calculate(double moonLongitude, DateTime birthDateTime, DateTime currentDate, int calculateLevels = 3)
+    public DashaResult Calculate(double moonLongitude, double birthJulianDay, double currentJulianDay, int calculateLevels = 3)
     {
         var result = new DashaResult();
 
@@ -77,10 +77,16 @@ public class VimshottariDashaCalculator
         double proportionRemaining = 1.0 - proportionTraversed;
         double birthDashaYears = DashaYears[birthDashaLord];
         double balanceYears = birthDashaYears * proportionRemaining;
-        result.BalanceAtBirthDays = balanceYears * 365.2425;
+        
+        // Days per sidereal year is approx 365.25636, Dasha usually uses Savana (360) or Sidereal.
+        // Standard practice often uses Gregorian 365.2425 or 365.25. 
+        // JHora default is 365.2425 (Gregorian year).
+        double daysPerYear = 365.2425;
+        
+        result.BalanceAtBirthDays = balanceYears * daysPerYear;
 
         // Calculate all Maha Dasas
-        DateTime dashaStart = birthDateTime;
+        double dashaStartJd = birthJulianDay;
         
         // First Maha Dasa starts with remaining balance
         for (int cycle = 0; cycle < 2; cycle++) // 2 cycles = 240 years (more than enough)
@@ -100,24 +106,33 @@ public class VimshottariDashaCalculator
                     years = DashaYears[planet];
                 }
 
-                DateTime dashaEnd = dashaStart.AddDays(years * 365.2425);
+                double durationDays = years * daysPerYear;
+                double dashaEndJd = dashaStartJd + durationDays;
 
                 var mahaDasha = new DashaPeriod
                 {
                     Planet = planet,
                     Symbol = PlanetSymbols[planet],
                     Level = 1,
-                    StartDate = dashaStart,
-                    EndDate = dashaEnd,
+                    StartJulianDay = dashaStartJd, // Use Julian Day
+                    EndJulianDay = dashaEndJd, // Use Julian Day
+                    // Keep DateTime for backward compatibility if possible, but map directly from JD helper
+                    // StartDate = JulianDayToDateTime(dashaStartJd),
+                    // EndDate = JulianDayToDateTime(dashaEndJd), 
+                    // Let's populate StartDate/EndDate best effort for AD dates to avoid breaking other UI binding immediately
+                    // For BC dates they might be MinValue or incorrect, but new UI uses Display properties.
+                    StartDate = SafeJdToDateTime(dashaStartJd),
+                    EndDate = SafeJdToDateTime(dashaEndJd),
+
                     DurationYears = years,
-                    IsActive = currentDate >= dashaStart && currentDate < dashaEnd
+                    IsActive = currentJulianDay >= dashaStartJd && currentJulianDay < dashaEndJd
                 };
 
                 // Calculate sub-periods if needed
                 if (calculateLevels >= 2)
                 {
                     mahaDasha.SubPeriods = CalculateSubPeriods(
-                        planet, dashaStart, years, 2, calculateLevels, currentDate);
+                        planet, dashaStartJd, years, 2, calculateLevels, currentJulianDay, daysPerYear);
                 }
 
                 result.MahaDashas.Add(mahaDasha);
@@ -126,34 +141,35 @@ public class VimshottariDashaCalculator
                 if (mahaDasha.IsActive)
                 {
                     result.CurrentMahaDasha = mahaDasha;
-                    FindCurrentSubDashas(mahaDasha, currentDate, result);
+                    FindCurrentSubDashas(mahaDasha, currentJulianDay, result);
                 }
 
-                dashaStart = dashaEnd;
+                dashaStartJd = dashaEndJd;
 
-                // Stop if we've gone past 150 years from birth
-                if (dashaStart > birthDateTime.AddYears(150)) break;
+                // Stop if we've gone past 150 years from birth (approx 54786 days)
+                if (dashaStartJd > birthJulianDay + 54786) break;
             }
-            if (dashaStart > birthDateTime.AddYears(150)) break;
+            if (dashaStartJd > birthJulianDay + 54786) break;
         }
 
         return result;
     }
 
     /// <summary>
-    /// Calculate sub-periods recursively
+    /// Calculate sub-periods recursively using Julian Days
     /// </summary>
     private List<DashaPeriod> CalculateSubPeriods(
         string mahaPlanet, 
-        DateTime startDate, 
+        double startJd, 
         double totalYears, 
         int level, 
         int maxLevel,
-        DateTime currentDate)
+        double currentJd,
+        double daysPerYear)
     {
         var subPeriods = new List<DashaPeriod>();
         int startIndex = Array.IndexOf(DashaSequence, mahaPlanet);
-        DateTime subStart = startDate;
+        double subStartJd = startJd;
 
         for (int i = 0; i < 9; i++)
         {
@@ -163,28 +179,31 @@ public class VimshottariDashaCalculator
             // Sub-period duration = (mahaDuration * planet's proportion) / 120
             double proportion = DashaYears[planet] / 120.0;
             double subYears = totalYears * proportion;
-            DateTime subEnd = subStart.AddDays(subYears * 365.2425);
+            double subDurationDays = subYears * daysPerYear;
+            double subEndJd = subStartJd + subDurationDays;
 
             var subPeriod = new DashaPeriod
             {
                 Planet = planet,
                 Symbol = PlanetSymbols[planet],
                 Level = level,
-                StartDate = subStart,
-                EndDate = subEnd,
+                StartJulianDay = subStartJd,
+                EndJulianDay = subEndJd,
+                StartDate = SafeJdToDateTime(subStartJd),
+                EndDate = SafeJdToDateTime(subEndJd),
                 DurationYears = subYears,
-                IsActive = currentDate >= subStart && currentDate < subEnd
+                IsActive = currentJd >= subStartJd && currentJd < subEndJd
             };
 
             // Recursively calculate deeper levels
             if (level < maxLevel)
             {
                 subPeriod.SubPeriods = CalculateSubPeriods(
-                    planet, subStart, subYears, level + 1, maxLevel, currentDate);
+                    planet, subStartJd, subYears, level + 1, maxLevel, currentJd, daysPerYear);
             }
 
             subPeriods.Add(subPeriod);
-            subStart = subEnd;
+            subStartJd = subEndJd;
         }
 
         return subPeriods;
@@ -193,7 +212,7 @@ public class VimshottariDashaCalculator
     /// <summary>
     /// Find and set current running dashas at all levels
     /// </summary>
-    private void FindCurrentSubDashas(DashaPeriod mahaDasha, DateTime currentDate, DashaResult result)
+    private void FindCurrentSubDashas(DashaPeriod mahaDasha, double currentJd, DashaResult result)
     {
         foreach (var antar in mahaDasha.SubPeriods)
         {
@@ -238,6 +257,25 @@ public class VimshottariDashaCalculator
                 }
                 return;
             }
+        }
+    }
+
+    private DateTime SafeJdToDateTime(double jd)
+    {
+        try {
+            // Very simplified conversion for compatibility
+            // This will likely fail or wrap for BC dates, but we catch generic exception or clamp
+            // .NET DateTime MinValue is 0001-01-01
+            // JD for 0001-01-01 is roughly 1721425.5
+            if (jd < 1721426) return DateTime.MinValue; // Treat BC as MinValue for Date operations
+            
+            // Just use a basic AddDays from a known epoch if within range
+            // Epoch: 2000-01-01 12:00 UTC = JD 2451545.0
+            double delta = jd - 2451545.0;
+            return new DateTime(2000, 1, 1, 12, 0, 0, DateTimeKind.Utc).AddDays(delta);
+        }
+        catch {
+            return DateTime.MinValue;
         }
     }
 }
