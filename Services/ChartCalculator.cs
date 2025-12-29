@@ -400,8 +400,10 @@ public class ChartCalculator
         int min = (int)minVal;
         int sec = (int)((minVal - min) * 60);
         
-        // Sign abbreviations (2 letters)
-        string[] signAbbr = { "", "Ar", "Ta", "Ge", "Cn", "Le", "Vi", "Li", "Sc", "Sg", "Cp", "Aq", "Pi" };
+        // Sign abbreviations (2 letters) - Tamil or English
+        string[] signAbbr = ZodiacUtils.IsTamil 
+            ? new[] { "", "மே", "ரி", "மி", "க", "சி", "கன்", "து", "வி", "த", "ம", "கு", "மீ" }
+            : new[] { "", "Ar", "Ta", "Ge", "Cn", "Le", "Vi", "Li", "Sc", "Sg", "Cp", "Aq", "Pi" };
         
         return $"{deg} {signAbbr[signIndex]} {min:D2}' {sec:D2}\"";
     }
