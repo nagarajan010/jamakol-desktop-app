@@ -28,7 +28,32 @@ public partial class HousesPanel : UserControl
             HousesGrid.FontSize = settings.TableFontSize;
         }
         
+        LocalizeMenuHeaders();
         UpdateMenuCheckmarks();
+    }
+    
+    private void LocalizeMenuHeaders()
+    {
+        if (!ZodiacUtils.IsTamil) return;
+        
+        // House systems
+        MenuWholeSign.Header = "முழு ராசி (ஒவ்வொரு ராசியும் ஒரு பாவம்)";
+        MenuEqual.Header = "சம பாவம் (30 டிகிரி ஒவ்வொன்றும்)";
+        MenuPlacidus.Header = "பிளாசிடஸ் பாவம் (கே.பி/கிருஷ்ணமூர்த்தி)";
+        MenuKoch.Header = "கோச் பாவம்";
+        MenuPorphyry.Header = "போர்ஃபிரி பாவம் (ஸ்ரீபதி)";
+        MenuRegiomontanus.Header = "ரெஜியோமாண்டனஸ் பாவம்";
+        MenuCampanus.Header = "காம்பனஸ் பாவம்";
+        MenuAlcabitus.Header = "அல்காபிடஸ் பாவம்";
+        MenuTopocentric.Header = "டோபோசெண்ட்ரிக் பாவம்";
+        MenuAxial.Header = "அச்சு சுழற்சி முறை பாவம்";
+        
+        // Cusp reference
+        MenuCuspMiddle.Header = "லக்னம் முதல் பாவத்தின் நடுவில்";
+        MenuCuspStart.Header = "லக்னம் முதல் பாவத்தின் தொடக்கத்தில்";
+        
+        // Copy
+        MenuCopyClipboard.Header = "நகலெடு";
     }
     
     private void UpdateMenuCheckmarks()
