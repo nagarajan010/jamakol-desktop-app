@@ -76,7 +76,7 @@ public partial class JamakolPlanetGrid : UserControl
         if (chartData != null && chartData.AscendantDegree > 0)
         {
             double degInSign = chartData.AscendantDegree % 30;
-            string signShort = chartData.AscendantSignName.Length > 2 ? chartData.AscendantSignName.Substring(0, 2) : chartData.AscendantSignName;
+            string signShort = ZodiacUtils.SignAbbreviations[chartData.AscendantSign];
             string degDisplay = $"{(int)degInSign}°{(int)((degInSign % 1) * 60)}'{(int)(((degInSign % 1) * 60 % 1) * 60)}\"";
             
             // Get Nakshatra for Lagna
@@ -126,7 +126,7 @@ public partial class JamakolPlanetGrid : UserControl
         displayData.AddRange(sortedPlanets.Select(p => new JamakolPlanetGridItem
         {
             EnglishName = p.EnglishName,
-            SignEnglish = p.SignEnglish.Length > 2 ? p.SignEnglish.Substring(0, 2) : p.SignEnglish,
+            SignEnglish = ZodiacUtils.SignAbbreviations[p.Sign],
             DegreeDisplay = p.DegreeDisplay, 
             NakshatraEnglish = p.NakshatraEnglish,
             Pada = p.NakshatraPada.ToString(),
@@ -158,7 +158,7 @@ public partial class JamakolPlanetGrid : UserControl
         displayData.Add(new JamakolPlanetGridItem
         {
             EnglishName = "Lagna",
-            SignEnglish = chartData.AscendantSignName.Length > 2 ? chartData.AscendantSignName.Substring(0, 2) : chartData.AscendantSignName,
+            SignEnglish = ZodiacUtils.SignAbbreviations[chartData.AscendantSign],
             DegreeDisplay = $"{ascD}°{ascM:00}'{ascS:00.00}\"",
             NakshatraEnglish = chartData.AscendantNakshatraName ?? "",
             Pada = chartData.AscendantNakshatraPada.ToString(),
@@ -202,7 +202,7 @@ public partial class JamakolPlanetGrid : UserControl
              return new JamakolPlanetGridItem
              {
                  EnglishName = p.Name,
-                 SignEnglish = p.SignName.Length > 2 ? p.SignName.Substring(0, 2) : p.SignName,
+                 SignEnglish = ZodiacUtils.SignAbbreviations[p.Sign],
                  DegreeDisplay = $"{pD}°{pM:00}'{pS:00.00}\"",
                  NakshatraEnglish = p.NakshatraName,
                  Pada = p.NakshatraPada.ToString(),

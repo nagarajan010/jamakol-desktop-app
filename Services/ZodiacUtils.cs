@@ -43,6 +43,12 @@ public static class ZodiacUtils
         "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"
     };
 
+    public static readonly string[] SignAbbreviations = 
+    {
+        "", "Ar", "Ta", "Ge", "Cn", "Le", "Vi",
+        "Li", "Sc", "Sg", "Cp", "Aq", "Pi"
+    };
+
     public static readonly string[] SignNamesTamil = 
     {
         "", "மேஷம்", "ரிஷபம்", "மிதுனம்", "கடகம்", "சிம்மம்", "கன்னி",
