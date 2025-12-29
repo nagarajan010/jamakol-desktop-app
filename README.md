@@ -40,6 +40,9 @@ A full-featured horoscope generation engine powered by **Swiss Ephemeris**.
 * **Divisional Charts (Vargas)**: Complete support for all major Vargas:
   * D1 (Rasi), D2 (Hora), D3 (Drekkana), D4 (Chaturthamsha), D7 (Saptamia), D9 (Navamsa)
   * D10 (Dasamsa), D12 (Dwadasamsa), D16 (Shodashamsa), D20, D24, D27, D30, D40, D45, D60.
+* **10+ House Systems**:
+  * Comprehensive support for major house systems including **Placidus** (KP), **Koch**, **Porphyry** (Sripathi), **Regiomontanus**, **Campanus**, **Equal**, **Whole Sign**, **Alcabitus**, **Topocentric**, and **Axial**.
+  * Customizable Cusp calculation (Start of House or Middle of House).
 * **Ashtakavarga**:
   * **Bhinna Ashtakavarga (BAV)** for all 7 planets.
   * **Samudaya Ashtakavarga (SAV)** total points.
