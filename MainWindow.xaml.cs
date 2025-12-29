@@ -674,37 +674,40 @@ public partial class MainWindow : Window
         }
     }
 
-    private void OnHelpFeaturesClick(object sender, RoutedEventArgs e)
-    {
-        try
+        private void OnHelpFeaturesClick(object sender, RoutedEventArgs e)
         {
-            string readmePath = FindReadmePath();
-            if (string.IsNullOrEmpty(readmePath))
+            try
             {
-                MessageBox.Show("README.md not found.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
+                string? readmePath = FindReadmePath();
+                if (string.IsNullOrEmpty(readmePath))
+                {
+                    MessageBox.Show("README.md not found.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
 
-            string content = System.IO.File.ReadAllText(readmePath);
-            HelpWindow helpWin = new HelpWindow("Features", content);
-            helpWin.Owner = this;
-            helpWin.ShowDialog();
-        }
+                string content = System.IO.File.ReadAllText(readmePath);
+                string? baseDir = System.IO.Path.GetDirectoryName(readmePath);
+                HelpWindow helpWin = new HelpWindow("Features", content, baseDir);
+                helpWin.Owner = this;
+                helpWin.ShowDialog();
+            }
         catch (Exception ex)
         {
             MessageBox.Show($"Error loading features: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
-    private string FindReadmePath()
+    private string? FindReadmePath()
     {
-        string currentDir = AppDomain.CurrentDomain.BaseDirectory;
+        string? currentDir = AppDomain.CurrentDomain.BaseDirectory;
+        if (currentDir == null) return null;
+
         // Check current dir
         if (System.IO.File.Exists(System.IO.Path.Combine(currentDir, "README.md")))
             return System.IO.Path.Combine(currentDir, "README.md");
 
-        // Check up to 4 levels (bin/debug/net8.0 etc)
-        System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(currentDir);
+        // Check up to 4 levels
+        System.IO.DirectoryInfo? di = new System.IO.DirectoryInfo(currentDir);
         for (int i = 0; i < 5; i++)
         {
             if (di == null) break;
@@ -734,7 +737,7 @@ public partial class MainWindow : Window
 
     private void OnHelpAboutClick(object sender, RoutedEventArgs e)
     {
-        var version = System.Reflection.Assembly.GetEntryAssembly().GetName().Version;
+        var version = System.Reflection.Assembly.GetEntryAssembly()?.GetName().Version;
         MessageBox.Show($"Jamakol Astrology Software\nVersion: {version}\n\nDeveloped by Nagarajan", "About", MessageBoxButton.OK, MessageBoxImage.Information);
     }
 

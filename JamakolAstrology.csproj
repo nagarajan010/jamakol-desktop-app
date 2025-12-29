@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Markdig" Version="0.44.0" />
     <PackageReference Include="SwissEphNet" Version="2.8.0.2" />
   </ItemGroup>
 

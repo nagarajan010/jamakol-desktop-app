@@ -17,11 +17,7 @@
             <TextBlock x:Name="HeaderTitle" Text="Features" FontSize="18" FontWeight="Bold" Foreground="#333"/>
         </Border>
 
-        <TextBox x:Name="ContentText" Grid.Row="1" Margin="10" 
-                 IsReadOnly="True" TextWrapping="Wrap" 
-                 VerticalScrollBarVisibility="Auto"
-                 FontFamily="Consolas, Courier New, Monospace" FontSize="14"
-                 BorderThickness="0" Background="Transparent"/>
+        <WebBrowser x:Name="ContentBrowser" Grid.Row="1" Margin="10" Navigating="ContentBrowser_Navigating"/>
 
         <Button Grid.Row="2" Content="Close" Width="100" Height="30" Margin="10" 
                 HorizontalAlignment="Right" Click="CloseButton_Click"/>

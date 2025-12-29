@@ -172,19 +172,19 @@ To create a distributable `.exe` setup file:
 * **Note**: Windows 7 and 8 are **not supported** due to .NET 8.0 requirements.
 * **Screen Resolution**: Minimum 1366x768 (1920x1080 recommended for best experience).
 
-## 🐛 Feedback & Contribution
+## 🤝 Feedback & Contribution
 
 Found a bug or have a feature request? Please help us improve by reporting it:
 
 *   **Bug Reports**: Open a [New Issue](https://github.com/nagarajan010/jamakol-desktop-app/issues) with a detailed description.
 *   **Feature Requests**: We welcome ideas! Feel free to discuss them in the Issues section.
 
-## � Acknowledgements
+## 🙏 Acknowledgements
 
 *   Special thanks to the [kunjara/jyotish](https://github.com/kunjara/jyotish/) repository. Their open-source code was incredibly helpful in verifying calculation logic and understanding complex astrological algorithms.
 *   **Jagannath Hora (JHora)** and other established astrology software provided valuable design inspiration and served as a reference for calculation accuracy.
 
-## �📜 License
+## 📜 License
 
 This project is licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**.
 
