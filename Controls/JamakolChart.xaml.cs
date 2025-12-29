@@ -297,9 +297,11 @@ public partial class JamakolChart : UserControl
 
         tb.Inlines.Add(new System.Windows.Documents.LineBreak());
 
-        // 2. Degree (Normal, Red)
-        // Format: 16°16'
-        string degreeText = $"{(int)graha.Degree}°{(int)graha.DegreeInSign:D2}'";
+        // 2. Absolute Degree (Normal, Red)
+        // Format: 74°11' (absolute longitude with arc minutes)
+        int degrees = (int)graha.Degree;  // Absolute longitude (0-360)
+        int minutes = (int)((graha.Degree - degrees) * 60);  // Arc minutes from fractional part
+        string degreeText = $"{degrees}°{minutes:D2}'";
         var degreeRun = new System.Windows.Documents.Run(degreeText);
         degreeRun.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(204, 0, 0)); // Red
         tb.Inlines.Add(degreeRun);
