@@ -2,7 +2,7 @@
 
 A comprehensive desktop application for **Vedic Astrology**, specialized in **Jamakol Prasanam** (ஜாமக்கோள் பிரசன்னம்) and detailed **Birth Chart** analysis. Built with WPF and C# .NET, utilizing the Swiss Ephemeris for high-precision astronomical calculations.
 
-![Jamakol Astrology Screenshot](assets/JAS-Screenshot1.png)
+![Jamakol Astrology Screenshot](assets/JAS-Screenshot2.png)
 
 > [!NOTE] 
 > **Work in Progress**: This software is currently under active development. Features may change, and bugs may be present.
@@ -21,7 +21,7 @@ The core feature of this application is the robust **Jamakol Prasanam** module, 
 * **Live Clock**: Auto-updating timer for instant "right-now" queries.
 
 ### 🌌 Birth Chart Analysis
-![Birth Chart Analysis](assets/JAS-Screenshot2.png)
+![Birth Chart Analysis](assets/JAS-Screenshot1.png)
 A full-featured horoscope generation engine powered by **Swiss Ephemeris**.
 * **High Precision**: Planetary longitudes calculated to the second.
 * **Combustion (Asta) Settings**:
