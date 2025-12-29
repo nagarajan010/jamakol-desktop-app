@@ -8,6 +8,12 @@ A comprehensive desktop application for **Vedic Astrology**, specialized in **Ja
 > [!NOTE] 
 > **Work in Progress**: This software is currently under active development. Features may change, and bugs may be present.
 
+
+## 📥 Download
+
+**Version 1.0 is now available!**
+👉 [**Download v1 Release**](https://github.com/nagarajan010/jamakol-desktop-app/releases/tag/v1)
+
 ## ✨ Key Features
 
 ### 🕉️ Jamakol Prasanam
