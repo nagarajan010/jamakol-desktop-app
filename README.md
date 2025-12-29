@@ -18,7 +18,7 @@ A comprehensive desktop application for **Vedic Astrology**, specialized in **Ja
 
 ### 🕉️ Jamakol Prasanam
 The core feature of this application is the robust **Jamakol Prasanam** module, designed for instant astrological queries.
-* **Real-time Chart**: Interactive South Indian style chart with **(optional) Fixed Sign Boxes** support.
+* **Real-time Chart**: Interactive South Indian style chart with **(optional) Fixed Sign** support.
 * **Special Points Calculation**:
   * **Aarudam (AR)**: Calculated based on the exact minute of the query (5-minute mapping).
   * **Udayam (UD)**: Calculated based on the Ascendant (Lagna) sign.
