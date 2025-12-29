@@ -12,7 +12,7 @@ A comprehensive desktop application for **Vedic Astrology**, specialized in **Ja
 ## 📥 Download
 
 **Version 1.0 is now available!**
-👉 [**Download v1 Release**](https://github.com/nagarajan010/jamakol-desktop-app/releases/tag/v1)
+👉 [**Download v1 Release**](https://github.com/nagarajan010/jamakol-desktop-app/releases/tag/V1.0.0)
 
 ## ✨ Key Features
 
