@@ -41,9 +41,17 @@ public partial class HousesPanel : UserControl
             if (item is MenuItem menuItem && menuItem.Tag != null)
             {
                 string tag = menuItem.Tag.ToString()!;
-                menuItem.IsChecked = (tag.Length == 1 && tag[0] == currentSystem);
+                // House system checkmarks (single char tags)
+                if (tag.Length == 1)
+                {
+                    menuItem.IsChecked = (tag[0] == currentSystem);
+                }
             }
         }
+        
+        // Update cusp reference checkmarks
+        MenuCuspMiddle.IsChecked = settings.CuspAsMiddle;
+        MenuCuspStart.IsChecked = !settings.CuspAsMiddle;
     }
     
     private void HouseSystem_Click(object sender, RoutedEventArgs e)
@@ -69,6 +77,62 @@ public partial class HousesPanel : UserControl
             }
         }
     }
+    
+    private void CuspReference_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is MenuItem menuItem && menuItem.Tag != null)
+        {
+            string tag = menuItem.Tag.ToString()!;
+            bool isMiddle = (tag == "Middle");
+            
+            var settings = AppSettings.Load();
+            settings.CuspAsMiddle = isMiddle;
+            settings.Save();
+            
+            UpdateMenuCheckmarks();
+            
+            // Notify parent to recalculate
+            HouseSystemChanged?.Invoke(this, settings.HouseSystem);
+        }
+    }
+    
+    private void CopyToClipboard_Click(object sender, RoutedEventArgs e)
+    {
+        if (_currentChart == null || _currentChart.HouseCusps == null) return;
+        
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine("House\tStart\tCusp\tEnd\tPlanets");
+        
+        foreach (var cusp in _currentChart.HouseCusps)
+        {
+            var planets = GetPlanetsInHouse(cusp.HouseNumber);
+            sb.AppendLine($"{cusp.HouseNumber}\t{cusp.StartDisplay}\t{cusp.DegreeDisplay}\t{cusp.EndDisplay}\t{planets}");
+        }
+        
+        System.Windows.Clipboard.SetText(sb.ToString());
+    }
+    
+    private string GetPlanetsInHouse(int houseNumber)
+    {
+        if (_currentChart == null) return "";
+        
+        var planetsByHouse = new Dictionary<int, List<PlanetPosition>>();
+        for (int h = 1; h <= 12; h++) planetsByHouse[h] = new List<PlanetPosition>();
+        
+        foreach (var planet in _currentChart.Planets)
+        {
+            int houseNum = FindHouseForPlanet(planet.Longitude, _currentChart.HouseCusps);
+            if (houseNum >= 1 && houseNum <= 12) planetsByHouse[houseNum].Add(planet);
+        }
+        
+        if (planetsByHouse.TryGetValue(houseNumber, out var planets) && planets.Count > 0)
+        {
+            var abbrevs = planets.Select(p => GetPlanetAbbrev(p)).ToList();
+            if (houseNumber == 1) abbrevs.Insert(0, "As");
+            return string.Join(", ", abbrevs);
+        }
+        return houseNumber == 1 ? "As" : "";
+    }
 
     public void UpdateChart(ChartData? chart)
     {
@@ -82,17 +146,28 @@ public partial class HousesPanel : UserControl
 
         var items = new List<HouseViewItem>();
         
-        // Build lookup of planets by house
-        var planetsByHouse = chart.Planets
-            .Where(p => p.House >= 1 && p.House <= 12)
-            .GroupBy(p => p.House)
-            .ToDictionary(g => g.Key, g => g.ToList());
+        // Build lookup of planets by house - using actual house cusp ranges
+        var planetsByHouse = new Dictionary<int, List<PlanetPosition>>();
+        for (int h = 1; h <= 12; h++)
+        {
+            planetsByHouse[h] = new List<PlanetPosition>();
+        }
+        
+        // For each planet, find which house it falls into based on cusp ranges
+        foreach (var planet in chart.Planets)
+        {
+            int houseNum = FindHouseForPlanet(planet.Longitude, chart.HouseCusps);
+            if (houseNum >= 1 && houseNum <= 12)
+            {
+                planetsByHouse[houseNum].Add(planet);
+            }
+        }
         
         foreach (var cusp in chart.HouseCusps)
         {
             // Get planets in this house
             var planetsInHouse = "";
-            if (planetsByHouse.TryGetValue(cusp.HouseNumber, out var planets))
+            if (planetsByHouse.TryGetValue(cusp.HouseNumber, out var planets) && planets.Count > 0)
             {
                 // Use abbreviations for compactness (Su, Mo, Ma, etc.)
                 var abbrevs = planets.Select(p => GetPlanetAbbrev(p)).ToList();
@@ -123,8 +198,63 @@ public partial class HousesPanel : UserControl
         HousesGrid.ItemsSource = items;
     }
     
+    /// <summary>
+    /// Find which house a planet falls into based on house cusp Start/End ranges
+    /// </summary>
+    private int FindHouseForPlanet(double planetLongitude, List<HouseCusp> cusps)
+    {
+        planetLongitude = ZodiacUtils.NormalizeDegree(planetLongitude);
+        
+        foreach (var cusp in cusps)
+        {
+            double start = ZodiacUtils.NormalizeDegree(cusp.StartDegree);
+            double end = ZodiacUtils.NormalizeDegree(cusp.EndDegree);
+            
+            // Handle wrap-around case (e.g., start=350°, end=20°)
+            if (start <= end)
+            {
+                // Normal case: start < end
+                if (planetLongitude >= start && planetLongitude < end)
+                {
+                    return cusp.HouseNumber;
+                }
+            }
+            else
+            {
+                // Wrap-around case: house spans 0°
+                if (planetLongitude >= start || planetLongitude < end)
+                {
+                    return cusp.HouseNumber;
+                }
+            }
+        }
+        
+        // Fallback: shouldn't happen, but return house 1
+        return 1;
+    }
+    
     private string GetPlanetAbbrev(PlanetPosition p)
     {
+        // Check if this is an Aprakash Graha (shadow planet) FIRST
+        // Aprakash Graha have non-standard names (Dhooma, Vyatipata, etc.)
+        bool isStandardPlanet = ZodiacUtils.PlanetNames.ContainsKey(p.Planet) && 
+                               p.Name == ZodiacUtils.PlanetNames[p.Planet];
+        
+        if (!isStandardPlanet)
+        {
+            // For Aprakash Graha - use their symbol
+            if (!string.IsNullOrEmpty(p.Symbol) && p.Symbol.Length <= 2)
+            {
+                return p.Symbol; // Dh, Vy, Pa, In, Uk
+            }
+            // Fallback: use first 2 letters of name
+            if (!string.IsNullOrEmpty(p.Name) && p.Name.Length >= 2)
+            {
+                return p.Name.Substring(0, 2);
+            }
+            return p.Symbol ?? "";
+        }
+        
         // Main planets - use localized abbreviations
         if (ZodiacUtils.PlanetAbbreviations.TryGetValue(p.Planet, out var abbrev))
         {
@@ -146,18 +276,6 @@ public partial class HousesPanel : UserControl
                 };
             }
             return abbrev;
-        }
-        
-        // For Aprakash Graha (shadow planets) - use their 2-letter symbol
-        if (!string.IsNullOrEmpty(p.Symbol) && p.Symbol.Length <= 2)
-        {
-            return p.Symbol; // Dh, Vy, Pa, In, Uk
-        }
-        
-        // Fallback: use first 2 letters of name
-        if (!string.IsNullOrEmpty(p.Name) && p.Name.Length >= 2)
-        {
-            return p.Name.Substring(0, 2);
         }
         
         return p.Symbol ?? "";

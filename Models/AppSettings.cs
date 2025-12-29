@@ -55,6 +55,9 @@ public class AppSettings
     /// <summary>House calculation system (Placidus, Koch, etc.)</summary>
     public HouseSystem HouseSystem { get; set; } = HouseSystem.Placidus;
 
+    /// <summary>Whether cusp is treated as middle of house (true) or start (false)</summary>
+    public bool CuspAsMiddle { get; set; } = true;
+
     // Settings saved to user's AppData folder (writable even with Program Files install)
     private static string SettingsFolder
     {

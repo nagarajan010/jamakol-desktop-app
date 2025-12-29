@@ -28,6 +28,11 @@
                     <MenuItem Header="Alcabitus houses" Tag="B" Click="HouseSystem_Click"/>
                     <MenuItem Header="Polich/Page (topocentric) houses" Tag="T" Click="HouseSystem_Click"/>
                     <MenuItem Header="Axial rotation system houses" Tag="X" Click="HouseSystem_Click"/>
+                    <Separator/>
+                    <MenuItem x:Name="MenuCuspMiddle" Header="Ascendant is the middle of first house" Tag="Middle" Click="CuspReference_Click" IsCheckable="True"/>
+                    <MenuItem x:Name="MenuCuspStart" Header="Ascendant is the start of first house" Tag="Start" Click="CuspReference_Click" IsCheckable="True"/>
+                    <Separator/>
+                    <MenuItem Header="Copy to clipboard" Click="CopyToClipboard_Click"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
             <DataGrid.ColumnHeaderStyle>

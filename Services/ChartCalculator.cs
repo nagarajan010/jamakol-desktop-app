@@ -53,18 +53,60 @@ public class ChartCalculator
         // --- KP HOUSE CUSPS ---
         var settings = AppSettings.Load();
         char houseSystemCode = (char)settings.HouseSystem;
+        bool cuspAsMiddle = settings.CuspAsMiddle;
         var cusps = _ephemeris.GetHouses(chartData.JulianDay, birthData.Latitude, birthData.Longitude, (int)ayanamsha, houseSystemCode);
         chartData.HouseCusps = new List<HouseCusp>();
         
         for (int i = 0; i < 12; i++)
         {
             double cuspLongitude = cusps[i];
-            // Start of house = previous house cusp
-            int prevIndex = (i == 0) ? 11 : i - 1;
-            double startLongitude = cusps[prevIndex];
-            // End of house = next house cusp
-            int nextIndex = (i + 1) % 12;
-            double endLongitude = cusps[nextIndex];
+            double startLongitude;
+            double endLongitude;
+            
+            if (houseSystemCode == 'W')
+            {
+                // Whole Sign: each house is exactly one sign (0° to 30°)
+                int signIndex = ZodiacUtils.DegreeToSign(cuspLongitude); // 1-12
+                startLongitude = (signIndex - 1) * 30.0; // 0° of sign
+                endLongitude = signIndex * 30.0; // 0° of next sign
+            }
+            else if (houseSystemCode == 'A' || houseSystemCode == 'E')
+            {
+                // Equal houses (30° each)
+                if (cuspAsMiddle)
+                {
+                    // Cusp is MIDDLE of house
+                    startLongitude = ZodiacUtils.NormalizeDegree(cuspLongitude - 15.0);
+                    endLongitude = ZodiacUtils.NormalizeDegree(cuspLongitude + 15.0);
+                }
+                else
+                {
+                    // Cusp is START of house
+                    startLongitude = cuspLongitude;
+                    endLongitude = ZodiacUtils.NormalizeDegree(cuspLongitude + 30.0);
+                }
+            }
+            else
+            {
+                // For Placidus, Koch, Porphyry, etc.
+                int prevIndex = (i == 0) ? 11 : i - 1;
+                int nextIndex = (i + 1) % 12;
+                double prevCusp = cusps[prevIndex];
+                double nextCusp = cusps[nextIndex];
+                
+                if (cuspAsMiddle)
+                {
+                    // Cusp is MIDDLE of house - calculate midpoints
+                    startLongitude = CalculateMidpoint(prevCusp, cuspLongitude);
+                    endLongitude = CalculateMidpoint(cuspLongitude, nextCusp);
+                }
+                else
+                {
+                    // Cusp is START of house
+                    startLongitude = cuspLongitude;
+                    endLongitude = nextCusp;
+                }
+            }
             
             var cusp = new HouseCusp
             {
@@ -362,6 +404,23 @@ public class ChartCalculator
         string[] signAbbr = { "", "Ar", "Ta", "Ge", "Cn", "Le", "Vi", "Li", "Sc", "Sg", "Cp", "Aq", "Pi" };
         
         return $"{deg} {signAbbr[signIndex]} {min:D2}' {sec:D2}\"";
+    }
+
+    /// <summary>
+    /// Calculate midpoint between two longitudes, handling zodiac wrap-around
+    /// </summary>
+    private double CalculateMidpoint(double deg1, double deg2)
+    {
+        deg1 = ZodiacUtils.NormalizeDegree(deg1);
+        deg2 = ZodiacUtils.NormalizeDegree(deg2);
+        
+        // Handle wrap-around (e.g., 350° and 10°)
+        double diff = deg2 - deg1;
+        if (diff < 0) diff += 360;
+        
+        // Midpoint is deg1 + half the difference
+        double midpoint = deg1 + (diff / 2);
+        return ZodiacUtils.NormalizeDegree(midpoint);
     }
 
     public void Dispose()
