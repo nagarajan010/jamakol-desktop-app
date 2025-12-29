@@ -738,7 +738,7 @@ public partial class MainWindow : Window
     private void OnHelpAboutClick(object sender, RoutedEventArgs e)
     {
         var version = System.Reflection.Assembly.GetEntryAssembly()?.GetName().Version;
-        MessageBox.Show($"Jamakol Astrology Software\nVersion: {version}\n\nDeveloped by Nagarajan", "About", MessageBoxButton.OK, MessageBoxImage.Information);
+        MessageBox.Show($"Jamakol Astrology Software\nVersion: {version}\n\nDeveloped by Nagarajan\nEmail: nagarajan010@gmail.com", "About", MessageBoxButton.OK, MessageBoxImage.Information);
     }
 
     #endregion
