@@ -209,7 +209,7 @@ public partial class SouthIndianChart : UserControl
              else
              {
                  // Aprakash graha - collect for bottom-left display
-                 string abbr = p.Symbol;
+                 string abbr = GetLocalizedAprakashAbbr(p.Name, p.Symbol);
                  string text = _hideDegrees ? abbr : $"{(int)p.DegreeInSign}°{abbr}";
                  aprakashBySign[p.Sign].Add(text);
              }
@@ -355,7 +355,7 @@ public partial class SouthIndianChart : UserControl
             else
             {
                 // Aprakash graha - collect for bottom display
-                string abbr = p.Symbol;
+                string abbr = GetLocalizedAprakashAbbr(p.Name, p.Symbol);
                 string text = _hideDegrees ? abbr : $"{(int)p.DivisionalDegree}°{abbr}";
                 aprakashBySign[p.DivisionalSign].Add(text);
             }
@@ -533,6 +533,24 @@ public partial class SouthIndianChart : UserControl
             Planet.Rahu => "ராகு",
             Planet.Ketu => "கேது",
             _ => ZodiacUtils.PlanetAbbreviations[p]
+        };
+    }
+    
+    /// <summary>
+    /// Get localized abbreviation for Aprakash Graha based on name
+    /// </summary>
+    private string GetLocalizedAprakashAbbr(string name, string symbol)
+    {
+        if (!ZodiacUtils.IsTamil) return symbol;
+        
+        return name switch
+        {
+            "Dhooma" => "தூம்",
+            "Vyatipata" => "வியதி",
+            "Parivesha" => "பரி",
+            "Indrachapa" => "இந்",
+            "Upaketu" => "உப",
+            _ => symbol
         };
     }
 
