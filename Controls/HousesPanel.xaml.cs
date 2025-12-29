@@ -144,6 +144,23 @@ public partial class HousesPanel : UserControl
             return;
         }
 
+        var settings = AppSettings.Load();
+        bool cuspAsMiddle = settings.CuspAsMiddle;
+        
+        // Update column headers based on mode
+        if (cuspAsMiddle)
+        {
+            Col1Header.Header = ZodiacUtils.IsTamil ? "தொடக்கம்" : "Start";
+            Col2Header.Header = ZodiacUtils.IsTamil ? "கொனை" : "Cusp";
+            Col3Header.Header = ZodiacUtils.IsTamil ? "முடிவு" : "End";
+        }
+        else
+        {
+            Col1Header.Header = ZodiacUtils.IsTamil ? "கொனை" : "Cusp";
+            Col2Header.Header = ZodiacUtils.IsTamil ? "நடுவு" : "Middle";
+            Col3Header.Header = ZodiacUtils.IsTamil ? "முடிவு" : "End";
+        }
+
         var items = new List<HouseViewItem>();
         
         // Build lookup of planets by house - using actual house cusp ranges
@@ -185,17 +202,47 @@ public partial class HousesPanel : UserControl
                 planetsInHouse = "As";
             }
             
+            // Calculate middle point for "start" mode
+            string middleDisplay = "";
+            if (!cuspAsMiddle)
+            {
+                // Middle = midpoint between cusp and end
+                double mid = ZodiacUtils.NormalizeDegree((cusp.Degree + cusp.EndDegree) / 2);
+                // Handle wrap-around
+                if (cusp.EndDegree < cusp.Degree)
+                {
+                    mid = ZodiacUtils.NormalizeDegree((cusp.Degree + cusp.EndDegree + 360) / 2);
+                }
+                middleDisplay = FormatDegreeWithSign(mid);
+            }
+            
             items.Add(new HouseViewItem
             {
                 HouseName = FormatHouseName(cusp.HouseNumber),
-                StartDisplay = cusp.StartDisplay,
-                CuspDisplay = cusp.DegreeDisplay,
-                EndDisplay = cusp.EndDisplay,
+                Col1Display = cuspAsMiddle ? cusp.StartDisplay : cusp.DegreeDisplay,    // Start or Cusp
+                Col2Display = cuspAsMiddle ? cusp.DegreeDisplay : middleDisplay,        // Cusp or Middle
+                Col3Display = cusp.EndDisplay,                                          // End
                 PlanetsInHouse = planetsInHouse
             });
         }
 
         HousesGrid.ItemsSource = items;
+    }
+    
+    private string FormatDegreeWithSign(double degree)
+    {
+        degree = ZodiacUtils.NormalizeDegree(degree);
+        int signIndex = ZodiacUtils.DegreeToSign(degree);
+        double degInSign = ZodiacUtils.DegreeInSign(degree);
+        
+        int deg = (int)degInSign;
+        double minVal = (degInSign - deg) * 60;
+        int min = (int)minVal;
+        int sec = (int)((minVal - min) * 60);
+        
+        string[] signAbbr = { "", "Ar", "Ta", "Ge", "Cn", "Le", "Vi", "Li", "Sc", "Sg", "Cp", "Aq", "Pi" };
+        
+        return $"{deg} {signAbbr[signIndex]} {min:D2}' {sec:D2}\"";
     }
     
     /// <summary>
@@ -295,10 +342,11 @@ public partial class HousesPanel : UserControl
 public class HouseViewItem
 {
     public string HouseName { get; set; } = "";
-    public string StartDisplay { get; set; } = "";
-    public string CuspDisplay { get; set; } = "";
-    public string EndDisplay { get; set; } = "";
+    public string Col1Display { get; set; } = "";  // Start (middle mode) or Cusp (start mode)
+    public string Col2Display { get; set; } = "";  // Cusp (middle mode) or Middle (start mode)
+    public string Col3Display { get; set; } = "";  // End
     public string PlanetsInHouse { get; set; } = "";
 }
+
 
 

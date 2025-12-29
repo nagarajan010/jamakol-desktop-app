@@ -46,9 +46,9 @@
             </DataGrid.ColumnHeaderStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{x:Static res:Strings.HeaderHouse}" Binding="{Binding HouseName}" Width="Auto" FontWeight="SemiBold" Foreground="#cc0000"/>
-                <DataGridTextColumn Header="{x:Static res:Strings.HeaderStart}" Binding="{Binding StartDisplay}" Width="Auto"/>
-                <DataGridTextColumn Header="{x:Static res:Strings.HeaderCusp}" Binding="{Binding CuspDisplay}" Width="Auto"/>
-                <DataGridTextColumn Header="{x:Static res:Strings.HeaderEnd}" Binding="{Binding EndDisplay}" Width="Auto"/>
+                <DataGridTextColumn x:Name="Col1Header" Header="Start" Binding="{Binding Col1Display}" Width="Auto"/>
+                <DataGridTextColumn x:Name="Col2Header" Header="Cusp" Binding="{Binding Col2Display}" Width="Auto"/>
+                <DataGridTextColumn x:Name="Col3Header" Header="End" Binding="{Binding Col3Display}" Width="Auto"/>
                 <DataGridTextColumn Header="{x:Static res:Strings.HeaderPlanetsInIt}" Binding="{Binding PlanetsInHouse}" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
