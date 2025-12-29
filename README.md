@@ -178,7 +178,8 @@ Found a bug or have a feature request? Please help us improve by reporting it:
 
 ## � Acknowledgements
 
-Special thanks to the [kunjara/jyotish](https://github.com/kunjara/jyotish/) repository. Their open-source code was incredibly helpful in verifying calculation logic and understanding complex astrological algorithms.
+*   Special thanks to the [kunjara/jyotish](https://github.com/kunjara/jyotish/) repository. Their open-source code was incredibly helpful in verifying calculation logic and understanding complex astrological algorithms.
+*   **Jagannath Hora (JHora)** and other established astrology software provided valuable design inspiration and served as a reference for calculation accuracy.
 
 ## �📜 License
 
