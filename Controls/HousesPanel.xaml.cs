@@ -289,15 +289,26 @@ public partial class HousesPanel : UserControl
         
         if (!isStandardPlanet)
         {
-            // For Aprakash Graha - use their symbol
-            if (!string.IsNullOrEmpty(p.Symbol) && p.Symbol.Length <= 2)
+            // For Aprakash Graha - use Tamil or English abbreviations
+            if (ZodiacUtils.IsTamil)
             {
-                return p.Symbol; // Dh, Vy, Pa, In, Uk
+                return p.Name switch
+                {
+                    "Dhooma" => "தூம்",
+                    "Vyatipata" => "வியதி",
+                    "Parivesha" => "பரி",
+                    "Indrachapa" => "இந்",
+                    "Upaketu" => "உப",
+                    _ => p.Symbol ?? ""
+                };
             }
-            // Fallback: use first 2 letters of name
-            if (!string.IsNullOrEmpty(p.Name) && p.Name.Length >= 2)
+            else
             {
-                return p.Name.Substring(0, 2);
+                // English abbreviations
+                if (!string.IsNullOrEmpty(p.Symbol) && p.Symbol.Length <= 2)
+                {
+                    return p.Symbol; // Dh, Vy, Pa, In, Uk
+                }
             }
             return p.Symbol ?? "";
         }
