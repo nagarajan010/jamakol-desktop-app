@@ -199,3 +199,4 @@ This software uses the **Swiss Ephemeris** for astronomical calculations.
 ---
 
 Developed by Nagarajan
+Email: nagarajan010@gmail.com
