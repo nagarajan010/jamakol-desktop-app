@@ -410,12 +410,12 @@ public partial class JamakolChart : UserControl
             "MA" => "மா",
             "RK" => "ராகு", // Rahu Kalam
             
-            "Dh" => "தூ",
-            "Vy" => "வ", // Vyatipat
-            "Pa" => "ப", // Parivesh or Pata (check context)
-            "In" => "இ",
-            "Uk" => "உ",
-            "Ka" => "கா",
+            "Dh" => "தூம்",
+            "Vy" => "வியதி", // Vyatipat
+            "Pa" => "பரி", // Parivesha
+            "In" => "இந்",
+            "Uk" => "உப",
+            "Ka" => "கவி",
             
             _ => symbol
         };
