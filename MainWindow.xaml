@@ -64,6 +64,22 @@
                             Background="#990000"
                             Padding="10,6"
                             FontSize="12"/>
+                    <Button x:Name="BtnHelp" Content="Help" 
+                            Style="{StaticResource ButtonStyle}" 
+                            Click="BtnHelp_Click"
+                            Background="#990000"
+                            Padding="10,6"
+                            Margin="10,0,0,0"
+                            FontSize="12">
+                        <Button.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Features" Click="OnHelpFeaturesClick"/>
+                                <MenuItem Header="Check Development" Click="OnHelpDevClick"/>
+                                <Separator/>
+                                <MenuItem Header="About" Click="OnHelpAboutClick"/>
+                            </ContextMenu>
+                        </Button.ContextMenu>
+                    </Button>
                 </StackPanel>
             </Grid>
         </Border>

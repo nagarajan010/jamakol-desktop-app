@@ -661,6 +661,84 @@ public partial class MainWindow : Window
     }
 
     #endregion
+
+    #region Help Menu
+
+    private void BtnHelp_Click(object sender, RoutedEventArgs e)
+    {
+        if (BtnHelp.ContextMenu != null)
+        {
+            BtnHelp.ContextMenu.PlacementTarget = BtnHelp;
+            BtnHelp.ContextMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
+            BtnHelp.ContextMenu.IsOpen = true;
+        }
+    }
+
+    private void OnHelpFeaturesClick(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            string readmePath = FindReadmePath();
+            if (string.IsNullOrEmpty(readmePath))
+            {
+                MessageBox.Show("README.md not found.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            string content = System.IO.File.ReadAllText(readmePath);
+            HelpWindow helpWin = new HelpWindow("Features", content);
+            helpWin.Owner = this;
+            helpWin.ShowDialog();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error loading features: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    private string FindReadmePath()
+    {
+        string currentDir = AppDomain.CurrentDomain.BaseDirectory;
+        // Check current dir
+        if (System.IO.File.Exists(System.IO.Path.Combine(currentDir, "README.md")))
+            return System.IO.Path.Combine(currentDir, "README.md");
+
+        // Check up to 4 levels (bin/debug/net8.0 etc)
+        System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(currentDir);
+        for (int i = 0; i < 5; i++)
+        {
+            if (di == null) break;
+            string path = System.IO.Path.Combine(di.FullName, "README.md");
+            if (System.IO.File.Exists(path))
+                return path;
+            di = di.Parent;
+        }
+        return null;
+    }
+
+    private void OnHelpDevClick(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = "https://github.com/nagarajan010/jamakol-desktop-app",
+                UseShellExecute = true
+            });
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Could not open browser: {ex.Message}", "Error");
+        }
+    }
+
+    private void OnHelpAboutClick(object sender, RoutedEventArgs e)
+    {
+        var version = System.Reflection.Assembly.GetEntryAssembly().GetName().Version;
+        MessageBox.Show($"Jamakol Astrology Software\nVersion: {version}\n\nDeveloped by Nagarajan", "About", MessageBoxButton.OK, MessageBoxImage.Information);
+    }
+
+    #endregion
 }
 
 
