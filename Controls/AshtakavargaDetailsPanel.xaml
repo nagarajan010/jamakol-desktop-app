@@ -32,7 +32,8 @@
         </Grid.ContextMenu>
 
         <!-- Grid View (Charts) -->
-        <ScrollViewer x:Name="ChartsScrollViewer" VerticalScrollBarVisibility="Auto" Margin="0,0,0,0">
+        <ScrollViewer x:Name="ChartsScrollViewer" VerticalScrollBarVisibility="Auto" Margin="0,0,0,0" 
+                      PreviewMouseWheel="ChartsScrollViewer_PreviewMouseWheel">
             <UniformGrid Columns="3" Rows="3" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <!-- Row 1 -->
                 <local:AshtakavargaChart x:Name="ChartSAV" Margin="2"/>

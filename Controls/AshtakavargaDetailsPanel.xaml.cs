@@ -255,6 +255,38 @@ public partial class AshtakavargaDetailsPanel : UserControl
     {
         return rows.Sum(selector);
     }
+    
+    /// <summary>
+    /// Bubble scroll events to parent ScrollViewer so main page can scroll
+    /// </summary>
+    private void ChartsScrollViewer_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+    {
+        // Don't handle if this ScrollViewer can actually scroll
+        if (ChartsScrollViewer.ScrollableHeight > 0 && ChartsScrollViewer.ComputedVerticalScrollBarVisibility == System.Windows.Visibility.Visible)
+        {
+            // Let the inner ScrollViewer handle it
+            return;
+        }
+        
+        // Bubble the event to parent
+        e.Handled = true;
+        var eventArgs = new System.Windows.Input.MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta)
+        {
+            RoutedEvent = System.Windows.UIElement.MouseWheelEvent,
+            Source = sender
+        };
+        
+        var parent = System.Windows.Media.VisualTreeHelper.GetParent(this);
+        while (parent != null && !(parent is System.Windows.Controls.ScrollViewer))
+        {
+            parent = System.Windows.Media.VisualTreeHelper.GetParent(parent);
+        }
+        
+        if (parent is System.Windows.Controls.ScrollViewer parentScrollViewer)
+        {
+            parentScrollViewer.RaiseEvent(eventArgs);
+        }
+    }
 }
 
 public class AVRow
