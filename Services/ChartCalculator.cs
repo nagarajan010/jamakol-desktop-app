@@ -402,7 +402,7 @@ public class ChartCalculator
         
         // Sign abbreviations (2 letters) - Tamil or English
         string[] signAbbr = ZodiacUtils.IsTamil 
-            ? new[] { "", "மே", "ரி", "மி", "க", "சி", "கன்", "து", "வி", "த", "ம", "கு", "மீ" }
+            ? new[] { "", "மேஷ", "ரிஷ", "மிது", "கட", "சிம்", "கன்", "துலா", "விரு", "தனு", "மக", "கும்", "மீன" }
             : new[] { "", "Ar", "Ta", "Ge", "Cn", "Le", "Vi", "Li", "Sc", "Sg", "Cp", "Aq", "Pi" };
         
         return $"{deg} {signAbbr[signIndex]} {min:D2}' {sec:D2}\"";
