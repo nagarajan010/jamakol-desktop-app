@@ -149,7 +149,7 @@ public partial class JamakolPlanetGrid : UserControl
         var displayData = new List<JamakolPlanetGridItem>();
         
         // Add Lagna first
-        double ascDeg = chartData.AscendantDegree;
+        double ascDeg = chartData.AscendantDegree % 30; // Use relative degree
         int ascD = (int)ascDeg;
         double ascMFull = (ascDeg - ascD) * 60;
         int ascM = (int)ascMFull;
