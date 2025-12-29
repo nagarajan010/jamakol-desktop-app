@@ -52,6 +52,9 @@ public class AppSettings
     /// <summary>Application language code (en, ta)</summary>
     public string Language { get; set; } = "en";
 
+    /// <summary>House calculation system (Placidus, Koch, etc.)</summary>
+    public HouseSystem HouseSystem { get; set; } = HouseSystem.Placidus;
+
     // Settings saved to user's AppData folder (writable even with Program Files install)
     private static string SettingsFolder
     {

@@ -50,8 +50,10 @@ public class ChartCalculator
         chartData.AscendantNakshatraName = ascNakshatra.name;
         chartData.AscendantNakshatraPada = ascNakshatra.pada;
         
-        // --- KP HOUSE CUSPS (Placidus) ---
-        var cusps = _ephemeris.GetHouses(chartData.JulianDay, birthData.Latitude, birthData.Longitude, (int)ayanamsha);
+        // --- KP HOUSE CUSPS ---
+        var settings = AppSettings.Load();
+        char houseSystemCode = (char)settings.HouseSystem;
+        var cusps = _ephemeris.GetHouses(chartData.JulianDay, birthData.Latitude, birthData.Longitude, (int)ayanamsha, houseSystemCode);
         chartData.HouseCusps = new List<HouseCusp>();
         
         for (int i = 0; i < 12; i++)

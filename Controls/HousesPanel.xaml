@@ -15,6 +15,21 @@
                   IsReadOnly="True"
                   HeadersVisibility="Column" 
                   BorderThickness="0">
+            <DataGrid.ContextMenu>
+                <ContextMenu x:Name="HouseSystemMenu">
+                    <MenuItem Header="Whole Sign (Each rasi is a house)" Tag="W" Click="HouseSystem_Click"/>
+                    <MenuItem Header="Equal houses (30 deg each)" Tag="A" Click="HouseSystem_Click"/>
+                    <Separator/>
+                    <MenuItem Header="Placidus houses (KP/Krishnamoorthy)" Tag="P" Click="HouseSystem_Click"/>
+                    <MenuItem Header="Koch houses" Tag="K" Click="HouseSystem_Click"/>
+                    <MenuItem Header="Porphyry houses (Sripathi)" Tag="O" Click="HouseSystem_Click"/>
+                    <MenuItem Header="Regiomontanus houses" Tag="R" Click="HouseSystem_Click"/>
+                    <MenuItem Header="Campanus houses" Tag="C" Click="HouseSystem_Click"/>
+                    <MenuItem Header="Alcabitus houses" Tag="B" Click="HouseSystem_Click"/>
+                    <MenuItem Header="Polich/Page (topocentric) houses" Tag="T" Click="HouseSystem_Click"/>
+                    <MenuItem Header="Axial rotation system houses" Tag="X" Click="HouseSystem_Click"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
             <DataGrid.ColumnHeaderStyle>
                 <Style TargetType="DataGridColumnHeader">
                     <Setter Property="Background" Value="#cc0000"/>
@@ -34,3 +49,4 @@
         </DataGrid>
     </Grid>
 </UserControl>
+

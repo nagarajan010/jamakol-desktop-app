@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using JamakolAstrology.Models;
 using JamakolAstrology.Services;
@@ -8,6 +10,13 @@ namespace JamakolAstrology.Controls;
 
 public partial class HousesPanel : UserControl
 {
+    private ChartData? _currentChart;
+    
+    /// <summary>
+    /// Event raised when house system is changed via context menu
+    /// </summary>
+    public event EventHandler<HouseSystem>? HouseSystemChanged;
+    
     public HousesPanel()
     {
         InitializeComponent();
@@ -18,10 +27,53 @@ public partial class HousesPanel : UserControl
         {
             HousesGrid.FontSize = settings.TableFontSize;
         }
+        
+        UpdateMenuCheckmarks();
+    }
+    
+    private void UpdateMenuCheckmarks()
+    {
+        var settings = AppSettings.Load();
+        char currentSystem = (char)settings.HouseSystem;
+        
+        foreach (var item in HouseSystemMenu.Items)
+        {
+            if (item is MenuItem menuItem && menuItem.Tag != null)
+            {
+                string tag = menuItem.Tag.ToString()!;
+                menuItem.IsChecked = (tag.Length == 1 && tag[0] == currentSystem);
+            }
+        }
+    }
+    
+    private void HouseSystem_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is MenuItem menuItem && menuItem.Tag != null)
+        {
+            string tag = menuItem.Tag.ToString()!;
+            if (tag.Length == 1)
+            {
+                char systemChar = tag[0];
+                var houseSystem = (HouseSystem)systemChar;
+                
+                // Save to settings
+                var settings = AppSettings.Load();
+                settings.HouseSystem = houseSystem;
+                settings.Save();
+                
+                // Update checkmarks
+                UpdateMenuCheckmarks();
+                
+                // Notify parent to recalculate
+                HouseSystemChanged?.Invoke(this, houseSystem);
+            }
+        }
     }
 
     public void UpdateChart(ChartData? chart)
     {
+        _currentChart = chart;
+        
         if (chart == null || chart.HouseCusps == null)
         {
             HousesGrid.ItemsSource = null;
@@ -130,4 +182,5 @@ public class HouseViewItem
     public string EndDisplay { get; set; } = "";
     public string PlanetsInHouse { get; set; } = "";
 }
+
 

@@ -46,6 +46,9 @@ public partial class MainWindow : Window
         BirthInputControl.SaveRequested += BirthInputControl_SaveRequested;
         BirthInputControl.LoadRequested += BirthInputControl_LoadRequested;
         BirthInputControl.HideDegreesChanged += BirthInputControl_HideDegreesChanged;
+        
+        // Subscribe to Houses panel house system change
+        HousesPanelControl.HouseSystemChanged += HousesPanelControl_HouseSystemChanged;
     }
 
     private void UpdateToCurrentTime()
@@ -250,6 +253,19 @@ public partial class MainWindow : Window
         {
             BirthInputControl.SetStatus($"Error: {ex.Message}");
             MessageBox.Show($"Error calculating chart:\n{ex.Message}", "Calculation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+    
+    private void HousesPanelControl_HouseSystemChanged(object? sender, Models.HouseSystem houseSystem)
+    {
+        // Recalculate the chart with the new house system
+        try
+        {
+            CalculateChart();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error recalculating with new house system:\n{ex.Message}", "Calculation Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 

@@ -179,9 +179,9 @@ public class EphemerisService : IDisposable
     }
 
     /// <summary>
-    /// Get all 12 House Cusps (Placidus)
+    /// Get all 12 House Cusps with specified house system
     /// </summary>
-    public double[] GetHouses(double julianDay, double latitude, double longitude, int ayanamshaId)
+    public double[] GetHouses(double julianDay, double latitude, double longitude, int ayanamshaId, char houseSystem = 'P')
     {
         double[] cusps = new double[13];
         double[] ascmc = new double[10];
@@ -193,7 +193,7 @@ public class EphemerisService : IDisposable
             SwissEph.SEFLG_SIDEREAL,
             latitude,
             longitude,
-            'P',  // Placidus
+            houseSystem,  // House system code: P=Placidus, K=Koch, O=Porphyry, etc.
             cusps,
             ascmc
         );
