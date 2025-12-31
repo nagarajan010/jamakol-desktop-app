@@ -8,6 +8,9 @@ namespace JamakolAstrology.Controls;
 
 public partial class KPDetailsPanel : UserControl
 {
+    // Event raised when a transit event row is selected
+    public event EventHandler<DateTime>? TransitSelected;
+
     public KPDetailsPanel()
     {
         InitializeComponent();
@@ -205,6 +208,15 @@ public partial class KPDetailsPanel : UserControl
         finally
         {
             CalculateTransitBtn.IsEnabled = true;
+        }
+    }
+
+    private void LoadChartButton_Click(object sender, System.Windows.RoutedEventArgs e)
+    {
+        if (sender is System.Windows.Controls.Button button && button.DataContext is TransitEvent transitEvent)
+        {
+            // Raise event with the local time of the transit
+            TransitSelected?.Invoke(this, transitEvent.TimeUtc.ToLocalTime());
         }
     }
 }

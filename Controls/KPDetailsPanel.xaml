@@ -93,6 +93,16 @@
                             <DataGridTextColumn Header="New Sub" Binding="{Binding NewSubLord}" Width="Auto" FontWeight="Bold" Foreground="#cc0000"/>
                             <DataGridTextColumn Header="Sign" Binding="{Binding Sign}" Width="Auto"/>
                             <DataGridTextColumn Header="Star" Binding="{Binding Star}" Width="Auto"/>
+                            <DataGridTemplateColumn Header="" Width="30">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="📊" ToolTip="Load Chart at This Time" 
+                                                Click="LoadChartButton_Click" 
+                                                Background="Transparent" BorderThickness="0" 
+                                                Cursor="Hand" FontSize="14" Padding="2"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>

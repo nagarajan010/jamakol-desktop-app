@@ -49,6 +49,9 @@ public partial class MainWindow : Window
         
         // Subscribe to Houses panel house system change
         HousesPanelControl.HouseSystemChanged += HousesPanelControl_HouseSystemChanged;
+        
+        // Subscribe to KP Transit selection
+        KpDetailsPanelControl.TransitSelected += KpDetailsPanelControl_TransitSelected;
     }
 
     private void UpdateToCurrentTime()
@@ -265,6 +268,24 @@ public partial class MainWindow : Window
         catch (Exception ex)
         {
             MessageBox.Show($"Error recalculating with new house system:\n{ex.Message}", "Calculation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    private void KpDetailsPanelControl_TransitSelected(object? sender, DateTime transitLocalTime)
+    {
+        try
+        {
+            // Update the Birth Input Panel with the transit time
+            BirthInputControl.SetDateTime(transitLocalTime);
+            
+            // Recalculate the chart
+            CalculateChart();
+            
+            BirthInputControl.SetStatus($"Chart updated to transit time: {transitLocalTime:dd-MMM-yyyy HH:mm:ss}");
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error updating chart:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
