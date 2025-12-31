@@ -152,7 +152,11 @@ public class KPTransitService
             }
         }
         
-        double changeTime = high; // Upper bound is the "New state" time
+        // Add 1 second offset to ensure displayed time is firmly in the "new" state
+        // (binary search finds exact boundary, but floating-point precision may cause
+        // rounding to land just before boundary when loading)
+        double oneSecondInDays = 1.0 / 86400.0;
+        double changeTime = high + oneSecondInDays;
         
         // Final lords at change time
         var finalPos = GetPosition(changeTime, planetId, ayanId, ayanOffset, locData);
