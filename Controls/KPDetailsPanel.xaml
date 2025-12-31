@@ -41,7 +41,60 @@
             </TabItem>
             <TabItem Header="Transit Sub">
                 <Grid Background="#FFFFFF">
-                    <!-- Transit Sub content will go here -->
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
+                        <TextBlock Text="Start:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <DatePicker x:Name="StartDatePicker" Width="100"/>
+                        <!-- Simple Time Input placeholder or fixed to 00:00 for now, could expand later -->
+                        
+                        <TextBlock Text="End:" VerticalAlignment="Center" Margin="15,0,5,0"/>
+                        <DatePicker x:Name="EndDatePicker" Width="100"/>
+                        
+                        <TextBlock Text="Body:" VerticalAlignment="Center" Margin="15,0,5,0"/>
+                        <ComboBox x:Name="BodySelector" Width="100" SelectedIndex="0"/>
+                        
+                        <Button x:Name="CalculateTransitBtn" Content="Calculate" Margin="15,0,0,0" Padding="10,2" Click="CalculateTransitBtn_Click"/>
+                        
+                        <TextBlock x:Name="TransitStatusText" Text="" Margin="10,0,0,0" VerticalAlignment="Center" Foreground="Gray"/>
+                    </StackPanel>
+
+                    <DataGrid x:Name="TransitGrid" Grid.Row="1"
+                              Style="{StaticResource DataGridStyle}"
+                              AutoGenerateColumns="False" 
+                              CanUserAddRows="False" 
+                              CanUserSortColumns="True"
+                              IsReadOnly="True"
+                              HeadersVisibility="Column" 
+                              BorderThickness="0">
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="#007ACC"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="Padding" Value="6,4"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Setter Property="FontSize" Value="10"/>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Date/Time" Binding="{Binding DisplayTime}" Width="Auto"/>
+                            <DataGridTextColumn Header="Body" Binding="{Binding Body}" Width="Auto" FontWeight="Bold"/>
+                             <DataGridTextColumn Header="Old Sub" Binding="{Binding OldSubLord}" Width="Auto" Foreground="Gray"/>
+                            <DataGridTemplateColumn Header="" Width="20">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="➡" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Gray"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="New Sub" Binding="{Binding NewSubLord}" Width="Auto" FontWeight="Bold" Foreground="#cc0000"/>
+                            <DataGridTextColumn Header="Sign" Binding="{Binding Sign}" Width="Auto"/>
+                            <DataGridTextColumn Header="Star" Binding="{Binding Star}" Width="Auto"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </Grid>
             </TabItem>
         </TabControl>

@@ -18,14 +18,52 @@ public partial class KPDetailsPanel : UserControl
         {
             KPGrid.FontSize = settings.TableFontSize;
         }
+
+        // Initialize Body Selector
+        var bodies = new List<BodySelectorItem>
+        {
+            new BodySelectorItem { Name = "All / அனைத்தும்", Id = null },
+            new BodySelectorItem { Name = "Lagna (Asc)", Id = -1 },
+            new BodySelectorItem { Name = "Sun", Id = SwissEphNet.SwissEph.SE_SUN },
+            new BodySelectorItem { Name = "Moon", Id = SwissEphNet.SwissEph.SE_MOON },
+            new BodySelectorItem { Name = "Mars", Id = SwissEphNet.SwissEph.SE_MARS },
+            new BodySelectorItem { Name = "Mercury", Id = SwissEphNet.SwissEph.SE_MERCURY },
+            new BodySelectorItem { Name = "Jupiter", Id = SwissEphNet.SwissEph.SE_JUPITER },
+            new BodySelectorItem { Name = "Venus", Id = SwissEphNet.SwissEph.SE_VENUS },
+            new BodySelectorItem { Name = "Saturn", Id = SwissEphNet.SwissEph.SE_SATURN },
+            new BodySelectorItem { Name = "Rahu", Id = SwissEphNet.SwissEph.SE_MEAN_NODE },
+            new BodySelectorItem { Name = "Ketu", Id = SwissEphNet.SwissEph.SE_TRUE_NODE }
+        };
+        
+        BodySelector.ItemsSource = bodies;
+        BodySelector.DisplayMemberPath = "Name";
+        BodySelector.SelectedValuePath = "Id";
+        BodySelector.SelectedIndex = 0;
     }
+
+    private class BodySelectorItem
+    {
+        public string Name { get; set; } = "";
+        public int? Id { get; set; }
+    }
+
+    private ChartData? _currentChart;
 
     public void UpdateChart(ChartData? chart)
     {
+        _currentChart = chart;
+        
         if (chart == null)
         {
             KPGrid.ItemsSource = null;
             return;
+        }
+        
+        // Ensure DatePickers have default values if not set
+        if (!StartDatePicker.SelectedDate.HasValue)
+        {
+            StartDatePicker.SelectedDate = chart.BirthData.BirthDateTime.Date;
+            EndDatePicker.SelectedDate = chart.BirthData.BirthDateTime.Date.AddDays(1);
         }
         
         var items = new List<KPViewItem>();
@@ -118,6 +156,56 @@ public partial class KPDetailsPanel : UserControl
         string suffix = (number % 100 >= 11 && number % 100 <= 13) ? "th"
             : (number % 10) switch { 1 => "st", 2 => "nd", 3 => "rd", _ => "th" };
         return $"{number}{suffix} House";
+    }
+    // Keep track of current chart to get location data (Moved to top)
+
+
+    private async void CalculateTransitBtn_Click(object sender, System.Windows.RoutedEventArgs e)
+    {
+        if (_currentChart == null) return;
+        if (!StartDatePicker.SelectedDate.HasValue || !EndDatePicker.SelectedDate.HasValue) return;
+
+        CalculateTransitBtn.IsEnabled = false;
+        TransitStatusText.Text = "Calculating...";
+        TransitGrid.ItemsSource = null;
+
+        try
+        {
+            // Create service (should ideally be DI or singleton, but new instance is fine here)
+            // We need EphemerisService instance. We can create one or pass existing.
+            // Since EphemerisService is disposable, using block desirable, or rely on internal management.
+            // The service design requires us to pass one.
+            using var ephemeris = new EphemerisService(); 
+            var service = new KPTransitService(ephemeris);
+
+            var start = StartDatePicker.SelectedDate.Value.ToUniversalTime();
+            var end = EndDatePicker.SelectedDate.Value.ToUniversalTime();
+            // Add end of day time
+            end = end.AddHours(23).AddMinutes(59);
+
+            var progress = new Progress<string>(msg => TransitStatusText.Text = msg);
+
+            // Get selected body
+            int? targetBodyId = (int?)BodySelector.SelectedValue;
+            
+            // Get Ayanamsha Settings
+            var settings = AppSettings.Load();
+            int ayanamshaId = (int)settings.Ayanamsha;
+            double ayanamshaOffset = settings.AyanamshaOffset;
+
+            var results = await service.CalculateTransitsAsync(start, end, _currentChart, ayanamshaId, ayanamshaOffset, progress, targetBodyId);
+
+            TransitGrid.ItemsSource = results;
+            TransitStatusText.Text = $"Found {results.Count} events.";
+        }
+        catch (System.Exception ex)
+        {
+             TransitStatusText.Text = "Error: " + ex.Message;
+        }
+        finally
+        {
+            CalculateTransitBtn.IsEnabled = true;
+        }
     }
 }
 

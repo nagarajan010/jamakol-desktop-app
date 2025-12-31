@@ -126,4 +126,56 @@ public class KPCalculator
         lordName = DashaSequence[lastIndex];
         return lordName;
     }
+    /// <summary>
+    /// Returns the absolute longitudes (0-360) where KP Sub Lords change.
+    /// Used for transit calculations.
+    /// </summary>
+    public List<double> GetSubLordBoundaries()
+    {
+        var boundaries = new List<double>();
+        double currentDegree = 0;
+
+        for (int sign = 0; sign < 12; sign++)
+        {
+            // Each sign is 30 degrees
+            double signStart = sign * 30.0;
+            
+            // Nakshatras in this sign
+            // There are 2.25 Nakshatras per sign (9 padas)
+            // But we can iterate through the 27 Nakshatras globally to be safe and cleaner
+        }
+
+        // Global iteration over 27 Nakshatras
+        double nakshatraSpan = 360.0 / 27.0; // 13.3333...
+
+        for (int nakIndex = 0; nakIndex < 27; nakIndex++)
+        {
+            double nakStart = nakIndex * nakshatraSpan;
+            string starLord = NakshatraRulers[nakIndex]; // Lord of the Nakshatra
+
+            // Sub divisions within this Nakshatra
+            // The logic is similar to FindSubLevelLord but we just need the spans
+            int startIndex = Array.IndexOf(DashaSequence, starLord);
+            
+            for (int i = 0; i < 9; i++)
+            {
+                int planetIndex = (startIndex + i) % 9;
+                string subLord = DashaSequence[planetIndex];
+                
+                // Sub Span = (PlanetYears / 120) * NakshatraSpan
+                double subSpan = (DashaYears[subLord] / 120.0) * nakshatraSpan;
+
+                // Add the START of this sub
+                boundaries.Add(nakStart);
+                
+                nakStart += subSpan;
+            }
+        }
+        
+        // Add 360 as the final closing boundary
+        boundaries.Add(360.0);
+        
+        // Filter out duplicates and small precisions
+        return boundaries.Distinct().OrderBy(x => x).ToList();
+    }
 }
