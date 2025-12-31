@@ -217,10 +217,9 @@ public partial class MainWindow : Window
 
             // Update UI Components - pass current hide degrees setting
             bool hideDegrees = BirthInputControl.HideDegrees;
-            // Update Side Charts Panel
             if (_sharedSideCharts != null)
             {
-                _sharedSideCharts.UpdateCharts(result.ChartData, _appSettings.ChartFontSize, BirthInputControl.HideDegrees);
+                _sharedSideCharts.UpdateCharts(result.ChartData, _appSettings.ChartFontSize, BirthInputControl.HideDegrees, _appSettings.ChartStyle);
             }
             // Removed old individual chart updates as they are now in SideChartsPanel
             
@@ -234,7 +233,7 @@ public partial class MainWindow : Window
             if (AmshaDevataPanelControl != null) AmshaDevataPanelControl.UpdateChart(result.ChartData, _appSettings.ChartFontSize);
             
             // Update Chakras panel
-            ChakrasPanelControl.UpdateChart(result.ChartData, _appSettings.ChartFontSize);
+            ChakrasPanelControl.UpdateChart(result.ChartData, _appSettings.ChartFontSize, _appSettings.ChartStyle);
             
             // Note: We DO NOT update Jamakol controls here anymore, to keep tabs independent.
             // If user wants Jamakol, they switch to Jamakol tab which has its own calculation.

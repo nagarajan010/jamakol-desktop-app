@@ -8,26 +8,47 @@ namespace JamakolAstrology.Controls;
 
 public partial class ChakrasPanel : UserControl
 {
-    private readonly List<SouthIndianChart> _chartControls = new();
+    // Store as UserControl base class
+    private readonly List<UserControl> _chartControls = new();
     private readonly int[] _divisions = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 20, 24, 27, 30, 40, 45, 60 };
     private readonly DivisionalChartService _divService = new();
+    private ChartStyle _currentStyle = ChartStyle.SouthIndian;
+    private bool _initialized = false;
 
     public ChakrasPanel()
     {
         InitializeComponent();
-        InitializeCharts();
+        // Lazily initialize on first update or with default
+        InitializeCharts(ChartStyle.SouthIndian);
     }
 
-    private void InitializeCharts()
+    private void InitializeCharts(ChartStyle style)
     {
+        ChartsContainer.Children.Clear();
+        _chartControls.Clear();
+        _currentStyle = style;
+
         foreach (var div in _divisions)
         {
-            var chart = new SouthIndianChart
+            UserControl chart;
+            if (style == ChartStyle.NorthIndian)
             {
-                Width = 400,  // Fixed size for proper scaling
-                Height = 400,
-                HideDegrees = true
-            };
+                chart = new NorthIndianChart
+                {
+                    Width = 400,
+                    Height = 400,
+                    HideDegrees = true
+                };
+            }
+            else
+            {
+                chart = new SouthIndianChart
+                {
+                    Width = 400,
+                    Height = 400,
+                    HideDegrees = true
+                };
+            }
             
             // Wrap in Viewbox to scale while maintaining aspect ratio
             var viewbox = new Viewbox
@@ -40,13 +61,20 @@ public partial class ChakrasPanel : UserControl
             _chartControls.Add(chart);
             ChartsContainer.Children.Add(viewbox);
         }
+        _initialized = true;
     }
 
-    public void UpdateChart(ChartData? chartData, double fontSize = 14)
+    public void UpdateChart(ChartData? chartData, double fontSize = 14, ChartStyle style = ChartStyle.SouthIndian)
     {
+        // Re-initialize if style changed or not initialized
+        if (!_initialized || _currentStyle != style)
+        {
+            InitializeCharts(style);
+        }
+
         if (chartData == null)
         {
-            foreach (var chart in _chartControls)
+            foreach (dynamic chart in _chartControls)
             {
                 chart.ClearChart();
             }
@@ -56,7 +84,9 @@ public partial class ChakrasPanel : UserControl
         for (int i = 0; i < _divisions.Length; i++)
         {
             int div = _divisions[i];
-            SouthIndianChart control = _chartControls[i];
+            
+            // Use dynamic to call methods present on both NorthIndianChart and SouthIndianChart
+            dynamic control = _chartControls[i];
             
             // Calculate on the fly using provided font size
             if (div == 1)
@@ -73,6 +103,9 @@ public partial class ChakrasPanel : UserControl
 
     public void ClearChart()
     {
-        UpdateChart(null);
+        foreach (dynamic chart in _chartControls)
+        {
+            chart.ClearChart();
+        }
     }
 }

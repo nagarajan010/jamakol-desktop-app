@@ -64,6 +64,9 @@ public class AppSettings
     /// <summary>Whether cusp is treated as middle of house (true) or start (false)</summary>
     public bool CuspAsMiddle { get; set; } = true;
 
+    /// <summary>Selected Chart Style (South Indian, North Indian)</summary>
+    public ChartStyle ChartStyle { get; set; } = ChartStyle.SouthIndian;
+
     // Settings saved to user's AppData folder (writable even with Program Files install)
     private static string SettingsFolder
     {
@@ -236,4 +239,13 @@ public static class AyanamshaExtensions
             _ => ayanamsha.ToString()
         };
     }
+}
+
+/// <summary>
+/// Chart display style
+/// </summary>
+public enum ChartStyle
+{
+    SouthIndian = 0,
+    NorthIndian = 1
 }

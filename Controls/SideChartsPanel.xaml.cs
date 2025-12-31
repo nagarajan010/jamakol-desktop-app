@@ -10,17 +10,42 @@ public partial class SideChartsPanel : UserControl
         InitializeComponent();
     }
 
-    public void UpdateCharts(ChartData chartData, double fontSize, bool hideDegrees)
+    public void UpdateCharts(ChartData chartData, double fontSize, bool hideDegrees, ChartStyle style = ChartStyle.SouthIndian)
     {
-        ChartControl.HideDegrees = hideDegrees;
-        ChartControl.UpdateChart(chartData, fontSize, hideDegrees);
+        bool isSouth = style == ChartStyle.SouthIndian;
+        
+        // Rasi Chart
+        ChartControl.Visibility = isSouth ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+        ChartControlNI.Visibility = !isSouth ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+
+        if (isSouth)
+        {
+            ChartControl.HideDegrees = hideDegrees;
+            ChartControl.UpdateChart(chartData, fontSize, hideDegrees);
+        }
+        else
+        {
+            ChartControlNI.HideDegrees = hideDegrees;
+            ChartControlNI.UpdateChart(chartData, fontSize, hideDegrees);
+        }
 
         // Update Navamsa (D-9)
         var navamsaChart = chartData.GetDivisionalChart(9);
         if (navamsaChart != null)
         {
-            NavamsaChartControl.HideDegrees = hideDegrees;
-            NavamsaChartControl.UpdateDivisionalChart(navamsaChart, chartData, chartData.BirthData.Name, fontSize);
+            NavamsaChartControl.Visibility = isSouth ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+            NavamsaChartControlNI.Visibility = !isSouth ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+            
+            if (isSouth)
+            {
+                NavamsaChartControl.HideDegrees = hideDegrees;
+                NavamsaChartControl.UpdateDivisionalChart(navamsaChart, chartData, chartData.BirthData.Name, fontSize);
+            }
+            else
+            {
+                NavamsaChartControlNI.HideDegrees = hideDegrees;
+                NavamsaChartControlNI.UpdateDivisionalChart(navamsaChart, chartData, chartData.BirthData.Name, fontSize);
+            }
         }
     }
 
@@ -30,7 +55,9 @@ public partial class SideChartsPanel : UserControl
         set
         {
             ChartControl.HideDegrees = value;
+            ChartControlNI.HideDegrees = value;
             NavamsaChartControl.HideDegrees = value;
+            NavamsaChartControlNI.HideDegrees = value;
         }
     }
 }

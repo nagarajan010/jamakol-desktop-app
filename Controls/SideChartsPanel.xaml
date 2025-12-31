@@ -14,12 +14,18 @@
 
         <!-- Rasi Chart -->
         <Border Grid.Row="0" Background="#fffff8" CornerRadius="3" Padding="5" Margin="0,0,5,5" BorderBrush="#ddd" BorderThickness="1">
-            <controls:SouthIndianChart x:Name="ChartControl"/>
+            <Grid>
+                <controls:SouthIndianChart x:Name="ChartControl"/>
+                <controls:NorthIndianChart x:Name="ChartControlNI" Visibility="Collapsed"/>
+            </Grid>
         </Border>
 
         <!-- Navamsa Chart -->
         <Border Grid.Row="1" Background="#fffff8" CornerRadius="3" Padding="5" Margin="0,5,5,0" BorderBrush="#ddd" BorderThickness="1">
-            <controls:SouthIndianChart x:Name="NavamsaChartControl"/>
+            <Grid>
+                <controls:SouthIndianChart x:Name="NavamsaChartControl"/>
+                <controls:NorthIndianChart x:Name="NavamsaChartControlNI" Visibility="Collapsed"/>
+            </Grid>
         </Border>
     </Grid>
 </UserControl>

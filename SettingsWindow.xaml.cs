@@ -94,6 +94,17 @@ public partial class SettingsWindow : Window
         // Select Default Tab
         DefaultTabCombo.SelectedIndex = Settings.DefaultTabIndex;
 
+        // Select Chart Style
+        foreach (ComboBoxItem item in ChartStyleCombo.Items)
+        {
+            if (item.Tag is ChartStyle style && style == Settings.ChartStyle)
+            {
+                ChartStyleCombo.SelectedItem = item;
+                break;
+            }
+        }
+        if (ChartStyleCombo.SelectedItem == null) ChartStyleCombo.SelectedIndex = 0;
+
         // Load Fixed Sign Boxes setting
         UseFixedSignBoxesCheckbox.IsChecked = Settings.UseFixedSignBoxes;
 
@@ -156,6 +167,12 @@ public partial class SettingsWindow : Window
 
             // Save Default Tab
             Settings.DefaultTabIndex = DefaultTabCombo.SelectedIndex;
+
+            // Save Chart Style settings
+            if (ChartStyleCombo.SelectedItem is ComboBoxItem chartStyleItem && chartStyleItem.Tag is ChartStyle style)
+            {
+                Settings.ChartStyle = style;
+            }
 
             // Save Fixed Sign Boxes setting
             Settings.UseFixedSignBoxes = UseFixedSignBoxesCheckbox.IsChecked == true;

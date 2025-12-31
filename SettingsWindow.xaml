@@ -265,9 +265,22 @@
                     <ComboBoxItem Content="{x:Static res:Strings.TabJamakol}" Tag="1"/>
                 </ComboBox>
             </Grid>
+
+            <!-- Chart Style -->
+            <Grid Grid.Row="8" Grid.Column="2" Margin="0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Chart Style" Style="{StaticResource LabelStyle}"/>
+                <ComboBox x:Name="ChartStyleCombo" Grid.Column="1" Style="{StaticResource ComboStyle}">
+                    <ComboBoxItem Content="South Indian" Tag="{x:Static models:ChartStyle.SouthIndian}"/>
+                    <ComboBoxItem Content="North Indian" Tag="{x:Static models:ChartStyle.NorthIndian}"/>
+                </ComboBox>
+            </Grid>
     
             <!-- Use Fixed Sign Boxes -->
-            <Grid Grid.Row="8" Grid.Column="2" Margin="0,8">
+            <Grid Grid.Row="9" Grid.Column="2" Margin="0,8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
