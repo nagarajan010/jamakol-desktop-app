@@ -291,7 +291,7 @@
             </Grid>
     
             <!-- Language Selection -->
-            <Grid Grid.Row="9" Grid.Column="2" Margin="0,8">
+            <Grid Grid.Row="10" Grid.Column="2" Margin="0,8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -304,12 +304,12 @@
             </Grid>
     
             <!-- Info Text -->
-            <TextBlock Grid.Row="10" Grid.ColumnSpan="3" Margin="0,15,0,0" TextWrapping="Wrap"
+            <TextBlock Grid.Row="11" Grid.ColumnSpan="3" Margin="0,15,0,0" TextWrapping="Wrap"
                        Foreground="#888" FontSize="11" VerticalAlignment="Top"
                        Text="{x:Static res:Strings.SettingsInfoText}"/>
     
             <!-- Buttons -->
-            <StackPanel Grid.Row="11" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
+            <StackPanel Grid.Row="12" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
                 <Button x:Name="CancelButton" Content="{x:Static res:Strings.BtnCancel}" Style="{StaticResource CancelButtonStyle}" Click="CancelButton_Click"/>
                 <Button x:Name="SaveButton" Content="{x:Static res:Strings.BtnSave}" Style="{StaticResource ButtonStyle}" Click="SaveButton_Click"/>
             </StackPanel>
