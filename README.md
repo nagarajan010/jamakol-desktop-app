@@ -61,6 +61,7 @@ A full-featured horoscope generation engine powered by **Swiss Ephemeris**.
 * **KP Astrology (Krishnamurti Paddhati)**:
   * KP Chart and Cusp details (Placidus House System).
   * Lord hierarchy: Sign Lord, Star Lord, Sub Lord, Sub-Sub Lord.
+  * **KP Transit (Experimental)**: Calculate exact times for Sub-Lord changes. *Note: This feature is currently in testing/beta.*
 * **Amsha Devata**: Detailed analysis of Amsha Devata deities (e.g., Agni, Vayu, Indra for D60).
 * **Jaimini Karakas**: Automatic calculation of 7 Karakas (Atmakaraka, Amatyakaraka, etc.).
 
