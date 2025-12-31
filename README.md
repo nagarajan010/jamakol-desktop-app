@@ -32,6 +32,7 @@ The core feature of this application is the robust **Jamakol Prasanam** module, 
 ![Birth Chart Analysis](assets/JAS-Screenshot1-ENG.png)
 A full-featured horoscope generation engine powered by **Swiss Ephemeris**.
 * **High Precision**: Planetary longitudes calculated to the second.
+* **Chart Styles**: Support for both **South Indian** (Square) and **North Indian** (Diamond/Fixed House) chart styles.
 * **Combustion (Asta) Settings**:
   * **Mars**: 17°
   * **Mercury**: 14° (12° if Retrograde)
@@ -46,6 +47,7 @@ A full-featured horoscope generation engine powered by **Swiss Ephemeris**.
   * **Galactic**: Galactic Center (0 Sag, Gil Brand, Mula Bol), Skydram.
   * **Western/Historical**: Hipparchus, Sassanian, J2000, J1900, B1950.
   * **Others**: De Luce, Usha-Shashi, Djwhal Khul, Yukteshwar, JN Bhasin.
+  * **Custom Offset**: Ability to define a manual DMS (Degree-Minute-Second) offset to fine-tune any selected Ayanamsha.
 * **Divisional Charts (Vargas)**: Complete support for all major Vargas:
   * D1 (Rasi), D2 (Hora), D3 (Drekkana), D4 (Chaturthamsha), D7 (Saptamia), D9 (Navamsa)
   * D10 (Dasamsa), D12 (Dwadasamsa), D16 (Shodashamsa), D20, D24, D27, D30, D40, D45, D60.
