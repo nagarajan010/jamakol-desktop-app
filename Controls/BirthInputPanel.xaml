@@ -75,6 +75,23 @@
                       VerticalAlignment="Center" Margin="15,0,0,0" IsChecked="True"
                       Checked="HideDegreesCheckBox_Changed" Unchecked="HideDegreesCheckBox_Changed"/>
 
+            <!-- Time Step Navigation -->
+            <StackPanel Orientation="Horizontal" Margin="15,0,0,0" VerticalAlignment="Center">
+                <Button x:Name="TimeStepBackBtn" Content="◀" Width="25" Height="22" 
+                        Click="TimeStepBackBtn_Click" ToolTip="Go back by selected unit"
+                        Background="#E0E0E0" FontSize="12" Padding="0" Cursor="Hand"/>
+                <ComboBox x:Name="TimeStepUnitCombo" Width="75" Height="22" SelectedIndex="0" Margin="2,0">
+                    <ComboBoxItem Content="Seconds"/>
+                    <ComboBoxItem Content="Minutes"/>
+                    <ComboBoxItem Content="Hours"/>
+                    <ComboBoxItem Content="Days"/>
+                    <ComboBoxItem Content="Months"/>
+                </ComboBox>
+                <Button x:Name="TimeStepForwardBtn" Content="▶" Width="25" Height="22" 
+                        Click="TimeStepForwardBtn_Click" ToolTip="Go forward by selected unit"
+                        Background="#E0E0E0" FontSize="12" Padding="0" Cursor="Hand"/>
+            </StackPanel>
+
             <TextBlock x:Name="StatusText" Text="" Foreground="#888" 
                        FontSize="11" Margin="15,0,0,0" VerticalAlignment="Center"/>
         </WrapPanel>

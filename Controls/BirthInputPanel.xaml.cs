@@ -303,4 +303,64 @@ public partial class BirthInputPanel : UserControl
     {
         NameInput.Focus();
     }
+
+    private void TimeStepBackBtn_Click(object sender, RoutedEventArgs e)
+    {
+        AdjustTime(-1);
+    }
+
+    private void TimeStepForwardBtn_Click(object sender, RoutedEventArgs e)
+    {
+        AdjustTime(1);
+    }
+
+    private void AdjustTime(int direction)
+    {
+        try
+        {
+            // Parse current date/time
+            int year = SelectedYear;
+            int month = SelectedMonth;
+            int day = SelectedDay;
+            var timeParts = TimeText.Split(':');
+            int hour = timeParts.Length > 0 ? int.Parse(timeParts[0]) : 0;
+            int minute = timeParts.Length > 1 ? int.Parse(timeParts[1]) : 0;
+            int second = timeParts.Length > 2 ? int.Parse(timeParts[2]) : 0;
+
+            // Create DateTime (handle BC years by using Julian Day calculation if needed)
+            DateTime current;
+            if (year > 0 && year < 10000)
+            {
+                current = new DateTime(year, month, day, hour, minute, second);
+            }
+            else
+            {
+                // For BC dates, we'll just adjust the values directly
+                SetStatus("Time step not supported for BC dates");
+                return;
+            }
+
+            // Get selected unit
+            int unitIndex = TimeStepUnitCombo.SelectedIndex;
+            DateTime adjusted = unitIndex switch
+            {
+                0 => current.AddSeconds(direction),      // Seconds
+                1 => current.AddMinutes(direction),      // Minutes
+                2 => current.AddHours(direction),        // Hours
+                3 => current.AddDays(direction),         // Days
+                4 => current.AddMonths(direction),       // Months
+                _ => current
+            };
+
+            // Update input fields
+            SetDateTime(adjusted);
+
+            // Trigger recalculation
+            CalculateRequested?.Invoke(this, EventArgs.Empty);
+        }
+        catch (Exception ex)
+        {
+            SetStatus($"Error: {ex.Message}");
+        }
+    }
 }
