@@ -10,7 +10,7 @@ public class KPTransitService
 {
     private readonly EphemerisService _ephemeris;
     private readonly KPCalculator _kpCalculator;
-    private readonly List<double> _subLordBoundaries;
+
 
     public KPTransitService(EphemerisService ephemeris)
     {

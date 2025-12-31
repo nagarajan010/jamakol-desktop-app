@@ -133,7 +133,6 @@ public class KPCalculator
     public List<double> GetSubLordBoundaries()
     {
         var boundaries = new List<double>();
-        double currentDegree = 0;
 
         for (int sign = 0; sign < 12; sign++)
         {
