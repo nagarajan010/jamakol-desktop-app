@@ -197,5 +197,5 @@ public class TransitEvent
     public string OldSubLord { get; set; } = "";
     public double BoundaryDegree { get; set; }
     
-    public string DisplayTime => TimeUtc.ToLocalTime().ToString("G");
+    public string DisplayTime => TimeUtc.ToLocalTime().ToString("dd-MMM-yyyy h:mm:ss tt");
 }
