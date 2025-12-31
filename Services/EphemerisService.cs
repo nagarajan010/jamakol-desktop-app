@@ -115,41 +115,56 @@ public class EphemerisService : IDisposable
     /// <summary>
     /// Get planet position at given Julian Day
     /// </summary>
-    public (double longitude, double latitude, double speed) GetPlanetPosition(double julianDay, int planetId, int ayanamshaId)
+    public (double longitude, double latitude, double speed) GetPlanetPosition(double julianDay, int planetId, int ayanamshaId, double ayanamshaOffset = 0)
     {
         double[] result = new double[6];
         string errorMsg = "";
         
         int flags = SwissEph.SEFLG_SWIEPH | SwissEph.SEFLG_SPEED;
         
-        // Use sidereal (Vedic) zodiac with selected ayanamsa
-        flags |= SwissEph.SEFLG_SIDEREAL;
-        _sweph.swe_set_sid_mode(ayanamshaId, 0, 0);
-        
-        int retVal = _sweph.swe_calc_ut(julianDay, planetId, flags, result, ref errorMsg);
-        
-        if (retVal < 0)
+        if (ayanamshaOffset == 0)
         {
-            throw new Exception($"Error calculating planet position: {errorMsg}");
+            // Standard behavior: Use sidereal (Vedic) zodiac with selected ayanamsa
+            flags |= SwissEph.SEFLG_SIDEREAL;
+            _sweph.swe_set_sid_mode(ayanamshaId, 0, 0);
+            
+            int retVal = _sweph.swe_calc_ut(julianDay, planetId, flags, result, ref errorMsg);
+            if (retVal < 0) throw new Exception($"Error calculating planet position: {errorMsg}");
+            
+            return (result[0], result[1], result[3]);
         }
-        
-        return (result[0], result[1], result[3]);
+        else
+        {
+            // Manual offset calculation: Get Tropical position then subtract (Ayanamsha + Offset)
+            // Do NOT set SEFLG_SIDEREAL
+            
+            int retVal = _sweph.swe_calc_ut(julianDay, planetId, flags, result, ref errorMsg);
+            if (retVal < 0) throw new Exception($"Error calculating planet position: {errorMsg}");
+            
+            double tropicalLongitude = result[0];
+            double standardAyanamsha = GetAyanamsa(julianDay, ayanamshaId); // Note: This calls the base version without offset
+            double totalAyanamsha = standardAyanamsha + ayanamshaOffset;
+            
+            double siderealLongitude = ZodiacUtils.NormalizeDegree(tropicalLongitude - totalAyanamsha);
+            
+            return (siderealLongitude, result[1], result[3]);
+        }
     }
 
     /// <summary>
     /// Get Rahu (Mean Node) position
     /// </summary>
-    public (double longitude, double latitude, double speed) GetRahuPosition(double julianDay, int ayanamshaId)
+    public (double longitude, double latitude, double speed) GetRahuPosition(double julianDay, int ayanamshaId, double ayanamshaOffset = 0)
     {
-        return GetPlanetPosition(julianDay, SwissEph.SE_MEAN_NODE, ayanamshaId);
+        return GetPlanetPosition(julianDay, SwissEph.SE_MEAN_NODE, ayanamshaId, ayanamshaOffset);
     }
 
     /// <summary>
     /// Calculate Ketu position (opposite to Rahu)
     /// </summary>
-    public (double longitude, double latitude, double speed) GetKetuPosition(double julianDay, int ayanamshaId)
+    public (double longitude, double latitude, double speed) GetKetuPosition(double julianDay, int ayanamshaId, double ayanamshaOffset = 0)
     {
-        var rahu = GetRahuPosition(julianDay, ayanamshaId);
+        var rahu = GetRahuPosition(julianDay, ayanamshaId, ayanamshaOffset);
         double ketuLongitude = ZodiacUtils.NormalizeDegree(rahu.longitude + 180);
         return (ketuLongitude, -rahu.latitude, rahu.speed);
     }
@@ -157,17 +172,23 @@ public class EphemerisService : IDisposable
     /// <summary>
     /// Calculate Ascendant (Lagna) at given time and location
     /// </summary>
-    public double GetAscendant(double julianDay, double latitude, double longitude, int ayanamshaId)
+    public double GetAscendant(double julianDay, double latitude, double longitude, int ayanamshaId, double ayanamshaOffset = 0)
     {
         double[] cusps = new double[13];
         double[] ascmc = new double[10];
         
-        // Use sidereal zodiac
-        _sweph.swe_set_sid_mode(ayanamshaId, 0, 0);
+        int flags = 0;
+        
+        if (ayanamshaOffset == 0)
+        {
+            flags = SwissEph.SEFLG_SIDEREAL;
+            _sweph.swe_set_sid_mode(ayanamshaId, 0, 0);
+        }
+        // Else: Tropical (flags = 0)
         
         int retVal = _sweph.swe_houses_ex(
             julianDay,
-            SwissEph.SEFLG_SIDEREAL,
+            flags,
             latitude,
             longitude,
             'P',  // Placidus house system
@@ -175,22 +196,36 @@ public class EphemerisService : IDisposable
             ascmc
         );
         
-        return ascmc[0]; // Ascendant
+        double ascendant = ascmc[0];
+        
+        if (ayanamshaOffset != 0)
+        {
+            double standardAyanamsha = GetAyanamsa(julianDay, ayanamshaId);
+            double totalAyanamsha = standardAyanamsha + ayanamshaOffset;
+            ascendant = ZodiacUtils.NormalizeDegree(ascendant - totalAyanamsha);
+        }
+        
+        return ascendant; 
     }
 
     /// <summary>
     /// Get all 12 House Cusps with specified house system
     /// </summary>
-    public double[] GetHouses(double julianDay, double latitude, double longitude, int ayanamshaId, char houseSystem = 'P')
+    public double[] GetHouses(double julianDay, double latitude, double longitude, int ayanamshaId, char houseSystem, double ayanamshaOffset = 0)
     {
         double[] cusps = new double[13];
         double[] ascmc = new double[10];
 
-        _sweph.swe_set_sid_mode(ayanamshaId, 0, 0);
+        int flags = 0;
+        if (ayanamshaOffset == 0)
+        {
+            flags = SwissEph.SEFLG_SIDEREAL;
+            _sweph.swe_set_sid_mode(ayanamshaId, 0, 0);
+        }
 
         _sweph.swe_houses_ex(
             julianDay,
-            SwissEph.SEFLG_SIDEREAL,
+            flags,
             latitude,
             longitude,
             houseSystem,  // House system code: P=Placidus, K=Koch, O=Porphyry, etc.
@@ -199,16 +234,31 @@ public class EphemerisService : IDisposable
         );
 
         // Cusps are at indices 1-12
-        return cusps.Skip(1).Take(12).ToArray();
+        var resultCusps = cusps.Skip(1).Take(12).ToArray();
+
+        if (ayanamshaOffset != 0)
+        {
+            double standardAyanamsha = GetAyanamsa(julianDay, ayanamshaId);
+            double totalAyanamsha = standardAyanamsha + ayanamshaOffset;
+            
+            for (int i = 0; i < resultCusps.Length; i++)
+            {
+                resultCusps[i] = ZodiacUtils.NormalizeDegree(resultCusps[i] - totalAyanamsha);
+            }
+        }
+        
+        return resultCusps;
     }
 
     /// <summary>
     /// Get ayanamsa value for given Julian Day
     /// </summary>
-    public double GetAyanamsa(double julianDay, int ayanamshaId)
+    public double GetAyanamsa(double julianDay, int ayanamshaId, double ayanamshaOffset = 0)
     {
         _sweph.swe_set_sid_mode(ayanamshaId, 0, 0);
-        return _sweph.swe_get_ayanamsa_ut(julianDay);
+        // Returns the standard Ayanamsha (positive value typically)
+        // Sidereal = Tropical - Ayanamsha
+        return _sweph.swe_get_ayanamsa_ut(julianDay) + ayanamshaOffset;
     }
 
     /// <summary>

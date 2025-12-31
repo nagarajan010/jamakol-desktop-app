@@ -80,6 +80,9 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
@@ -104,9 +107,33 @@
                 <TextBlock Text="{x:Static res:Strings.LabelAyanamsha}" Style="{StaticResource LabelStyle}"/>
                 <ComboBox x:Name="AyanamshaCombo" Grid.Column="1" Style="{StaticResource ComboStyle}"/>
             </Grid>
-    
-            <!-- Sunrise Mode -->
+
+            <!-- Ayanamsha Correction (DMS) -->
             <Grid Grid.Row="3" Grid.Column="0" Margin="0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Correction" Style="{StaticResource LabelStyle}"/>
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <ComboBox x:Name="OffsetSignCombo" Style="{StaticResource ComboStyle}" Width="45" Margin="0,0,5,0">
+                        <ComboBoxItem Content="+" IsSelected="True"/>
+                        <ComboBoxItem Content="-"/>
+                    </ComboBox>
+                    
+                    <TextBox x:Name="OffsetDegInput" Style="{StaticResource InputStyle}" Width="40" Text="0" MaxLength="2" TextAlignment="Center"/>
+                    <TextBlock Text="°" VerticalAlignment="Center" Margin="2,0,5,0"/>
+                    
+                    <TextBox x:Name="OffsetMinInput" Style="{StaticResource InputStyle}" Width="40" Text="0" MaxLength="2" TextAlignment="Center"/>
+                    <TextBlock Text="'" VerticalAlignment="Center" Margin="2,0,5,0"/>
+                    
+                    <TextBox x:Name="OffsetSecInput" Style="{StaticResource InputStyle}" Width="40" Text="0" MaxLength="2" TextAlignment="Center"/>
+                    <TextBlock Text="&quot;" VerticalAlignment="Center" Margin="2,0,5,0"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- Sunrise Mode -->
+            <Grid Grid.Row="4" Grid.Column="0" Margin="0,8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="100"/>
                     <ColumnDefinition Width="*"/>
@@ -121,7 +148,7 @@
             </Grid>
     
             <!-- Default Location Name -->
-            <Grid Grid.Row="4" Grid.Column="0" Margin="0,8">
+            <Grid Grid.Row="5" Grid.Column="0" Margin="0,8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -155,7 +182,7 @@
             </Grid>
     
             <!-- Default Latitude -->
-            <Grid Grid.Row="5" Grid.Column="0" Margin="0,8">
+            <Grid Grid.Row="6" Grid.Column="0" Margin="0,8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -165,7 +192,7 @@
             </Grid>
     
             <!-- Default Longitude -->
-            <Grid Grid.Row="6" Grid.Column="0" Margin="0,8">
+            <Grid Grid.Row="7" Grid.Column="0" Margin="0,8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -175,7 +202,7 @@
             </Grid>
     
             <!-- Default Timezone -->
-            <Grid Grid.Row="7" Grid.Column="0" Margin="0,8">
+            <Grid Grid.Row="8" Grid.Column="0" Margin="0,8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -197,7 +224,7 @@
             </Grid>
     
             <!-- Jama Graha Font Size -->
-            <Grid Grid.Row="3" Grid.Column="2" Margin="0,8">
+            <Grid Grid.Row="4" Grid.Column="2" Margin="0,8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -207,7 +234,7 @@
             </Grid>
     
             <!-- Table Font Size -->
-            <Grid Grid.Row="4" Grid.Column="2" Margin="0,8">
+            <Grid Grid.Row="5" Grid.Column="2" Margin="0,8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -217,7 +244,7 @@
             </Grid>
     
             <!-- Input Font Size -->
-            <Grid Grid.Row="5" Grid.Column="2" Margin="0,8">
+            <Grid Grid.Row="6" Grid.Column="2" Margin="0,8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -227,7 +254,7 @@
             </Grid>
     
             <!-- Default Tab Mode -->
-            <Grid Grid.Row="6" Grid.Column="2" Margin="0,8">
+            <Grid Grid.Row="7" Grid.Column="2" Margin="0,8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -240,7 +267,7 @@
             </Grid>
     
             <!-- Use Fixed Sign Boxes -->
-            <Grid Grid.Row="7" Grid.Column="2" Margin="0,8">
+            <Grid Grid.Row="8" Grid.Column="2" Margin="0,8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -251,7 +278,7 @@
             </Grid>
     
             <!-- Language Selection -->
-            <Grid Grid.Row="8" Grid.Column="2" Margin="0,8">
+            <Grid Grid.Row="9" Grid.Column="2" Margin="0,8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -264,12 +291,12 @@
             </Grid>
     
             <!-- Info Text -->
-            <TextBlock Grid.Row="9" Grid.ColumnSpan="3" Margin="0,15,0,0" TextWrapping="Wrap"
+            <TextBlock Grid.Row="10" Grid.ColumnSpan="3" Margin="0,15,0,0" TextWrapping="Wrap"
                        Foreground="#888" FontSize="11" VerticalAlignment="Top"
                        Text="{x:Static res:Strings.SettingsInfoText}"/>
     
             <!-- Buttons -->
-            <StackPanel Grid.Row="10" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
+            <StackPanel Grid.Row="11" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
                 <Button x:Name="CancelButton" Content="{x:Static res:Strings.BtnCancel}" Style="{StaticResource CancelButtonStyle}" Click="CancelButton_Click"/>
                 <Button x:Name="SaveButton" Content="{x:Static res:Strings.BtnSave}" Style="{StaticResource ButtonStyle}" Click="SaveButton_Click"/>
             </StackPanel>

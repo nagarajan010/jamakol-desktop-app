@@ -33,14 +33,16 @@ public class ChartCalculator
         chartData.JulianDay = _ephemeris.GetJulianDay(utcYear, utcMonth, utcDay, utcHour);
 
         // Calculate and store the actual Ayanamsa value for this chart
-        chartData.AyanamsaValue = _ephemeris.GetAyanamsa(chartData.JulianDay, (int)ayanamsha);
+        double ayanamshaOffset = AppSettings.Load().AyanamshaOffset;
+        chartData.AyanamsaValue = _ephemeris.GetAyanamsa(chartData.JulianDay, (int)ayanamsha, ayanamshaOffset);
 
         // Calculate Ascendant
         chartData.AscendantDegree = _ephemeris.GetAscendant(
             chartData.JulianDay,
             birthData.Latitude,
             birthData.Longitude,
-            (int)ayanamsha
+            (int)ayanamsha,
+            ayanamshaOffset
         );
         chartData.AscendantSign = ZodiacUtils.DegreeToSign(chartData.AscendantDegree);
         chartData.AscendantSignName = ZodiacUtils.GetSignName(chartData.AscendantSign);
@@ -54,7 +56,7 @@ public class ChartCalculator
         var settings = AppSettings.Load();
         char houseSystemCode = (char)settings.HouseSystem;
         bool cuspAsMiddle = settings.CuspAsMiddle;
-        var cusps = _ephemeris.GetHouses(chartData.JulianDay, birthData.Latitude, birthData.Longitude, (int)ayanamsha, houseSystemCode);
+        var cusps = _ephemeris.GetHouses(chartData.JulianDay, birthData.Latitude, birthData.Longitude, (int)ayanamsha, houseSystemCode, ayanamshaOffset);
         chartData.HouseCusps = new List<HouseCusp>();
         
         for (int i = 0; i < 12; i++)
@@ -131,7 +133,7 @@ public class ChartCalculator
         {
             if (planet == Planet.Ketu) continue; // Handle separately based on Rahu
 
-            var position = CalculatePlanetPosition(chartData.JulianDay, planet, chartData.AscendantSign, (int)ayanamsha);
+            var position = CalculatePlanetPosition(chartData.JulianDay, planet, chartData.AscendantSign, (int)ayanamsha, ayanamshaOffset);
             
             // Calculate KP Lords for Planet
             position.KpDetails = _kpCalculator.Calculate(position.Longitude);
@@ -183,7 +185,7 @@ public class ChartCalculator
         return chartData;
     }
 
-    private PlanetPosition CalculatePlanetPosition(double julianDay, Planet planet, int ascendantSign, int ayanamshaId)
+    private PlanetPosition CalculatePlanetPosition(double julianDay, Planet planet, int ascendantSign, int ayanamshaId, double ayanamshaOffset)
     {
         int planetId = (int)planet;
         
@@ -194,8 +196,8 @@ public class ChartCalculator
         }
 
         var (longitude, latitude, speed) = planet == Planet.Rahu 
-            ? _ephemeris.GetRahuPosition(julianDay, ayanamshaId)
-            : _ephemeris.GetPlanetPosition(julianDay, planetId, ayanamshaId);
+            ? _ephemeris.GetRahuPosition(julianDay, ayanamshaId, ayanamshaOffset)
+            : _ephemeris.GetPlanetPosition(julianDay, planetId, ayanamshaId, ayanamshaOffset);
 
         var position = new PlanetPosition
         {

@@ -61,6 +61,25 @@ public partial class SettingsWindow : Window
                 break;
             }
         }
+        
+        // Load Ayanamsha Correction (DMS)
+        double offset = Settings.AyanamshaOffset;
+        OffsetSignCombo.SelectedIndex = offset >= 0 ? 0 : 1; // 0 for +, 1 for -
+        
+        double absOffset = Math.Abs(offset);
+        int d = (int)absOffset;
+        double remMin = (absOffset - d) * 60.0;
+        int m = (int)remMin;
+        double remSec = (remMin - m) * 60.0;
+        int s = (int)Math.Round(remSec);
+        
+        // Handle rounding edge case (e.g. 59.999 -> 60)
+        if (s == 60) { s = 0; m++; }
+        if (m == 60) { m = 0; d++; }
+        
+        OffsetDegInput.Text = d.ToString();
+        OffsetMinInput.Text = m.ToString();
+        OffsetSecInput.Text = s.ToString();
 
         // Load location defaults
         DefaultLocationInput.Text = Settings.DefaultLocationName;
@@ -105,6 +124,24 @@ public partial class SettingsWindow : Window
             if (SunriseModeCombo.SelectedItem is ComboBoxItem sunriseItem && sunriseItem.Tag is SunriseCalculationMode mode)
             {
                 Settings.SunriseMode = mode;
+            }
+
+            // Save Ayanamsha Correction
+            if (int.TryParse(OffsetDegInput.Text, out int d) && 
+                int.TryParse(OffsetMinInput.Text, out int m) && 
+                int.TryParse(OffsetSecInput.Text, out int s))
+            {
+                double offset = d + (m / 60.0) + (s / 3600.0);
+                if (OffsetSignCombo.SelectedIndex == 1) // "-" selected
+                {
+                    offset = -offset;
+                }
+                Settings.AyanamshaOffset = offset;
+            }
+            else
+            {
+                MessageBox.Show("Invalid Ayanamsha Correction values. Please enter valid integers.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
 
             // Save location defaults

@@ -13,6 +13,12 @@ public class AppSettings
     /// <summary>Selected ayanamsha type</summary>
     public AyanamshaType Ayanamsha { get; set; } = AyanamshaType.Lahiri;
 
+    /// <summary>
+    /// Manual correction to add to the Ayanamsha (in degrees).
+    /// Positive value increases Ayanamsha (subtracts more from Tropical).
+    /// </summary>
+    public double AyanamshaOffset { get; set; } = 0.0;
+
     /// <summary>Default location name</summary>
     public string DefaultLocationName { get; set; } = "Chennai";
 
