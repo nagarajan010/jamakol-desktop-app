@@ -128,26 +128,128 @@ public partial class KPDetailsPanel : UserControl
         }
         
         KPGrid.ItemsSource = items;
+        
+        // --- 1. POPULATE SIGNIFICATORS ---
+        var sigCalculator = new KPSignificatorCalculator();
+        var houseSigs = sigCalculator.CalculateHouseSignificators(chart);
+        var planetSigs = sigCalculator.CalculatePlanetSignifications(chart);
+        
+        HouseSignificatorsGrid.ItemsSource = houseSigs;
+        PlanetSignificationsGrid.ItemsSource = planetSigs;
+        
+        // --- 2. POPULATE RULING PLANETS (For Chart Time) ---
+        // Note: RP tab has a "Calculate Now" button, but we can also show RP for the chart moment validation if desired.
+        // For now, let's just clear the fields or show empty until user clicks "Calculate for NOW"
+        // OR we can calculate RP for the chart moment itself:
+        var rpCalculator = new RulingPlanetsCalculator();
+        var chartRP = rpCalculator.Calculate(chart);
+        
+        // Bind to the grid's DataContext or set individual TextBoxes?
+        // Since we bound TextBoxes to properties like {Binding LagnaSignLord}, we set DataContext of the Tab content or Grid.
+        // Let's find the Grid inside the "Ruling Planets" tab. 
+        // A cleaner way is to set the DataContext of the whole RulingPlanets content Grid.
+        // But for simplicity in this code-behind, we can set it to the TabItem's content (Grid).
+        
+        // We'll set the DataContext of the Panel to itself or a VM, but here we can just set the RP grid's context.
+        // However, XAML bindings {Binding ...} look for DataContext. 
+        // Let's assume the element names. But we used Binding in XAML, so we need a DataContext.
+        // We will set the DataContext of the specific Grid in the RP tab. 
+        // We need to give that Grid a name in XAML or traverse.
+        // Looking at XAML, the Grid inside Ruling Planets tab has no name, but the controls are bound.
+        // We can set DataContext of the UserControl or specific Tab.
+        // Let's name the Grid in XAML in next step? No, we can't edit XAML again in this turn easily.
+        // Wait, I can access the TabItem if I check the visual tree or if I named the TabItem? I didn't name TabItem.
+        // But I can access the named elements inside it like LagnaSignLordTextBox if I named them... I didn't name them, I bound them.
+        // Ah, I see: <TextBox Text="{Binding LagnaSignLord}" ... />
+        // So I must set DataContext.
+        // I will set DataContext of the TabItem's content.
+        
+        if (FindName("StrongRulersList") is ListView lv)
+        {
+             // Find the parent Grid of the list view which is the main grid of the tab
+             if (lv.Parent is Grid rpGrid)
+             {
+                 rpGrid.DataContext = chartRP;
+             }
+             
+             // Also update the time text
+             if (FindName("RPTimeText") is TextBlock tb)
+             {
+                 tb.Text = chartRP.JudgmentTime.ToString("dd-MMM-yyyy HH:mm:ss");
+             }
+             
+             lv.ItemsSource = chartRP.CombinedRulers;
+        }
+
+        // --- 3. POPULATE CUSPAL INTERLINKS ---
+        // We need to calculate what the Sub Lord signifies for each cusp
+        // We already have house significators.
+        if (chart.HouseCusps != null)
+        {
+            foreach (var cusp in chart.HouseCusps)
+            {
+                cusp.SubLordSignifies.Clear();
+                string subLord = cusp.KpDetails.SubLord;
+                
+                // Find which houses this sub lord signifies using our calculated planetSigs
+                var pSig = planetSigs.FirstOrDefault(p => p.PlanetName == subLord);
+                if (pSig != null)
+                {
+                    cusp.SubLordSignifies.AddRange(pSig.SignifiesHouses);
+                }
+            }
+            CuspalInterlinksGrid.ItemsSource = chart.HouseCusps;
+        }
+
         LocalizeHeaders();
     }
 
     private void LocalizeHeaders()
     {
-        if (KPGrid.Columns.Count < 7) return;
-        
         bool isTa = ZodiacUtils.IsTamil;
-        KPGrid.Columns[0].Header = isTa ? "கிரகம்/முனை" : "Body/Cusp";
-        KPGrid.Columns[1].Header = isTa ? "நட்சத்திர அதிபதி" : "Nakshatra Lord";
-        KPGrid.Columns[2].Header = isTa ? "உப அதிபதி" : "Sub Lord";
-        KPGrid.Columns[3].Header = isTa ? "உப-உப அதிபதி" : "Prati-Sub"; // Or Prati-Sub transliterated? "பிரதி-உப"
-        KPGrid.Columns[4].Header = isTa ? "சூட்சுமம்" : "Sookshma";
-        KPGrid.Columns[5].Header = isTa ? "பிராணன்" : "Prana";
-        KPGrid.Columns[6].Header = isTa ? "தேகம்" : "Deha";
+
+        if (KPGrid.Columns.Count >= 7)
+        {
+            KPGrid.Columns[0].Header = isTa ? "கிரகம்/முனை" : "Body/Cusp";
+            KPGrid.Columns[1].Header = isTa ? "நட்சத்திர அதிபதி" : "Nakshatra Lord";
+            KPGrid.Columns[2].Header = isTa ? "உப அதிபதி" : "Sub Lord";
+            KPGrid.Columns[3].Header = isTa ? "உப-உப அதிபதி" : "Prati-Sub";
+            KPGrid.Columns[4].Header = isTa ? "சூட்சுமம்" : "Sookshma";
+            KPGrid.Columns[5].Header = isTa ? "பிராணன்" : "Prana";
+            KPGrid.Columns[6].Header = isTa ? "தேகம்" : "Deha";
+        }
+        
+        // Significators Headers
+        if (HouseSignificatorsGrid.Columns.Count >= 5)
+        {
+            HouseSignificatorsGrid.Columns[0].Header = isTa ? "பாவம்" : "House";
+            HouseSignificatorsGrid.Columns[1].Header = isTa ? "நிலை 1 (நின். நட்ச.)" : "L1 (Occ. Star)";
+            HouseSignificatorsGrid.Columns[2].Header = isTa ? "நிலை 2 (நின்றவர்)" : "L2 (Occupant)";
+            HouseSignificatorsGrid.Columns[3].Header = isTa ? "நிலை 3 (அதி. நட்ச.)" : "L3 (Own. Star)";
+            HouseSignificatorsGrid.Columns[4].Header = isTa ? "நிலை 4 (அதிபதி)" : "L4 (Owner)";
+        }
+        
+        if (PlanetSignificationsGrid.Columns.Count >= 5)
+        {
+            PlanetSignificationsGrid.Columns[0].Header = isTa ? "கிரகம்" : "Planet";
+            PlanetSignificationsGrid.Columns[1].Header = isTa ? "குறிக்காட்டுபவை" : "Signifies Houses";
+            PlanetSignificationsGrid.Columns[2].Header = isTa ? "நின்றது" : "Occ";
+            PlanetSignificationsGrid.Columns[3].Header = isTa ? "சாரம்" : "Star";
+            PlanetSignificationsGrid.Columns[4].Header = isTa ? "ஆட்சி" : "Owns";
+        }
     }
     
     public void ClearChart()
     {
         KPGrid.ItemsSource = null;
+        HouseSignificatorsGrid.ItemsSource = null;
+        PlanetSignificationsGrid.ItemsSource = null;
+        CuspalInterlinksGrid.ItemsSource = null;
+        if (FindName("StrongRulersList") is ListView lv && lv.Parent is Grid rpGrid)
+        {
+            rpGrid.DataContext = null;
+            lv.ItemsSource = null;
+        }
     }
     
     // Helper to format ordinal
@@ -217,6 +319,42 @@ public partial class KPDetailsPanel : UserControl
         {
             // Raise event with the local time of the transit
             TransitSelected?.Invoke(this, transitEvent.TimeUtc.ToLocalTime());
+        }
+    }
+
+    private void CalculateRPBtn_Click(object sender, System.Windows.RoutedEventArgs e)
+    {
+        try
+        {
+            var settings = AppSettings.Load();
+            var rpCalculator = new RulingPlanetsCalculator();
+            
+            // Use default location from settings for "NOW" calculation
+            // Effectively calculating for the user's current location and time
+            var rp = rpCalculator.CalculateForNow(
+                settings.DefaultLatitude, 
+                settings.DefaultLongitude, 
+                settings.DefaultTimezone, 
+                (int)settings.Ayanamsha, 
+                settings.AyanamshaOffset
+            );
+            
+            if (FindName("StrongRulersList") is ListView lv)
+            {
+                 if (lv.Parent is Grid rpGrid)
+                 {
+                     rpGrid.DataContext = rp;
+                 }
+                 if (FindName("RPTimeText") is TextBlock tb)
+                 {
+                     tb.Text = rp.JudgmentTime.ToString("dd-MMM-yyyy HH:mm:ss") + " (Now)";
+                 }
+                 lv.ItemsSource = rp.CombinedRulers;
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Windows.MessageBox.Show("Error calculating RP: " + ex.Message);
         }
     }
 }

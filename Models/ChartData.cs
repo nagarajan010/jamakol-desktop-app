@@ -57,4 +57,9 @@ public class ChartData
     /// Ashtakavarga Calculations
     /// </summary>
     public AshtakavargaData Ashtakavarga { get; set; } = new();
+
+    /// <summary>
+    /// KP House Significators (4-level hierarchy)
+    /// </summary>
+    public List<HouseSignificators> KPSignificators { get; set; } = new();
 }

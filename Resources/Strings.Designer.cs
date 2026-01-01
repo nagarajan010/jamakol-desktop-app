@@ -1021,5 +1021,160 @@ namespace JamakolAstrology.Resources {
                 return ResourceManager.GetString("HeaderPrediction", resourceCulture);
             }
         }
+        public static string TabBirthSubTable {
+             get {
+                 return ResourceManager.GetString("TabBirthSubTable", resourceCulture);
+             }
+         }
+         public static string TabTransitSub {
+             get {
+                 return ResourceManager.GetString("TabTransitSub", resourceCulture);
+             }
+         }
+         public static string TabSignificators {
+             get {
+                 return ResourceManager.GetString("TabSignificators", resourceCulture);
+             }
+         }
+         public static string TabRulingPlanets {
+             get {
+                 return ResourceManager.GetString("TabRulingPlanets", resourceCulture);
+             }
+         }
+         public static string TabCuspalInterlinks {
+             get {
+                 return ResourceManager.GetString("TabCuspalInterlinks", resourceCulture);
+             }
+         }
+         public static string HeaderHouseSignificators {
+             get {
+                 return ResourceManager.GetString("HeaderHouseSignificators", resourceCulture);
+             }
+         }
+         public static string HeaderPlanetSignifications {
+             get {
+                 return ResourceManager.GetString("HeaderPlanetSignifications", resourceCulture);
+             }
+         }
+         public static string HeaderBody {
+             get {
+                 return ResourceManager.GetString("HeaderBody", resourceCulture);
+             }
+         }
+         public static string LabelBody {
+             get {
+                 return ResourceManager.GetString("LabelBody", resourceCulture);
+             }
+         }
+         public static string HeaderSubLord {
+             get {
+                 return ResourceManager.GetString("HeaderSubLord", resourceCulture);
+             }
+         }
+         public static string HeaderPratiSub {
+             get {
+                 return ResourceManager.GetString("HeaderPratiSub", resourceCulture);
+             }
+         }
+         public static string HeaderSookshma {
+             get {
+                 return ResourceManager.GetString("HeaderSookshma", resourceCulture);
+             }
+         }
+         public static string HeaderPrana {
+             get {
+                 return ResourceManager.GetString("HeaderPrana", resourceCulture);
+             }
+         }
+         public static string HeaderDeha {
+             get {
+                 return ResourceManager.GetString("HeaderDeha", resourceCulture);
+             }
+         }
+         public static string HeaderOldSub {
+             get {
+                 return ResourceManager.GetString("HeaderOldSub", resourceCulture);
+             }
+         }
+         public static string HeaderNewSub {
+             get {
+                 return ResourceManager.GetString("HeaderNewSub", resourceCulture);
+             }
+         }
+         public static string HeaderSignifiesHouses {
+             get {
+                 return ResourceManager.GetString("HeaderSignifiesHouses", resourceCulture);
+             }
+         }
+         public static string HeaderOcc {
+             get {
+                 return ResourceManager.GetString("HeaderOcc", resourceCulture);
+             }
+         }
+         public static string HeaderStar {
+             get {
+                 return ResourceManager.GetString("HeaderStar", resourceCulture);
+             }
+         }
+         public static string HeaderOwns {
+             get {
+                 return ResourceManager.GetString("HeaderOwns", resourceCulture);
+             }
+         }
+         public static string HeaderL1 {
+             get {
+                 return ResourceManager.GetString("HeaderL1", resourceCulture);
+             }
+         }
+         public static string HeaderL2 {
+             get {
+                 return ResourceManager.GetString("HeaderL2", resourceCulture);
+             }
+         }
+         public static string HeaderL3 {
+             get {
+                 return ResourceManager.GetString("HeaderL3", resourceCulture);
+             }
+         }
+         public static string HeaderL4 {
+             get {
+                 return ResourceManager.GetString("HeaderL4", resourceCulture);
+             }
+         }
+         public static string HeaderSignLord {
+             get {
+                 return ResourceManager.GetString("HeaderSignLord", resourceCulture);
+             }
+         }
+         public static string HeaderStarLord {
+             get {
+                 return ResourceManager.GetString("HeaderStarLord", resourceCulture);
+             }
+         }
+         public static string LabelLagna {
+             get {
+                 return ResourceManager.GetString("LabelLagna", resourceCulture);
+             }
+         }
+         public static string LabelMoon {
+             get {
+                 return ResourceManager.GetString("LabelMoon", resourceCulture);
+             }
+         }
+         public static string LabelDayLord {
+             get {
+                 return ResourceManager.GetString("LabelDayLord", resourceCulture);
+             }
+         }
+         public static string HeaderCount {
+             get {
+                 return ResourceManager.GetString("HeaderCount", resourceCulture);
+            }
+        }
+        public static string HeaderSources {
+             get {
+                 return ResourceManager.GetString("HeaderSources", resourceCulture);
+            }
+        }
     }
 }

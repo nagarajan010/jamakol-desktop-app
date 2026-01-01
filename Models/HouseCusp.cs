@@ -15,5 +15,13 @@ public class HouseCusp
     public string EndDisplay { get; set; } = string.Empty;    // Formatted end
     
     public KPLords KpDetails { get; set; } = new();
+    
+    /// <summary>
+    /// Houses that this cusp's Sub Lord signifies (for Cuspal Interlinks)
+    /// </summary>
+    public List<int> SubLordSignifies { get; set; } = new();
+    
+    /// <summary>Display string for signified houses</summary>
+    public string SubLordSignifiesDisplay => string.Join(", ", SubLordSignifies.OrderBy(h => h));
 }
 

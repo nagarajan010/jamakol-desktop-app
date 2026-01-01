@@ -53,15 +53,27 @@ A full-featured horoscope generation engine powered by **Swiss Ephemeris**.
   * D10 (Dasamsa), D12 (Dwadasamsa), D16 (Shodashamsa), D20, D24, D27, D30, D40, D45, D60.
 * **10+ House Systems**:
   * Comprehensive support for major house systems including **Placidus** (KP), **Koch**, **Porphyry** (Sripathi), **Regiomontanus**, **Campanus**, **Equal**, **Whole Sign**, **Alcabitus**, **Topocentric**, and **Axial**.
-  * Customizable Cusp calculation (Start of House or Middle of House).
+* **KP Astrology (Krishnamurti Paddhati) - Experimental Framework**:
+  * > [!WARNING]
+  * > The KP module is currently in **Experimental Testing**. Features like Transit, Significators, and Interlinks are under active verification.
+  * **KP Chart**: Placidus House System with Cusp details.
+  * **Significators**:
+    * **4-Step Theory**: Comprehensive House and Planet significators table.
+    * **Hierarchy**: Sign Lord, Star, Sub, Sub-Sub relationships.
+  * **Ruling Planets (RP)**:
+    * Instant calculation for the moment of judgment (Prasna).
+    * Shows Rulers for Ascendant, Moon, and Day Lord.
+    * **Sources**: Dynamic scoring of rulers based on strength.
+  * **Cuspal Interlinks**:
+    * Detailed Sub-Lord significations for every cusp.
+    * Links between House, Star, and Sub levels.
+  * **Tools**:
+    * **Birth Sub Table**: Granular view of planetary positions.
+    * **Transit Sub**: Track live changes in Sub Lords (Experimental).
 * **Ashtakavarga**:
   * **Bhinna Ashtakavarga (BAV)** for all 7 planets.
   * **Samudaya Ashtakavarga (SAV)** total points.
 * **Vimshottari Dasha**: Hierarchical view of Dasha, Bhukti, and Antara periods.
-* **KP Astrology (Krishnamurti Paddhati)**:
-  * KP Chart and Cusp details (Placidus House System).
-  * Lord hierarchy: Sign Lord, Star Lord, Sub Lord, Sub-Sub Lord.
-  * **KP Transit (Experimental)**: Calculate exact times for Sub-Lord changes. *Note: This feature is currently in testing/beta.*
 * **Amsha Devata**: Detailed analysis of Amsha Devata deities (e.g., Agni, Vayu, Indra for D60).
 * **Jaimini Karakas**: Automatic calculation of 7 Karakas (Atmakaraka, Amatyakaraka, etc.).
 

@@ -559,4 +559,99 @@
     <value>தமிழ்</value>
   </data>
 
+  <!-- KP Panel -->
+  <data name="TabBirthSubTable" xml:space="preserve">
+    <value>Birth Sub Table</value>
+  </data>
+  <data name="TabTransitSub" xml:space="preserve">
+    <value>Transit Sub</value>
+  </data>
+  <data name="TabSignificators" xml:space="preserve">
+    <value>Significators</value>
+  </data>
+  <data name="TabRulingPlanets" xml:space="preserve">
+    <value>Ruling Planets</value>
+  </data>
+  <data name="TabCuspalInterlinks" xml:space="preserve">
+    <value>Cuspal Interlinks</value>
+  </data>
+  <data name="HeaderHouseSignificators" xml:space="preserve">
+    <value>House Significators (4-Step)</value>
+  </data>
+  <data name="HeaderPlanetSignifications" xml:space="preserve">
+    <value>Planet Significations</value>
+  </data>
+  <data name="HeaderBody" xml:space="preserve">
+    <value>Body/Cusp</value>
+  </data>
+  <data name="LabelBody" xml:space="preserve">
+    <value>Body:</value>
+  </data>
+  <data name="HeaderSubLord" xml:space="preserve">
+    <value>Sub Lord</value>
+  </data>
+  <data name="HeaderPratiSub" xml:space="preserve">
+    <value>Prati-Sub</value>
+  </data>
+  <data name="HeaderSookshma" xml:space="preserve">
+    <value>Sookshma</value>
+  </data>
+  <data name="HeaderPrana" xml:space="preserve">
+    <value>Prana</value>
+  </data>
+  <data name="HeaderDeha" xml:space="preserve">
+    <value>Deha</value>
+  </data>
+  <data name="HeaderOldSub" xml:space="preserve">
+    <value>Old Sub</value>
+  </data>
+  <data name="HeaderNewSub" xml:space="preserve">
+    <value>New Sub</value>
+  </data>
+  <data name="HeaderSignifiesHouses" xml:space="preserve">
+    <value>Signifies Houses</value>
+  </data>
+  <data name="HeaderOcc" xml:space="preserve">
+    <value>Occ</value>
+  </data>
+  <data name="HeaderStar" xml:space="preserve">
+    <value>Star</value>
+  </data>
+  <data name="HeaderOwns" xml:space="preserve">
+    <value>Owns</value>
+  </data>
+  <data name="HeaderL1" xml:space="preserve">
+    <value>L1 (Occ. Star)</value>
+  </data>
+  <data name="HeaderL2" xml:space="preserve">
+    <value>L2 (Occupant)</value>
+  </data>
+  <data name="HeaderL3" xml:space="preserve">
+    <value>L3 (Own. Star)</value>
+  </data>
+  <data name="HeaderL4" xml:space="preserve">
+    <value>L4 (Owner)</value>
+  </data>
+  <data name="HeaderSignLord" xml:space="preserve">
+    <value>Sign Lord</value>
+  </data>
+  <data name="HeaderStarLord" xml:space="preserve">
+    <value>Star Lord</value>
+  </data>
+  <data name="LabelLagna" xml:space="preserve">
+    <value>Lagna (Asc):</value>
+  </data>
+  <data name="LabelMoon" xml:space="preserve">
+    <value>Moon:</value>
+  </data>
+  <data name="LabelDayLord" xml:space="preserve">
+    <value>Day Lord:</value>
+  </data>
+  <data name="HeaderCount" xml:space="preserve">
+    <value>Count</value>
+  </data>
+  <data name="HeaderSources" xml:space="preserve">
+    <value>Sources</value>
+  </data>
+
 </root>

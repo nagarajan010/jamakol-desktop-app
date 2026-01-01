@@ -142,4 +142,38 @@ namespace JamakolAstrology.Converters
             throw new NotImplementedException();
         }
     }
+
+    /// <summary>
+    /// Converts a list of strings to a comma-separated string
+    /// </summary>
+    public class StringListConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is System.Collections.Generic.IEnumerable<string> list)
+            {
+                 // Filter out empty strings and join
+                var cleanList = list.Where(s => !string.IsNullOrEmpty(s));
+                
+                // If localized planet names needed, could map here too, but for now just join
+                if (ZodiacUtils.IsTamil)
+                {
+                   // Optional: Localize names in list if they are planet names
+                   // For now, assume they are codes or names handled elsewhere or reuse PlanetNameConverter logic?
+                   // Given usage (L1, L2, L3 significators), they are Planet Names.
+                   // Let's reuse PlanetNameConverter logic simplistically or just create new instance
+                   var converter = new PlanetNameConverter();
+                   cleanList = cleanList.Select(s => converter.Convert(s, null, null, null) as string ?? s);
+                }
+                
+                return string.Join(", ", cleanList);
+            }
+            return "";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

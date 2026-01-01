@@ -5,41 +5,45 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:JamakolAstrology.Controls"
              xmlns:res="clr-namespace:JamakolAstrology.Resources"
+             xmlns:conv="clr-namespace:JamakolAstrology.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     
+    <UserControl.Resources>
+        <conv:StringListConverter x:Key="StringListConverter"/>
+        <Style x:Key="RedHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#cc0000"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="6,4"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="10"/>
+        </Style>
+    </UserControl.Resources>
+
     <Grid>
         <TabControl>
-            <TabItem Header="Birth Sub Table">
+            <TabItem Header="{x:Static res:Strings.TabBirthSubTable}">
                 <DataGrid x:Name="KPGrid" 
                           Style="{StaticResource DataGridStyle}"
+                          ColumnHeaderStyle="{StaticResource RedHeaderStyle}"
                           AutoGenerateColumns="False" 
                           CanUserAddRows="False" 
                           CanUserSortColumns="False"
                           IsReadOnly="True"
                           HeadersVisibility="Column" 
                           BorderThickness="0">
-                    <DataGrid.ColumnHeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="Background" Value="#cc0000"/>
-                            <Setter Property="Foreground" Value="White"/>
-                            <Setter Property="Padding" Value="6,4"/>
-                            <Setter Property="FontWeight" Value="SemiBold"/>
-                            <Setter Property="FontSize" Value="10"/>
-                        </Style>
-                    </DataGrid.ColumnHeaderStyle>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Body/Cusp" Binding="{Binding Name, Converter={StaticResource PlanetNameConverter}}" Width="Auto"/>
-                        <DataGridTextColumn Header="Nakshatra Lord" Binding="{Binding StarLord, Converter={StaticResource PlanetNameConverter}}" Width="Auto"/>
-                        <DataGridTextColumn Header="Sub Lord" Binding="{Binding SubLord, Converter={StaticResource PlanetNameConverter}}" Width="Auto" FontWeight="Bold" Foreground="#cc0000"/>
-                        <DataGridTextColumn Header="Prati-Sub" Binding="{Binding SubSubLord, Converter={StaticResource PlanetNameConverter}}" Width="Auto"/>
-                        <DataGridTextColumn Header="Sookshma" Binding="{Binding SookshmaLord, Converter={StaticResource PlanetNameConverter}}" Width="Auto"/>
-                        <DataGridTextColumn Header="Prana" Binding="{Binding PranaLord, Converter={StaticResource PlanetNameConverter}}" Width="Auto"/>
-                        <DataGridTextColumn Header="Deha" Binding="{Binding DehaLord, Converter={StaticResource PlanetNameConverter}}" Width="Auto"/>
+                        <DataGridTextColumn Header="{x:Static res:Strings.HeaderBody}" Binding="{Binding Name, Converter={StaticResource PlanetNameConverter}}" Width="Auto"/>
+                        <DataGridTextColumn Header="{x:Static res:Strings.HeaderNakshatraLord}" Binding="{Binding StarLord, Converter={StaticResource PlanetNameConverter}}" Width="Auto"/>
+                        <DataGridTextColumn Header="{x:Static res:Strings.HeaderSubLord}" Binding="{Binding SubLord, Converter={StaticResource PlanetNameConverter}}" Width="Auto" FontWeight="Bold" Foreground="#cc0000"/>
+                        <DataGridTextColumn Header="{x:Static res:Strings.HeaderPratiSub}" Binding="{Binding SubSubLord, Converter={StaticResource PlanetNameConverter}}" Width="Auto"/>
+                        <DataGridTextColumn Header="{x:Static res:Strings.HeaderSookshma}" Binding="{Binding SookshmaLord, Converter={StaticResource PlanetNameConverter}}" Width="Auto"/>
+                        <DataGridTextColumn Header="{x:Static res:Strings.HeaderPrana}" Binding="{Binding PranaLord, Converter={StaticResource PlanetNameConverter}}" Width="Auto"/>
+                        <DataGridTextColumn Header="{x:Static res:Strings.HeaderDeha}" Binding="{Binding DehaLord, Converter={StaticResource PlanetNameConverter}}" Width="Auto"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
-            <TabItem Header="Transit Sub">
+            <TabItem Header="{x:Static res:Strings.TabTransitSub}">
                 <Grid Background="#FFFFFF">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -47,17 +51,16 @@
                     </Grid.RowDefinitions>
 
                     <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
-                        <TextBlock Text="Start:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBlock Text="{x:Static res:Strings.HeaderStart}" VerticalAlignment="Center" Margin="0,0,5,0"/>
                         <DatePicker x:Name="StartDatePicker" Width="100"/>
-                        <!-- Simple Time Input placeholder or fixed to 00:00 for now, could expand later -->
                         
-                        <TextBlock Text="End:" VerticalAlignment="Center" Margin="15,0,5,0"/>
+                        <TextBlock Text="{x:Static res:Strings.HeaderEnd}" VerticalAlignment="Center" Margin="15,0,5,0"/>
                         <DatePicker x:Name="EndDatePicker" Width="100"/>
                         
-                        <TextBlock Text="Body:" VerticalAlignment="Center" Margin="15,0,5,0"/>
+                        <TextBlock Text="{x:Static res:Strings.LabelBody}" VerticalAlignment="Center" Margin="15,0,5,0"/>
                         <ComboBox x:Name="BodySelector" Width="100" SelectedIndex="0"/>
                         
-                        <Button x:Name="CalculateTransitBtn" Content="Calculate" Margin="15,0,0,0" Padding="10,2" Click="CalculateTransitBtn_Click"/>
+                        <Button x:Name="CalculateTransitBtn" Content="{x:Static res:Strings.BtnCalculate}" Margin="15,0,0,0" Padding="10,2" Click="CalculateTransitBtn_Click"/>
                         
                         <TextBlock x:Name="TransitStatusText" Text="" Margin="10,0,0,0" VerticalAlignment="Center" Foreground="Gray"/>
                     </StackPanel>
@@ -80,9 +83,9 @@
                             </Style>
                         </DataGrid.ColumnHeaderStyle>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Date/Time" Binding="{Binding DisplayTime}" Width="Auto"/>
-                            <DataGridTextColumn Header="Body" Binding="{Binding Body}" Width="Auto" FontWeight="Bold"/>
-                             <DataGridTextColumn Header="Old Sub" Binding="{Binding OldSubLord}" Width="Auto" Foreground="Gray"/>
+                            <DataGridTextColumn Header="{x:Static res:Strings.HeaderDateTime}" Binding="{Binding DisplayTime}" Width="Auto"/>
+                            <DataGridTextColumn Header="{x:Static res:Strings.HeaderBody}" Binding="{Binding Body, Converter={StaticResource PlanetNameConverter}}" Width="Auto" FontWeight="Bold"/>
+                             <DataGridTextColumn Header="{x:Static res:Strings.HeaderOldSub}" Binding="{Binding OldSubLord, Converter={StaticResource PlanetNameConverter}}" Width="Auto" Foreground="Gray"/>
                             <DataGridTemplateColumn Header="" Width="20">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -90,13 +93,13 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="New Sub" Binding="{Binding NewSubLord}" Width="Auto" FontWeight="Bold" Foreground="#cc0000"/>
-                            <DataGridTextColumn Header="Sign" Binding="{Binding Sign}" Width="Auto"/>
-                            <DataGridTextColumn Header="Star" Binding="{Binding Star}" Width="Auto"/>
+                            <DataGridTextColumn Header="{x:Static res:Strings.HeaderNewSub}" Binding="{Binding NewSubLord, Converter={StaticResource PlanetNameConverter}}" Width="Auto" FontWeight="Bold" Foreground="#cc0000"/>
+                            <DataGridTextColumn Header="{x:Static res:Strings.HeaderSign}" Binding="{Binding Sign, Converter={StaticResource PlanetNameConverter}}" Width="Auto"/>
+                            <DataGridTextColumn Header="{x:Static res:Strings.HeaderStar}" Binding="{Binding Star, Converter={StaticResource PlanetNameConverter}}" Width="Auto"/>
                             <DataGridTemplateColumn Header="" Width="30">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Content="📊" ToolTip="Load Chart at This Time" 
+                                        <Button Content="📊" ToolTip="{x:Static res:Strings.BtnLoadChart}" 
                                                 Click="LoadChartButton_Click" 
                                                 Background="Transparent" BorderThickness="0" 
                                                 Cursor="Hand" FontSize="14" Padding="2"/>
@@ -106,6 +109,140 @@
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
+            </TabItem>
+            
+            <TabItem Header="{x:Static res:Strings.TabSignificators}">
+                <Grid Background="#FFFFFF">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <!-- House Significators -->
+                    <Grid Grid.Column="0" Margin="0,0,5,0">
+                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Border Background="#cc0000" Padding="5">
+                             <TextBlock Text="{x:Static res:Strings.HeaderHouseSignificators}" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                        </Border>
+                        <DataGrid x:Name="HouseSignificatorsGrid" Grid.Row="1"
+                                  Style="{StaticResource DataGridStyle}"
+                                  ColumnHeaderStyle="{StaticResource RedHeaderStyle}"
+                                  AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" HeadersVisibility="Column">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{x:Static res:Strings.HeaderHouse}" Binding="{Binding HouseNumber}" Width="Auto" FontWeight="Bold"/>
+                                <DataGridTextColumn Header="{x:Static res:Strings.HeaderL1}" Binding="{Binding Level1_OccupantStarPlanets, Converter={StaticResource StringListConverter}}" Width="*" Foreground="Green"/>
+                                <DataGridTextColumn Header="{x:Static res:Strings.HeaderL2}" Binding="{Binding Level2_OccupantPlanets, Converter={StaticResource StringListConverter}}" Width="*"/>
+                                <DataGridTextColumn Header="{x:Static res:Strings.HeaderL3}" Binding="{Binding Level3_OwnerStarPlanets, Converter={StaticResource StringListConverter}}" Width="*"/>
+                                <DataGridTextColumn Header="{x:Static res:Strings.HeaderL4}" Binding="{Binding Level4_Owner, Converter={StaticResource PlanetNameConverter}}" Width="Auto" Foreground="Gray"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                    
+                    <!-- Planet Significations -->
+                    <Grid Grid.Column="1" Margin="5,0,0,0">
+                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Border Background="#cc0000" Padding="5">
+                             <TextBlock Text="{x:Static res:Strings.HeaderPlanetSignifications}" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                        </Border>
+                        <DataGrid x:Name="PlanetSignificationsGrid" Grid.Row="1"
+                                  Style="{StaticResource DataGridStyle}"
+                                  ColumnHeaderStyle="{StaticResource RedHeaderStyle}"
+                                  AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" HeadersVisibility="Column">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{x:Static res:Strings.HeaderPlanet}" Binding="{Binding PlanetName, Converter={StaticResource PlanetNameConverter}}" Width="Auto" FontWeight="Bold"/>
+                                <DataGridTextColumn Header="{x:Static res:Strings.HeaderSignifiesHouses}" Binding="{Binding SignifiesDisplay}" Width="*" FontWeight="SemiBold"/>
+                                <DataGridTextColumn Header="{x:Static res:Strings.HeaderOcc}" Binding="{Binding OccupiesHouse}" Width="Auto"/>
+                                <DataGridTextColumn Header="{x:Static res:Strings.HeaderStar}" Binding="{Binding InStarOf, Converter={StaticResource PlanetNameConverter}}" Width="Auto"/>
+                                <DataGridTextColumn Header="{x:Static res:Strings.HeaderOwns}" Binding="{Binding OwnsHouses, Converter={StaticResource StringListConverter}}" Width="Auto"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            
+            <TabItem Header="{x:Static res:Strings.TabRulingPlanets}">
+                <Grid Background="#FFFFFF">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    <!-- RP Button -->
+                    <StackPanel Orientation="Horizontal" Margin="5">
+                        <Button x:Name="CalculateRPBtn" Content="Calculate RP for NOW" Click="CalculateRPBtn_Click" Padding="10,4" Margin="0,0,10,0"/>
+                        <TextBlock x:Name="RPTimeText" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                    </StackPanel>
+                    
+                    <!-- Main RP Grid -->
+                    <Grid Grid.Row="1" Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Border Grid.Row="0" Grid.Column="1" Background="#cc0000"  Padding="5"><TextBlock Text="{x:Static res:Strings.HeaderSignLord}" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/></Border>
+                        <Border Grid.Row="0" Grid.Column="2" Background="#cc0000"  Padding="5"><TextBlock Text="{x:Static res:Strings.HeaderStarLord}" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/></Border>
+                        <Border Grid.Row="0" Grid.Column="3" Background="#cc0000"  Padding="5"><TextBlock Text="{x:Static res:Strings.HeaderSubLord}" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/></Border>
+                        
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static res:Strings.LabelLagna}" FontWeight="Bold" VerticalAlignment="Center" Margin="5"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding LagnaSignLord, Converter={StaticResource PlanetNameConverter}}" IsReadOnly="True" Margin="2" Padding="4"/>
+                        <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding LagnaStarLord, Converter={StaticResource PlanetNameConverter}}" IsReadOnly="True" Margin="2" Padding="4"/>
+                        <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding LagnaSubLord, Converter={StaticResource PlanetNameConverter}}" IsReadOnly="True" Margin="2" Padding="4" FontWeight="Bold"/>
+                        
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static res:Strings.LabelMoon}" FontWeight="Bold" VerticalAlignment="Center" Margin="5"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding MoonSignLord, Converter={StaticResource PlanetNameConverter}}" IsReadOnly="True" Margin="2" Padding="4"/>
+                        <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding MoonStarLord, Converter={StaticResource PlanetNameConverter}}" IsReadOnly="True" Margin="2" Padding="4"/>
+                        <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding MoonSubLord, Converter={StaticResource PlanetNameConverter}}" IsReadOnly="True" Margin="2" Padding="4" FontWeight="Bold"/>
+                        
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="{x:Static res:Strings.LabelDayLord}" FontWeight="Bold" VerticalAlignment="Center" Margin="5"/>
+                        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding DayLord, Converter={StaticResource PlanetNameConverter}}" IsReadOnly="True" Margin="2" Padding="4" Background="#fff8e1"/>
+                        
+                        <!-- Combined Rulers List -->
+                        <ListView x:Name="StrongRulersList" Grid.Row="5" Grid.ColumnSpan="4" BorderThickness="1" BorderBrush="#ccc" Height="150">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="{x:Static res:Strings.HeaderPlanet}" DisplayMemberBinding="{Binding Planet, Converter={StaticResource PlanetNameConverter}}" Width="80"/>
+                                    <GridViewColumn Header="{x:Static res:Strings.HeaderCount}" DisplayMemberBinding="{Binding Count}" Width="50"/>
+                                    <GridViewColumn Header="{x:Static res:Strings.HeaderSources}" DisplayMemberBinding="{Binding Sources}" Width="300"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            
+            <TabItem Header="{x:Static res:Strings.TabCuspalInterlinks}">
+                 <DataGrid x:Name="CuspalInterlinksGrid" 
+                          Style="{StaticResource DataGridStyle}"
+                          ColumnHeaderStyle="{StaticResource RedHeaderStyle}"
+                          AutoGenerateColumns="False" 
+                          CanUserAddRows="False" 
+                          IsReadOnly="True"
+                          HeadersVisibility="Column" 
+                          BorderThickness="0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="{x:Static res:Strings.HeaderCusp}" Binding="{Binding HouseNumber}" Width="Auto" FontWeight="Bold"/>
+                        <DataGridTextColumn Header="{x:Static res:Strings.HeaderSubLord}" Binding="{Binding KpDetails.SubLord, Converter={StaticResource PlanetNameConverter}}" Width="Auto" Foreground="#cc0000" FontWeight="SemiBold"/>
+                        <DataGridTextColumn Header="{x:Static res:Strings.HeaderSignifiesHouses}" Binding="{Binding SubLordSignifiesDisplay}" Width="*" FontWeight="Bold"/>
+                    </DataGrid.Columns>
+                </DataGrid>
             </TabItem>
         </TabControl>
     </Grid>

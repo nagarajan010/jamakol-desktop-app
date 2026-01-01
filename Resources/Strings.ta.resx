@@ -557,4 +557,99 @@
     <value>தமிழ்</value>
   </data>
 
+  <!-- KP Panel -->
+  <data name="TabBirthSubTable" xml:space="preserve">
+    <value>ஜனன உப அட்டவணை</value>
+  </data>
+  <data name="TabTransitSub" xml:space="preserve">
+    <value>கோச்சார உப அட்டவணை</value>
+  </data>
+  <data name="TabSignificators" xml:space="preserve">
+    <value>காரகங்கள்</value>
+  </data>
+  <data name="TabRulingPlanets" xml:space="preserve">
+    <value>ஆளும் கிரகங்கள்</value>
+  </data>
+  <data name="TabCuspalInterlinks" xml:space="preserve">
+    <value>பாவ முனை தொடர்பு</value>
+  </data>
+  <data name="HeaderHouseSignificators" xml:space="preserve">
+    <value>பாவ காரகங்கள் (4-நிலை)</value>
+  </data>
+  <data name="HeaderPlanetSignifications" xml:space="preserve">
+    <value>கிரக காரகங்கள்</value>
+  </data>
+  <data name="HeaderBody" xml:space="preserve">
+    <value>கிரகம்/முனை</value>
+  </data>
+  <data name="LabelBody" xml:space="preserve">
+    <value>கிரகம்:</value>
+  </data>
+  <data name="HeaderSubLord" xml:space="preserve">
+    <value>உப அதிபதி</value>
+  </data>
+  <data name="HeaderPratiSub" xml:space="preserve">
+    <value>உப-உப அதிபதி</value>
+  </data>
+    <data name="HeaderSookshma" xml:space="preserve">
+    <value>சூட்சம</value>
+  </data>
+  <data name="HeaderPrana" xml:space="preserve">
+    <value>பிராண</value>
+  </data>
+  <data name="HeaderDeha" xml:space="preserve">
+    <value>தேக</value>
+  </data>
+  <data name="HeaderOldSub" xml:space="preserve">
+    <value>பழைய உப</value>
+  </data>
+  <data name="HeaderNewSub" xml:space="preserve">
+    <value>புதிய உப</value>
+  </data>
+  <data name="HeaderSignifiesHouses" xml:space="preserve">
+    <value>குறிக்கும் பாவங்கள்</value>
+  </data>
+  <data name="HeaderOcc" xml:space="preserve">
+    <value>நின்ற</value>
+  </data>
+  <data name="HeaderStar" xml:space="preserve">
+    <value>சாரம்</value>
+  </data>
+  <data name="HeaderOwns" xml:space="preserve">
+    <value>ஆட்சி</value>
+  </data>
+  <data name="HeaderL1" xml:space="preserve">
+    <value>நிலை 1 (நின். நட்ச)</value>
+  </data>
+  <data name="HeaderL2" xml:space="preserve">
+    <value>நிலை 2 (நின்றவர்)</value>
+  </data>
+  <data name="HeaderL3" xml:space="preserve">
+    <value>நிலை 3 (அதி. நட்ச)</value>
+  </data>
+  <data name="HeaderL4" xml:space="preserve">
+    <value>நிலை 4 (அதிபதி)</value>
+  </data>
+  <data name="HeaderSignLord" xml:space="preserve">
+    <value>ராசி அதிபதி</value>
+  </data>
+  <data name="HeaderStarLord" xml:space="preserve">
+    <value>நட்சத்திர அதிபதி</value>
+  </data>
+  <data name="LabelLagna" xml:space="preserve">
+    <value>லக்னம்:</value>
+  </data>
+  <data name="LabelMoon" xml:space="preserve">
+    <value>சந்திரன்:</value>
+  </data>
+  <data name="LabelDayLord" xml:space="preserve">
+    <value>நாள் அதிபதி:</value>
+  </data>
+  <data name="HeaderCount" xml:space="preserve">
+    <value>எண்ணிக்கையை</value>
+  </data>
+  <data name="HeaderSources" xml:space="preserve">
+    <value>ஆதாரங்கள்</value>
+  </data>
+
 </root>

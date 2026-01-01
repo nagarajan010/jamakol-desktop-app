@@ -5,7 +5,7 @@ namespace JamakolAstrology.Services;
 /// <summary>
 /// Main chart calculation service
 /// </summary>
-public class ChartCalculator
+public class ChartCalculator : IDisposable
 {
     private readonly EphemerisService _ephemeris;
     private readonly DivisionalChartService _divisionalChartService;
