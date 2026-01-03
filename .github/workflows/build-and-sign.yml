@@ -1,0 +1,51 @@
+name: Build and Sign Installer
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Publish Application
+      run: dotnet publish -c Release -r win-x64 --self-contained true -o ./publish
+
+    - name: Setup Inno Setup
+      uses: thirdparty-actions/inno-setup@v1.0.1
+      with:
+        version: "6.2.2"
+
+    - name: Build Installer (Unsigned)
+      run: |
+        ISCC.exe installer.iss
+      shell: cmd
+
+    # This step will be skipped if SignPath secrets are not configured yet
+    - name: Sign with SignPath
+      uses: signpath/github-action-submit-signing-request@v1
+      if: ${{ secrets.SIGNPATH_API_TOKEN != '' }}
+      with:
+        api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
+        organization-id: '${{ secrets.SIGNPATH_ORG_ID }}'
+        project-slug: 'jamakol-desktop-app'
+        policy-slug: 'release-signing'
+        artifact-file: 'installer/JamakolAstrology_Setup.exe'
+        signed-artifact-file: 'installer/JamakolAstrology_Setup_Signed.exe'
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: JamakolAstrology_Setup
+        path: |
+          installer/JamakolAstrology_Setup.exe
+          installer/JamakolAstrology_Setup_Signed.exe
