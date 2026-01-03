@@ -70,6 +70,9 @@ A full-featured horoscope generation engine powered by **Swiss Ephemeris**.
   * **Tools**:
     * **Birth Sub Table**: Granular view of planetary positions.
     * **Transit Sub**: Track live changes in Sub Lords (Experimental).
+      * **Enhanced Table**: Columns reordered (Sign, Star, Old Sub, New Sub) with Start/End times.
+      * **Filters**: Filter capabilities by Star Lord and Sub Lord.
+      * **Rich Data**: Displays full Sign Name and Nakshatra Name.
 * **Ashtakavarga**:
   * **Bhinna Ashtakavarga (BAV)** for all 7 planets.
   * **Samudaya Ashtakavarga (SAV)** total points.
