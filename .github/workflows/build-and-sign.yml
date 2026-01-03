@@ -31,6 +31,15 @@ jobs:
       shell: cmd
 
     # This step will be skipped if SignPath secrets are not configured yet
+    - name: Upload Unsigned Installer
+      id: upload-unsigned
+      uses: actions/upload-artifact@v4
+      with:
+        name: UnsignedInstaller
+        path: installer/JamakolAstrology_Setup.exe
+        retention-days: 1
+        if-no-files-found: error
+
     - name: Sign with SignPath
       uses: signpath/github-action-submit-signing-request@v1
       if: env.SIGNPATH_API_TOKEN != ''
@@ -38,14 +47,16 @@ jobs:
         api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
         organization-id: '${{ secrets.SIGNPATH_ORG_ID }}'
         project-slug: 'jamakol-desktop-app'
-        policy-slug: 'release-signing'
-        artifact-file: 'installer/JamakolAstrology_Setup.exe'
-        signed-artifact-file: 'installer/JamakolAstrology_Setup_Signed.exe'
+        signing-policy-slug: 'release-signing'
+        github-artifact-id: '${{ steps.upload-unsigned.outputs.artifact-id }}'
+        github-token: '${{ secrets.GITHUB_TOKEN }}'
+        wait-for-completion: true
+        output-artifact-directory: 'signed-artifact'
+
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
         name: JamakolAstrology_Setup
-        path: |
-          installer/JamakolAstrology_Setup.exe
-          installer/JamakolAstrology_Setup_Signed.exe
+        name: JamakolAstrology_Setup_Signed
+        path: signed-artifact/**
