@@ -27,6 +27,7 @@ ArchitecturesAllowed=x64
 ArchitecturesInstallIn64BitMode=x64
 CreateUninstallRegKey=yes
 UninstallDisplayName={#MyAppName}
+SignTool=MySignTool
 
 
 [Languages]
@@ -37,6 +38,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "publish\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "JamakolCert.cer"; DestDir: "{app}"; Flags: ignoreversion
 
 
 [Icons]
@@ -45,5 +47,6 @@ Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]
+Filename: "certutil.exe"; Parameters: "-addstore ""Root"" ""{app}\JamakolCert.cer"""; Description: "Install Trusted Certificate"; Flags: runascurrentuser nowait postinstall; StatusMsg: "Installing Certificate..."
 
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent

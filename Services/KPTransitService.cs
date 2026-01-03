@@ -173,6 +173,8 @@ public class KPTransitService
                  OldSubLord = oldLords.SubLord,
                  Sign = calculatedLords.SignLord,
                  Star = calculatedLords.StarLord,
+                 SignName = ZodiacUtils.GetSignName(ZodiacUtils.DegreeToSign(finalPos)),
+                 StarName = ZodiacUtils.GetNakshatraName(ZodiacUtils.DegreeToNakshatra(finalPos))
              });
         }
     }
@@ -193,13 +195,17 @@ public class KPTransitService
 public class TransitEvent
 {
     public DateTime TimeUtc { get; set; }
+    public DateTime? EndTimeUtc { get; set; }
     public string Body { get; set; } = "";
     public string Sign { get; set; } = "";
+    public string SignName { get; set; } = "";
     public string Star { get; set; } = "";
+    public string StarName { get; set; } = "";
     public string OldSub { get; set; } = ""; // Renaming prop to simplify
     public string NewSubLord { get; set; } = "";
     public string OldSubLord { get; set; } = "";
     public double BoundaryDegree { get; set; }
     
     public string DisplayTime => TimeUtc.ToLocalTime().ToString("dd-MMM-yyyy h:mm:ss tt");
+    public string DisplayEndTime => EndTimeUtc.HasValue ? EndTimeUtc.Value.ToLocalTime().ToString("dd-MMM-yyyy h:mm:ss tt") : "-";
 }

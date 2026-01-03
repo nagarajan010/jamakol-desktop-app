@@ -51,14 +51,22 @@
                     </Grid.RowDefinitions>
 
                     <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
-                        <TextBlock Text="{x:Static res:Strings.HeaderStart}" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBlock Text="{x:Static res:Strings.HeaderStart}" VerticalAlignment="Center" Margin="0,0,5,0" Foreground="Black"/>
                         <DatePicker x:Name="StartDatePicker" Width="100"/>
+                        <TextBox x:Name="StartTimeInput" Text="00:00" Width="45" Margin="5,0,0,0" VerticalContentAlignment="Center"/>
                         
-                        <TextBlock Text="{x:Static res:Strings.HeaderEnd}" VerticalAlignment="Center" Margin="15,0,5,0"/>
+                        <TextBlock Text="{x:Static res:Strings.HeaderEnd}" VerticalAlignment="Center" Margin="15,0,5,0" Foreground="Black"/>
                         <DatePicker x:Name="EndDatePicker" Width="100"/>
+                        <TextBox x:Name="EndTimeInput" Text="23:59" Width="45" Margin="5,0,0,0" VerticalContentAlignment="Center"/>
                         
-                        <TextBlock Text="{x:Static res:Strings.LabelBody}" VerticalAlignment="Center" Margin="15,0,5,0"/>
+                        <TextBlock Text="{x:Static res:Strings.LabelBody}" VerticalAlignment="Center" Margin="15,0,5,0" Foreground="Black"/>
                         <ComboBox x:Name="BodySelector" Width="100" SelectedIndex="0"/>
+
+                        <TextBlock Text="{x:Static res:Strings.HeaderStar}" VerticalAlignment="Center" Margin="15,0,5,0" Foreground="Black"/>
+                        <ComboBox x:Name="StarFilter" Width="100" SelectedIndex="0"/>
+
+                        <TextBlock Text="{x:Static res:Strings.HeaderSubLord}" VerticalAlignment="Center" Margin="15,0,5,0" Foreground="Black"/>
+                        <ComboBox x:Name="SubFilter" Width="100" SelectedIndex="0"/>
                         
                         <Button x:Name="CalculateTransitBtn" Content="{x:Static res:Strings.BtnCalculate}" Margin="15,0,0,0" Padding="10,2" Click="CalculateTransitBtn_Click"/>
                         
@@ -83,9 +91,14 @@
                             </Style>
                         </DataGrid.ColumnHeaderStyle>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="{x:Static res:Strings.HeaderDateTime}" Binding="{Binding DisplayTime}" Width="Auto"/>
-                            <DataGridTextColumn Header="{x:Static res:Strings.HeaderBody}" Binding="{Binding Body, Converter={StaticResource PlanetNameConverter}}" Width="Auto" FontWeight="Bold"/>
-                             <DataGridTextColumn Header="{x:Static res:Strings.HeaderOldSub}" Binding="{Binding OldSubLord, Converter={StaticResource PlanetNameConverter}}" Width="Auto" Foreground="Gray"/>
+                            <DataGridTextColumn x:Name="TrColStart" Header="Start" Binding="{Binding DisplayTime}" Width="Auto"/>
+                            <DataGridTextColumn x:Name="TrColEnd" Header="End" Binding="{Binding DisplayEndTime}" Width="Auto"/>
+                            <DataGridTextColumn x:Name="TrColBody" Header="Body" Binding="{Binding Body, Converter={StaticResource PlanetNameConverter}}" Width="Auto" FontWeight="Bold"/>
+                            <DataGridTextColumn x:Name="TrColSignName" Header="Sign Name" Binding="{Binding SignName}" Width="Auto"/>
+                            <DataGridTextColumn x:Name="TrColSign" Header="Sign" Binding="{Binding Sign, Converter={StaticResource PlanetNameConverter}}" Width="Auto"/>
+                            <DataGridTextColumn x:Name="TrColStarName" Header="Star Name" Binding="{Binding StarName}" Width="Auto"/>
+                            <DataGridTextColumn x:Name="TrColStar" Header="Star" Binding="{Binding Star, Converter={StaticResource PlanetNameConverter}}" Width="Auto"/>
+                             <DataGridTextColumn x:Name="TrColOldSub" Header="Old Sub" Binding="{Binding OldSubLord, Converter={StaticResource PlanetNameConverter}}" Width="Auto" Foreground="Gray"/>
                             <DataGridTemplateColumn Header="" Width="20">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -93,9 +106,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="{x:Static res:Strings.HeaderNewSub}" Binding="{Binding NewSubLord, Converter={StaticResource PlanetNameConverter}}" Width="Auto" FontWeight="Bold" Foreground="#cc0000"/>
-                            <DataGridTextColumn Header="{x:Static res:Strings.HeaderSign}" Binding="{Binding Sign, Converter={StaticResource PlanetNameConverter}}" Width="Auto"/>
-                            <DataGridTextColumn Header="{x:Static res:Strings.HeaderStar}" Binding="{Binding Star, Converter={StaticResource PlanetNameConverter}}" Width="Auto"/>
+                            <DataGridTextColumn x:Name="TrColNewSub" Header="New Sub" Binding="{Binding NewSubLord, Converter={StaticResource PlanetNameConverter}}" Width="Auto" FontWeight="Bold" Foreground="#cc0000"/>
                             <DataGridTemplateColumn Header="" Width="30">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>

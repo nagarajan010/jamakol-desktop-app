@@ -25,7 +25,7 @@ public partial class KPDetailsPanel : UserControl
         // Initialize Body Selector
         var bodies = new List<BodySelectorItem>
         {
-            new BodySelectorItem { Name = "All / அனைத்தும்", Id = null },
+            new BodySelectorItem { Name = "All", Id = null },
             new BodySelectorItem { Name = "Lagna (Asc)", Id = -1 },
             new BodySelectorItem { Name = "Sun", Id = SwissEphNet.SwissEph.SE_SUN },
             new BodySelectorItem { Name = "Moon", Id = SwissEphNet.SwissEph.SE_MOON },
@@ -42,6 +42,31 @@ public partial class KPDetailsPanel : UserControl
         BodySelector.DisplayMemberPath = "Name";
         BodySelector.SelectedValuePath = "Id";
         BodySelector.SelectedIndex = 0;
+
+        // Initialize Filter Selectors (Planets)
+        var filterPlanets = new List<BodySelectorItem>
+        {
+            new BodySelectorItem { Name = "All", Id = null },
+            new BodySelectorItem { Name = "Sun", Id = SwissEphNet.SwissEph.SE_SUN },
+            new BodySelectorItem { Name = "Moon", Id = SwissEphNet.SwissEph.SE_MOON },
+            new BodySelectorItem { Name = "Mars", Id = SwissEphNet.SwissEph.SE_MARS },
+            new BodySelectorItem { Name = "Mercury", Id = SwissEphNet.SwissEph.SE_MERCURY },
+            new BodySelectorItem { Name = "Jupiter", Id = SwissEphNet.SwissEph.SE_JUPITER },
+            new BodySelectorItem { Name = "Venus", Id = SwissEphNet.SwissEph.SE_VENUS },
+            new BodySelectorItem { Name = "Saturn", Id = SwissEphNet.SwissEph.SE_SATURN },
+            new BodySelectorItem { Name = "Rahu", Id = SwissEphNet.SwissEph.SE_MEAN_NODE },
+            new BodySelectorItem { Name = "Ketu", Id = SwissEphNet.SwissEph.SE_TRUE_NODE }
+        };
+
+        StarFilter.ItemsSource = filterPlanets;
+        StarFilter.DisplayMemberPath = "Name";
+        StarFilter.SelectedValuePath = "Id";
+        StarFilter.SelectedIndex = 0;
+
+        SubFilter.ItemsSource = filterPlanets; 
+        SubFilter.DisplayMemberPath = "Name";
+        SubFilter.SelectedValuePath = "Id";
+        SubFilter.SelectedIndex = 0;
     }
 
     private class BodySelectorItem
@@ -237,6 +262,22 @@ public partial class KPDetailsPanel : UserControl
             PlanetSignificationsGrid.Columns[3].Header = isTa ? "சாரம்" : "Star";
             PlanetSignificationsGrid.Columns[4].Header = isTa ? "ஆட்சி" : "Owns";
         }
+
+        
+        // Transit Headers
+        // Note: Using x:Name objects directly
+        if (TrColStart != null)
+        {
+            TrColStart.Header = isTa ? "ஆரம்ப நேரம்" : "Start Time";
+            TrColEnd.Header = isTa ? "முடிவு நேரம்" : "End Time";
+            TrColBody.Header = isTa ? "கிரகம்" : "Body";
+            TrColSignName.Header = isTa ? "ராசி" : "Sign Name";
+            TrColSign.Header = isTa ? "ராசி அதிபதி" : "Sign Lord";
+            TrColStarName.Header = isTa ? "நட்சத்திரம்" : "Star Name";
+            TrColStar.Header = isTa ? "நட்ச. அதிபதி" : "Star Lord";
+            TrColOldSub.Header = isTa ? "பழைய உப" : "Old Sub";
+            TrColNewSub.Header = isTa ? "புதிய உப" : "New Sub";
+        }
     }
     
     public void ClearChart()
@@ -283,10 +324,20 @@ public partial class KPDetailsPanel : UserControl
             using var ephemeris = new EphemerisService(); 
             var service = new KPTransitService(ephemeris);
 
-            var start = StartDatePicker.SelectedDate.Value.ToUniversalTime();
-            var end = EndDatePicker.SelectedDate.Value.ToUniversalTime();
-            // Add end of day time
-            end = end.AddHours(23).AddMinutes(59);
+            var start = StartDatePicker.SelectedDate.Value.Date;
+            var end = EndDatePicker.SelectedDate.Value.Date;
+
+            // Parse Time Inputs
+            if (TimeSpan.TryParse(StartTimeInput.Text, out var startTime))
+                start = start.Add(startTime);
+            
+            if (TimeSpan.TryParse(EndTimeInput.Text, out var endTime))
+                end = end.Add(endTime);
+            else
+                end = end.AddHours(23).AddMinutes(59).AddSeconds(59); // Default to end of day if invalid
+
+            start = start.ToUniversalTime();
+            end = end.ToUniversalTime();
 
             var progress = new Progress<string>(msg => TransitStatusText.Text = msg);
 
@@ -299,6 +350,68 @@ public partial class KPDetailsPanel : UserControl
             double ayanamshaOffset = settings.AyanamshaOffset;
 
             var results = await service.CalculateTransitsAsync(start, end, _currentChart, ayanamshaId, ayanamshaOffset, progress, targetBodyId);
+
+            // Assign End Times based on next event's Start Time
+            for (int i = 0; i < results.Count; i++)
+            {
+                if (i < results.Count - 1)
+                {
+                    results[i].EndTimeUtc = results[i + 1].TimeUtc;
+                }
+                else
+                {
+                    // For the last event, we can default to the user's selected End Date or leave null
+                    results[i].EndTimeUtc = end; // Show up to the end of the requested range
+                }
+            }
+
+            // Filter results
+            int? starFilterId = (int?)StarFilter.SelectedValue;
+            int? subFilterId = (int?)SubFilter.SelectedValue;
+            
+            if (starFilterId.HasValue || subFilterId.HasValue)
+            {
+                // We need to match the English planet name corresponding to the ID
+                string? starName = starFilterId.HasValue ? ZodiacUtils.GetPlanetName((Planet)starFilterId.Value) : null;
+                string? subName = subFilterId.HasValue ? ZodiacUtils.GetPlanetName((Planet)subFilterId.Value) : null;
+                
+                // Note: GetPlanetName might return Tamil if IsTamil is true, but we need English for matching if model is English.
+                // Assuming model uses standard names or match logic. 
+                // However, to be safe, we should match against the ID if the model carried IDs, but the model carries strings.
+                // Let's assume the Model strings (TransitEvent.Star) are localized or consistent with GetPlanetName.
+                // IF GetPlanetName returns localized string, and TransitEvent.Star is localized (via KPTransitService -> KPCalculator -> ZodiacUtils?)
+                // KPCalculator returns English names usually. 
+                // Let's force English for matching? No, let's rely on string comparison but ensure we get the right name.
+                // If the App is in Tamil, GetPlanetName returns Tamil.
+                // Does KPTransitService use Localized names? 
+                // In KPTransitService.cs: line 62 `string pName = ZodiacUtils.GetPlanetName(planetEnum);` -> Body Name
+                // line 175: `Star = calculatedLords.StarLord`. 
+                // KPCalculator -> returns `KPLords` strings.
+                // KPCalculator likely returns short English names "Mo", "Ju"? Or full names? 
+                // If it returns short names, we are in trouble matching "Jupiter" or "குரு".
+                // 
+                // BUT: In the KPGrid (Birth Chart), we use a Converter `PlanetNameConverter`.
+                // This implies the underlying strings are NOT localized.
+                // KPCalculator usually returns English names "Sun", "Moon".
+                
+                // So, we need to compare against English names.
+                // But GetPlanetName((Planet)id) will return Tamil if IsTamil is true.
+                // We must use `GetPlanetName` but force English or use `Planet` enum string?
+                // `Planet.Jupiter.ToString()` -> "Jupiter".
+                // This is safer.
+                
+                string? starFilterName = starFilterId.HasValue ? ((Planet)starFilterId.Value).ToString() : null;
+                string? subFilterName = subFilterId.HasValue ? ((Planet)subFilterId.Value).ToString() : null;
+                
+                // Handle Rahu/Ketu special naming if enum differs (MeanNode vs Rahu)
+                if (starFilterId == SwissEphNet.SwissEph.SE_MEAN_NODE) starFilterName = "Rahu";
+                if (starFilterId == SwissEphNet.SwissEph.SE_TRUE_NODE) starFilterName = "Ketu";
+                if (subFilterId == SwissEphNet.SwissEph.SE_MEAN_NODE) subFilterName = "Rahu";
+                if (subFilterId == SwissEphNet.SwissEph.SE_TRUE_NODE) subFilterName = "Ketu";
+
+                if (starFilterId.HasValue) results = results.Where(r => r.Star.Equals(starFilterName, StringComparison.OrdinalIgnoreCase)).ToList();
+                if (subFilterId.HasValue) results = results.Where(r => r.NewSubLord.Equals(subFilterName, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
 
             TransitGrid.ItemsSource = results;
             TransitStatusText.Text = $"Found {results.Count} events.";
