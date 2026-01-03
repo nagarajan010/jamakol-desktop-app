@@ -22,10 +22,8 @@ jobs:
     - name: Publish Application
       run: dotnet publish -c Release -r win-x64 --self-contained true -o ./publish
 
-    - name: Setup Inno Setup
-      uses: thirdparty-actions/inno-setup@v1.0.1
-      with:
-        version: "6.2.2"
+    - name: Install Inno Setup
+      run: choco install innosetup --no-progress
 
     - name: Build Installer (Unsigned)
       run: |
