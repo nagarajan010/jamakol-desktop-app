@@ -44,8 +44,32 @@ public class RulingPlanetsCalculator
             rp.MoonSubLord = moon.KpDetails.SubLord;
         }
         
-        // Get Day Lord (Vara)
+        // Get Day Lord (Vara) based on Sunrise (Astrological Day)
+        // Check if the time is before sunrise. If so, it belongs to the previous day.
         int dayOfWeek = (int)chart.BirthData.BirthDateTime.DayOfWeek;
+        
+        // We need to calculate sunrise for this location
+        // Note: Ideally traverse up or inject dependency, but for now we create locally
+        using (var sunriseCalc = new SunriseCalculator())
+        {
+            var birthDate = chart.BirthData.BirthDateTime;
+            
+            // Calculate sunrise for the judgment day
+            var sunrise = sunriseCalc.CalculateSunrise(
+                birthDate, 
+                chart.BirthData.Latitude, 
+                chart.BirthData.Longitude, 
+                chart.BirthData.TimeZoneOffset
+            );
+            
+            // If the judgment time is before sunrise, it is the previous day
+            if (birthDate < sunrise)
+            {
+                dayOfWeek--;
+                if (dayOfWeek < 0) dayOfWeek = 6; // Sunday(0) -> Saturday(6)
+            }
+        }
+        
         rp.DayLord = DayLords[dayOfWeek];
         
         // Combine and count occurrences
