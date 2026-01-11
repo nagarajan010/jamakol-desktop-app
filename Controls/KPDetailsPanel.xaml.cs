@@ -87,8 +87,8 @@ public partial class KPDetailsPanel : UserControl
             return;
         }
         
-        // Ensure DatePickers have default values if not set
-        if (!StartDatePicker.SelectedDate.HasValue)
+        // Ensure DatePickers have default values if not set (only for valid AD dates)
+        if (!StartDatePicker.SelectedDate.HasValue && !chart.BirthData.IsBCDate)
         {
             StartDatePicker.SelectedDate = chart.BirthData.BirthDateTime.Date;
             EndDatePicker.SelectedDate = chart.BirthData.BirthDateTime.Date.AddDays(1);

@@ -293,9 +293,21 @@ public class EphemerisService : IDisposable
 
     /// <summary>
     /// Convert Julian Day to DateTime (UTC)
+    /// Returns DateTime.MinValue for dates before 0001-01-01 CE (JD ~1721425.5)
+    /// Returns DateTime.MaxValue for dates after 9999-12-31 CE (JD ~5373484.5)
     /// </summary>
     public static DateTime JulianDateToDateTime(double julianDay)
     {
+        // DateTime.MinValue (0001-01-01 00:00:00) corresponds to JD ~1721425.5
+        // DateTime.MaxValue (9999-12-31 23:59:59) corresponds to JD ~5373484.5
+        const double MinJulianDay = 1721425.5;  // 0001-01-01 CE
+        const double MaxJulianDay = 5373484.5;  // 9999-12-31 CE
+        
+        if (julianDay < MinJulianDay)
+            return DateTime.MinValue;
+        if (julianDay > MaxJulianDay)
+            return DateTime.MaxValue;
+            
         // Julian Day 2440587.5 is 1970-01-01 00:00:00 UTC
         double unixTime = (julianDay - 2440587.5) * 86400.0;
         return new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(unixTime);

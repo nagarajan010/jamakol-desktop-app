@@ -45,28 +45,39 @@ public class RulingPlanetsCalculator
         }
         
         // Get Day Lord (Vara) based on Sunrise (Astrological Day)
-        // Check if the time is before sunrise. If so, it belongs to the previous day.
-        int dayOfWeek = (int)chart.BirthData.BirthDateTime.DayOfWeek;
+        // For BC dates, use Julian Day approximation since DateTime doesn't support them
+        int dayOfWeek;
         
-        // We need to calculate sunrise for this location
-        // Note: Ideally traverse up or inject dependency, but for now we create locally
-        using (var sunriseCalc = new SunriseCalculator())
+        if (chart.BirthData.IsBCDate)
         {
-            var birthDate = chart.BirthData.BirthDateTime;
+            // For BC dates, calculate day of week from Julian Day
+            // JD 0 was Monday, so (JD + 1.5) mod 7 gives day of week (0=Sun, 1=Mon, etc)
+            dayOfWeek = ((int)Math.Floor(chart.JulianDay + 1.5)) % 7;
+        }
+        else
+        {
+            // For AD dates, check if time is before sunrise (belongs to previous day)
+            dayOfWeek = (int)chart.BirthData.BirthDateTime.DayOfWeek;
             
-            // Calculate sunrise for the judgment day
-            var sunrise = sunriseCalc.CalculateSunrise(
-                birthDate, 
-                chart.BirthData.Latitude, 
-                chart.BirthData.Longitude, 
-                chart.BirthData.TimeZoneOffset
-            );
-            
-            // If the judgment time is before sunrise, it is the previous day
-            if (birthDate < sunrise)
+            // We need to calculate sunrise for this location
+            using (var sunriseCalc = new SunriseCalculator())
             {
-                dayOfWeek--;
-                if (dayOfWeek < 0) dayOfWeek = 6; // Sunday(0) -> Saturday(6)
+                var birthDate = chart.BirthData.BirthDateTime;
+                
+                // Calculate sunrise for the judgment day
+                var sunrise = sunriseCalc.CalculateSunrise(
+                    birthDate, 
+                    chart.BirthData.Latitude, 
+                    chart.BirthData.Longitude, 
+                    chart.BirthData.TimeZoneOffset
+                );
+                
+                // If the judgment time is before sunrise, it is the previous day
+                if (birthDate < sunrise)
+                {
+                    dayOfWeek--;
+                    if (dayOfWeek < 0) dayOfWeek = 6; // Sunday(0) -> Saturday(6)
+                }
             }
         }
         

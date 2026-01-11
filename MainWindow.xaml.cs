@@ -254,7 +254,7 @@ public partial class MainWindow : Window
         catch (Exception ex)
         {
             BirthInputControl.SetStatus($"Error: {ex.Message}");
-            MessageBox.Show($"Error calculating chart:\n{ex.Message}", "Calculation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show($"Error calculating chart:\n{ex.Message}\n\nStack Trace:\n{ex.StackTrace}", "Calculation Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
     

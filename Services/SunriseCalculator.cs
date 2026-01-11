@@ -163,6 +163,10 @@ public class SunriseCalculator : IDisposable
         double hour = 0;
         _sweph.swe_revjul(jd, SwissEph.SE_GREG_CAL, ref year, ref month, ref day, ref hour);
         
+        // Handle BC dates (years before 1 CE cannot be represented in .NET DateTime)
+        if (year < 1 || year > 9999)
+            return DateTime.MinValue;
+        
         int h = (int)hour;
         int m = (int)((hour - h) * 60);
         int s = (int)(((hour - h) * 60 - m) * 60);
@@ -172,7 +176,14 @@ public class SunriseCalculator : IDisposable
         if (m >= 60) { m = 0; h++; }
         if (h >= 24) { h = 0; day++; } // Simplistic day overflow handling
         
-        return new DateTime(year, month, day, h, m, s);
+        try
+        {
+            return new DateTime(year, month, day, h, m, s);
+        }
+        catch
+        {
+            return DateTime.MinValue;
+        }
     }
 
     public void Dispose()
