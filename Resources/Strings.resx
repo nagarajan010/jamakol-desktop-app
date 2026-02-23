@@ -654,4 +654,17 @@
     <value>Sources</value>
   </data>
 
+  <data name="TabDNA" xml:space="preserve">
+    <value>DNA</value>
+  </data>
+  <data name="TabBasicDetails" xml:space="preserve">
+    <value>Basic Details</value>
+  </data>
+  <data name="DnaTitle" xml:space="preserve">
+    <value>DNA Astrology - Planetary Lordships</value>
+  </data>
+  <data name="HeaderDnaLord" xml:space="preserve">
+    <value>DNA Lord (Dosha)</value>
+  </data>
+
 </root>

@@ -1,0 +1,20 @@
+MSBuild version 17.8.3+195e7f5a3 for .NET
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+C:\laragon\www\jamakol-desktop-app\Converters\LocalizationConverters.cs(166,75): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_qpsqwr3o_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\Converters\LocalizationConverters.cs(166,81): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_qpsqwr3o_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\Converters\LocalizationConverters.cs(166,87): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_qpsqwr3o_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\Controls\DnaDetailsPanel.xaml(23,22): error MC3011: Cannot find the static member 'TabBasicDetails' on the type 'Strings'. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+C:\laragon\www\jamakol-desktop-app\MainWindow.xaml(203,34): error MC3011: Cannot find the static member 'TabDNA' on the type 'Strings'. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+
+Build FAILED.
+
+C:\laragon\www\jamakol-desktop-app\Converters\LocalizationConverters.cs(166,75): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_qpsqwr3o_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\Converters\LocalizationConverters.cs(166,81): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_qpsqwr3o_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\Converters\LocalizationConverters.cs(166,87): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_qpsqwr3o_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\Controls\DnaDetailsPanel.xaml(23,22): error MC3011: Cannot find the static member 'TabBasicDetails' on the type 'Strings'. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+C:\laragon\www\jamakol-desktop-app\MainWindow.xaml(203,34): error MC3011: Cannot find the static member 'TabDNA' on the type 'Strings'. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+    3 Warning(s)
+    2 Error(s)
+
+Time Elapsed 00:00:02.06

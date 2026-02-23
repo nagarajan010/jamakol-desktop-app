@@ -199,6 +199,38 @@
                             </Border>
                         </TabItem>
 
+                        <!-- DNA Tab: DNA Details -->
+                        <TabItem x:Name="DnaTab" Header="{x:Static res:Strings.TabDNA}">
+                            <Border Background="#fffff0" BorderBrush="#aaaaaa" BorderThickness="1" Margin="0" Padding="5">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="0.5*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <Border x:Name="DnaChartPlaceholder" Grid.Column="0" Margin="0,0,5,0"/>
+
+                                    <controls:DnaDetailsPanel x:Name="DnaDetailsPanelControl" Grid.Column="1"/>
+                                </Grid>
+                            </Border>
+                        </TabItem>
+
+                        <!-- Navatara Tab: Navatara Details -->
+                        <TabItem x:Name="NavataraTab" Header="Navatara">
+                            <Border Background="#fffff0" BorderBrush="#aaaaaa" BorderThickness="1" Margin="0" Padding="5">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="0.5*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <Border x:Name="NavataraChartPlaceholder" Grid.Column="0" Margin="0,0,5,0"/>
+
+                                    <controls:NavataraDetailsPanel x:Name="NavataraDetailsPanelControl" Grid.Column="1"/>
+                                </Grid>
+                            </Border>
+                        </TabItem>
+
                         <!-- Houses Tab: Charts Left, Houses Right -->
                         <TabItem x:Name="HousesTab" Header="{x:Static res:Strings.TabHouses}">
                             <Border Background="#fffff0" BorderBrush="#aaaaaa" BorderThickness="1" Margin="0" Padding="5">

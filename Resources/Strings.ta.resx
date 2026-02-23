@@ -652,4 +652,17 @@
     <value>ஆதாரங்கள்</value>
   </data>
 
+  <data name="TabDNA" xml:space="preserve">
+    <value>டி.என்.ஏ</value>
+  </data>
+  <data name="TabBasicDetails" xml:space="preserve">
+    <value>அடிப்படை விவரங்கள்</value>
+  </data>
+  <data name="DnaTitle" xml:space="preserve">
+    <value>DNA ஜோதிடம் - கிரக ஆதிபத்தியங்கள்</value>
+  </data>
+  <data name="HeaderDnaLord" xml:space="preserve">
+    <value>DNA அதிபதி (தோஷம்)</value>
+  </data>
+
 </root>

@@ -1176,5 +1176,28 @@ namespace JamakolAstrology.Resources {
                  return ResourceManager.GetString("HeaderSources", resourceCulture);
             }
         }
+        public static string TabDNA {
+            get {
+                return ResourceManager.GetString("TabDNA", resourceCulture);
+            }
+        }
+        
+        public static string TabBasicDetails {
+            get {
+                return ResourceManager.GetString("TabBasicDetails", resourceCulture);
+            }
+        }
+        
+        public static string DnaTitle {
+            get {
+                return ResourceManager.GetString("DnaTitle", resourceCulture);
+            }
+        }
+        
+        public static string HeaderDnaLord {
+            get {
+                return ResourceManager.GetString("HeaderDnaLord", resourceCulture);
+            }
+        }
     }
 }

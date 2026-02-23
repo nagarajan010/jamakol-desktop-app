@@ -1,0 +1,116 @@
+<UserControl x:Class="JamakolAstrology.Controls.DnaDetailsPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:res="clr-namespace:JamakolAstrology.Resources"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <Style x:Key="HeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#cc0000"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Background="#fffff0">
+        <TabControl>
+            <!-- First Sub Tab: Basic Details -->
+            <TabItem Header="{x:Static res:Strings.TabBasicDetails}">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="{x:Static res:Strings.DnaTitle}" 
+                               FontSize="16" FontWeight="Bold" Foreground="#333" Margin="0,0,0,10"/>
+
+                    <DataGrid x:Name="DnaGrid" Grid.Row="1"
+                              Style="{StaticResource DataGridStyle}"
+                              ColumnHeaderStyle="{StaticResource HeaderStyle}"
+                              AutoGenerateColumns="False" 
+                              CanUserAddRows="False" 
+                              IsReadOnly="True"
+                              HeadersVisibility="Column" 
+                              BorderThickness="1" BorderBrush="#ccc">
+                        <DataGrid.Columns>
+                            <!-- Body -->
+                            <DataGridTextColumn x:Name="ColBody" Header="{x:Static res:Strings.HeaderBody}" Binding="{Binding Body}" Width="150" FontWeight="Bold"/>
+                            
+                            <!-- Degree -->
+                            <DataGridTextColumn x:Name="ColDegree" Header="{x:Static res:Strings.HeaderDegree}" Binding="{Binding DegreeDisplay}" Width="120"/>
+                            
+                            <!-- Nakshatra -->
+                            <DataGridTextColumn x:Name="ColNakshatra" Header="{x:Static res:Strings.HeaderNakshatra}" Binding="{Binding NakshatraName}" Width="150"/>
+                            
+                            <!-- Nakshatra Number -->
+                            <DataGridTextColumn Header="#" Binding="{Binding NakshatraNumber}" Width="50"/>
+
+                            <!-- DNA Lord (Dosha) -->
+                            <DataGridTextColumn x:Name="ColDnaLord" Header="{x:Static res:Strings.HeaderDnaLord}" Binding="{Binding DnaLord}" Width="*" FontWeight="Bold">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="{Binding LordColor}"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="Padding" Value="5,0"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+            
+            <!-- Second Sub Tab: House Cusps -->
+            <TabItem Header="House Cusps">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Discovery - House Cusps Dosha" 
+                               FontSize="16" FontWeight="Bold" Foreground="#333" Margin="0,0,0,10"/>
+
+                    <DataGrid x:Name="DnaHouseGrid" Grid.Row="1"
+                              Style="{StaticResource DataGridStyle}"
+                              ColumnHeaderStyle="{StaticResource HeaderStyle}"
+                              AutoGenerateColumns="False" 
+                              CanUserAddRows="False" 
+                              IsReadOnly="True"
+                              HeadersVisibility="Column" 
+                              BorderThickness="1" BorderBrush="#ccc">
+                        <DataGrid.Columns>
+                            <!-- House -->
+                            <DataGridTextColumn Header="{x:Static res:Strings.HeaderHouse}" Binding="{Binding Body}" Width="150" FontWeight="Bold"/>
+
+                            <!-- Degree -->
+                            <DataGridTextColumn Header="{x:Static res:Strings.HeaderDegree}" Binding="{Binding DegreeDisplay}" Width="120"/>
+
+                            <!-- Nakshatra -->
+                            <DataGridTextColumn Header="{x:Static res:Strings.HeaderNakshatra}" Binding="{Binding NakshatraName}" Width="150"/>
+                            
+                            <!-- Nakshatra Number -->
+                            <DataGridTextColumn Header="#" Binding="{Binding NakshatraNumber}" Width="50"/>
+
+                            <!-- DNA Lord (Dosha) -->
+                            <DataGridTextColumn Header="DNA Lord (Dosha)" Binding="{Binding DnaLord}" Width="*" FontWeight="Bold">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="{Binding LordColor}"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="Padding" Value="5,0"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>        </TabControl>
+    </Grid>
+</UserControl>
