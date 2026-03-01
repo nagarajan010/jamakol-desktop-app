@@ -31,24 +31,45 @@ namespace JamakolAstrology.Controls
 
         private void LoadData()
         {
-            _categories = _notesService.LoadCategories();
-            NotesTreeView.ItemsSource = null;
-            NotesTreeView.ItemsSource = _categories;
             ClearEditor();
+            _categories = _notesService.LoadCategories();
+            CategoriesCombo.ItemsSource = null;
+            CategoriesCombo.ItemsSource = _categories;
+            if (_categories.Any())
+            {
+                CategoriesCombo.SelectedIndex = 0;
+            }
         }
 
-        private void NotesTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        private void CategoriesCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (e.NewValue is LearningNote note)
+            if (CategoriesCombo.SelectedItem is LearningCategory selectedCategory)
+            {
+                NotesCombo.ItemsSource = null;
+                NotesCombo.ItemsSource = selectedCategory.Notes;
+                if (selectedCategory.Notes.Any())
+                {
+                    NotesCombo.SelectedIndex = 0;
+                }
+                else
+                {
+                    ClearEditor();
+                }
+            }
+            else
+            {
+                NotesCombo.ItemsSource = null;
+                ClearEditor();
+            }
+        }
+
+        private void NotesCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (NotesCombo.SelectedItem is LearningNote note)
             {
                 SaveCurrentNoteIfDirty();
                 _currentNote = note;
                 LoadNoteToEditor(note);
-            }
-            else if (e.NewValue is LearningCategory selectedCategory)
-            {
-                // Optionally show category details or just clear
-                ClearEditor();
             }
             else
             {
@@ -58,7 +79,8 @@ namespace JamakolAstrology.Controls
 
         private void LoadNoteToEditor(LearningNote note)
         {
-            ContentArea.IsEnabled = true;
+            if (NoteDetailsArea != null) NoteDetailsArea.IsEnabled = true;
+            if (EditorArea != null) EditorArea.IsEnabled = true;
             TxtNoteTitle.Text = note.Title;
             MarkdownEditor.Text = note.Content;
             UpdatePreview();
@@ -71,7 +93,8 @@ namespace JamakolAstrology.Controls
             TxtNoteTitle.Text = string.Empty;
             MarkdownEditor.Text = string.Empty;
             MarkdownPreview.Markdown = "Select a note to view or edit.";
-            ContentArea.IsEnabled = false;
+            if (NoteDetailsArea != null) NoteDetailsArea.IsEnabled = false;
+            if (EditorArea != null) EditorArea.IsEnabled = false;
             _isDirty = false;
         }
 
@@ -132,8 +155,8 @@ namespace JamakolAstrology.Controls
             {
                 SaveCurrentNoteIfDirty();
                 
-                // Refresh TreeView to show updated title
-                NotesTreeView.Items.Refresh();
+                // Refresh Combo to show updated title
+                NotesCombo.Items.Refresh();
                 MessageBox.Show("Note saved successfully.", "Saved", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
@@ -145,23 +168,14 @@ namespace JamakolAstrology.Controls
             _categories.Add(newCategory);
             _notesService.SaveCategories(_categories);
             
-            NotesTreeView.ItemsSource = null;
-            NotesTreeView.ItemsSource = _categories;
+            CategoriesCombo.ItemsSource = null;
+            CategoriesCombo.ItemsSource = _categories;
+            CategoriesCombo.SelectedItem = newCategory;
         }
 
         private void BtnAddNote_Click(object sender, RoutedEventArgs e)
         {
-            LearningCategory targetCategory = null;
-
-            if (NotesTreeView.SelectedItem is LearningCategory cat)
-            {
-                targetCategory = cat;
-            }
-            else if (NotesTreeView.SelectedItem is LearningNote note)
-            {
-                // Find parent category
-                targetCategory = _categories.FirstOrDefault(c => c.Notes.Contains(note));
-            }
+            LearningCategory targetCategory = CategoriesCombo.SelectedItem as LearningCategory;
 
             if (targetCategory == null)
             {
@@ -170,35 +184,42 @@ namespace JamakolAstrology.Controls
                     BtnAddCategory_Click(null, null);
                 }
                 targetCategory = _categories.First();
+                CategoriesCombo.SelectedItem = targetCategory;
             }
 
             var newNote = new LearningNote { Title = "New Note", Content = "# New Note" };
             targetCategory.Notes.Add(newNote);
             _notesService.SaveCategories(_categories);
 
-            NotesTreeView.ItemsSource = null;
-            NotesTreeView.ItemsSource = _categories;
-            
-            // Try to select the new note if possible, otherwise user has to click it
+            NotesCombo.ItemsSource = null;
+            NotesCombo.ItemsSource = targetCategory.Notes;
+            NotesCombo.SelectedItem = newNote;
         }
 
         private void BtnDelete_Click(object sender, RoutedEventArgs e)
         {
-            if (NotesTreeView.SelectedItem is LearningNote note)
+            if (NotesCombo.SelectedItem is LearningNote note)
             {
                 var result = MessageBox.Show($"Delete note '{note.Title}'?", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (result == MessageBoxResult.Yes)
                 {
-                    var parentCategory = _categories.FirstOrDefault(c => c.Notes.Contains(note));
+                    var parentCategory = CategoriesCombo.SelectedItem as LearningCategory;
                     if (parentCategory != null)
                     {
                         parentCategory.Notes.Remove(note);
                         _notesService.SaveCategories(_categories);
-                        LoadData();
+                        
+                        NotesCombo.ItemsSource = null;
+                        NotesCombo.ItemsSource = parentCategory.Notes;
+                        
+                        if (parentCategory.Notes.Any())
+                            NotesCombo.SelectedIndex = 0;
+                        else
+                            ClearEditor();
                     }
                 }
             }
-            else if (NotesTreeView.SelectedItem is LearningCategory cat)
+            else if (CategoriesCombo.SelectedItem is LearningCategory cat)
             {
                 var result = MessageBox.Show($"Delete category '{cat.Name}' and all its notes?", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (result == MessageBoxResult.Yes)
