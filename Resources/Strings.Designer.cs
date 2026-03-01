@@ -1182,6 +1182,12 @@ namespace JamakolAstrology.Resources {
             }
         }
         
+        public static string TabTithiPravesha {
+            get {
+                return ResourceManager.GetString("TabTithiPravesha", resourceCulture);
+            }
+        }
+        
         public static string TabBasicDetails {
             get {
                 return ResourceManager.GetString("TabBasicDetails", resourceCulture);

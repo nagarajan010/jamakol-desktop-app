@@ -655,6 +655,9 @@
   <data name="TabDNA" xml:space="preserve">
     <value>டி.என்.ஏ</value>
   </data>
+  <data name="TabTithiPravesha" xml:space="preserve">
+    <value>திதி பிரவேசம்</value>
+  </data>
   <data name="TabBasicDetails" xml:space="preserve">
     <value>அடிப்படை விவரங்கள்</value>
   </data>

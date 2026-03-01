@@ -1,20 +1,51 @@
 MSBuild version 17.8.3+195e7f5a3 for .NET
   Determining projects to restore...
-  All projects are up-to-date for restore.
-C:\laragon\www\jamakol-desktop-app\Converters\LocalizationConverters.cs(166,75): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_qpsqwr3o_wpftmp.csproj]
-C:\laragon\www\jamakol-desktop-app\Converters\LocalizationConverters.cs(166,81): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_qpsqwr3o_wpftmp.csproj]
-C:\laragon\www\jamakol-desktop-app\Converters\LocalizationConverters.cs(166,87): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_qpsqwr3o_wpftmp.csproj]
-C:\laragon\www\jamakol-desktop-app\Controls\DnaDetailsPanel.xaml(23,22): error MC3011: Cannot find the static member 'TabBasicDetails' on the type 'Strings'. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
-C:\laragon\www\jamakol-desktop-app\MainWindow.xaml(203,34): error MC3011: Cannot find the static member 'TabDNA' on the type 'Strings'. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+  Restored C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj (in 288 ms).
+C:\laragon\www\jamakol-desktop-app\Converters\LocalizationConverters.cs(166,75): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_tshyfglq_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\Converters\LocalizationConverters.cs(166,81): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_tshyfglq_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\Converters\LocalizationConverters.cs(166,87): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_tshyfglq_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\Controls\LearningModulePanel.xaml.cs(20,16): warning CS8618: Non-nullable field '_currentNote' must contain a non-null value when exiting constructor. Consider declaring the field as nullable. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_tshyfglq_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\Controls\LearningModulePanel.xaml.cs(70,28): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_tshyfglq_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\Controls\LearningModulePanel.xaml.cs(154,47): warning CS8600: Converting null literal or possible null value to non-nullable type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_tshyfglq_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\Controls\LearningModulePanel.xaml.cs(163,34): warning CS8600: Converting null literal or possible null value to non-nullable type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_tshyfglq_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\Controls\LearningModulePanel.xaml.cs(170,42): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_tshyfglq_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\Controls\LearningModulePanel.xaml.cs(170,48): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_tshyfglq_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\Controls\NavataraDetailsPanel.xaml.cs(154,47): warning CS8602: Dereference of a possibly null reference. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_tshyfglq_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\Converters\LocalizationConverters.cs(166,75): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+C:\laragon\www\jamakol-desktop-app\Converters\LocalizationConverters.cs(166,81): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+C:\laragon\www\jamakol-desktop-app\Converters\LocalizationConverters.cs(166,87): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+C:\laragon\www\jamakol-desktop-app\Controls\LearningModulePanel.xaml.cs(20,16): warning CS8618: Non-nullable field '_currentNote' must contain a non-null value when exiting constructor. Consider declaring the field as nullable. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+C:\laragon\www\jamakol-desktop-app\Controls\LearningModulePanel.xaml.cs(70,28): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+C:\laragon\www\jamakol-desktop-app\Controls\NavataraDetailsPanel.xaml.cs(154,47): warning CS8602: Dereference of a possibly null reference. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+C:\laragon\www\jamakol-desktop-app\Controls\LearningModulePanel.xaml.cs(154,47): warning CS8600: Converting null literal or possible null value to non-nullable type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+C:\laragon\www\jamakol-desktop-app\Controls\LearningModulePanel.xaml.cs(163,34): warning CS8600: Converting null literal or possible null value to non-nullable type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+C:\laragon\www\jamakol-desktop-app\Controls\LearningModulePanel.xaml.cs(170,42): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+C:\laragon\www\jamakol-desktop-app\Controls\LearningModulePanel.xaml.cs(170,48): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+  JamakolAstrology -> C:\laragon\www\jamakol-desktop-app\bin\Debug\net8.0-windows\JamakolAstrology.dll
 
-Build FAILED.
+Build succeeded.
 
-C:\laragon\www\jamakol-desktop-app\Converters\LocalizationConverters.cs(166,75): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_qpsqwr3o_wpftmp.csproj]
-C:\laragon\www\jamakol-desktop-app\Converters\LocalizationConverters.cs(166,81): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_qpsqwr3o_wpftmp.csproj]
-C:\laragon\www\jamakol-desktop-app\Converters\LocalizationConverters.cs(166,87): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_qpsqwr3o_wpftmp.csproj]
-C:\laragon\www\jamakol-desktop-app\Controls\DnaDetailsPanel.xaml(23,22): error MC3011: Cannot find the static member 'TabBasicDetails' on the type 'Strings'. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
-C:\laragon\www\jamakol-desktop-app\MainWindow.xaml(203,34): error MC3011: Cannot find the static member 'TabDNA' on the type 'Strings'. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
-    3 Warning(s)
-    2 Error(s)
+C:\laragon\www\jamakol-desktop-app\Converters\LocalizationConverters.cs(166,75): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_tshyfglq_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\Converters\LocalizationConverters.cs(166,81): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_tshyfglq_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\Converters\LocalizationConverters.cs(166,87): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_tshyfglq_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\Controls\LearningModulePanel.xaml.cs(20,16): warning CS8618: Non-nullable field '_currentNote' must contain a non-null value when exiting constructor. Consider declaring the field as nullable. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_tshyfglq_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\Controls\LearningModulePanel.xaml.cs(70,28): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_tshyfglq_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\Controls\LearningModulePanel.xaml.cs(154,47): warning CS8600: Converting null literal or possible null value to non-nullable type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_tshyfglq_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\Controls\LearningModulePanel.xaml.cs(163,34): warning CS8600: Converting null literal or possible null value to non-nullable type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_tshyfglq_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\Controls\LearningModulePanel.xaml.cs(170,42): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_tshyfglq_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\Controls\LearningModulePanel.xaml.cs(170,48): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_tshyfglq_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\Controls\NavataraDetailsPanel.xaml.cs(154,47): warning CS8602: Dereference of a possibly null reference. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology_tshyfglq_wpftmp.csproj]
+C:\laragon\www\jamakol-desktop-app\Converters\LocalizationConverters.cs(166,75): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+C:\laragon\www\jamakol-desktop-app\Converters\LocalizationConverters.cs(166,81): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+C:\laragon\www\jamakol-desktop-app\Converters\LocalizationConverters.cs(166,87): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+C:\laragon\www\jamakol-desktop-app\Controls\LearningModulePanel.xaml.cs(20,16): warning CS8618: Non-nullable field '_currentNote' must contain a non-null value when exiting constructor. Consider declaring the field as nullable. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+C:\laragon\www\jamakol-desktop-app\Controls\LearningModulePanel.xaml.cs(70,28): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+C:\laragon\www\jamakol-desktop-app\Controls\NavataraDetailsPanel.xaml.cs(154,47): warning CS8602: Dereference of a possibly null reference. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+C:\laragon\www\jamakol-desktop-app\Controls\LearningModulePanel.xaml.cs(154,47): warning CS8600: Converting null literal or possible null value to non-nullable type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+C:\laragon\www\jamakol-desktop-app\Controls\LearningModulePanel.xaml.cs(163,34): warning CS8600: Converting null literal or possible null value to non-nullable type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+C:\laragon\www\jamakol-desktop-app\Controls\LearningModulePanel.xaml.cs(170,42): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+C:\laragon\www\jamakol-desktop-app\Controls\LearningModulePanel.xaml.cs(170,48): warning CS8625: Cannot convert null literal to non-nullable reference type. [C:\laragon\www\jamakol-desktop-app\JamakolAstrology.csproj]
+    20 Warning(s)
+    0 Error(s)
 
-Time Elapsed 00:00:02.06
+Time Elapsed 00:00:04.65

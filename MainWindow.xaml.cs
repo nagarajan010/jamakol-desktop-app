@@ -65,6 +65,13 @@ public partial class MainWindow : Window
     {
         // Initialize SideChartsPanel first
         _sharedSideCharts = new Controls.SideChartsPanel();
+
+        // Initialize Tithi Pravesha charts
+        _tithiPraveshaCharts = new Controls.SideChartsPanel();
+        TithiPraveshaChartPlaceholder.Child = _tithiPraveshaCharts;
+
+        // Wire up Tithi Pravesha calculation event
+        TithiPraveshaPanelControl.ChartCalculated += OnTithiPraveshaCalculated;
         
         // Initial Reparenting: Do NOT force to Basic if another tab (like Chakras) is default.
         // However, since we don't know for sure which inner tab is selected yet, we'll let the SelectionChanged event handle it.
@@ -126,6 +133,9 @@ public partial class MainWindow : Window
     
     // Global shared side charts instance
     private Controls.SideChartsPanel? _sharedSideCharts;
+
+    // Tithi Pravesha dedicated chart instance
+    private Controls.SideChartsPanel? _tithiPraveshaCharts;
 
     private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
@@ -239,6 +249,7 @@ public partial class MainWindow : Window
             if (AmshaDevataPanelControl != null) AmshaDevataPanelControl.UpdateChart(result.ChartData, _appSettings.ChartFontSize);
             if (DnaDetailsPanelControl != null) DnaDetailsPanelControl.UpdateChart(result.ChartData);
             if (NavataraDetailsPanelControl != null) NavataraDetailsPanelControl.UpdateChart(result.ChartData);
+            if (TithiPraveshaPanelControl != null) TithiPraveshaPanelControl.UpdateChart(result.ChartData);
             
             // Update Chakras panel
             ChakrasPanelControl.UpdateChart(result.ChartData, _appSettings.ChartFontSize, _appSettings.ChartStyle);
@@ -368,13 +379,24 @@ public partial class MainWindow : Window
     private void OnJamakolCalculateRequested(object sender, EventArgs e) => CalculateJamakolChart();
 
     private void OnJamakolLiveTimerTick(object sender, EventArgs e) => CalculateJamakolChart(); // Live update
+
+    private void OnTithiPraveshaCalculated(object? sender, Controls.TithiPraveshaCalculatedEventArgs e)
+    {
+        if (_tithiPraveshaCharts != null && e.ChartData != null)
+        {
+            _tithiPraveshaCharts.UpdateCharts(e.ChartData, _appSettings.ChartFontSize, BirthInputControl.HideDegrees, _appSettings.ChartStyle);
+        }
+    }
     
     private void BirthInputControl_HideDegreesChanged(object? sender, bool hideDegrees)
     {
-        // Update both charts with the new hide degrees setting via Shared Panel
         if (_sharedSideCharts != null)
         {
             _sharedSideCharts.HideDegrees = hideDegrees;
+        }
+        if (_tithiPraveshaCharts != null)
+        {
+            _tithiPraveshaCharts.HideDegrees = hideDegrees;
         }
     }
 
@@ -535,6 +557,7 @@ public partial class MainWindow : Window
         if (HousesPanelControl != null) UiThemeHelper.SetFontSizeRecursive(HousesPanelControl, _appSettings.TableFontSize);
         if (DnaDetailsPanelControl != null) UiThemeHelper.SetFontSizeRecursive(DnaDetailsPanelControl, _appSettings.TableFontSize);
         if (NavataraDetailsPanelControl != null) UiThemeHelper.SetFontSizeRecursive(NavataraDetailsPanelControl, _appSettings.TableFontSize);
+        if (TithiPraveshaPanelControl != null) UiThemeHelper.SetFontSizeRecursive(TithiPraveshaPanelControl, _appSettings.TableFontSize);
         
         // Chart controls are now in SideChartsPanel, need to trigger update if needed or just handle via layout refresh
         // Note: ChartControl font size is usually passed during UpdateChart, but we can try to apply recursive if it helps static text
