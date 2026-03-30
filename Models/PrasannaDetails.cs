@@ -37,4 +37,16 @@ public class PrasannaDetails
     public double PlanetInRahuTimePercent { get; set; }
     public string? PlanetTowardsMrithyu { get; set; }
     public double PlanetTowardsMrithyuPercent { get; set; }
+
+    // ── Udayam warning flags ──────────────────────────────
+    public bool IsUdayamLordIn6_8_12 { get; set; }
+    public bool IsUdayamLordDebilitated { get; set; }
+    public string? DebilitatedPlanetInUdayam { get; set; }
+
+    // ── Arudam warning flags ──────────────────────────────
+    public string? ArudamLord { get; set; }
+    public int ArudamLordBhava { get; set; }
+    public bool IsArudamLordIn6_8_12 { get; set; }
+    public bool IsArudamLordDebilitated { get; set; }
+    public string? DebilitatedPlanetInArudam { get; set; }
 }

@@ -135,6 +135,111 @@
                 <TextBlock Text="{x:Static res:Strings.LabelPlanetTowardsMrithyu}" Style="{StaticResource LabelStyle}"/>
                 <TextBlock x:Name="MrithyuText" Grid.Column="1" Text="-" Foreground="#ff6600" FontWeight="SemiBold" FontSize="11"/>
             </Grid>
+
+            <!-- ═══════════ WARNING ALERTS ═══════════ -->
+
+            <!-- W1: Udayam Lord in dusthana 6/8/12 -->
+            <Border x:Name="AlertUdayamLordBadHouse" Visibility="Collapsed"
+                    Background="#fff8e1" BorderBrush="#f57c00" BorderThickness="3,0,0,0"
+                    CornerRadius="0,4,4,0" Margin="0,6,0,2" Padding="8,7">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="⚠" FontSize="18" Foreground="#f57c00" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Udayam Lord in Dusthana" FontWeight="Bold" Foreground="#e65100" FontSize="11"/>
+                        <TextBlock x:Name="AlertUdayamLordBadHouseText" Foreground="#bf360c" FontSize="10" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- W2: Udayam Lord debilitated -->
+            <Border x:Name="AlertUdayamLordDebil" Visibility="Collapsed"
+                    Background="#ffebee" BorderBrush="#c62828" BorderThickness="3,0,0,0"
+                    CornerRadius="0,4,4,0" Margin="0,2" Padding="8,7">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="⚠" FontSize="18" Foreground="#c62828" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Udayam Lord Debilitated" FontWeight="Bold" Foreground="#c62828" FontSize="11"/>
+                        <TextBlock x:Name="AlertUdayamLordDebilText" Foreground="#b71c1c" FontSize="10" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- W3: Debilitated planet in Udayam sign -->
+            <Border x:Name="AlertDebilInUdayam" Visibility="Collapsed"
+                    Background="#ffebee" BorderBrush="#c62828" BorderThickness="3,0,0,0"
+                    CornerRadius="0,4,4,0" Margin="0,2" Padding="8,7">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="⚠" FontSize="18" Foreground="#c62828" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Debilitated Planet in Udayam" FontWeight="Bold" Foreground="#c62828" FontSize="11"/>
+                        <TextBlock x:Name="AlertDebilInUdayamText" Foreground="#b71c1c" FontSize="10" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- W4: Arudam Lord in dusthana 6/8/12 -->
+            <Border x:Name="AlertArudamLordBadHouse" Visibility="Collapsed"
+                    Background="#fff8e1" BorderBrush="#f57c00" BorderThickness="3,0,0,0"
+                    CornerRadius="0,4,4,0" Margin="0,6,0,2" Padding="8,7">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="⚠" FontSize="18" Foreground="#f57c00" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Arudam Lord in Dusthana" FontWeight="Bold" Foreground="#e65100" FontSize="11"/>
+                        <TextBlock x:Name="AlertArudamLordBadHouseText" Foreground="#bf360c" FontSize="10" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- W5: Arudam Lord debilitated -->
+            <Border x:Name="AlertArudamLordDebil" Visibility="Collapsed"
+                    Background="#ffebee" BorderBrush="#c62828" BorderThickness="3,0,0,0"
+                    CornerRadius="0,4,4,0" Margin="0,2" Padding="8,7">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="⚠" FontSize="18" Foreground="#c62828" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Arudam Lord Debilitated" FontWeight="Bold" Foreground="#c62828" FontSize="11"/>
+                        <TextBlock x:Name="AlertArudamLordDebilText" Foreground="#b71c1c" FontSize="10" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- W6: Debilitated planet in Arudam sign -->
+            <Border x:Name="AlertDebilInArudam" Visibility="Collapsed"
+                    Background="#ffebee" BorderBrush="#c62828" BorderThickness="3,0,0,0"
+                    CornerRadius="0,4,4,0" Margin="0,2" Padding="8,7">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="⚠" FontSize="18" Foreground="#c62828" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Debilitated Planet in Arudam" FontWeight="Bold" Foreground="#c62828" FontSize="11"/>
+                        <TextBlock x:Name="AlertDebilInArudamText" Foreground="#b71c1c" FontSize="10" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
         </StackPanel>
     </Border>
 </UserControl>

@@ -1,3 +1,4 @@
+using System.Windows;
 using System.Windows.Controls;
 using JamakolAstrology.Models;
 using System.Linq;
@@ -68,8 +69,46 @@ public partial class PrasannaPanel : UserControl
         
         // Mrithyu
         MrithyuText.Text = !string.IsNullOrEmpty(details.PlanetTowardsMrithyu) && details.PlanetTowardsMrithyu != "-"
-            ? $"{GetLocalizedPlanet(details.PlanetTowardsMrithyu).ToUpper()} {details.PlanetTowardsMrithyuPercent:F2}°" 
+            ? $"{GetLocalizedPlanet(details.PlanetTowardsMrithyu).ToUpper()} {details.PlanetTowardsMrithyuPercent:F2}°"
             : "-";
+
+        // ── Warning alerts ────────────────────────────────────────────────────
+
+        // W1: Udayam Lord in dusthana (6/8/12)
+        AlertUdayamLordBadHouse.Visibility = details.IsUdayamLordIn6_8_12 ? Visibility.Visible : Visibility.Collapsed;
+        if (details.IsUdayamLordIn6_8_12)
+            AlertUdayamLordBadHouseText.Text =
+                $"{GetLocalizedPlanet(details.UdhayamLord ?? "").ToUpper()} is in house {details.UdhayamBhava} (6/8/12 Dusthana)";
+
+        // W2: Udayam Lord is debilitated
+        AlertUdayamLordDebil.Visibility = details.IsUdayamLordDebilitated ? Visibility.Visible : Visibility.Collapsed;
+        if (details.IsUdayamLordDebilitated)
+            AlertUdayamLordDebilText.Text =
+                $"{GetLocalizedPlanet(details.UdhayamLord ?? "").ToUpper()} is in its debilitation sign";
+
+        // W3: Debilitated planet in Udayam sign
+        AlertDebilInUdayam.Visibility = !string.IsNullOrEmpty(details.DebilitatedPlanetInUdayam) ? Visibility.Visible : Visibility.Collapsed;
+        if (!string.IsNullOrEmpty(details.DebilitatedPlanetInUdayam))
+            AlertDebilInUdayamText.Text =
+                $"{LocalizeCsv(details.DebilitatedPlanetInUdayam)} is debilitated and placed in Udayam";
+
+        // W4: Arudam Lord in dusthana (6/8/12)
+        AlertArudamLordBadHouse.Visibility = details.IsArudamLordIn6_8_12 ? Visibility.Visible : Visibility.Collapsed;
+        if (details.IsArudamLordIn6_8_12)
+            AlertArudamLordBadHouseText.Text =
+                $"{GetLocalizedPlanet(details.ArudamLord ?? "").ToUpper()} is in house {details.ArudamLordBhava} (6/8/12 Dusthana)";
+
+        // W5: Arudam Lord is debilitated
+        AlertArudamLordDebil.Visibility = details.IsArudamLordDebilitated ? Visibility.Visible : Visibility.Collapsed;
+        if (details.IsArudamLordDebilitated)
+            AlertArudamLordDebilText.Text =
+                $"{GetLocalizedPlanet(details.ArudamLord ?? "").ToUpper()} is in its debilitation sign";
+
+        // W6: Debilitated planet in Arudam sign
+        AlertDebilInArudam.Visibility = !string.IsNullOrEmpty(details.DebilitatedPlanetInArudam) ? Visibility.Visible : Visibility.Collapsed;
+        if (!string.IsNullOrEmpty(details.DebilitatedPlanetInArudam))
+            AlertDebilInArudamText.Text =
+                $"{LocalizeCsv(details.DebilitatedPlanetInArudam)} is debilitated and placed in Arudam";
     }
 
     private string LocalizeCsv(string? input)

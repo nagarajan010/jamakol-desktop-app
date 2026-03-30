@@ -49,5 +49,8 @@ mono_crash.*
 # Installer output
 installer/
 
+# Publish output
+publish/
+
 # Ignored JSON
 debug_saved_charts.json

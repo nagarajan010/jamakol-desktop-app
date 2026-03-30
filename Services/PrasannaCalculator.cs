@@ -182,8 +182,8 @@ public class PrasannaCalculator
         }
         
         // Mrithyu - find closest Jama Graha to Mrithyu special point
-        var mrithyu = specialPoints.FirstOrDefault(sp => 
-            sp.Name.Equals("Mrithyu", StringComparison.OrdinalIgnoreCase) || 
+        var mrithyu = specialPoints.FirstOrDefault(sp =>
+            sp.Name.Equals("Mrithyu", StringComparison.OrdinalIgnoreCase) ||
             sp.Symbol.Equals("MR", StringComparison.OrdinalIgnoreCase));
         if (mrithyu != null)
         {
@@ -193,6 +193,76 @@ public class PrasannaCalculator
                 details.PlanetTowardsMrithyu = closest.Value.planet;
                 details.PlanetTowardsMrithyuPercent = closest.Value.degreeDistance;
             }
+        }
+
+        // ── Udayam warning rules ──────────────────────────────────────────────
+        if (udayam != null)
+        {
+            // Rule 1: Udayam Lord in dusthana (6, 8, 12)
+            details.IsUdayamLordIn6_8_12 = details.UdhayamBhava == 6 || details.UdhayamBhava == 8 || details.UdhayamBhava == 12;
+
+            // Rule 2: Udayam Lord itself is debilitated
+            if (!string.IsNullOrEmpty(details.UdhayamLord))
+            {
+                var lordPlanet = jamaGrahas.FirstOrDefault(p =>
+                    p.Name.Equals(details.UdhayamLord, StringComparison.OrdinalIgnoreCase));
+                if (lordPlanet != null)
+                {
+                    int lordSign = useBoxSign ? lordPlanet.House : lordPlanet.Sign;
+                    details.IsUdayamLordDebilitated =
+                        DebilitationSigns.TryGetValue(lordPlanet.Name, out int debilSign) && lordSign == debilSign;
+                }
+            }
+
+            // Rule 3: Any debilitated Jama Graha sitting in the Udayam sign
+            int udayamSignNum = udayam.SignIndex + 1;
+            var debilInUdayam = jamaGrahas
+                .Where(g =>
+                {
+                    int s = useBoxSign ? g.House : g.Sign;
+                    return s == udayamSignNum &&
+                           DebilitationSigns.TryGetValue(g.Name, out int ds) && ds == s;
+                })
+                .Select(g => g.Name)
+                .ToList();
+            details.DebilitatedPlanetInUdayam = debilInUdayam.Count > 0 ? string.Join(", ", debilInUdayam) : null;
+        }
+
+        // ── Arudam warning rules ──────────────────────────────────────────────
+        if (aarudam != null)
+        {
+            int arudamSignNum = aarudam.SignIndex + 1;
+            string arudamLord = SignLords.GetValueOrDefault(arudamSignNum, "Unknown");
+            details.ArudamLord = arudamLord;
+
+            var arudamLordPlanet = jamaGrahas.FirstOrDefault(p =>
+                p.Name.Equals(arudamLord, StringComparison.OrdinalIgnoreCase));
+            if (arudamLordPlanet != null)
+            {
+                int lordSign = useBoxSign ? arudamLordPlanet.House : arudamLordPlanet.Sign;
+                int lagnaSign = udayam?.SignIndex ?? 0;
+                details.ArudamLordBhava = CalculateHouseFromLagna(lagnaSign, lordSign - 1);
+
+                // Rule 4: Arudam Lord in dusthana (6, 8, 12)
+                details.IsArudamLordIn6_8_12 =
+                    details.ArudamLordBhava == 6 || details.ArudamLordBhava == 8 || details.ArudamLordBhava == 12;
+
+                // Rule 5: Arudam Lord is debilitated
+                details.IsArudamLordDebilitated =
+                    DebilitationSigns.TryGetValue(arudamLordPlanet.Name, out int debilSign2) && lordSign == debilSign2;
+            }
+
+            // Rule 6: Any debilitated Jama Graha sitting in the Arudam sign
+            var debilInArudam = jamaGrahas
+                .Where(g =>
+                {
+                    int s = useBoxSign ? g.House : g.Sign;
+                    return s == arudamSignNum &&
+                           DebilitationSigns.TryGetValue(g.Name, out int ds) && ds == s;
+                })
+                .Select(g => g.Name)
+                .ToList();
+            details.DebilitatedPlanetInArudam = debilInArudam.Count > 0 ? string.Join(", ", debilInArudam) : null;
         }
 
         return details;
