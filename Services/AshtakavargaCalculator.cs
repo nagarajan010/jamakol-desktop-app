@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using JamakolAstrology.Models;
@@ -82,7 +82,9 @@ public class AshtakavargaCalculator
         { "GU", [1, 2, 3, 4, 7, 8, 10, 11] },
         { "SK", [2, 5, 6, 9, 10, 11] },
         { "SA", [3, 5, 6, 12] },
-        { "LG", [1, 2, 4, 5, 6, 9, 10, 11] } // User Data: Excludes 7
+        // 9 points from Lagna, per BPHS. House 7 was missing, which made Jupiter's
+        // bhinnashtakavarga total 55 instead of 56 and left the Sarvashtakavarga one short of 337.
+        { "LG", [1, 2, 4, 5, 6, 7, 9, 10, 11] }
     };
 
     // 6. Venus AV (with JH variations applied)
@@ -324,9 +326,11 @@ public class AshtakavargaCalculator
                 if (points[idx] < min) min = points[idx];
             }
 
+            // Where the smallest count in a trine is zero the WHOLE trine is voided, rather
+            // than subtracting zero and leaving the other two signs' bindus standing.
             foreach (int idx in group)
             {
-                points[idx] -= min;
+                points[idx] = (min == 0) ? 0 : points[idx] - min;
             }
         }
     }
@@ -349,15 +353,23 @@ public class AshtakavargaCalculator
             new[] { 9, 10 }
         };
 
-        // Helper to check if occupied (Any planet prevents 0 reduction)
-        bool IsOccupied(int signIndex) // 0-based
+        // Only the SEVEN grahas count as occupants. Ekadhipatya is a shared-LORDSHIP reduction,
+        // and Rahu/Ketu own no sign, so they take no part in it - testing every body in the list
+        // treated a node-tenanted sign as occupied and wrongly protected it from reduction.
+        // The Aprakash Grahas must be excluded for the same reason: they carry Planet.Sun as a
+        // placeholder, so each would otherwise read as a Sun occupying its own sign.
+        var sevenGrahas = new[]
         {
-            // BPHS says "Occupied by Grahas".
-            // Generally, Nodes (Rahu/Ketu) are considered Grahas and protect the sign from reduction.
-            // In the User's example, Capricorn (4 points) is not reduced even though no main planet is there (implied),
-            // suggesting Rahu or Ketu is present and protecting it.
-            return planets.Any(p => (p.Sign - 1) == signIndex);
-        }
+            Planet.Sun, Planet.Moon, Planet.Mars,
+            Planet.Mercury, Planet.Jupiter, Planet.Venus, Planet.Saturn
+        };
+
+        var occupants = planets
+            .Where(p => sevenGrahas.Contains(p.Planet) && p.Name == ZodiacUtils.PlanetNames[p.Planet])
+            .ToList();
+
+        bool IsOccupied(int signIndex) // 0-based
+            => occupants.Any(p => (p.Sign - 1) == signIndex);
 
         foreach (var pair in pairs)
         {
@@ -365,40 +377,39 @@ public class AshtakavargaCalculator
             int idx2 = pair[1];
             int p1 = points[idx1];
             int p2 = points[idx2];
-            
-            // If both 0, nothing
-            if (p1 == 0 && p2 == 0) continue;
+
+            // A sign already at zero is left alone.
+            if (p1 == 0 || p2 == 0) continue;
 
             bool occ1 = IsOccupied(idx1);
             bool occ2 = IsOccupied(idx2);
 
-            // Case 1: Both occupied -> No reduction
+            // Both tenanted: no reduction.
             if (occ1 && occ2) continue;
 
-            // Case 2: Neither occupied
             if (!occ1 && !occ2)
             {
-                // In standard BPHS/Raman, we reduce here (Equalize or Zero).
-                // However, the User's provided "Astrobix" example shows Gemini(4) and Capricorn(4) 
-                // retaining their points even though they are empty of main planets and their pairs are 0.
-                // This implies a variation where NO reduction happens if both are unoccupied.
-                // We will skip reduction here to match the user's "Working Software".
-                continue; 
-            }
-            // Case 3: One occupied
-            else
-            {
-                // BV Raman / South Indian variation: 
-                // "If one is occupied and other not, points in the unoccupied are eliminated (0)."
-                
-                if (occ1) // idx1 occupied, idx2 empty
-                {
-                    points[idx2] = 0; 
-                }
-                else // idx2 occupied, idx1 empty
+                // Neither tenanted: equal counts both go to zero, otherwise the higher
+                // comes down to the lower.
+                if (p1 == p2)
                 {
                     points[idx1] = 0;
+                    points[idx2] = 0;
                 }
+                else
+                {
+                    int low = Math.Min(p1, p2);
+                    points[idx1] = low;
+                    points[idx2] = low;
+                }
+            }
+            else
+            {
+                // One tenanted: the empty sign is zeroed when it holds no more than the
+                // occupied one, otherwise it is brought down to the occupied one's count.
+                int emptyIdx = occ1 ? idx2 : idx1;
+                int occIdx = occ1 ? idx1 : idx2;
+                points[emptyIdx] = (points[emptyIdx] <= points[occIdx]) ? 0 : points[occIdx];
             }
         }
     }

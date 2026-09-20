@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using JamakolAstrology.Models;
@@ -21,6 +21,7 @@ public class ChartOrchestratorService
     private readonly PrasannaCalculator _prasannaCalculator;
     private readonly PanchangaCalculator _panchangaCalculator;
     private readonly VimshottariDashaCalculator _vimshottariDashaCalculator;
+    private readonly SudarshanaDashaCalculator _sudarshanaDashaCalculator;
     private readonly AshtakavargaCalculator _ashtakavargaCalculator;
     private SunriseCalculator _sunriseCalculator;
 
@@ -35,6 +36,7 @@ public class ChartOrchestratorService
         _prasannaCalculator = new PrasannaCalculator();
         _panchangaCalculator = new PanchangaCalculator();
         _vimshottariDashaCalculator = new VimshottariDashaCalculator();
+        _sudarshanaDashaCalculator = new SudarshanaDashaCalculator();
         _sunriseCalculator = new SunriseCalculator();
         _ashtakavargaCalculator = new AshtakavargaCalculator();
     }
@@ -60,6 +62,13 @@ public class ChartOrchestratorService
         
         // 1.1 Calculate Ashtakavarga
         result.ChartData.Ashtakavarga = _ashtakavargaCalculator.Calculate(result.ChartData);
+
+        if (!birthData.IsBCDate)
+        {
+            result.SudarshanaDashaResult = _sudarshanaDashaCalculator.Calculate(
+                birthData.BirthDateTime,
+                DateTime.Now);
+        }
 
         // For BC dates, skip DateTime-dependent calculations (sunrise, Jama Graha, Panchanga, etc.)
         // These features are not meaningful for ancient/mythological dates
@@ -136,7 +145,7 @@ public class ChartOrchestratorService
         result.JamaGrahas = _jamaGrahaCalculator.Calculate(birthData.BirthDateTime, dayLord);
 
         // 6. Calculate Special Points (Aarudam, Udayam, Kavippu)
-        result.SpecialPoints = CalculateSpecialPoints(birthData, result.ChartData, dayLord, todaySunrise, todaySunset, tomorrowSunrise);
+        result.SpecialPoints = CalculateSpecialPoints(birthData, result.ChartData, dayLord, todaySunrise, todaySunset, tomorrowSunrise, vedicDate);
 
         // 7. Calculate Prasanna Details (using Jama Graha positions)
         // Derive PrasannaMode from UseFixedSignBoxes: 
@@ -174,7 +183,9 @@ public class ChartOrchestratorService
             // Ideally should pass the one from 'using' block above?
             // The existing 'using' block on line 128 is closed at line 131.
             // We should create a new one or extend the scope.
-            new EphemerisService() 
+            new EphemerisService(),
+            (int)settings.Ayanamsha,
+            AppSettings.Load().AyanamshaOffset 
         );
 
         // 9. Calculate Inauspicious Periods (Rahu Kalam, Yamagandam, Gulikai Kalam)
@@ -229,7 +240,8 @@ public class ChartOrchestratorService
         string dayLord,
         DateTime todaySunrise,
         DateTime todaySunset,
-        DateTime tomorrowSunrise)
+        DateTime tomorrowSunrise,
+        DateTime vedicDate)
     {
         var specialPoints = new List<SpecialPoint>();
 
@@ -261,8 +273,11 @@ public class ChartOrchestratorService
         // Calculate Supplementary Points (Rahu Kalam, Yemakandam use portions; Mandhi uses offset)
         // Need to determine if day or night for Mandhi calculation
         bool isDay = birthData.BirthDateTime >= todaySunrise && birthData.BirthDateTime < todaySunset;
+        // Rahu Kalam and Yemakandam index weekday tables, so they must use the VEDIC weekday -
+        // the same one InauspiciousPeriodsCalculator gets. Passing the civil weekday put a
+        // pre-dawn birth on the following day's row and picked the wrong sign for both points.
         var supplementaryPoints = _supplementaryPlanetsCalculator.Calculate(
-            sunLongitude, dayLord, isDay, birthData.BirthDateTime.Date.DayOfWeek);
+            sunLongitude, dayLord, isDay, vedicDate.DayOfWeek);
         specialPoints.AddRange(supplementaryPoints);
 
         return specialPoints;

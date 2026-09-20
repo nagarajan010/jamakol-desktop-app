@@ -1,4 +1,4 @@
-namespace JamakolAstrology.Models;
+﻿namespace JamakolAstrology.Models;
 
 /// <summary>
 /// Vedic planets enumeration
@@ -27,7 +27,12 @@ public class PlanetPosition
     public double Longitude { get; set; }
     public double Latitude { get; set; }
     public double Speed { get; set; }
-    public bool IsRetrograde => Speed < 0;
+    /// <summary>
+    /// The geocentric Sun and Moon never retrograde. Keeping that physical invariant here
+    /// guards against bad or boundary-wrapped ephemeris speed data, which would otherwise also
+    /// shift the combustion orbs that are selected from this flag.
+    /// </summary>
+    public bool IsRetrograde => Speed < 0 && Planet != Planet.Sun && Planet != Planet.Moon;
     public int Sign { get; set; }           // 1-12 (Aries to Pisces)
     public string SignName { get; set; } = string.Empty;
     public double DegreeInSign { get; set; }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using JamakolAstrology.Models;
 
@@ -10,6 +10,11 @@ namespace JamakolAstrology.Services;
 /// </summary>
 public class VimshottariDashaCalculator
 {
+    /// <summary>
+    /// Length of a dasha year in days: the true sidereal solar year.
+    /// </summary>
+    private const double DaysPerYear = 365.256363;
+
     // Planet sequence in Vimshottari system
     private static readonly string[] DashaSequence = 
     { "Ketu", "Venus", "Sun", "Moon", "Mars", "Rahu", "Jupiter", "Saturn", "Mercury" };
@@ -56,13 +61,18 @@ public class VimshottariDashaCalculator
     {
         var result = new DashaResult();
 
-        // Calculate Moon's nakshatra and position within it
+        // Calculate Moon's nakshatra and position within it.
+        // Normalize first: an out-of-range longitude would otherwise be papered over by the
+        // clamps below while the in-nakshatra position stayed wrong, which can yield a negative
+        // balance and hence a negative first mahadasha.
+        moonLongitude = ((moonLongitude % 360.0) + 360.0) % 360.0;
+
         double nakshatraSize = 360.0 / 27.0; // 13.333... degrees
         int nakshatraIndex = (int)(moonLongitude / nakshatraSize);
         if (nakshatraIndex >= 27) nakshatraIndex = 26;
         if (nakshatraIndex < 0) nakshatraIndex = 0;
 
-        double positionInNakshatra = moonLongitude - (nakshatraIndex * nakshatraSize);
+        double positionInNakshatra = moonLongitude % nakshatraSize;
         double proportionTraversed = positionInNakshatra / nakshatraSize;
 
         result.MoonNakshatra = NakshatraNames[nakshatraIndex];
@@ -78,33 +88,29 @@ public class VimshottariDashaCalculator
         double birthDashaYears = DashaYears[birthDashaLord];
         double balanceYears = birthDashaYears * proportionRemaining;
         
-        // Days per sidereal year is approx 365.25636, Dasha usually uses Savana (360) or Sidereal.
-        // Standard practice often uses Gregorian 365.2425 or 365.25. 
-        // JHora default is 365.2425 (Gregorian year).
-        double daysPerYear = 365.2425;
+        // Vimshottari periods are counted in SIDEREAL years - the Sun's return to the same fixed
+        // star - which is what reference software means by "true sidereal solar years". Using the
+        // Gregorian 365.2425 (or the Julian 365.25) made every boundary fall a day or two early
+        // across the 120-year cycle.
+        double daysPerYear = DaysPerYear;
         
         result.BalanceAtBirthDays = balanceYears * daysPerYear;
 
         // Calculate all Maha Dasas
         double dashaStartJd = birthJulianDay;
         
-        // First Maha Dasa starts with remaining balance
-        for (int cycle = 0; cycle < 2; cycle++) // 2 cycles = 240 years (more than enough)
+        // One full cycle only. The nine periods sum to exactly 120 years, which is the whole
+        // Vimshottari span - continuing into a second cycle just repeats the same sequence at
+        // ages nobody lives to. The old loop ran two cycles with a 150-year cut-off tested
+        // AFTER appending, so charts ran out past 160 years.
         {
             for (int i = 0; i < 9; i++)
             {
                 int planetIndex = (startIndex + i) % 9;
                 string planet = DashaSequence[planetIndex];
-                
-                double years;
-                if (cycle == 0 && i == 0)
-                {
-                    years = balanceYears; // First dasa uses balance
-                }
-                else
-                {
-                    years = DashaYears[planet];
-                }
+
+                // First dasa uses the balance remaining at birth.
+                double years = (i == 0) ? balanceYears : DashaYears[planet];
 
                 double durationDays = years * daysPerYear;
                 double dashaEndJd = dashaStartJd + durationDays;
@@ -132,7 +138,7 @@ public class VimshottariDashaCalculator
                 if (calculateLevels >= 2)
                 {
                     mahaDasha.SubPeriods = CalculateSubPeriods(
-                        planet, dashaStartJd, years, 2, calculateLevels, currentJulianDay, daysPerYear);
+                        planet, dashaStartJd, dashaEndJd, years, 2, calculateLevels, currentJulianDay, daysPerYear);
                 }
 
                 result.MahaDashas.Add(mahaDasha);
@@ -145,11 +151,7 @@ public class VimshottariDashaCalculator
                 }
 
                 dashaStartJd = dashaEndJd;
-
-                // Stop if we've gone past 150 years from birth (approx 54786 days)
-                if (dashaStartJd > birthJulianDay + 54786) break;
             }
-            if (dashaStartJd > birthJulianDay + 54786) break;
         }
 
         return result;
@@ -161,6 +163,7 @@ public class VimshottariDashaCalculator
     private List<DashaPeriod> CalculateSubPeriods(
         string mahaPlanet, 
         double startJd, 
+        double endJd,
         double totalYears, 
         int level, 
         int maxLevel,
@@ -171,16 +174,21 @@ public class VimshottariDashaCalculator
         int startIndex = Array.IndexOf(DashaSequence, mahaPlanet);
         double subStartJd = startJd;
 
+        // Apportion the parent's MEASURED span rather than re-deriving it from years, and give
+        // the final child the parent's exact end. Chaining nine computed spans per level over
+        // six nested levels leaves floating-point cracks at the boundaries, and a query instant
+        // landing in one makes FindCurrentSubDashas return no deeper period at all.
+        double parentSpan = endJd - startJd;
+
         for (int i = 0; i < 9; i++)
         {
             int planetIndex = (startIndex + i) % 9;
             string planet = DashaSequence[planetIndex];
 
-            // Sub-period duration = (mahaDuration * planet's proportion) / 120
+            // Sub-period takes the same share of its parent as its lord takes of the cycle.
             double proportion = DashaYears[planet] / 120.0;
             double subYears = totalYears * proportion;
-            double subDurationDays = subYears * daysPerYear;
-            double subEndJd = subStartJd + subDurationDays;
+            double subEndJd = (i == 8) ? endJd : subStartJd + (parentSpan * proportion);
 
             var subPeriod = new DashaPeriod
             {
@@ -199,7 +207,7 @@ public class VimshottariDashaCalculator
             if (level < maxLevel)
             {
                 subPeriod.SubPeriods = CalculateSubPeriods(
-                    planet, subStartJd, subYears, level + 1, maxLevel, currentJd, daysPerYear);
+                    planet, subStartJd, subEndJd, subYears, level + 1, maxLevel, currentJd, daysPerYear);
             }
 
             subPeriods.Add(subPeriod);

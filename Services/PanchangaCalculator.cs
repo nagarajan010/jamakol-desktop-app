@@ -1,4 +1,4 @@
-using JamakolAstrology.Models;
+﻿using JamakolAstrology.Models;
 
 namespace JamakolAstrology.Services;
 
@@ -157,7 +157,13 @@ public class PanchangaCalculator
         double ayanamsa,
         double siderealTime,
         DayOfWeek vedicDayOfWeek,
-        EphemerisService ephemerisService) // Added dependencies
+        EphemerisService ephemerisService,
+        // The end-time searches must sample with the SAME ayanamsa the current positions were
+        // computed with. They hardcoded Lahiri, so for any other ayanamsa - or any non-zero
+        // offset - the scan compared values on two different zodiacs and found the crossing at
+        // the wrong instant (roughly 1.8 hours of tithi error for Raman).
+        int ayanamshaId = 1,
+        double ayanamshaOffset = 0.0) // Added dependencies
     {
         var details = new PanchangaDetails();
 
@@ -185,7 +191,7 @@ public class PanchangaCalculator
 
         // --- NAKSHATRA ---
         // Using standard 27 Nakshatra system as requested
-        CalculateNakshatra(moonLong, details, chartData.JulianDay, chartData.AyanamsaValue, ephemerisService);
+        CalculateNakshatra(moonLong, details, chartData.JulianDay, chartData.AyanamsaValue, ephemerisService, ayanamshaId, ayanamshaOffset);
 
         // Sun and Moon Rasi
         details.SunRasi = ZodiacUtils.SignNames[sun.Sign];
@@ -194,13 +200,13 @@ public class PanchangaCalculator
         details.MoonRasiTamil = RasiNamesTamil[moon.Sign];
 
         // --- TITHI ---
-        CalculateTithi(sunLong, moonLong, details, chartData.JulianDay, chartData.AyanamsaValue, ephemerisService);
+        CalculateTithi(sunLong, moonLong, details, chartData.JulianDay, chartData.AyanamsaValue, ephemerisService, ayanamshaId, ayanamshaOffset);
 
         // --- YOGA ---
-        CalculateYoga(sunLong, moonLong, details, chartData.JulianDay, chartData.AyanamsaValue, ephemerisService);
+        CalculateYoga(sunLong, moonLong, details, chartData.JulianDay, chartData.AyanamsaValue, ephemerisService, ayanamshaId, ayanamshaOffset);
 
         // --- KARANA ---
-        CalculateKarana(sunLong, moonLong, details, chartData.JulianDay, chartData.AyanamsaValue, ephemerisService);
+        CalculateKarana(sunLong, moonLong, details, chartData.JulianDay, chartData.AyanamsaValue, ephemerisService, ayanamshaId, ayanamshaOffset);
 
         // --- HORA (Variable Length) ---
         // Pass the Vedic Day Index
@@ -229,7 +235,7 @@ public class PanchangaCalculator
         return details;
     }
 
-    private void CalculateTithi(double sunLong, double moonLong, PanchangaDetails details, double julianDay, double ayanamsa, EphemerisService ephemeris)
+    private void CalculateTithi(double sunLong, double moonLong, PanchangaDetails details, double julianDay, double ayanamsa, EphemerisService ephemeris, int ayanamshaId, double ayanamshaOffset)
     {
         double diff = moonLong - sunLong;
         if (diff < 0) diff += 360;
@@ -269,10 +275,7 @@ public class PanchangaCalculator
         }
 
         // Tithi Lord
-        int tithiCycleIndex = (tithiNumber - 1) % 8;
-        if (tithiNumber == 30) tithiCycleIndex = 7; // Amavasya = Rahu
-
-        var tLord = ZodiacUtils.TithiLords[tithiCycleIndex];
+        var tLord = ZodiacUtils.GetTithiLord(tithiNumber);
         if (ZodiacUtils.PlanetAbbreviations.TryGetValue(tLord, out string? tAbbr))
         {
             details.TithiLord = tAbbr ?? "";
@@ -287,11 +290,11 @@ public class PanchangaCalculator
             ayanamsa, 
             ephemeris, 
             (jd, ay) => {
-                var s = ephemeris.GetPlanetPosition(jd, (int)Models.Planet.Sun, 1);
+                var s = ephemeris.GetPlanetPosition(jd, (int)Models.Planet.Sun, ayanamshaId, ayanamshaOffset);
                 return s.longitude;
             },
             (jd, ay) => {
-                var m = ephemeris.GetPlanetPosition(jd, (int)Models.Planet.Moon, 1);
+                var m = ephemeris.GetPlanetPosition(jd, (int)Models.Planet.Moon, ayanamshaId, ayanamshaOffset);
                 return m.longitude;
             },
             diff, // Current value
@@ -300,7 +303,7 @@ public class PanchangaCalculator
         );
     }
     
-    private void CalculateNakshatra(double moonLong, PanchangaDetails details, double julianDay, double ayanamsa, EphemerisService ephemeris)
+    private void CalculateNakshatra(double moonLong, PanchangaDetails details, double julianDay, double ayanamsa, EphemerisService ephemeris, int ayanamshaId, double ayanamshaOffset)
     {
         double nakLength = 360.0 / 27.0;
         int nakIndex = (int)(moonLong / nakLength);
@@ -333,7 +336,7 @@ public class PanchangaCalculator
             ephemeris,
             null, // No Sun needed
             (jd, ay) => {
-                var m = ephemeris.GetPlanetPosition(jd, (int)Models.Planet.Moon, 1);
+                var m = ephemeris.GetPlanetPosition(jd, (int)Models.Planet.Moon, ayanamshaId, ayanamshaOffset);
                 return m.longitude;
             },
             moonLong, // Current
@@ -342,7 +345,7 @@ public class PanchangaCalculator
         );
     }
 
-    private void CalculateYoga(double sunLong, double moonLong, PanchangaDetails details, double julianDay, double ayanamsa, EphemerisService ephemeris)
+    private void CalculateYoga(double sunLong, double moonLong, PanchangaDetails details, double julianDay, double ayanamsa, EphemerisService ephemeris, int ayanamshaId, double ayanamshaOffset)
     {
         double sum = sunLong + moonLong;
         if (sum >= 360) sum -= 360;
@@ -367,8 +370,8 @@ public class PanchangaCalculator
             julianDay, 
             ayanamsa, 
             ephemeris, 
-            (jd, ay) => ephemeris.GetPlanetPosition(jd, (int)Models.Planet.Sun, 1).longitude,
-            (jd, ay) => ephemeris.GetPlanetPosition(jd, (int)Models.Planet.Moon, 1).longitude,
+            (jd, ay) => ephemeris.GetPlanetPosition(jd, (int)Models.Planet.Sun, ayanamshaId, ayanamshaOffset).longitude,
+            (jd, ay) => ephemeris.GetPlanetPosition(jd, (int)Models.Planet.Moon, ayanamshaId, ayanamshaOffset).longitude,
             sum, 
             nextYogaTarget,
             false, // Treated as Absolute for the function (sum increases 0-360)
@@ -376,7 +379,7 @@ public class PanchangaCalculator
         );
     }
 
-    private void CalculateKarana(double sunLong, double moonLong, PanchangaDetails details, double julianDay, double ayanamsa, EphemerisService ephemeris)
+    private void CalculateKarana(double sunLong, double moonLong, PanchangaDetails details, double julianDay, double ayanamsa, EphemerisService ephemeris, int ayanamshaId, double ayanamshaOffset)
     {
         double diff = moonLong - sunLong;
         if (diff < 0) diff += 360;
@@ -404,8 +407,8 @@ public class PanchangaCalculator
             julianDay,
             ayanamsa,
             ephemeris,
-            (jd, ay) => ephemeris.GetPlanetPosition(jd, (int)Models.Planet.Sun, 1).longitude,
-            (jd, ay) => ephemeris.GetPlanetPosition(jd, (int)Models.Planet.Moon, 1).longitude,
+            (jd, ay) => ephemeris.GetPlanetPosition(jd, (int)Models.Planet.Sun, ayanamshaId, ayanamshaOffset).longitude,
+            (jd, ay) => ephemeris.GetPlanetPosition(jd, (int)Models.Planet.Moon, ayanamshaId, ayanamshaOffset).longitude,
             diff,
             nextKaranaTarget, // Target is specific angle (e.g. 6, 12, 18...)
             true // Relative
@@ -562,6 +565,11 @@ public class PanchangaCalculator
             double secondsFromSunset = (currentTime - sunset).TotalSeconds;
             horaNumber = 12 + (int)(secondsFromSunset / horaLengthSeconds);
             if (horaNumber >= 24) horaNumber = 23;
+            // A pre-dawn instant is before sunset, so secondsFromSunset is negative and the
+            // hora number falls below 12. The orchestrator's vedic-day rollback prevents that
+            // on the chart path, but other callers (the calendar's hora table) have no such
+            // guarantee, and a negative index would otherwise silently skip the lord.
+            if (horaNumber < 0) horaNumber = 0;
         }
 
         int[] dayToLordCycleIndex = { 0, 3, 6, 2, 5, 1, 4 };

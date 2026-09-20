@@ -1,4 +1,4 @@
-using System.Globalization;
+﻿using System.Globalization;
 using System.Threading;
 
 namespace JamakolAstrology.Services;
@@ -177,8 +177,29 @@ public static class ZodiacUtils
         Models.Planet.Jupiter,  // 5
         Models.Planet.Venus,    // 6
         Models.Planet.Saturn,   // 7
-        Models.Planet.Rahu      // 8
+        Models.Planet.Rahu,     // 8
+        Models.Planet.Sun,      // 9
+        Models.Planet.Moon,     // 10
+        Models.Planet.Mars,     // 11
+        Models.Planet.Mercury,  // 12
+        Models.Planet.Jupiter,  // 13
+        Models.Planet.Venus     // 14
     };
+
+    /// <summary>
+    /// Lord of a tithi (1-30).
+    /// The weekday order of grahas - Sun, Moon, Mars, Mercury, Jupiter, Venus, Saturn, Rahu -
+    /// runs from the 1st to the 8th AND AGAIN from the 9th to the 14th, with the fifteenth taken
+    /// by Saturn at the full Moon and Rahu at the new. The scheme restarts each PAKSHA, so it has
+    /// period 15, not 8: running a "% 8" over a 1..30 tithi number drifts out of phase as soon as
+    /// the second paksha begins and was wrong for every tithi from 16 to 29.
+    /// </summary>
+    public static Models.Planet GetTithiLord(int tithiNumber)
+    {
+        int within = ((((tithiNumber - 1) % 15) + 15) % 15) + 1;
+        if (within < 15) return TithiLords[within - 1];
+        return tithiNumber <= 15 ? Models.Planet.Saturn : Models.Planet.Rahu;
+    }
 
     /// <summary>
     /// Convert degree (0-360) to sign number (1-12)

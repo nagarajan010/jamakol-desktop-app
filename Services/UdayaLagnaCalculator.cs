@@ -1,4 +1,4 @@
-using JamakolAstrology.Models;
+﻿using JamakolAstrology.Models;
 
 namespace JamakolAstrology.Services;
 
@@ -64,9 +64,10 @@ public class UdayaLagnaCalculator
     }
 
     /// <summary>
-    /// Create calculator with automatic ascendant calculation
-    /// Ascendant at sunrise = Sun's position (same sign)
-    /// Ascendant at sunset = Sun's position + 180° (opposite sign)
+    /// Create calculator with automatic ascendant calculation.
+    /// Both anchors are the Sun's own longitude: a full daytime cycle of 360 degrees returns to
+    /// the same anchor at sunset, so the night must resume from where the day ended. Using
+    /// Sun + 180 here injects a half-zodiac discontinuity immediately after sunset.
     /// </summary>
     public static UdayaLagnaCalculator CreateWithSunPosition(
         DateTime todaySunrise,
@@ -74,11 +75,8 @@ public class UdayaLagnaCalculator
         DateTime tomorrowSunrise,
         double sunLongitude)
     {
-        // At sunrise, ascendant is roughly where the Sun is
         double sunriseAscendant = sunLongitude;
-        
-        // At sunset, ascendant is roughly opposite to the Sun (180° ahead)
-        double sunsetAscendant = (sunLongitude + 180.0) % 360.0;
+        double sunsetAscendant = sunLongitude;
 
         return new UdayaLagnaCalculator(
             todaySunrise,

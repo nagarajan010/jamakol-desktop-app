@@ -1,4 +1,4 @@
-using JamakolAstrology.Models;
+﻿using JamakolAstrology.Models;
 
 namespace JamakolAstrology.Services;
 
@@ -56,11 +56,31 @@ public class DivisionalChartService
             _ => rasiIndex, // Default to D1 (Rasi chart)
         };
 
-        // Calculate degree within the divisional sign
-        double partSize = 30.0 / division;
-        int partNumber = (int)Math.Floor(degreeInRasi / partSize);
-        double degreeWithinPart = degreeInRasi - (partNumber * partSize);
-        double divisionalDegree = degreeWithinPart * division; // Scale back to 30 degrees
+        // Calculate degree within the divisional sign.
+        // D-30 divides UNEQUALLY (5/5/8/7/5 in odd signs, 5/7/8/5/5 in even), so it cannot use
+        // the generic equal-part arithmetic. Treating it as thirty equal 1 degree pieces gave a
+        // degree drawn from a different division of the rasi than the sign was, so the two
+        // disagreed about which part the graha was even in.
+        double divisionalDegree;
+        if (division == 30)
+        {
+            double[] edges = (rasiIndex % 2 == 0)
+                ? new[] { 0.0, 5.0, 10.0, 18.0, 25.0, 30.0 }   // odd signs
+                : new[] { 0.0, 5.0, 12.0, 20.0, 25.0, 30.0 };  // even signs
+
+            int band = 0;
+            while (band < 5 && degreeInRasi >= edges[band + 1]) band++;
+
+            double bandStart = edges[band];
+            divisionalDegree = ((degreeInRasi - bandStart) / (edges[band + 1] - bandStart)) * 30.0;
+        }
+        else
+        {
+            double partSize = 30.0 / division;
+            int partNumber = (int)Math.Floor(degreeInRasi / partSize);
+            double degreeWithinPart = degreeInRasi - (partNumber * partSize);
+            divisionalDegree = degreeWithinPart * division; // Scale back to 30 degrees
+        }
 
         // Convert from 0-indexed to 1-indexed sign
         int signIndex = (divisionalSignIndex % 12) + 1;
@@ -434,23 +454,26 @@ public class DivisionalChartService
     {
         bool isOddSign = (rasiIndex % 2 == 0);
 
+        // The five non-luminaries rule the 30 degrees, and the amsa is the ruler's OWN sign -
+        // its odd sign in an odd rasi, its even sign in an even one. The luminaries rule no
+        // trimsamsa at all, so Aries and Leo cannot appear in an even-sign D-30.
         if (isOddSign)
         {
             // Odd signs: Mars(5°), Saturn(5°), Jupiter(8°), Mercury(7°), Venus(5°)
-            if (degreeInRasi < 5) return 0;  // Mars (Aries)
-            if (degreeInRasi < 10) return 6; // Saturn (Aquarius - index 10, but using Libra=6 per formula)
-            if (degreeInRasi < 18) return 8; // Jupiter (Sagittarius)
-            if (degreeInRasi < 25) return 2; // Mercury (Gemini)
-            return 4; // Venus (Leo)
+            if (degreeInRasi < 5) return 0;   // Mars    - Aries
+            if (degreeInRasi < 10) return 10; // Saturn  - Aquarius
+            if (degreeInRasi < 18) return 8;  // Jupiter - Sagittarius
+            if (degreeInRasi < 25) return 2;  // Mercury - Gemini
+            return 6;                         // Venus   - Libra
         }
         else
         {
             // Even signs: Venus(5°), Mercury(7°), Jupiter(8°), Saturn(5°), Mars(5°)
-            if (degreeInRasi < 5) return 4;  // Venus (Leo)
-            if (degreeInRasi < 12) return 2; // Mercury (Gemini)
-            if (degreeInRasi < 20) return 8; // Jupiter (Sagittarius)
-            if (degreeInRasi < 25) return 10; // Saturn (Aquarius)
-            return 0; // Mars (Aries)
+            if (degreeInRasi < 5) return 1;   // Venus   - Taurus
+            if (degreeInRasi < 12) return 5;  // Mercury - Virgo
+            if (degreeInRasi < 20) return 11; // Jupiter - Pisces
+            if (degreeInRasi < 25) return 9;  // Saturn  - Capricorn
+            return 7;                         // Mars    - Scorpio
         }
     }
 
