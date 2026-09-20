@@ -97,7 +97,7 @@ public class ChartOrchestratorService
                 double currentJd = eph.GetJulianDay(DateTime.UtcNow);
                 
                 result.DashaResult = _vimshottariDashaCalculator.Calculate(
-                    moon.Longitude, result.ChartData.JulianDay, currentJd, 6);
+                    moon.Longitude, result.ChartData.JulianDay, currentJd, 6, birthData.TimeZoneOffset);
             }
             
             return result;
@@ -193,7 +193,8 @@ public class ChartOrchestratorService
             // We should create a new one or extend the scope.
             new EphemerisService(),
             (int)settings.Ayanamsha,
-            AppSettings.Load().AyanamshaOffset 
+            AppSettings.Load().AyanamshaOffset,
+            birthData.TimeZoneOffset 
         );
 
         // 9. Calculate Inauspicious Periods (Rahu Kalam, Yamagandam, Gulikai Kalam)
@@ -221,7 +222,7 @@ public class ChartOrchestratorService
             }
             
             result.DashaResult = _vimshottariDashaCalculator.Calculate(
-                moonAD.Longitude, result.ChartData.JulianDay, currentJd, 6); // 6 levels
+                moonAD.Longitude, result.ChartData.JulianDay, currentJd, 6, birthData.TimeZoneOffset); // 6 levels
         }
 
         return result;

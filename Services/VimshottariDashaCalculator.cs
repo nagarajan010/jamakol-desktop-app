@@ -15,6 +15,9 @@ public class VimshottariDashaCalculator
     /// </summary>
     private const double DaysPerYear = 365.256363;
 
+    /// <summary>Hours east of UTC used to print the periods; see Calculate.</summary>
+    private double _timeZoneOffset;
+
     // Planet sequence in Vimshottari system
     private static readonly string[] DashaSequence = 
     { "Ketu", "Venus", "Sun", "Moon", "Mars", "Rahu", "Jupiter", "Saturn", "Mercury" };
@@ -57,9 +60,16 @@ public class VimshottariDashaCalculator
     /// <param name="birthJulianDay">Birth date in Julian Day</param>
     /// <param name="currentJulianDay">Target date in Julian Day for identifying "current" dasa</param>
     /// <param name="calculateLevels">Number of levels to calculate (1-5)</param>
-    public DashaResult Calculate(double moonLongitude, double birthJulianDay, double currentJulianDay, int calculateLevels = 3)
+    /// <param name="timeZoneOffset">
+    /// Hours east of UTC for the chart's place, e.g. 5.5 for IST. A Julian Day is an instant with
+    /// no zone, so a period converted straight back reads as UTC - the dates printed beside every
+    /// period were hours off the clock the reader is holding, while the period marked current was
+    /// right all along, since that test compares Julian Days.
+    /// </param>
+    public DashaResult Calculate(double moonLongitude, double birthJulianDay, double currentJulianDay, int calculateLevels = 3, double timeZoneOffset = 0.0)
     {
         var result = new DashaResult();
+        _timeZoneOffset = timeZoneOffset;
 
         // Calculate Moon's nakshatra and position within it.
         // Normalize first: an out-of-range longitude would otherwise be papered over by the
@@ -280,7 +290,11 @@ public class VimshottariDashaCalculator
             // Just use a basic AddDays from a known epoch if within range
             // Epoch: 2000-01-01 12:00 UTC = JD 2451545.0
             double delta = jd - 2451545.0;
-            return new DateTime(2000, 1, 1, 12, 0, 0, DateTimeKind.Utc).AddDays(delta);
+            // Shift into the chart's own zone: a Julian Day is an instant, and printing it raw
+            // shows UTC beside a clock the reader reads as local.
+            return new DateTime(2000, 1, 1, 12, 0, 0, DateTimeKind.Unspecified)
+                .AddDays(delta)
+                .AddHours(_timeZoneOffset);
         }
         catch {
             return DateTime.MinValue;

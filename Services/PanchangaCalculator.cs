@@ -148,6 +148,8 @@ public class PanchangaCalculator
     /// <summary>
     /// Calculate Panchanga for given date, time, and chart data
     /// </summary>
+    private double _timeZoneOffset;
+
     public PanchangaDetails Calculate(
         ChartData chartData,
         DateTime sunrise,
@@ -163,9 +165,13 @@ public class PanchangaCalculator
         // offset - the scan compared values on two different zodiacs and found the crossing at
         // the wrong instant (roughly 1.8 hours of tithi error for Raman).
         int ayanamshaId = 1,
-        double ayanamshaOffset = 0.0) // Added dependencies
+        double ayanamshaOffset = 0.0,
+        // Hours east of UTC for this chart's place. A Julian Day carries no zone, so an end time
+        // converted straight back prints as UTC beside a clock the reader reads as local.
+        double timeZoneOffset = 0.0) // Added dependencies
     {
         var details = new PanchangaDetails();
+        _timeZoneOffset = timeZoneOffset;
 
         // Get Sun and Moon positions from ChartData (already calculated)
         var sun = chartData.Planets.FirstOrDefault(p => p.Name == "Sun");
@@ -537,7 +543,7 @@ public class PanchangaCalculator
             else high = mid;
         }
         
-        DateTime date = EphemerisService.JulianDateToDateTime(high);
+        DateTime date = EphemerisService.JulianDateToDateTime(high).AddHours(_timeZoneOffset);
         // Format relative to today? Just Time if same day?
         // User probably wants full date or clear time.
         // Let's return "MMM dd, h:mm tt"
