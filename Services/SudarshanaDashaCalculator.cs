@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using JamakolAstrology.Models;
 
@@ -164,11 +164,17 @@ public class SudarshanaDashaCalculator
         int depth)
     {
         var children = new List<SudarshanaDashaPeriod>();
-        double eachYears = (toYears - fromYears) / Signs;
-        if (eachYears <= 0.0) return children;
 
+        // Below the year the split is equal and works from the parent's measured span, so it
+        // carries no years at all - only the solar-return levels need them. Guarding on
+        // eachYears for BOTH branches collapsed every level past the second, because the
+        // equal-split recursion is handed no year range to divide.
         bool useSolarReturns = level <= 2;
+        double eachYears = (toYears - fromYears) / Signs;
+        if (useSolarReturns && eachYears <= 0.0) return children;
+
         long parentTicks = parent.EndDate.Ticks - parent.StartDate.Ticks;
+        if (!useSolarReturns && parentTicks <= 0L) return children;
 
         for (int index = 0; index < Signs; index++)
         {
