@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using JamakolAstrology.Models;
 
 namespace JamakolAstrology.Services;
@@ -61,6 +62,7 @@ public class SudarshanaDashaCalculator
         var result = new SudarshanaDashaResult();
 
         if (ascendantSign < 1 || ascendantSign > Signs) ascendantSign = 1;
+        if (depth > SudarshanaDashaPeriod.MaxLevel) depth = SudarshanaDashaPeriod.MaxLevel;
 
         for (int index = 0; index < Signs; index++)
         {
@@ -152,7 +154,7 @@ public class SudarshanaDashaCalculator
     /// going back through years would not close the round trip, since converting a date back
     /// with a nominal year lands a minute or two off.
     /// </summary>
-    private List<SudarshanaDashaPeriod> BuildSubPeriods(
+    private ObservableCollection<SudarshanaDashaPeriod> BuildSubPeriods(
         SudarshanaDashaPeriod parent,
         int mainSign,
         double fromYears,
@@ -163,7 +165,7 @@ public class SudarshanaDashaCalculator
         DateTime queryDate,
         int depth)
     {
-        var children = new List<SudarshanaDashaPeriod>();
+        var children = new ObservableCollection<SudarshanaDashaPeriod>();
 
         // Below the year the split is equal and works from the parent's measured span, so it
         // carries no years at all - only the solar-return levels need them. Guarding on
@@ -236,15 +238,16 @@ public class SudarshanaDashaCalculator
     /// Expand one period's children on demand, for a level the tree was not built to.
     /// Below the year the split is equal, so the parent's span is all this needs.
     /// </summary>
-    public List<SudarshanaDashaPeriod> Expand(SudarshanaDashaPeriod parent)
+    public ObservableCollection<SudarshanaDashaPeriod> Expand(SudarshanaDashaPeriod parent)
     {
         if (parent.SubPeriods.Count > 0) return parent.SubPeriods;
+        if (!parent.CanExpand) return parent.SubPeriods;
 
         long span = parent.EndDate.Ticks - parent.StartDate.Ticks;
-        if (span <= 0) return new List<SudarshanaDashaPeriod>();
+        if (span <= 0) return parent.SubPeriods;
 
         long each = span / Signs;
-        var children = new List<SudarshanaDashaPeriod>();
+        var children = new ObservableCollection<SudarshanaDashaPeriod>();
 
         for (int index = 0; index < Signs; index++)
         {
@@ -271,11 +274,15 @@ public class SudarshanaDashaCalculator
     private static List<SudarshanaDashaPeriod> BuildCurrentChain(List<SudarshanaDashaPeriod> roots)
     {
         var chain = new List<SudarshanaDashaPeriod>();
-        var level = roots;
+        IList<SudarshanaDashaPeriod> level = roots;
 
         while (true)
         {
-            SudarshanaDashaPeriod? active = level.Find(p => p.IsActive);
+            SudarshanaDashaPeriod? active = null;
+            foreach (var p in level)
+            {
+                if (p.IsActive) { active = p; break; }
+            }
             if (active == null) break;
 
             chain.Add(active);

@@ -1,5 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using JamakolAstrology.Services;
 
 namespace JamakolAstrology.Models;
@@ -7,8 +9,14 @@ namespace JamakolAstrology.Models;
 /// <summary>
 /// Represents one Sudarshana Chakra Dasha period.
 /// </summary>
-public class SudarshanaDashaPeriod
+public class SudarshanaDashaPeriod : INotifyPropertyChanged
 {
+    /// <summary>
+    /// Deepest level the dasha runs to. Six levels puts the last one at about twenty-five
+    /// minutes, which is as fine as the reckoning is meaningful.
+    /// </summary>
+    public const int MaxLevel = 6;
+
     public int DashaYear { get; set; }
     public int MainDashaHouse { get; set; }
     public int SubDashaHouse { get; set; }
@@ -26,7 +34,29 @@ public class SudarshanaDashaPeriod
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public bool IsActive { get; set; }
-    public List<SudarshanaDashaPeriod> SubPeriods { get; set; } = new();
+    private ObservableCollection<SudarshanaDashaPeriod> _subPeriods = new();
+
+    /// <summary>
+    /// Children of this period. Observable so a level filled in on demand reaches the view.
+    /// </summary>
+    public ObservableCollection<SudarshanaDashaPeriod> SubPeriods
+    {
+        get => _subPeriods;
+        set
+        {
+            _subPeriods = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SubPeriods)));
+        }
+    }
+
+    /// <summary>
+    /// Whether this period has a level beneath it. Twelve to the power of six is over three
+    /// million periods, so the tree is built a few levels deep and the rest is filled in as the
+    /// reader opens it - this is what tells the view to offer an expander meanwhile.
+    /// </summary>
+    public bool CanExpand => Level < MaxLevel;
+
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     public string SignName => ZodiacUtils.GetSignName(Sign);
 
