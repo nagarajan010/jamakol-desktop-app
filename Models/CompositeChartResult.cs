@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using JamakolAstrology.Models;
 
@@ -17,6 +17,8 @@ public class CompositeChartResult
     public PrasannaDetails PrasannaDetails { get; set; } = new();
     public PanchangaDetails PanchangaDetails { get; set; } = new();
     public DashaResult? DashaResult { get; set; }
+    public SudarshanaDashaResult? SudarshanaDashaResult { get; set; }
+    public NarayanaDashaResult? NarayanaDashaResult { get; set; }
     
     // Metadata for display
     public string DayLord { get; set; } = "";

@@ -241,7 +241,17 @@ public partial class MainWindow : Window
             BirthDetailsPanel.UpdateDetails(result);
             
             // NEW: Update other top-level tabs content
-            if (DashasPanelControl != null) DashasPanelControl.UpdateDashas(result.DashaResult);
+            if (DashasPanelControl != null)
+            {
+                DashasPanelControl.UpdateDashas(result.DashaResult, result.SudarshanaDashaResult);
+                DashasPanelControl.UpdateNarayanaDashas(
+                    result.NarayanaDashaResult,
+                    result.ChartData,
+                    birthData.BirthDateTime,
+                    result.ChartData.JulianDay,
+                    birthData.TimeZoneOffset,
+                    new Services.NarayanaDashaAdapter());
+            }
             if (AVDetailsPanelControl != null) AVDetailsPanelControl.UpdateChart(result.ChartData);
             if (KpDetailsPanelControl != null) KpDetailsPanelControl.UpdateChart(result.ChartData);
             if (HousesPanelControl != null) HousesPanelControl.UpdateChart(result.ChartData);
@@ -412,6 +422,22 @@ public partial class MainWindow : Window
         // SelectionChanged event handles the update
     }
 
+    private void BtnCalendar_Click(object sender, RoutedEventArgs e)
+    {
+        MainTabControl.SelectedIndex = 2;
+        // SelectionChanged event handles the update
+    }
+
+    /// <summary>
+    /// Jump from a calendar day to the Birth Chart tab, pre-filled with that date.
+    /// </summary>
+    private void OnCalendarOpenInBirthChart(object? sender, DateTime date)
+    {
+        BirthInputControl.SetDate(date);
+        MainTabControl.SelectedIndex = 0;
+        CalculateChart();
+    }
+
     private void SettingsButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -442,7 +468,8 @@ public partial class MainWindow : Window
 
                 // Recalculate active tab
                 if (MainTabControl.SelectedIndex == 0) CalculateChart();
-                else CalculateJamakolChart();
+                else if (MainTabControl.SelectedIndex == 1) CalculateJamakolChart();
+                else if (CalendarPanelControl != null) _ = CalendarPanelControl.RefreshAsync(_appSettings);
                 
                 if (BirthInputControl != null) BirthInputControl.SetStatus("Settings saved and applied");
             }
@@ -537,6 +564,7 @@ public partial class MainWindow : Window
         var inactiveBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#cc0000"));
         BtnBirthChart.Background = index == 0 ? activeBrush : inactiveBrush;
         BtnJamakol.Background = index == 1 ? activeBrush : inactiveBrush;
+        BtnCalendar.Background = index == 2 ? activeBrush : inactiveBrush;
     }
 
     private void ApplyFontSizes()

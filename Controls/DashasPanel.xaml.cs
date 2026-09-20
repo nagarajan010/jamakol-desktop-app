@@ -9,6 +9,13 @@ public partial class DashasPanel : UserControl
 {
     private readonly SudarshanaDashaCalculator _sudarshanaExpander = new();
 
+    // Narayana sub-periods are computed from the chart, so expanding a node needs it kept.
+    private NarayanaDashaAdapter? _narayanaExpander;
+    private ChartData? _narayanaChart;
+    private DateTime _narayanaBirth;
+    private double _narayanaBirthJd;
+    private double _narayanaTimeZone;
+
     public DashasPanel()
     {
         InitializeComponent();
@@ -44,6 +51,66 @@ public partial class DashasPanel : UserControl
     /// <summary>
     /// Update Dasha details
     /// </summary>
+    /// <summary>
+    /// Fill in a Narayana level the moment the reader opens it.
+    /// </summary>
+    private void NarayanaItemExpanded(object sender, RoutedEventArgs e)
+    {
+        if (_narayanaExpander == null || _narayanaChart == null) return;
+        if (e.OriginalSource is not TreeViewItem item) return;
+        if (item.DataContext is not NarayanaPeriod period) return;
+
+        void Fill(NarayanaPeriod p)
+        {
+            if (p.SubPeriods.Count > 0) return;
+            _narayanaExpander.Expand(p, _narayanaChart, _narayanaBirth, _narayanaBirthJd,
+                                     DateTime.Now, _narayanaTimeZone);
+        }
+
+        Fill(period);
+        // Give the newly shown level its own children, so each offers an expander in turn.
+        foreach (var child in period.SubPeriods) Fill(child);
+    }
+
+    public void UpdateNarayanaDashas(
+        NarayanaDashaResult? result,
+        ChartData? chart,
+        DateTime birth,
+        double birthJulianDay,
+        double timeZoneOffset,
+        NarayanaDashaAdapter? expander)
+    {
+        _narayanaExpander = expander;
+        _narayanaChart = chart;
+        _narayanaBirth = birth;
+        _narayanaBirthJd = birthJulianDay;
+        _narayanaTimeZone = timeZoneOffset;
+
+        if (result == null)
+        {
+            CurrentNarayanaText.Text = "-";
+            CurrentNarayanaDates.Text = "-";
+            NarayanaStartInfo.Text = "";
+            NarayanaTreeView.ItemsSource = null;
+            return;
+        }
+
+        NarayanaTreeView.ItemsSource = result.MahaDashas;
+        NarayanaStartInfo.Text = $"Starts in {result.StartingSignName} • order: "
+            + string.Join(" ", result.Order.ConvertAll(s => ZodiacUtils.GetSignName(s + 1)));
+
+        if (result.CurrentChain.Count == 0)
+        {
+            CurrentNarayanaText.Text = "No current period";
+            CurrentNarayanaDates.Text = "";
+            return;
+        }
+
+        CurrentNarayanaText.Text = result.CurrentDisplay;
+        var deepest = result.CurrentChain[^1];
+        CurrentNarayanaDates.Text = $"L{deepest.Level}: {deepest.DateRange}";
+    }
+
     public void UpdateDashas(DashaResult? result, SudarshanaDashaResult? sudarshanaResult = null)
     {
         if (result == null)

@@ -76,6 +76,15 @@ public class ChartOrchestratorService
                 DateTime.Now,
                 result.ChartData.JulianDay,
                 result.ChartData.AscendantSign);
+
+            // Narayana (Chara) dasha - a RASI dasha, so it reads the whole chart rather than just
+            // the lagna, and reckons its years of age through the same solar returns.
+            result.NarayanaDashaResult = new NarayanaDashaAdapter(solarReturns).Calculate(
+                result.ChartData,
+                birthData.BirthDateTime,
+                DateTime.Now,
+                result.ChartData.JulianDay,
+                birthData.TimeZoneOffset);
         }
 
         // For BC dates, skip DateTime-dependent calculations (sunrise, Jama Graha, Panchanga, etc.)
