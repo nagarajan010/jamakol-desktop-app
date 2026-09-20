@@ -129,6 +129,8 @@ public partial class DashasPanel : UserControl
         }
 
         CurrentSudarshanaText.Text = result.CurrentDisplay;
-        CurrentSudarshanaDates.Text = $"Year {result.CurrentPeriod.DashaYear}: {result.CurrentPeriod.DateRange}";
+        // The deepest link is the one actually running now, so its span is what to date.
+        CurrentSudarshanaDates.Text =
+            $"L{result.CurrentPeriod.Level}: {result.CurrentPeriod.DateRange}";
     }
 }

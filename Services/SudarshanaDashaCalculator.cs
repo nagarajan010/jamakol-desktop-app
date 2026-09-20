@@ -73,6 +73,7 @@ public class SudarshanaDashaCalculator
             var mainPeriod = BuildPeriod(
                 sign: sign,
                 mainSign: sign,
+                lagnaSign: ascendantSign,
                 fromYears: fromYears,
                 toYears: toYears,
                 dashaYear: (int)fromYears + 1,
@@ -97,7 +98,7 @@ public class SudarshanaDashaCalculator
             }
         }
 
-        result.CurrentChain = BuildCurrentChain(result.MainDashas);
+        BuildCurrentChain(result.MainDashas, queryDate, result.CurrentChain);
 
         // The deepest resolved period is the one worth calling "current".
         if (result.CurrentChain.Count > 0)
@@ -111,6 +112,7 @@ public class SudarshanaDashaCalculator
     private SudarshanaDashaPeriod BuildPeriod(
         int sign,
         int mainSign,
+        int lagnaSign,
         double fromYears,
         double toYears,
         int dashaYear,
@@ -126,8 +128,8 @@ public class SudarshanaDashaCalculator
         var period = new SudarshanaDashaPeriod
         {
             DashaYear = dashaYear,
-            MainDashaHouse = mainSign,
-            SubDashaHouse = sign,
+            MainDashaSign = mainSign,
+            LagnaSign = lagnaSign,
             Sign = sign,
             Level = level,
             StartDate = start,
@@ -138,7 +140,7 @@ public class SudarshanaDashaCalculator
         if (level < depth)
         {
             period.SubPeriods = BuildSubPeriods(
-                period, mainSign, fromYears, toYears, level + 1,
+                period, mainSign, lagnaSign, fromYears, toYears, level + 1,
                 dateOfBirth, birthJulianDay, queryDate, depth);
         }
 
@@ -157,6 +159,7 @@ public class SudarshanaDashaCalculator
     private ObservableCollection<SudarshanaDashaPeriod> BuildSubPeriods(
         SudarshanaDashaPeriod parent,
         int mainSign,
+        int lagnaSign,
         double fromYears,
         double toYears,
         int level,
@@ -189,6 +192,7 @@ public class SudarshanaDashaCalculator
                 child = BuildPeriod(
                     sign: sign,
                     mainSign: mainSign,
+                    lagnaSign: lagnaSign,
                     fromYears: fromYears + index * eachYears,
                     toYears: fromYears + (index + 1) * eachYears,
                     dashaYear: (int)Math.Floor(fromYears + index * eachYears) + 1,
@@ -211,8 +215,8 @@ public class SudarshanaDashaCalculator
                 child = new SudarshanaDashaPeriod
                 {
                     DashaYear = parent.DashaYear,
-                    MainDashaHouse = mainSign,
-                    SubDashaHouse = sign,
+                    MainDashaSign = mainSign,
+                    LagnaSign = lagnaSign,
                     Sign = sign,
                     Level = level,
                     StartDate = start,
@@ -223,7 +227,7 @@ public class SudarshanaDashaCalculator
                 if (level < depth)
                 {
                     child.SubPeriods = BuildSubPeriods(
-                        child, mainSign, 0, 0, level + 1,
+                        child, mainSign, lagnaSign, 0, 0, level + 1,
                         dateOfBirth, birthJulianDay, queryDate, depth);
                 }
             }
@@ -257,8 +261,8 @@ public class SudarshanaDashaCalculator
             children.Add(new SudarshanaDashaPeriod
             {
                 DashaYear = parent.DashaYear,
-                MainDashaHouse = parent.MainDashaHouse,
-                SubDashaHouse = WrapSign(parent.Sign + index),
+                MainDashaSign = parent.MainDashaSign,
+                LagnaSign = parent.LagnaSign,
                 Sign = WrapSign(parent.Sign + index),
                 Level = parent.Level + 1,
                 StartDate = start,
@@ -270,10 +274,19 @@ public class SudarshanaDashaCalculator
         return children;
     }
 
-    /// <summary>The running period at each level, outermost first.</summary>
-    private static List<SudarshanaDashaPeriod> BuildCurrentChain(List<SudarshanaDashaPeriod> roots)
+    /// <summary>
+    /// The running period at each level, outermost first, all the way to the deepest.
+    ///
+    /// The chain is followed past the eagerly built levels by expanding as it goes: the reader
+    /// wants to know what is running NOW at every level, and stopping whereever the eager build
+    /// happened to stop showed three links where the dasha has six. Only the periods actually on
+    /// the chain are expanded - one per level, not the whole tier.
+    /// </summary>
+    private void BuildCurrentChain(
+        List<SudarshanaDashaPeriod> roots,
+        DateTime queryDate,
+        List<SudarshanaDashaPeriod> chain)
     {
-        var chain = new List<SudarshanaDashaPeriod>();
         IList<SudarshanaDashaPeriod> level = roots;
 
         while (true)
@@ -286,11 +299,21 @@ public class SudarshanaDashaCalculator
             if (active == null) break;
 
             chain.Add(active);
+            if (!active.CanExpand) break;
+
+            if (active.SubPeriods.Count == 0)
+            {
+                Expand(active);
+                // A period built on demand carries no running flag, so set it here.
+                foreach (var child in active.SubPeriods)
+                {
+                    child.IsActive = queryDate >= child.StartDate && queryDate < child.EndDate;
+                }
+            }
+
             if (active.SubPeriods.Count == 0) break;
             level = active.SubPeriods;
         }
-
-        return chain;
     }
 
     /// <summary>

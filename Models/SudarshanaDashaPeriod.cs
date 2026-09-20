@@ -18,8 +18,12 @@ public class SudarshanaDashaPeriod : INotifyPropertyChanged
     public const int MaxLevel = 6;
 
     public int DashaYear { get; set; }
-    public int MainDashaHouse { get; set; }
-    public int SubDashaHouse { get; set; }
+
+    /// <summary>The rashi (1-12) of the mahadasha this period sits under.</summary>
+    public int MainDashaSign { get; set; }
+
+    /// <summary>The lagna's rashi (1-12), which the house is counted from.</summary>
+    public int LagnaSign { get; set; }
 
     /// <summary>
     /// The rashi (1-12) ruling this period. A SIGN rules a Sudarshana period, not a graha, so
@@ -60,12 +64,22 @@ public class SudarshanaDashaPeriod : INotifyPropertyChanged
 
     public string SignName => ZodiacUtils.GetSignName(Sign);
 
-    public string DisplayName => Level == 1
-        ? SignName
-        : $"{SignName} ({SubDisplayName})";
+    /// <summary>
+    /// The house this period's sign holds from the LAGNA.
+    ///
+    /// A rashi dasha is read by house - the 2nd for family and wealth, the 7th for partnership -
+    /// so a bare sign name asks the reader to count round the zodiac from their own lagna on
+    /// every row.
+    /// </summary>
+    public int House => LagnaSign >= 1 && LagnaSign <= 12 && Sign >= 1 && Sign <= 12
+        ? ((Sign - LagnaSign + 12) % 12) + 1
+        : 0;
 
-    public string MainDisplayName => ZodiacUtils.GetSignName(MainDashaHouse);
-    public string SubDisplayName => ZodiacUtils.GetSignName(SubDashaHouse);
+    /// <summary>The sign with the house it holds, as "Scorpio (2)".</summary>
+    public string DisplayName => House > 0 ? $"{SignName} ({House})" : SignName;
+
+    public string MainDisplayName => ZodiacUtils.GetSignName(MainDashaSign);
+    public string SubDisplayName => DisplayName;
 
     /// <summary>
     /// Periods below the year run to minutes, so they need the time of day; the top two levels
@@ -91,7 +105,11 @@ public class SudarshanaDashaResult
     /// <summary>The running period at each level, outermost first.</summary>
     public List<SudarshanaDashaPeriod> CurrentChain { get; set; } = new();
 
+    /// <summary>
+    /// The running chain, each link named with the house it holds from the lagna:
+    /// "Aquarius (5) / Scorpio (2) / Libra (1)".
+    /// </summary>
     public string CurrentDisplay => CurrentChain.Count > 0
-        ? string.Join(" / ", CurrentChain.ConvertAll(p => p.SignName))
+        ? string.Join(" / ", CurrentChain.ConvertAll(p => p.DisplayName))
         : "-";
 }
