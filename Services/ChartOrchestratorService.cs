@@ -21,7 +21,6 @@ public class ChartOrchestratorService
     private readonly PrasannaCalculator _prasannaCalculator;
     private readonly PanchangaCalculator _panchangaCalculator;
     private readonly VimshottariDashaCalculator _vimshottariDashaCalculator;
-    private readonly SudarshanaDashaCalculator _sudarshanaDashaCalculator;
     private readonly AshtakavargaCalculator _ashtakavargaCalculator;
     private SunriseCalculator _sunriseCalculator;
 
@@ -36,7 +35,6 @@ public class ChartOrchestratorService
         _prasannaCalculator = new PrasannaCalculator();
         _panchangaCalculator = new PanchangaCalculator();
         _vimshottariDashaCalculator = new VimshottariDashaCalculator();
-        _sudarshanaDashaCalculator = new SudarshanaDashaCalculator();
         _sunriseCalculator = new SunriseCalculator();
         _ashtakavargaCalculator = new AshtakavargaCalculator();
     }
@@ -65,9 +63,19 @@ public class ChartOrchestratorService
 
         if (!birthData.IsBCDate)
         {
-            result.SudarshanaDashaResult = _sudarshanaDashaCalculator.Calculate(
+            // The solar-return search caches returns per birth, and the sequence is anchored to
+            // the LAGNA, so both the finder and the calculator belong to this chart.
+            using var sudarshanaEphemeris = new EphemerisService();
+            var solarReturns = SolarReturnFinder.FromEphemeris(
+                sudarshanaEphemeris,
+                (int)settings.Ayanamsha,
+                AppSettings.Load().AyanamshaOffset);
+
+            result.SudarshanaDashaResult = new SudarshanaDashaCalculator(solarReturns).Calculate(
                 birthData.BirthDateTime,
-                DateTime.Now);
+                DateTime.Now,
+                result.ChartData.JulianDay,
+                result.ChartData.AscendantSign);
         }
 
         // For BC dates, skip DateTime-dependent calculations (sunrise, Jama Graha, Panchanga, etc.)
