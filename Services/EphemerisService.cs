@@ -1,4 +1,4 @@
-using SwissEphNet;
+﻿using SwissEphNet;
 using JamakolAstrology.Models;
 using System.IO;
 using System.Linq;
@@ -149,6 +149,24 @@ public class EphemerisService : IDisposable
             
             return (siderealLongitude, result[1], result[3]);
         }
+    }
+
+    /// <summary>
+    /// SIDEREAL heliocentric longitude - the sighrocca chesta bala reads. Null for the luminaries
+    /// and the nodes, which have no heliocentric position, rather than a zero that would read as
+    /// a real conjunction.
+    /// </summary>
+    public double? GetHeliocentricLongitude(double julianDay, int planetId, int ayanamshaId, double ayanamshaOffset = 0)
+    {
+        if (planetId == SwissEph.SE_SUN || planetId == SwissEph.SE_MOON || planetId == SwissEph.SE_MEAN_NODE)
+            return null;
+
+        double[] result = new double[6];
+        string errorMsg = "";
+        _sweph.swe_set_sid_mode(ayanamshaId, 0, 0);
+        int flags = SwissEph.SEFLG_SWIEPH | SwissEph.SEFLG_HELCTR | SwissEph.SEFLG_SIDEREAL;
+        if (_sweph.swe_calc_ut(julianDay, planetId, flags, result, ref errorMsg) < 0) return null;
+        return ZodiacUtils.NormalizeDegree(result[0] - ayanamshaOffset);
     }
 
     /// <summary>

@@ -21,6 +21,7 @@ public class CompositeChartResult
     public NarayanaDashaResult? NarayanaDashaResult { get; set; }
     public DashaResult? NaisargikaDashaResult { get; set; }
     public List<Services.SpecialLagna> SpecialLagnas { get; set; } = new();
+    public Services.Shadbala.ShadbalaContext? ShadbalaContext { get; set; }
     
     // Metadata for display
     public string DayLord { get; set; } = "";

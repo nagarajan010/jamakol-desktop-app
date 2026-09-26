@@ -186,6 +186,7 @@ public partial class MainWindow : Window
                  else if (tabName == "AmshaDevataTab" && AmshaDevataChartPlaceholder != null) AmshaDevataChartPlaceholder.Child = _sharedSideCharts;
                  else if (tabName == "DnaTab" && DnaChartPlaceholder != null) DnaChartPlaceholder.Child = _sharedSideCharts;
                  else if (tabName == "NavataraTab" && NavataraChartPlaceholder != null) NavataraChartPlaceholder.Child = _sharedSideCharts;
+                 else if (tabName == "ShadbalaTab" && ShadbalaChartPlaceholder != null) ShadbalaChartPlaceholder.Child = _sharedSideCharts;
                  // ChakrasTab: Do nothing (Side charts remain detached/hidden)
              }
              catch (Exception)
@@ -265,6 +266,7 @@ public partial class MainWindow : Window
             if (KpDetailsPanelControl != null) KpDetailsPanelControl.UpdateChart(result.ChartData);
             if (HousesPanelControl != null) HousesPanelControl.UpdateChart(result.ChartData);
             if (HousesPanelControl != null) HousesPanelControl.UpdateChart(result.ChartData);
+            if (ShadbalaPanelControl != null) ShadbalaPanelControl.UpdateChart(result.ShadbalaContext);
             if (AmshaDevataPanelControl != null) AmshaDevataPanelControl.UpdateChart(result.ChartData, _appSettings.ChartFontSize);
             if (DnaDetailsPanelControl != null) DnaDetailsPanelControl.UpdateChart(result.ChartData);
             if (NavataraDetailsPanelControl != null) NavataraDetailsPanelControl.UpdateChart(result.ChartData);
@@ -592,6 +594,7 @@ public partial class MainWindow : Window
         if (AVDetailsPanelControl != null) UiThemeHelper.SetFontSizeRecursive(AVDetailsPanelControl, _appSettings.TableFontSize);
         if (KpDetailsPanelControl != null) UiThemeHelper.SetFontSizeRecursive(KpDetailsPanelControl, _appSettings.TableFontSize);
         if (HousesPanelControl != null) UiThemeHelper.SetFontSizeRecursive(HousesPanelControl, _appSettings.TableFontSize);
+        if (ShadbalaPanelControl != null) UiThemeHelper.SetFontSizeRecursive(ShadbalaPanelControl, _appSettings.TableFontSize);
         if (DnaDetailsPanelControl != null) UiThemeHelper.SetFontSizeRecursive(DnaDetailsPanelControl, _appSettings.TableFontSize);
         if (NavataraDetailsPanelControl != null) UiThemeHelper.SetFontSizeRecursive(NavataraDetailsPanelControl, _appSettings.TableFontSize);
         if (TithiPraveshaPanelControl != null) UiThemeHelper.SetFontSizeRecursive(TithiPraveshaPanelControl, _appSettings.TableFontSize);

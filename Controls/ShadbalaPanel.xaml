@@ -1,0 +1,75 @@
+<UserControl x:Class="JamakolAstrology.Controls.ShadbalaPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,10,0,0">
+        <StackPanel>
+            <!-- Varsesadi hora: the sixty-virupa share, and a real three-way choice -->
+            <Border Background="#fff8f0" Padding="8" Margin="0,0,0,6" BorderBrush="#ddd" BorderThickness="1" CornerRadius="5">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Varsesadi hora:" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="#333" Margin="0,0,8,0"/>
+                        <ComboBox x:Name="HoraPicker" MinWidth="260" SelectionChanged="HoraChanged">
+                            <ComboBoxItem Content="Equal hours from sunrise (matches deva.guru)" IsSelected="True"/>
+                            <ComboBoxItem Content="Kalahora - day and night in twelve (classical natal)"/>
+                            <ComboBoxItem Content="Mahakalahora - from 6 AM local mean time"/>
+                        </ComboBox>
+                    </StackPanel>
+                    <TextBlock x:Name="HoraNote" FontSize="11" Foreground="#8a6d00" FontStyle="Italic" TextWrapping="Wrap" Margin="0,6,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Totals -->
+            <Border Background="#fffff8" CornerRadius="5" Padding="5" Margin="0,0,0,6" BorderBrush="#ddd" BorderThickness="1">
+                <StackPanel>
+                    <TextBlock Text="Shadbala (virupa)" FontSize="14" FontWeight="Bold" Foreground="#cc0000" Margin="0,0,0,2"/>
+                    <TextBlock FontSize="11" Foreground="#777" Margin="0,0,0,5" TextWrapping="Wrap"
+                               Text="Ranked by ratio to each graha's own requirement - at or above 1 the graha is strong. Sixty virupa make one rupa."/>
+                    <DataGrid x:Name="TotalsGrid" AutoGenerateColumns="False" IsReadOnly="True" HeadersVisibility="Column"
+                              CanUserSortColumns="False" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#eee"
+                              Background="Transparent" RowBackground="Transparent" BorderThickness="0" FontSize="12">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Graha" Binding="{Binding GrahaName}" FontWeight="Bold"/>
+                            <DataGridTextColumn Header="Sthana" Binding="{Binding Sthana, StringFormat=F1}"/>
+                            <DataGridTextColumn Header="Dig" Binding="{Binding Dig, StringFormat=F1}"/>
+                            <DataGridTextColumn Header="Kala" Binding="{Binding Kala, StringFormat=F1}"/>
+                            <DataGridTextColumn Header="Ayana" Binding="{Binding Ayana, StringFormat=F1}"/>
+                            <DataGridTextColumn Header="Chesta" Binding="{Binding Chesta, StringFormat=F1}"/>
+                            <DataGridTextColumn Header="Naisargika" Binding="{Binding Naisargika, StringFormat=F2}"/>
+                            <DataGridTextColumn Header="Drg" Binding="{Binding Drg, StringFormat=F1}"/>
+                            <DataGridTextColumn Header="Total" Binding="{Binding Total, StringFormat=F1}" FontWeight="Bold"/>
+                            <DataGridTextColumn Header="Rupa" Binding="{Binding Rupa, StringFormat=F2}"/>
+                            <DataGridTextColumn Header="Required" Binding="{Binding Requirement, StringFormat=F0}"/>
+                            <DataGridTextColumn Header="Ratio" Binding="{Binding Ratio, StringFormat=F2}" FontWeight="Bold"/>
+                            <DataGridTextColumn Header="" Binding="{Binding Verdict}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </Border>
+
+            <!-- Parts of the two grouped components -->
+            <Border Background="#fffff8" CornerRadius="5" Padding="5" Margin="0,0,0,6" BorderBrush="#ddd" BorderThickness="1">
+                <StackPanel>
+                    <TextBlock Text="Sthana and Kala, by part" FontSize="14" FontWeight="Bold" Foreground="#cc0000" Margin="0,0,0,5"/>
+                    <DataGrid x:Name="PartsGrid" AutoGenerateColumns="False" IsReadOnly="True" HeadersVisibility="Column"
+                              CanUserSortColumns="False" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#eee"
+                              Background="Transparent" RowBackground="Transparent" BorderThickness="0" FontSize="12">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Graha" Binding="{Binding GrahaName}" FontWeight="Bold"/>
+                            <DataGridTextColumn Header="Uccha" Binding="{Binding Uccha, StringFormat=F1}"/>
+                            <DataGridTextColumn Header="Saptavargiya" Binding="{Binding Saptavargiya, StringFormat=F0}"/>
+                            <DataGridTextColumn Header="Oja-Yugma" Binding="{Binding OjaYugma, StringFormat=F0}"/>
+                            <DataGridTextColumn Header="Kendradi" Binding="{Binding Kendradi, StringFormat=F0}"/>
+                            <DataGridTextColumn Header="Drekkana" Binding="{Binding Drekkana, StringFormat=F0}"/>
+                            <DataGridTextColumn Header="Natonnata" Binding="{Binding Natonnata, StringFormat=F1}"/>
+                            <DataGridTextColumn Header="Paksha" Binding="{Binding Paksha, StringFormat=F1}"/>
+                            <DataGridTextColumn Header="Tribhaga" Binding="{Binding Tribhaga, StringFormat=F0}"/>
+                            <DataGridTextColumn Header="Varsesadi" Binding="{Binding Varsesadi, StringFormat=F0}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </Border>
+
+            <TextBlock x:Name="MethodNote" FontSize="11" Foreground="#777" TextWrapping="Wrap" Margin="4,0,4,8"/>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

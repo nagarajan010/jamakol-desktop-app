@@ -238,6 +238,23 @@ public class ChartOrchestratorService
                 .Calculate(result.ChartData.JulianDay, ToJd(todaySunrise), ToJd(todaySunset),
                            ToJd(tomorrowSunrise), vedicDate.DayOfWeek,
                            birthData.Latitude, birthData.Longitude);
+
+            // Shadbala reads the same vedic-day bounds. The panel computes it, so it can
+            // recompute when the reader switches the varsesadi hora.
+            result.ShadbalaContext = new Services.Shadbala.ShadbalaContext
+            {
+                Chart = result.ChartData,
+                BirthLocal = birthData.BirthDateTime,
+                TimeZoneOffset = tz,
+                SunriseJd = ToJd(todaySunrise),
+                SunsetJd = ToJd(todaySunset),
+                NextSunriseJd = ToJd(tomorrowSunrise),
+                VedicDay = vedicDate.DayOfWeek,
+                Latitude = birthData.Latitude,
+                Longitude = birthData.Longitude,
+                AyanamshaId = (int)settings.Ayanamsha,
+                AyanamshaOffset = AppSettings.Load().AyanamshaOffset
+            };
         }
 
         // 10. Calculate Vimshottari Dasha (sub-levels based on Moon's nakshatra)
