@@ -20,6 +20,7 @@ public class CompositeChartResult
     public SudarshanaDashaResult? SudarshanaDashaResult { get; set; }
     public NarayanaDashaResult? NarayanaDashaResult { get; set; }
     public DashaResult? NaisargikaDashaResult { get; set; }
+    public List<Services.SpecialLagna> SpecialLagnas { get; set; } = new();
     
     // Metadata for display
     public string DayLord { get; set; } = "";

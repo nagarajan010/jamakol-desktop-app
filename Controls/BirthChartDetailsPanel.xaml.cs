@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
 using JamakolAstrology.Models;
@@ -28,6 +28,7 @@ public partial class BirthChartDetailsPanel : UserControl
     public void UpdateDetails(CompositeChartResult result)
     {
         UpdatePlanetaryPositions(result.ChartData);
+        SpecialLagnasGrid.ItemsSource = result.SpecialLagnas;
 
         var bd = result.ChartData.BirthData;
         var pd = result.PanchangaDetails;
@@ -189,6 +190,7 @@ public partial class BirthChartDetailsPanel : UserControl
     public void Clear()
     {
         PlanetGridControl.DataGridControl.ItemsSource = null;
+        SpecialLagnasGrid.ItemsSource = null;
         NatalDetailsText.Text = "No content available";
         AshtakavargaControl.ClearChart();
     }

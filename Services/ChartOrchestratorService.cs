@@ -220,6 +220,26 @@ public class ChartOrchestratorService
         result.InauspiciousPeriods = _inauspiciousPeriodsCalculator.Calculate(
             todaySunrise, todaySunset, birthData.BirthDateTime, vedicDate.DayOfWeek);
 
+        // 9b. Special lagnas and the Parashari Gulika/Mandi. They run from the sunrise that began
+        // the VEDIC day, and Gulika shares Gulikai Kalam's vela table, so they use the same
+        // sunrise, sunset and weekday as the periods above.
+        using (var slEph = new EphemerisService())
+        {
+            double tz = birthData.TimeZoneOffset;
+            double ToJd(DateTime local)
+            {
+                var u = local.AddHours(-tz);
+                return slEph.GetJulianDay(u.Year, u.Month, u.Day,
+                    u.Hour + u.Minute / 60.0 + u.Second / 3600.0 + u.Millisecond / 3600000.0);
+            }
+
+            result.SpecialLagnas = new SpecialLagnaCalculator(
+                    slEph, (int)settings.Ayanamsha, AppSettings.Load().AyanamshaOffset)
+                .Calculate(result.ChartData.JulianDay, ToJd(todaySunrise), ToJd(todaySunset),
+                           ToJd(tomorrowSunrise), vedicDate.DayOfWeek,
+                           birthData.Latitude, birthData.Longitude);
+        }
+
         // 10. Calculate Vimshottari Dasha (sub-levels based on Moon's nakshatra)
         var moonAD = result.ChartData.Planets.FirstOrDefault(p => p.Name == "Moon");
         if (moonAD != null)

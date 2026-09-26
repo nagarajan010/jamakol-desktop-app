@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using JamakolAstrology.Models;
 
@@ -31,6 +31,29 @@ public class InauspiciousPeriodsCalculator
     /// Sun=7, Mon=6, Tue=5, Wed=4, Thu=3, Fri=2, Sat=1
     /// </summary>
     private static readonly int[] GulikaiPortions = { 7, 6, 5, 4, 3, 2, 1 };
+
+    /// <summary>
+    /// Which eighth of the DAY Saturn rules, 0-based, for natal Gulika and Mandi.
+    ///
+    /// Read from the same table as Gulikai Kalam on purpose: a chart cast for a moment inside
+    /// Gulikai Kalam must put natal Gulika in that same span, so two copies could only ever drift
+    /// apart, never usefully differ.
+    /// </summary>
+    public static int GulikaDayPart(DayOfWeek vara) => GulikaiPortions[(int)vara] - 1;
+
+    /// <summary>
+    /// Which eighth of the NIGHT Saturn rules, 0-based.
+    ///
+    /// Night rulership begins from the FIFTH graha from the vara lord and runs in weekday order;
+    /// the eighth part is sunya and has no lord. So Wednesday night runs Su Mo Ma Me Ju Ve Sa and
+    /// Gulika is the 7th part, not the 3rd - the day table carried over would put it more than
+    /// five hours out (Rath's worked Wednesday night prints Gulika at 3:25:26 AM).
+    /// </summary>
+    public static int GulikaNightPart(DayOfWeek vara)
+    {
+        int start = ((int)vara + 4) % 7; // weekday order Sun..Sat, so the vara lord's index is the weekday
+        return (6 - start + 7) % 7;      // Saturn is index 6 in that order
+    }
 
     /// <summary>
     /// Calculate all inauspicious periods for the given day
