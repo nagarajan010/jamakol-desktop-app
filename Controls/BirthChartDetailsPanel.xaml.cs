@@ -29,6 +29,8 @@ public partial class BirthChartDetailsPanel : UserControl
     {
         UpdatePlanetaryPositions(result.ChartData);
         SpecialLagnasGrid.ItemsSource = result.SpecialLagnas;
+        ArudhaGrid.ItemsSource = new Services.ArudhaCalculator(
+            new Services.ChartDataRashiChart(result.ChartData)).ForAllHouses();
 
         var bd = result.ChartData.BirthData;
         var pd = result.PanchangaDetails;
@@ -191,6 +193,7 @@ public partial class BirthChartDetailsPanel : UserControl
     {
         PlanetGridControl.DataGridControl.ItemsSource = null;
         SpecialLagnasGrid.ItemsSource = null;
+        ArudhaGrid.ItemsSource = null;
         NatalDetailsText.Text = "No content available";
         AshtakavargaControl.ClearChart();
     }
