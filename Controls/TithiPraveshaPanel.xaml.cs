@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -45,7 +45,7 @@ public partial class TithiPraveshaPanel : UserControl
             CalculateButton.IsEnabled = true;
             
             if (YearComboBox.SelectedItem is int selectedYear)
-                CalculateTithiPravesha(selectedYear);
+                CalculateSelected(selectedYear);
         }
         else
         {
@@ -96,7 +96,7 @@ public partial class TithiPraveshaPanel : UserControl
     private void CalculateButton_Click(object sender, RoutedEventArgs e)
     {
         if (_natalChart == null || YearComboBox.SelectedItem is not int selectedYear) return;
-        CalculateTithiPravesha(selectedYear);
+        CalculateSelected(selectedYear);
     }
 
     private void CalculateTithiPravesha(int targetYear)
@@ -110,9 +110,6 @@ public partial class TithiPraveshaPanel : UserControl
             var settings = AppSettings.Load();
             int ayanId = (int)settings.Ayanamsha;
             double ayanOffset = settings.AyanamshaOffset;
-            double lat = _natalChart.BirthData.Latitude;
-            double lon = _natalChart.BirthData.Longitude;
-            double tzOffset = _natalChart.BirthData.TimeZoneOffset;
 
             var tithiPraveshaMoment = FindTithiPraveshaMoment(targetYear, ayanId, ayanOffset);
 
@@ -122,36 +119,99 @@ public partial class TithiPraveshaPanel : UserControl
                 return;
             }
 
-            var localTime = tithiPraveshaMoment.Value.AddHours(tzOffset);
-
-            var birthData = new BirthData
-            {
-                Year = localTime.Year,
-                Month = localTime.Month,
-                Day = localTime.Day,
-                Hour = localTime.Hour,
-                Minute = localTime.Minute,
-                Second = localTime.Second,
-                Latitude = lat,
-                Longitude = lon,
-                TimeZoneOffset = tzOffset,
-                Location = _natalChart.BirthData.Location,
-                Name = $"Tithi Pravesha {targetYear}"
-            };
-
-            var result = _orchestrator.CalculateFullChart(birthData, settings);
-            _tithiPraveshaChart = result.ChartData;
-
-            DisplayChart(result);
-
-            ChartCalculated?.Invoke(this, new TithiPraveshaCalculatedEventArgs(_tithiPraveshaChart));
-
+            CastAndShow(tithiPraveshaMoment.Value, $"Tithi Pravesha {targetYear}", settings);
             StatusText.Text = "Calculated";
         }
         catch (Exception ex)
         {
             StatusText.Text = $"Error: {ex.Message}";
         }
+    }
+
+    private bool IsVarsha => PraveshaKindCombo?.SelectedIndex == 1;
+    private string KindLabel => IsVarsha ? "Varsha Pravesha" : "Tithi Pravesha";
+
+    private void CalculateSelected(int targetYear)
+    {
+        if (IsVarsha) CalculateVarshaPravesha(targetYear);
+        else CalculateTithiPravesha(targetYear);
+    }
+
+    private void PraveshaKindChanged(object sender, SelectionChangedEventArgs e)
+    {
+        // Fires once during InitializeComponent, before the controls below exist.
+        if (DetailsHeader == null || PraveshaNote == null) return;
+
+        DetailsHeader.Text = $"{KindLabel} Details";
+        PraveshaNote.Text = IsVarsha ? VarshaPraveshaFinder.PlaceRule : "";
+
+        if (_natalChart != null && YearComboBox.SelectedItem is int year)
+            CalculateSelected(year);
+    }
+
+    /// <summary>
+    /// The annual chart opened by the Sun's return to its natal degree in the chosen year.
+    /// Cast for the BIRTHPLACE, which is the rule the finder carries.
+    /// </summary>
+    private void CalculateVarshaPravesha(int targetYear)
+    {
+        if (_natalChart == null) return;
+
+        StatusText.Text = "Calculating...";
+        try
+        {
+            var settings = AppSettings.Load();
+            int completedYears = targetYear - _natalChart.BirthData.Year;
+            if (completedYears < 1)
+            {
+                StatusText.Text = "Choose a year after the birth year";
+                return;
+            }
+
+            var finder = new VarshaPraveshaFinder(SolarReturnFinder.FromEphemeris(
+                _ephemeris, (int)settings.Ayanamsha, settings.AyanamshaOffset));
+            double? jd = finder.ForYear(_natalChart.JulianDay, completedYears);
+            if (jd == null)
+            {
+                StatusText.Text = "Could not find the solar return";
+                return;
+            }
+
+            CastAndShow(EphemerisService.JulianDateToDateTime(jd.Value),
+                        $"Varsha Pravesha {targetYear}", settings);
+            StatusText.Text = $"Enters year {completedYears + 1} of life";
+        }
+        catch (Exception ex)
+        {
+            StatusText.Text = $"Error: {ex.Message}";
+        }
+    }
+
+    /// <summary>Cast the full chart for a UTC moment at the natal place and show it.</summary>
+    private void CastAndShow(DateTime utcMoment, string name, AppSettings settings)
+    {
+        var natal = _natalChart!.BirthData;
+        var localTime = utcMoment.AddHours(natal.TimeZoneOffset);
+
+        var birthData = new BirthData
+        {
+            Year = localTime.Year,
+            Month = localTime.Month,
+            Day = localTime.Day,
+            Hour = localTime.Hour,
+            Minute = localTime.Minute,
+            Second = localTime.Second,
+            Latitude = natal.Latitude,
+            Longitude = natal.Longitude,
+            TimeZoneOffset = natal.TimeZoneOffset,
+            Location = natal.Location,
+            Name = name
+        };
+
+        var result = _orchestrator.CalculateFullChart(birthData, settings);
+        _tithiPraveshaChart = result.ChartData;
+        DisplayChart(result);
+        ChartCalculated?.Invoke(this, new TithiPraveshaCalculatedEventArgs(_tithiPraveshaChart));
     }
 
     private void DisplayChart(CompositeChartResult result)
@@ -196,7 +256,7 @@ public partial class TithiPraveshaPanel : UserControl
 
         string GetVal(string en, string ta) => ZodiacUtils.IsTamil ? ta : en;
 
-        AddLine("Tithi Pravesha Chart Details", "", "", true);
+        AddLine($"{KindLabel} Chart Details", "", "", true);
 
         AddLine(JamakolAstrology.Resources.Strings.LabelDate, bd.GetDisplayDate());
         AddLine(JamakolAstrology.Resources.Strings.LabelTime, bd.GetDisplayTime());

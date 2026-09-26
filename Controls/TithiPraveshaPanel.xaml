@@ -1,4 +1,4 @@
-<UserControl x:Class="JamakolAstrology.Controls.TithiPraveshaPanel"
+﻿<UserControl x:Class="JamakolAstrology.Controls.TithiPraveshaPanel"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:controls="clr-namespace:JamakolAstrology.Controls"
@@ -13,12 +13,19 @@
         <!-- Year Selection Bar -->
         <Border Grid.Row="0" Background="#fff8f0" Padding="8" Margin="0,0,0,2" BorderBrush="#ddd" BorderThickness="0,0,0,1">
             <StackPanel Orientation="Horizontal">
+                <ComboBox x:Name="PraveshaKindCombo" Width="190" Height="24" Margin="0,0,12,0"
+                          SelectionChanged="PraveshaKindChanged">
+                    <ComboBoxItem Content="Tithi Pravesha" IsSelected="True"/>
+                    <ComboBoxItem Content="Varsha Pravesha (solar return)"/>
+                </ComboBox>
                 <TextBlock Text="Year: " VerticalAlignment="Center" FontWeight="SemiBold" Foreground="#333"/>
                 <ComboBox x:Name="YearComboBox" Width="100" Height="24" Margin="5,0,0,0"/>
                 <Button x:Name="CalculateButton" Content="Calculate" Margin="10,0,0,0" Padding="12,3" 
                         Background="#cc0000" Foreground="White" FontWeight="SemiBold" 
                         Click="CalculateButton_Click" IsEnabled="False"/>
                 <TextBlock x:Name="StatusText" Text="" Margin="10,0,0,0" VerticalAlignment="Center" Foreground="#666" FontSize="11"/>
+                <TextBlock x:Name="PraveshaNote" Text="" Margin="14,0,0,0" VerticalAlignment="Center"
+                           Foreground="#8a6d00" FontStyle="Italic" FontSize="11"/>
             </StackPanel>
         </Border>
 
@@ -44,7 +51,7 @@
                     <!-- Chart Details (same style as Natal Details) -->
                     <Border Grid.Column="0" Background="#fffff8" CornerRadius="5" Padding="10" Margin="0,0,5,0" BorderBrush="#ddd" BorderThickness="1">
                         <StackPanel>
-                            <TextBlock Text="Tithi Pravesha Details" FontWeight="Bold" Foreground="#990000" Margin="0,0,0,5"/>
+                            <TextBlock x:Name="DetailsHeader" Text="Tithi Pravesha Details" FontWeight="Bold" Foreground="#990000" Margin="0,0,0,5"/>
                             <TextBlock x:Name="NatalDetailsText" FontFamily="Consolas" FontSize="12" Foreground="#333" TextWrapping="Wrap"/>
                         </StackPanel>
                     </Border>
