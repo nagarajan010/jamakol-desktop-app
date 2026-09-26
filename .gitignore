@@ -54,3 +54,6 @@ publish/
 
 # Ignored JSON
 debug_saved_charts.json
+
+# WPF temporary project files (generated during XAML compilation)
+*_wpftmp.csproj

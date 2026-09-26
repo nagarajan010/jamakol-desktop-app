@@ -52,6 +52,9 @@
   <data name="TabJamakol" xml:space="preserve">
     <value>ஜமகோல்</value>
   </data>
+  <data name="TabCalendar" xml:space="preserve">
+    <value>பஞ்சாங்கம்</value>
+  </data>
   <data name="BtnExport" xml:space="preserve">
     <value>📤 ஏற்றுமதி</value>
   </data>

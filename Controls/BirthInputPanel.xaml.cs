@@ -265,6 +265,17 @@ public partial class BirthInputPanel : UserControl
         DayInput.Text = day.ToString();
     }
 
+    /// <summary>
+    /// Set only the date, leaving name, time and location untouched.
+    /// Used when jumping here from a Calendar day.
+    /// </summary>
+    public void SetDate(DateTime date)
+    {
+        YearInput.Text = date.Year.ToString();
+        MonthInput.Text = date.Month.ToString();
+        DayInput.Text = date.Day.ToString();
+    }
+
     public void SetInputs(string name, DateTime date, string time, double lat, double lng, double tz, string location)
     {
         NameInput.Text = name;

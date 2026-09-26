@@ -39,9 +39,17 @@
                             Margin="0,0,10,0"
                             FontSize="14"/>
                     
-                    <Button x:Name="BtnJamakol" Content="{x:Static res:Strings.TabJamakol}" 
-                            Style="{StaticResource ButtonStyle}" 
+                    <Button x:Name="BtnJamakol" Content="{x:Static res:Strings.TabJamakol}"
+                            Style="{StaticResource ButtonStyle}"
                             Click="BtnJamakol_Click"
+                            Background="#cc0000"
+                            Padding="15,6"
+                            Margin="0,0,10,0"
+                            FontSize="14"/>
+
+                    <Button x:Name="BtnCalendar" Content="{x:Static res:Strings.TabCalendar}"
+                            Style="{StaticResource ButtonStyle}"
+                            Click="BtnCalendar_Click"
                             Background="#cc0000"
                             Padding="15,6"
                             FontSize="14"/>
@@ -368,6 +376,12 @@
                         </Border>
                     </Grid>
                 </Grid>
+            </TabItem>
+
+            <!-- Calendar Tab -->
+            <TabItem Header="Calendar" Style="{StaticResource TabItemStyle}">
+                <controls:CalendarPanel x:Name="CalendarPanelControl"
+                                        OpenInBirthChartRequested="OnCalendarOpenInBirthChart"/>
             </TabItem>
         </TabControl>
     </Grid>

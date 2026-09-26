@@ -1,0 +1,502 @@
+<UserControl x:Class="JamakolAstrology.Controls.CalendarPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:res="clr-namespace:JamakolAstrology.Resources">
+    <UserControl.Resources>
+
+        <!-- One day cell in the month grid -->
+        <DataTemplate x:Key="DayCellTemplate">
+            <Border Background="{Binding CellBackground}"
+                    BorderBrush="{Binding CellBorder}"
+                    BorderThickness="{Binding CellBorderThickness}"
+                    CornerRadius="3" Margin="1" Padding="4"
+                    Cursor="Hand">
+                <StackPanel>
+                    <!-- Date number + paksha badge -->
+                    <Grid>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <TextBlock Text="{Binding DayNumber}" FontWeight="Bold"
+                                       FontSize="{Binding DateFontSize}"
+                                       Foreground="{Binding DateForeground}"/>
+                            <!-- Moon icon: filled disc = Purnima, dark disc = Amavasya -->
+                            <Ellipse Width="{Binding MoonIconSize}" Height="{Binding MoonIconSize}"
+                                     Margin="5,0,0,0"
+                                     VerticalAlignment="Center"
+                                     Fill="{Binding MoonFill}"
+                                     Stroke="{Binding MoonStroke}"
+                                     StrokeThickness="1.2"
+                                     Visibility="{Binding MoonVisibility}"
+                                     ToolTip="{Binding MoonPhaseTooltip}"/>
+                        </StackPanel>
+                        <Border Background="{Binding PakshaBackground}" CornerRadius="2"
+                                Padding="4,1" HorizontalAlignment="Right" VerticalAlignment="Top"
+                                ToolTip="{Binding PakshaTooltip}">
+                            <TextBlock Text="{Binding PakshaShort}" FontWeight="Bold"
+                                       FontSize="{Binding BadgeFontSize}"
+                                       Foreground="{Binding PakshaForeground}"/>
+                        </Border>
+                    </Grid>
+
+                    <!-- Name / end-time in two columns so the times align down the week -->
+                    <Grid Margin="0,3,0,0" ToolTip="{Binding TithiTooltip}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{Binding TithiName}"
+                                   FontSize="{Binding BodyFontSize}"
+                                   Foreground="#cc0000" TextTrimming="CharacterEllipsis"/>
+                        <TextBlock Grid.Column="1" Text="{Binding TithiEnd}"
+                                   FontSize="{Binding BodyFontSize}"
+                                   Foreground="#555" Margin="4,0,0,0"/>
+                    </Grid>
+
+                    <Grid Margin="0,1,0,0" ToolTip="{Binding NakshatraTooltip}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{Binding NakshatraName}"
+                                   FontSize="{Binding BodyFontSize}"
+                                   Foreground="#0066cc" TextTrimming="CharacterEllipsis"/>
+                        <TextBlock Grid.Column="1" Text="{Binding NakshatraEnd}"
+                                   FontSize="{Binding BodyFontSize}"
+                                   Foreground="#555" Margin="4,0,0,0"/>
+                    </Grid>
+
+                    <!-- Rahu Kalam -->
+                    <Grid Margin="0,2,0,0" ToolTip="Rahu Kalam">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="RK" Foreground="#B08" FontWeight="SemiBold"
+                                   FontSize="{Binding SmallFontSize}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding RahuKalamLine}"
+                                   FontSize="{Binding SmallFontSize}"
+                                   Foreground="#777" Margin="4,0,0,0" TextTrimming="CharacterEllipsis"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+
+        <!-- A Panchanga segment row in the day view -->
+        <DataTemplate x:Key="SegmentRowTemplate">
+            <Grid Margin="0,2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="{Binding DisplayName}" FontSize="12"
+                           Foreground="#cc0000" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                <TextBlock Grid.Column="1" Text="{Binding RangeDisplay}" FontSize="12"
+                           Foreground="#333" Margin="10,0,0,0"/>
+            </Grid>
+        </DataTemplate>
+
+        <!-- Section header in the day view -->
+        <Style x:Key="DaySectionHeader" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#333"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+        </Style>
+
+        <!-- Card wrapper in the day view -->
+        <Style x:Key="DayCard" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#ddd"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Padding" Value="12"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+
+    </UserControl.Resources>
+
+    <Grid Background="#fffff0">
+
+        <!-- ============================================================ -->
+        <!-- ===================== MONTH VIEW =========================== -->
+        <!-- ============================================================ -->
+        <Grid x:Name="MonthView">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Toolbar -->
+            <Border Grid.Row="0" Background="White" BorderBrush="#ddd"
+                    BorderThickness="1" CornerRadius="5" Padding="10,6" Margin="5,5,5,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button x:Name="BtnPrevMonth" Content="◀" Click="BtnPrevMonth_Click"
+                                Background="#cc0000" Foreground="White" BorderThickness="0"
+                                Padding="10,4" FontSize="13" Cursor="Hand"/>
+
+                        <TextBlock x:Name="MonthTitleText" Text="—" FontSize="16" FontWeight="Bold"
+                                   Foreground="#cc0000" VerticalAlignment="Center"
+                                   MinWidth="190" TextAlignment="Center" Margin="10,0"/>
+
+                        <Button x:Name="BtnNextMonth" Content="▶" Click="BtnNextMonth_Click"
+                                Background="#cc0000" Foreground="White" BorderThickness="0"
+                                Padding="10,4" FontSize="13" Cursor="Hand"/>
+
+                        <Button x:Name="BtnToday" Content="Today" Click="BtnToday_Click"
+                                Background="#990000" Foreground="White" BorderThickness="0"
+                                Padding="10,4" Margin="12,0,0,0" FontSize="12" Cursor="Hand"/>
+                    </StackPanel>
+
+                    <TextBlock x:Name="TamilMonthText" Grid.Column="1" Text=""
+                               FontSize="12" Foreground="#666" VerticalAlignment="Center"
+                               HorizontalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="{x:Static res:Strings.LabelLocation}" FontSize="11"
+                                   Foreground="#555" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                        <TextBlock x:Name="LocationText" Text="—" FontSize="11" FontWeight="SemiBold"
+                                   Foreground="#333" VerticalAlignment="Center"/>
+                        <Button x:Name="BtnChangeLocation" Content="Change…"
+                                Click="BtnChangeLocation_Click"
+                                Background="#990000" Foreground="White" BorderThickness="0"
+                                Padding="8,4" Margin="8,0,0,0" FontSize="11" Cursor="Hand"
+                                ToolTip="Pick a different city for this calendar"/>
+                        <Button x:Name="BtnResetLocation" Content="⟲"
+                                Click="BtnResetLocation_Click"
+                                Visibility="Collapsed"
+                                Background="#777" Foreground="White" BorderThickness="0"
+                                Padding="7,4" Margin="4,0,0,0" FontSize="11" Cursor="Hand"
+                                ToolTip="Back to the default location from Settings"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Month grid, now using the full width -->
+            <Border Grid.Row="1" Background="White" BorderBrush="#ddd"
+                    BorderThickness="1" CornerRadius="5" Padding="6" Margin="5">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <UniformGrid x:Name="WeekdayHeader" Grid.Row="0" Columns="7" Margin="0,0,0,4"/>
+
+                    <ItemsControl x:Name="DaysItems" Grid.Row="1" ItemTemplate="{StaticResource DayCellTemplate}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="7"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemContainerStyle>
+                            <Style TargetType="ContentPresenter">
+                                <EventSetter Event="PreviewMouseLeftButtonUp" Handler="DayCell_Click"/>
+                            </Style>
+                        </ItemsControl.ItemContainerStyle>
+                    </ItemsControl>
+
+                    <Border x:Name="BusyOverlay" Grid.RowSpan="2" Background="#CCFFFFFF"
+                            Visibility="Collapsed">
+                        <TextBlock Text="Calculating…" FontSize="15" FontWeight="SemiBold"
+                                   Foreground="#cc0000" HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- ============================================================ -->
+        <!-- ====================== DAY VIEW ============================ -->
+        <!-- ============================================================ -->
+        <Grid x:Name="DayView" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Day toolbar: back, step, jump, location -->
+            <Border Grid.Row="0" Background="White" BorderBrush="#ddd"
+                    BorderThickness="1" CornerRadius="5" Padding="10,6" Margin="5,5,5,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button x:Name="BtnBackToMonth" Content="← Back" Click="BtnBackToMonth_Click"
+                                Background="#990000" Foreground="White" BorderThickness="0"
+                                Padding="12,5" FontSize="12" Cursor="Hand"
+                                ToolTip="Back to the month view"/>
+
+                        <Rectangle Width="1" Fill="#ddd" Margin="12,2" />
+
+                        <Button x:Name="BtnPrevDay" Content="◀" Click="BtnPrevDay_Click"
+                                Background="#cc0000" Foreground="White" BorderThickness="0"
+                                Padding="10,4" FontSize="13" Cursor="Hand"
+                                ToolTip="Previous day"/>
+
+                        <TextBlock x:Name="DayTitleText" Text="—" FontSize="16" FontWeight="Bold"
+                                   Foreground="#cc0000" VerticalAlignment="Center"
+                                   MinWidth="210" TextAlignment="Center" Margin="10,0"/>
+
+                        <Button x:Name="BtnNextDay" Content="▶" Click="BtnNextDay_Click"
+                                Background="#cc0000" Foreground="White" BorderThickness="0"
+                                Padding="10,4" FontSize="13" Cursor="Hand"
+                                ToolTip="Next day"/>
+
+                        <DatePicker x:Name="DayDatePicker" Width="130" Margin="12,0,0,0"
+                                    VerticalAlignment="Center" FontSize="12"
+                                    SelectedDateChanged="DayDatePicker_SelectedDateChanged"
+                                    ToolTip="Jump to any date"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="{x:Static res:Strings.LabelLocation}" FontSize="11"
+                                   Foreground="#555" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                        <TextBlock x:Name="DayLocationText" Text="—" FontSize="11" FontWeight="SemiBold"
+                                   Foreground="#333" VerticalAlignment="Center"/>
+                        <Button x:Name="BtnDayChangeLocation" Content="Change…"
+                                Click="BtnChangeLocation_Click"
+                                Background="#990000" Foreground="White" BorderThickness="0"
+                                Padding="8,4" Margin="8,0,0,0" FontSize="11" Cursor="Hand"
+                                ToolTip="Pick a different city"/>
+                        <Button x:Name="BtnDayResetLocation" Content="⟲"
+                                Click="BtnResetLocation_Click"
+                                Visibility="Collapsed"
+                                Background="#777" Foreground="White" BorderThickness="0"
+                                Padding="7,4" Margin="4,0,0,0" FontSize="11" Cursor="Hand"
+                                ToolTip="Back to the default location from Settings"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,0,0,5">
+                <StackPanel>
+
+                    <!-- Header strip: weekday, lord, Tamil almanac, sun times -->
+                    <Border Style="{StaticResource DayCard}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock x:Name="DayHeadlineText" Text="—" FontSize="20"
+                                           FontWeight="Bold" Foreground="#cc0000"/>
+                                <TextBlock x:Name="DaySubText" Text="" FontSize="13"
+                                           Foreground="#666" Margin="0,3,0,0"/>
+
+                                <!-- Full/new moon banner -->
+                                <Border x:Name="DetailMoonBanner" Visibility="Collapsed"
+                                        Background="#FFF6E0" BorderBrush="#E8CE84" BorderThickness="1"
+                                        CornerRadius="3" Padding="10,6" Margin="0,8,0,0"
+                                        HorizontalAlignment="Left">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Ellipse x:Name="DetailMoonIcon" Width="16" Height="16"
+                                                 VerticalAlignment="Center" StrokeThickness="1.5"/>
+                                        <TextBlock x:Name="DetailMoonText" Text="" FontSize="12"
+                                                   FontWeight="SemiBold" Foreground="#7A5400"
+                                                   VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="20,0">
+                                <TextBlock Text="{x:Static res:Strings.LabelSunrise}" FontSize="11" Foreground="#555"/>
+                                <TextBlock x:Name="DetailSunriseText" Text="—" FontSize="18"
+                                           FontWeight="SemiBold" Foreground="#0066cc"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2" VerticalAlignment="Top">
+                                <TextBlock Text="{x:Static res:Strings.LabelSunset}" FontSize="11" Foreground="#555"/>
+                                <TextBlock x:Name="DetailSunsetText" Text="—" FontSize="18"
+                                           FontWeight="SemiBold" Foreground="#0066cc"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- Five limbs across four columns -->
+                    <Border Style="{StaticResource DayCard}">
+                        <StackPanel>
+                            <TextBlock Text="Panchanga" Style="{StaticResource DaySectionHeader}"
+                                       FontSize="15" Foreground="#cc0000"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0" Margin="0,0,12,0">
+                                    <TextBlock Text="{x:Static res:Strings.LabelTithi}"
+                                               Style="{StaticResource DaySectionHeader}"/>
+                                    <ItemsControl x:Name="DetailTithis" ItemTemplate="{StaticResource SegmentRowTemplate}"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1" Margin="0,0,12,0">
+                                    <TextBlock Text="{x:Static res:Strings.LabelNakshatra}"
+                                               Style="{StaticResource DaySectionHeader}"/>
+                                    <ItemsControl x:Name="DetailNakshatras" ItemTemplate="{StaticResource SegmentRowTemplate}"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2" Margin="0,0,12,0">
+                                    <TextBlock Text="{x:Static res:Strings.LabelYoga}"
+                                               Style="{StaticResource DaySectionHeader}"/>
+                                    <ItemsControl x:Name="DetailYogas" ItemTemplate="{StaticResource SegmentRowTemplate}"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="3">
+                                    <TextBlock Text="{x:Static res:Strings.LabelKarana}"
+                                               Style="{StaticResource DaySectionHeader}"/>
+                                    <ItemsControl x:Name="DetailKaranas" ItemTemplate="{StaticResource SegmentRowTemplate}"/>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Planets + inauspicious periods side by side -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0" Style="{StaticResource DayCard}">
+                            <StackPanel>
+                                <TextBlock Text="Planetary Positions (at sunrise)"
+                                           Style="{StaticResource DaySectionHeader}"
+                                           FontSize="15" Foreground="#cc0000"/>
+                                <DataGrid x:Name="DetailPlanets" AutoGenerateColumns="False"
+                                          IsReadOnly="True" HeadersVisibility="Column"
+                                          GridLinesVisibility="Horizontal"
+                                          HorizontalGridLinesBrush="#eee"
+                                          BorderThickness="0" Background="Transparent"
+                                          RowBackground="Transparent"
+                                          AlternatingRowBackground="#FAFAFA"
+                                          CanUserSortColumns="False" CanUserResizeRows="False"
+                                          FontSize="12">
+                                    <DataGrid.RowStyle>
+                                        <Style TargetType="DataGridRow">
+                                            <!-- Aprakash Grahas render greyed -->
+                                            <Setter Property="Foreground" Value="{Binding RowForeground}"/>
+                                        </Style>
+                                    </DataGrid.RowStyle>
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Planet" Binding="{Binding Name}" Width="*"/>
+                                        <DataGridTextColumn Header="Rasi" Binding="{Binding SignName}" Width="*"/>
+                                        <DataGridTextColumn Header="Degree" Binding="{Binding DegreeDisplay}" Width="Auto"/>
+                                        <DataGridTextColumn Header="Nakshatra" Binding="{Binding NakshatraName}" Width="*"/>
+                                        <DataGridTextColumn Header="Pada" Binding="{Binding NakshatraPada}" Width="Auto"/>
+                                        <DataGridTextColumn Header="R" Binding="{Binding RetroFlag}" Width="Auto"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Column="1" Style="{StaticResource DayCard}">
+                            <StackPanel>
+                                <TextBlock Text="Inauspicious Periods"
+                                           Style="{StaticResource DaySectionHeader}"
+                                           FontSize="15" Foreground="#cc0000"/>
+                                <ItemsControl x:Name="DetailPeriods">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,3">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="{Binding Name}"
+                                                           FontSize="12" Foreground="#a00"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding RangeDisplay}"
+                                                           FontSize="12" Foreground="#333" Margin="10,0,0,0"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                                <TextBlock Text="Rasi" Style="{StaticResource DaySectionHeader}"
+                                           Margin="0,14,0,4"/>
+                                <TextBlock x:Name="DetailRasiText" Text="—" FontSize="12" Foreground="#333"/>
+
+                                <Button x:Name="BtnOpenInBirthChart" Content="Open in Birth Chart"
+                                        Click="BtnOpenInBirthChart_Click"
+                                        Background="#cc0000" Foreground="White" BorderThickness="0"
+                                        Padding="10,7" Margin="0,16,0,0" FontSize="12" Cursor="Hand"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <!-- Hora table, open by default and laid out in two columns -->
+                    <Border Style="{StaticResource DayCard}">
+                        <StackPanel>
+                            <TextBlock Text="Hora (24)" Style="{StaticResource DaySectionHeader}"
+                                       FontSize="15" Foreground="#cc0000"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0" Margin="0,0,16,0">
+                                    <TextBlock Text="Day (sunrise → sunset)" FontSize="11"
+                                               Foreground="#888" Margin="0,0,0,4"/>
+                                    <ItemsControl x:Name="DetailHorasDay">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="0,2">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0" Text="{Binding RangeDisplay}"
+                                                               FontSize="12" Foreground="#555"/>
+                                                    <TextBlock Grid.Column="1" Text="{Binding DisplayLord}"
+                                                               FontSize="12" Foreground="#cc0000"
+                                                               FontWeight="SemiBold" Margin="10,0,0,0"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="Night (sunset → next sunrise)" FontSize="11"
+                                               Foreground="#888" Margin="0,0,0,4"/>
+                                    <ItemsControl x:Name="DetailHorasNight">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="0,2">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0" Text="{Binding RangeDisplay}"
+                                                               FontSize="12" Foreground="#555"/>
+                                                    <TextBlock Grid.Column="1" Text="{Binding DisplayLord}"
+                                                               FontSize="12" Foreground="#0066cc"
+                                                               FontWeight="SemiBold" Margin="10,0,0,0"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</UserControl>

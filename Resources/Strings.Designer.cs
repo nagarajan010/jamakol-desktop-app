@@ -76,7 +76,13 @@ namespace JamakolAstrology.Resources {
                 return ResourceManager.GetString("TabJamakol", resourceCulture);
             }
         }
-        
+
+        public static string TabCalendar {
+            get {
+                return ResourceManager.GetString("TabCalendar", resourceCulture);
+            }
+        }
+
         public static string BtnExport {
             get {
                 return ResourceManager.GetString("BtnExport", resourceCulture);

@@ -52,6 +52,9 @@
   <data name="TabJamakol" xml:space="preserve">
     <value>Jamakol</value>
   </data>
+  <data name="TabCalendar" xml:space="preserve">
+    <value>Calendar</value>
+  </data>
   <data name="BtnExport" xml:space="preserve">
     <value>📤 Export</value>
   </data>

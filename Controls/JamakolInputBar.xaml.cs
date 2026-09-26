@@ -192,6 +192,15 @@ public partial class JamakolInputBar : UserControl
         LiveTimerTick?.Invoke(this, EventArgs.Empty);
     }
 
+    /// <summary>
+    /// Set only the date, leaving time and location untouched.
+    /// Used when jumping here from a Calendar day.
+    /// </summary>
+    public void SetDate(DateTime date)
+    {
+        DateInput.SelectedDate = date;
+    }
+
     // Allow external setting of input values (for loading saved charts)
     public void SetInputs(string name, DateTime date, string time, double lat, double lng, double tz)
     {
