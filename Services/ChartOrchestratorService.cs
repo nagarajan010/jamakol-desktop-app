@@ -77,6 +77,16 @@ public class ChartOrchestratorService
                 result.ChartData.JulianDay,
                 result.ChartData.AscendantSign);
 
+            // Naisargika - fixed natural periods whose boundaries are solar returns, with
+            // sub-periods weighted by house from each lord in turn.
+            using (var nowEph = new EphemerisService())
+            {
+                result.NaisargikaDashaResult = NaisargikaDashaCalculator
+                    .FromChart(result.ChartData, solarReturns)
+                    .Calculate(result.ChartData.JulianDay, nowEph.GetJulianDay(DateTime.UtcNow),
+                               NaisargikaDashaCalculator.MaxLevel, birthData.TimeZoneOffset);
+            }
+
             // Narayana (Chara) dasha - a RASI dasha, so it reads the whole chart rather than just
             // the lagna, and reckons its years of age through the same solar returns.
             result.NarayanaDashaResult = new NarayanaDashaAdapter(solarReturns).Calculate(

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using JamakolAstrology.Models;
 
@@ -154,8 +154,11 @@ public class UduDashaCalculator
         };
     }
 
-    /// <summary>Walk the running period down every level and record each one.</summary>
-    private static void SetCurrentChain(DashaResult result)
+    /// <summary>
+    /// Walk the running period down every level and record each one. Shared by every calculator
+    /// that produces a <see cref="DashaResult"/>.
+    /// </summary>
+    public static void SetCurrentChain(DashaResult result)
     {
         var level = result.MahaDashas;
         for (int depth = 1; depth <= MaxLevel; depth++)

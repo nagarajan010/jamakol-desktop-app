@@ -19,6 +19,7 @@ public class CompositeChartResult
     public DashaResult? DashaResult { get; set; }
     public SudarshanaDashaResult? SudarshanaDashaResult { get; set; }
     public NarayanaDashaResult? NarayanaDashaResult { get; set; }
+    public DashaResult? NaisargikaDashaResult { get; set; }
     
     // Metadata for display
     public string DayLord { get; set; } = "";

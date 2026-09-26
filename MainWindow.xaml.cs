@@ -248,9 +248,11 @@ public partial class MainWindow : Window
                 if (moonRow != null)
                 {
                     DashasPanelControl.SetNakshatraDashaContext(
-                        moonRow.Longitude, result.ChartData.JulianDay, birthData.TimeZoneOffset);
+                        moonRow.Longitude, result.ChartData.JulianDay, birthData.TimeZoneOffset,
+                        result.ChartData.AscendantSign);
                 }
                 DashasPanelControl.UpdateDashas(result.DashaResult, result.SudarshanaDashaResult);
+                DashasPanelControl.UpdateNaisargikaDashas(result.NaisargikaDashaResult);
                 DashasPanelControl.UpdateNarayanaDashas(
                     result.NarayanaDashaResult,
                     result.ChartData,

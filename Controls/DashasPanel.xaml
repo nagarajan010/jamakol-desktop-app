@@ -215,6 +215,20 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Text="System:" VerticalAlignment="Center" Foreground="#555" Margin="0,0,8,0"/>
+                        <ComboBox x:Name="OtherDashaPicker" MinWidth="200" SelectionChanged="OtherDashaChanged">
+                            <ComboBoxItem Content="Sudarshana Chakra" IsSelected="True"/>
+                            <ComboBoxItem Content="Naisargika"/>
+                        </ComboBox>
+                    </StackPanel>
+
+                <Grid x:Name="SudarshanaPanel" Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
                     <Border Grid.Row="0" Background="#f4fbff" CornerRadius="5" Padding="10" Margin="0,0,0,10" BorderBrush="#cfe8f7" BorderThickness="1">
                         <StackPanel>
                             <TextBlock Text="Sudarshana Chakra Dasha" FontSize="12" FontWeight="Bold" Foreground="#075985" Margin="0,0,0,5"/>
@@ -298,6 +312,44 @@
                             </TreeView.ItemContainerStyle>
                         </TreeView>
                     </Border>
+                </Grid>
+
+                <!-- Naisargika: fixed natural periods, sub-periods weighted by house from each lord -->
+                <Grid x:Name="NaisargikaPanel" Grid.Row="1" Visibility="Collapsed">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" Background="#f4fbff" CornerRadius="5" Padding="10" Margin="0,0,0,10" BorderBrush="#cfe8f7" BorderThickness="1">
+                        <StackPanel>
+                            <TextBlock Text="Naisargika Dasha" FontSize="12" FontWeight="Bold" Foreground="#075985" Margin="0,0,0,5"/>
+                            <TextBlock x:Name="CurrentNaisargikaText" Text="-" FontSize="16" FontWeight="SemiBold" Foreground="#0369a1" TextWrapping="Wrap"/>
+                            <TextBlock x:Name="CurrentNaisargikaDates" Text="-" FontSize="12" Foreground="#666" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Row="1" Background="#fbfdff" CornerRadius="5" Padding="5" BorderBrush="#ddd" BorderThickness="1">
+                        <TreeView x:Name="NaisargikaTreeView" BorderThickness="0" Background="Transparent">
+                            <TreeView.ItemTemplate>
+                                <HierarchicalDataTemplate ItemsSource="{Binding SubPeriods}">
+                                    <StackPanel Orientation="Horizontal" Margin="0,2">
+                                        <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold" Foreground="#333"/>
+                                        <TextBlock Text=" (" Foreground="#888"/>
+                                        <TextBlock Text="{Binding ShortDateRange}" Foreground="#666" FontSize="11"/>
+                                        <TextBlock Text=")" Foreground="#888"/>
+                                        <TextBlock Text="{Binding ActiveLabel}" Foreground="#0369a1" FontWeight="Bold" FontSize="11" Margin="5,0,0,0"/>
+                                    </StackPanel>
+                                </HierarchicalDataTemplate>
+                            </TreeView.ItemTemplate>
+                            <TreeView.ItemContainerStyle>
+                                <Style TargetType="TreeViewItem">
+                                    <Setter Property="IsExpanded" Value="{Binding IsActive}"/>
+                                </Style>
+                            </TreeView.ItemContainerStyle>
+                        </TreeView>
+                    </Border>
+                </Grid>
                 </Grid>
             </TabItem>
         </TabControl>

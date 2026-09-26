@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using JamakolAstrology.Models;
 using JamakolAstrology.Services;
@@ -19,7 +20,10 @@ public partial class DashasPanel : UserControl
     public DashasPanel()
     {
         InitializeComponent();
-        NakshatraSystemPicker.ItemsSource = NakshatraDashaSystems.All;
+        // Kalachakra is driven by the Moon's nakshatra pada, so it sits with the nakshatra
+        // systems even though its periods are ruled by signs.
+        var systems = new List<object>(NakshatraDashaSystems.All) { new KalachakraDashaCalculator() };
+        NakshatraSystemPicker.ItemsSource = systems;
         NakshatraSystemPicker.SelectedIndex = 0;
     }
 
@@ -30,14 +34,16 @@ public partial class DashasPanel : UserControl
     private double _moonLongitude;
     private double _birthJulianDay;
     private double _dashaTimeZone;
+    private int _lagnaSign;
     private bool _hasDashaContext;
 
     /// <summary>What the non-Vimshottari systems need to compute their periods.</summary>
-    public void SetNakshatraDashaContext(double moonLongitude, double birthJulianDay, double timeZoneOffset)
+    public void SetNakshatraDashaContext(double moonLongitude, double birthJulianDay, double timeZoneOffset, int lagnaSign = 0)
     {
         _moonLongitude = moonLongitude;
         _birthJulianDay = birthJulianDay;
         _dashaTimeZone = timeZoneOffset;
+        _lagnaSign = lagnaSign;
         _hasDashaContext = true;
     }
 
@@ -45,11 +51,12 @@ public partial class DashasPanel : UserControl
 
     private void ShowSelectedNakshatraSystem()
     {
-        var system = NakshatraSystemPicker.SelectedItem as NakshatraDashaSystem ?? NakshatraDashaSystems.Vimshottari;
+        object selected = NakshatraSystemPicker.SelectedItem ?? NakshatraDashaSystems.Vimshottari;
 
-        if (system.Condition != null)
+        string? condition = (selected as NakshatraDashaSystem)?.Condition;
+        if (condition != null)
         {
-            NakshatraConditionNote.Text = $"Conditional dasha - applies when: {system.Condition}";
+            NakshatraConditionNote.Text = $"Conditional dasha - applies when: {condition}";
             NakshatraConditionNote.Visibility = Visibility.Visible;
         }
         else
@@ -57,7 +64,7 @@ public partial class DashasPanel : UserControl
             NakshatraConditionNote.Visibility = Visibility.Collapsed;
         }
 
-        if (system is VimshottariSystem || !_hasDashaContext || _vimshottariResult == null)
+        if (selected is VimshottariSystem || !_hasDashaContext || _vimshottariResult == null)
         {
             ShowNakshatraDasha(_vimshottariResult);
             return;
@@ -65,8 +72,15 @@ public partial class DashasPanel : UserControl
 
         using var eph = new EphemerisService();
         double nowJd = eph.GetJulianDay(DateTime.UtcNow);
-        var result = new UduDashaCalculator(system).Calculate(
-            _moonLongitude, _birthJulianDay, nowJd, UduDashaCalculator.MaxLevel, _dashaTimeZone);
+
+        DashaResult? result = selected switch
+        {
+            NakshatraDashaSystem system => new UduDashaCalculator(system).Calculate(
+                _moonLongitude, _birthJulianDay, nowJd, UduDashaCalculator.MaxLevel, _dashaTimeZone),
+            KalachakraDashaCalculator kalachakra => kalachakra.Calculate(
+                _moonLongitude, _birthJulianDay, nowJd, _lagnaSign, KalachakraDashaCalculator.MaxLevel, _dashaTimeZone),
+            _ => _vimshottariResult
+        };
         ShowNakshatraDasha(result);
     }
 
@@ -233,6 +247,47 @@ public partial class DashasPanel : UserControl
                 CurrentDashaLevels.Text = "-";
             }
         }
+    }
+
+    /// <summary>Switch the Other Dasa tab between its systems.</summary>
+    private void OtherDashaChanged(object sender, SelectionChangedEventArgs e)
+    {
+        // Fires once during InitializeComponent, before the panels below exist.
+        if (SudarshanaPanel == null || NaisargikaPanel == null) return;
+
+        bool naisargika = OtherDashaPicker.SelectedIndex == 1;
+        SudarshanaPanel.Visibility = naisargika ? Visibility.Collapsed : Visibility.Visible;
+        NaisargikaPanel.Visibility = naisargika ? Visibility.Visible : Visibility.Collapsed;
+    }
+
+    public void UpdateNaisargikaDashas(DashaResult? result)
+    {
+        if (result == null)
+        {
+            CurrentNaisargikaText.Text = "-";
+            CurrentNaisargikaDates.Text = "-";
+            NaisargikaTreeView.ItemsSource = null;
+            return;
+        }
+
+        NaisargikaTreeView.ItemsSource = result.MahaDashas;
+
+        var chain = new[]
+        {
+            result.CurrentMahaDasha, result.CurrentAntarDasha, result.CurrentPratyantaraDasha,
+            result.CurrentSookshmaDasha, result.CurrentPranaDasha, result.CurrentDehaDasha
+        }.Where(d => d != null).Select(d => d!).ToList();
+
+        if (chain.Count == 0)
+        {
+            CurrentNaisargikaText.Text = "No current period";
+            CurrentNaisargikaDates.Text = "";
+            return;
+        }
+
+        CurrentNaisargikaText.Text = string.Join(" / ", chain.Select(d => d.Planet));
+        var deepest = chain[^1];
+        CurrentNaisargikaDates.Text = $"{deepest.DisplayName} ends on {deepest.LocalEndWithTime}";
     }
 
     private void UpdateSudarshanaDashas(SudarshanaDashaResult? result)
