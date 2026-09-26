@@ -29,6 +29,10 @@ public partial class BirthChartDetailsPanel : UserControl
     {
         UpdatePlanetaryPositions(result.ChartData);
         SpecialLagnasGrid.ItemsSource = result.SpecialLagnas;
+        using (var eph = new Services.EphemerisService())
+        {
+            ConditionsGrid.ItemsSource = Services.PlanetConditions.For(result.ChartData, eph);
+        }
         var rashiChart = new Services.ChartDataRashiChart(result.ChartData);
         ArudhaGrid.ItemsSource = new Services.ArudhaCalculator(rashiChart).ForAllHouses();
         ArgalaGrid.ItemsSource = new Services.ArgalaCalculator(rashiChart).ForAllHouses();
@@ -194,6 +198,7 @@ public partial class BirthChartDetailsPanel : UserControl
     {
         PlanetGridControl.DataGridControl.ItemsSource = null;
         SpecialLagnasGrid.ItemsSource = null;
+        ConditionsGrid.ItemsSource = null;
         ArudhaGrid.ItemsSource = null;
         ArgalaGrid.ItemsSource = null;
         NatalDetailsText.Text = "No content available";

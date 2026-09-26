@@ -170,6 +170,21 @@ public class EphemerisService : IDisposable
     }
 
     /// <summary>
+    /// True declination in degrees, north positive. Independent of the ayanamsa - it is measured
+    /// from the celestial equator - so it needs none. Graha yuddha reads it as one of its three
+    /// criteria.
+    /// </summary>
+    public double GetDeclination(double julianDay, int planetId)
+    {
+        double[] result = new double[6];
+        string errorMsg = "";
+        int flags = SwissEph.SEFLG_SWIEPH | SwissEph.SEFLG_EQUATORIAL;
+        int retVal = _sweph.swe_calc_ut(julianDay, planetId, flags, result, ref errorMsg);
+        if (retVal < 0) throw new Exception($"Error calculating declination: {errorMsg}");
+        return result[1];
+    }
+
+    /// <summary>
     /// Get Rahu (Mean Node) position
     /// </summary>
     public (double longitude, double latitude, double speed) GetRahuPosition(double julianDay, int ayanamshaId, double ayanamshaOffset = 0)
