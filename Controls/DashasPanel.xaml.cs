@@ -19,7 +19,57 @@ public partial class DashasPanel : UserControl
     public DashasPanel()
     {
         InitializeComponent();
+        NakshatraSystemPicker.ItemsSource = NakshatraDashaSystems.All;
+        NakshatraSystemPicker.SelectedIndex = 0;
     }
+
+    // Nakshatra dasha systems. Vimshottari comes from the chart calculation; the others are
+    // computed when chosen, since building every system six levels deep up front would cost
+    // several million periods for tables most charts never open.
+    private DashaResult? _vimshottariResult;
+    private double _moonLongitude;
+    private double _birthJulianDay;
+    private double _dashaTimeZone;
+    private bool _hasDashaContext;
+
+    /// <summary>What the non-Vimshottari systems need to compute their periods.</summary>
+    public void SetNakshatraDashaContext(double moonLongitude, double birthJulianDay, double timeZoneOffset)
+    {
+        _moonLongitude = moonLongitude;
+        _birthJulianDay = birthJulianDay;
+        _dashaTimeZone = timeZoneOffset;
+        _hasDashaContext = true;
+    }
+
+    private void NakshatraSystemChanged(object sender, SelectionChangedEventArgs e) => ShowSelectedNakshatraSystem();
+
+    private void ShowSelectedNakshatraSystem()
+    {
+        var system = NakshatraSystemPicker.SelectedItem as NakshatraDashaSystem ?? NakshatraDashaSystems.Vimshottari;
+
+        if (system.Condition != null)
+        {
+            NakshatraConditionNote.Text = $"Conditional dasha - applies when: {system.Condition}";
+            NakshatraConditionNote.Visibility = Visibility.Visible;
+        }
+        else
+        {
+            NakshatraConditionNote.Visibility = Visibility.Collapsed;
+        }
+
+        if (system is VimshottariSystem || !_hasDashaContext || _vimshottariResult == null)
+        {
+            ShowNakshatraDasha(_vimshottariResult);
+            return;
+        }
+
+        using var eph = new EphemerisService();
+        double nowJd = eph.GetJulianDay(DateTime.UtcNow);
+        var result = new UduDashaCalculator(system).Calculate(
+            _moonLongitude, _birthJulianDay, nowJd, UduDashaCalculator.MaxLevel, _dashaTimeZone);
+        ShowNakshatraDasha(result);
+    }
+
 
     /// <summary>
     /// Fill in a Sudarshana level the moment the reader opens it.
@@ -113,6 +163,15 @@ public partial class DashasPanel : UserControl
 
     public void UpdateDashas(DashaResult? result, SudarshanaDashaResult? sudarshanaResult = null)
     {
+        _vimshottariResult = result;
+        ShowSelectedNakshatraSystem();
+
+        UpdateSudarshanaDashas(sudarshanaResult);
+    }
+
+    /// <summary>Show one nakshatra system's periods in the tree and the running summary.</summary>
+    private void ShowNakshatraDasha(DashaResult? result)
+    {
         if (result == null)
         {
             CurrentDashaText.Text = "-";
@@ -132,8 +191,10 @@ public partial class DashasPanel : UserControl
                 // Localize planets for display
                 string GetLocPlanet(string p) => Services.ZodiacUtils.IsTamil && Enum.TryParse<Planet>(p, true, out var pl) 
                     ? Services.ZodiacUtils.GetPlanetName(pl) : p;
+                // Yogini's lords are the yoginis, so name them rather than their graha.
+                string Lord(DashaPeriod? d) => d == null ? "-" : d.LordLabel ?? GetLocPlanet(d.Planet);
 
-                CurrentDashaText.Text = $"{GetLocPlanet(result.CurrentMahaDasha?.Planet ?? "-")} / {GetLocPlanet(result.CurrentAntarDasha?.Planet ?? "-")} / {GetLocPlanet(result.CurrentPratyantaraDasha?.Planet ?? "-")}";
+                CurrentDashaText.Text = $"{Lord(result.CurrentMahaDasha)} / {Lord(result.CurrentAntarDasha)} / {Lord(result.CurrentPratyantaraDasha)}";
                 
                 // Format: 15-Oct-2023 to 22-Feb-2024 (showing range of deepest active level)
                 var deepest = result.CurrentDehaDasha ?? 
@@ -154,14 +215,14 @@ public partial class DashasPanel : UserControl
                 }
 
                 // Full chain
-                string p1 = GetLocPlanet(result.CurrentMahaDasha?.Planet ?? "-");
-                string p2 = GetLocPlanet(result.CurrentAntarDasha?.Planet ?? "-");
-                string p3 = GetLocPlanet(result.CurrentPratyantaraDasha?.Planet ?? "-");
+                string p1 = Lord(result.CurrentMahaDasha);
+                string p2 = Lord(result.CurrentAntarDasha);
+                string p3 = Lord(result.CurrentPratyantaraDasha);
                 
                 string levels = $"{p1} > {p2} > {p3}";
-                if (result.CurrentSookshmaDasha != null) levels += $" > {GetLocPlanet(result.CurrentSookshmaDasha.Planet)}";
-                if (result.CurrentPranaDasha != null) levels += $" > {GetLocPlanet(result.CurrentPranaDasha.Planet)}";
-                if (result.CurrentDehaDasha != null) levels += $" > {GetLocPlanet(result.CurrentDehaDasha.Planet)}";
+                if (result.CurrentSookshmaDasha != null) levels += $" > {Lord(result.CurrentSookshmaDasha)}";
+                if (result.CurrentPranaDasha != null) levels += $" > {Lord(result.CurrentPranaDasha)}";
+                if (result.CurrentDehaDasha != null) levels += $" > {Lord(result.CurrentDehaDasha)}";
                 
                 CurrentDashaLevels.Text = levels;
             }
@@ -172,8 +233,6 @@ public partial class DashasPanel : UserControl
                 CurrentDashaLevels.Text = "-";
             }
         }
-
-        UpdateSudarshanaDashas(sudarshanaResult);
     }
 
     private void UpdateSudarshanaDashas(SudarshanaDashaResult? result)

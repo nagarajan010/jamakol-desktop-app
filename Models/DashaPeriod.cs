@@ -13,6 +13,12 @@ public class DashaPeriod
     
     /// <summary>Short symbol for the planet</summary>
     public string Symbol { get; set; } = "";
+
+    /// <summary>
+    /// A name for the lord when it is not simply the graha - Yogini's periods belong to the
+    /// yoginis, as "Ulka (Saturn)". Null for systems whose lords are the grahas themselves.
+    /// </summary>
+    public string? LordLabel { get; set; }
     
     /// <summary>Level: 1=Maha, 2=Antar, 3=Pratyantara, 4=Sookshma, 5=Prana</summary>
     public int Level { get; set; }
@@ -60,9 +66,10 @@ public class DashaPeriod
         get
         {
             // Get localized planet name
-            string pName = Services.ZodiacUtils.IsTamil && Enum.TryParse<Planet>(Planet, true, out var p) 
-                ? Services.ZodiacUtils.GetPlanetName(p) 
-                : Planet;
+            string pName = LordLabel
+                ?? (Services.ZodiacUtils.IsTamil && Enum.TryParse<Planet>(Planet, true, out var p)
+                    ? Services.ZodiacUtils.GetPlanetName(p)
+                    : Planet);
 
             if (Services.ZodiacUtils.IsTamil)
             {

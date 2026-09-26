@@ -243,6 +243,13 @@ public partial class MainWindow : Window
             // NEW: Update other top-level tabs content
             if (DashasPanelControl != null)
             {
+                // Set before UpdateDashas, which recomputes whichever nakshatra system is selected.
+                var moonRow = result.ChartData.Planets.FirstOrDefault(p => p.Planet == Models.Planet.Moon && p.Name == "Moon");
+                if (moonRow != null)
+                {
+                    DashasPanelControl.SetNakshatraDashaContext(
+                        moonRow.Longitude, result.ChartData.JulianDay, birthData.TimeZoneOffset);
+                }
                 DashasPanelControl.UpdateDashas(result.DashaResult, result.SudarshanaDashaResult);
                 DashasPanelControl.UpdateNarayanaDashas(
                     result.NarayanaDashaResult,
