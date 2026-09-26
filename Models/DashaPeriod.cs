@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace JamakolAstrology.Models;
@@ -37,6 +37,22 @@ public class DashaPeriod
 
     /// <summary>End date of this period (Julian Day)</summary>
     public double EndJulianDay { get; set; }
+
+    /// <summary>
+    /// Hours east of UTC for the chart's place, e.g. 5.5 for IST.
+    ///
+    /// The Julian Days above are instants and carry no zone, so they are right for deciding which
+    /// period is running. Printed raw they read as UTC, which put every date and time in the tree
+    /// hours off the clock the reader is holding. Every display path goes through the local
+    /// values below instead.
+    /// </summary>
+    public double TimeZoneOffset { get; set; }
+
+    private double LocalStartJd => StartJulianDay + TimeZoneOffset / 24.0;
+    private double LocalEndJd => EndJulianDay + TimeZoneOffset / 24.0;
+
+    /// <summary>The end, formatted in the chart's own zone with the time of day.</summary>
+    public string LocalEndWithTime => Helpers.TimeFormatHelper.FormatJulianDay(LocalEndJd, true);
 
     /// <summary>Display name with level prefix</summary>
     public string DisplayName 
@@ -78,12 +94,12 @@ public class DashaPeriod
     public string ActiveLabel => IsActive ? (Services.ZodiacUtils.IsTamil ? " ▶ நடப்பில்" : " ▶ Current") : "";
     
     /// <summary>Date range display using Julian Days for BC support</summary>
-    public string DateRange => $"{Helpers.TimeFormatHelper.FormatJulianDay(StartJulianDay)} to {Helpers.TimeFormatHelper.FormatJulianDay(EndJulianDay)}";
+    public string DateRange => $"{Helpers.TimeFormatHelper.FormatJulianDay(LocalStartJd)} to {Helpers.TimeFormatHelper.FormatJulianDay(LocalEndJd)}";
     
     /// <summary>Short date range for compact display</summary>
     public string ShortDateRange => Level >= 5 
-        ? $"{Helpers.TimeFormatHelper.FormatJulianDay(StartJulianDay, true)} - {Helpers.TimeFormatHelper.FormatJulianDay(EndJulianDay, true)}"
-        : $"{Helpers.TimeFormatHelper.FormatJulianDay(StartJulianDay)} - {Helpers.TimeFormatHelper.FormatJulianDay(EndJulianDay)}";
+        ? $"{Helpers.TimeFormatHelper.FormatJulianDay(LocalStartJd, true)} - {Helpers.TimeFormatHelper.FormatJulianDay(LocalEndJd, true)}"
+        : $"{Helpers.TimeFormatHelper.FormatJulianDay(LocalStartJd)} - {Helpers.TimeFormatHelper.FormatJulianDay(LocalEndJd)}";
 }
 
 /// <summary>

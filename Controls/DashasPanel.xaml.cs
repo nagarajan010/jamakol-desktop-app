@@ -145,7 +145,7 @@ public partial class DashasPanel : UserControl
                 if (deepest != null)
                 {
                     string endsOn = Services.ZodiacUtils.IsTamil ? "முடிவு" : "ends on";
-                    string dateStr = Helpers.TimeFormatHelper.FormatJulianDay(deepest.EndJulianDay, true);
+                    string dateStr = deepest.LocalEndWithTime;
                     CurrentDashaDates.Text = $"{deepest.DisplayName} {endsOn} {dateStr}";
                 }
                 else

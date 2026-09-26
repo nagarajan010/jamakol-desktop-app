@@ -141,7 +141,8 @@ public class VimshottariDashaCalculator
                     EndDate = SafeJdToDateTime(dashaEndJd),
 
                     DurationYears = years,
-                    IsActive = currentJulianDay >= dashaStartJd && currentJulianDay < dashaEndJd
+                    IsActive = currentJulianDay >= dashaStartJd && currentJulianDay < dashaEndJd,
+                    TimeZoneOffset = _timeZoneOffset
                 };
 
                 // Calculate sub-periods if needed
@@ -210,7 +211,8 @@ public class VimshottariDashaCalculator
                 StartDate = SafeJdToDateTime(subStartJd),
                 EndDate = SafeJdToDateTime(subEndJd),
                 DurationYears = subYears,
-                IsActive = currentJd >= subStartJd && currentJd < subEndJd
+                IsActive = currentJd >= subStartJd && currentJd < subEndJd,
+                TimeZoneOffset = _timeZoneOffset
             };
 
             // Recursively calculate deeper levels
